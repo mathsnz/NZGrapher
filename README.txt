@@ -1,6 +1,4 @@
 NZGrapher is created by Jake Wills and these files are provided free of waranty, express or implied.
-These files have been provided to you and your organisation... 
-   please do not distrubute these files without the consent of the author.
 
 ### Install Requrements ###
 - Web server running PHP with GD Library installed
