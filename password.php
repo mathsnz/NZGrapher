@@ -1,0 +1,3 @@
+<?php
+$password="lskjdnhflia7";
+?>

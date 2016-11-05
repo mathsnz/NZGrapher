@@ -1,0 +1,112 @@
+<html>
+<head>
+<title>Update NZGrapher</title>
+			<link href='//fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+			<style>
+				body {
+					font-family: 'Roboto', sans-serif;
+				}
+				table {
+					border-collapse:collapse;
+				}
+				td, th {
+					border:1px solid #000;
+					padding-left:4px;
+					padding-right:4px;
+					width:80px;
+				}
+				*.minmax {
+					color:#bbb;
+				}
+				#content {
+					position:absolute;
+					top:0px;
+					left:0px;
+					width:<?php echo $_POST['width']-20; ?>px;
+					height:<?php echo $_POST['height']-20; ?>px;
+					overflow-y:scroll;
+					padding:10px;
+				}
+</style>
+</head>
+<body>
+	<div id=content>
+	<center>
+	<h1><img src='logob.png' style='position:relative;top:22px;height:65px;'> Update</h1>
+<br>
+<?php
+set_time_limit(0);
+
+if(isset($_POST['password']) || isset($_POST['yup'])){
+	include 'password.php';
+	if($password==$_POST['password'] || file_exists('./windowsapp.php')){
+		file_put_contents("Tmpfile.zip", fopen("https://www.jake4maths.com/grapher.zip", 'r'));
+
+		$zip = new ZipArchive;
+		if ($zip->open('Tmpfile.zip') === TRUE) {
+			$zip->extractTo('../');
+			$zip->close();
+			echo 'NZGrapher successfully updated.<br><br>';
+		} else {
+			echo 'Something went wrong updating NZGrapher... please try again later.<br><br>';
+		}
+		unlink("Tmpfile.zip");
+	} else {
+		echo "Sorry, wrong password, try again.<br><br>";
+	}
+}
+
+if(file_exists('./index.php')){
+	$v = fgets(fopen('./index.php', 'r'));
+	$v = substr($v,9,8);
+	echo "Current Version: $v<br>";
+} else {
+	echo "Not Currently Installed<br>";
+	$v=0;
+}
+
+$latest = floatval(file_get_contents('https://www.jake4maths.com/grapherversion.php'));
+echo "Latest Version: $latest<br><br>";
+
+$filename = './test.txt';
+if (file_put_contents($filename,"1")) {
+    $write="yes";
+	unlink($filename);
+} else {
+    $write="no";
+}
+if(basename(getcwd())!="grapher"){
+	$write="no";
+}
+
+
+if($write=="no") {
+	echo "Your server settings do not allow for updating automatically. Check with your server administrator and get them to change the permissions and or name of this folder.<br>
+	See the README for more details.";
+}
+if($latest>$v){
+} else {
+	echo "You have the latest version.<br><br>Force ";
+}
+
+	if($write=="yes"){
+		echo "Update:<br>
+		<form method=post>
+			<input type=hidden name=password value=yup>";
+		if(!file_exists('./windowsapp.php')){
+			echo "
+			Password: <input type=password name=password> ";
+		}
+		echo	"
+			<input type=submit value='Update'>
+		</form>";
+		if(!file_exists('./windowsapp.php')){
+			echo "
+			If you don't know the password and you manage this server, please <a href='//www.mathsnz.com/contact.html' target='_blank'>contact me</a>.
+			";
+		}
+	}
+
+?>
+</body>
+</html>
