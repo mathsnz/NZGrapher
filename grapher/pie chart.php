@@ -8,7 +8,7 @@ $interval=$_POST['interval'];
 //graph title
 $title=stripslashes($_POST['title']);
 //yaxis lavel
-$ylabel=stripslashes($_POST['yaxis']); 
+$ylabel=stripslashes($_POST['yaxis']);
 //xaxis label
 $xlabel=stripslashes($_POST['xaxis']);
 //labels?
@@ -41,22 +41,22 @@ function format_number_significant_figures($number, $sf) {
   return number_format($number, 0 == $number ? 0 : $dp,".","");
 }
 
-function FirstSF($number) { 
-    $multiplier = 1; 
+function FirstSF($number) {
+    $multiplier = 1;
 	if ($number==0){
-		return 0; 
+		return 0;
 	} else {
-		while ($number < 0.1) { 
-			$number *= 10; 
-			$multiplier /= 10; 
-		} 
-		while ($number >= 1) { 
-			$number /= 10; 
-			$multiplier *= 10; 
-		} 
-		return round($number, 1) * 10; 
+		while ($number < 0.1) {
+			$number *= 10;
+			$multiplier /= 10;
+		}
+		while ($number >= 1) {
+			$number /= 10;
+			$multiplier *= 10;
+		}
+		return round($number, 1) * 10;
 	}
-} 
+}
 
 // Create image and define colours
 if($width<1 || $height<1){echo "Invalid Image Dimensions";die();}
@@ -127,7 +127,7 @@ if(empty($ypoints)){
 		$centerx=$graphwidth/2+$left;
 		$centery=$graphheight/2+$top-20;
 		$diameter=min($graphheight-50,$graphwidth-10);
-		pie($im,$points,$diameter,$centerx,$centery);	
+		pie($im,$points,$diameter,$centerx,$centery);
 		$size=11;
 		if($regression=="yes"){
 			$cat.=" (num: ".count($points).")";
@@ -162,13 +162,14 @@ function pie($im,$xpoints,$diameter,$centerx,$centery){
 	$num=count($freq);
 	$size=11;
 	$total=array_sum($freq);
-	$rot=270;
+	$rot=-90;
 	foreach($freq as $key => $value){
 		$angle=$value/$total*360;
 		$col=stringToColorCode($im,$key);
 		$start=round($rot);
 		$end=round($rot+$angle);
-		imagefilledarc($im,$centerx,$centery,$diameter,$diameter,$start,$end,$col,0);
+		echo "$start - $end - $key<br>";
+		imagefilledarc($im,$centerx,$centery,$diameter,$diameter,$start,630,$col,0);
 		$rot=$rot+$angle;
 	}
 	$rot=270;
@@ -196,7 +197,6 @@ function pie($im,$xpoints,$diameter,$centerx,$centery){
 	}
 	imageellipse($im,$centerx,$centery,$diameter,$diameter,$black);
 }
-
 include('labelgraph.php');
 
 $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
@@ -228,10 +228,10 @@ imagedestroy($im);
 $path = 'imagetemp/';
 if ($handle = opendir($path)) {
 	while (false !== ($file = readdir($handle))) {
-		if ((time()-filectime($path.$file)) > 1800) {  
+		if ((time()-filectime($path.$file)) > 1800) {
 			if (is_file($path.$file)) {
 				unlink($path.$file);
-			}	
+			}
 		}
 	}
 }

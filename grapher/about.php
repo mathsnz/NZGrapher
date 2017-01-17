@@ -49,15 +49,14 @@
 	<h1>About <img src='logob.png' style='position:relative;top:22px;height:65px;'></h1>
 	<a href='https://www.facebook.com/mathsnz' target='_blank'>Check us out on Facebook</a><br><br>
 	<?php
-		if(file_exists('./index.php')){
-			$v = fgets(fopen('./index.php', 'r'));
-			$v = substr($v,9,8);
+		if(file_exists('./version.php')){
+			include './version.php';
 		} else {
 			$v=0;
 		}
 
 		$latest = 0;
-		$latest = floatval(file_get_contents('https://www.jake4maths.com/grapherversion.php'));
+		$latest = floatval(file_get_contents('https://raw.githubusercontent.com/mathsnz/NZGrapher/master/grapherversion.php'));
 
 
 		if($v<$latest){echo "<span style='color:#f00;'>Your version of NZGrapher is out of date<br>

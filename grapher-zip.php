@@ -1,5 +1,10 @@
 <?php
 
+date_default_timezone_set ("Pacific/Auckland");
+$date=date('Ymd');
+file_put_contents('./grapher/version.php', "<?php \$v=".$date."; ?>");
+file_put_contents('./grapherversion.php', $date);
+
 function Zip($source, $destination, $include_dir = false, $exclude)
 {
 
@@ -41,12 +46,12 @@ function Zip($source, $destination, $include_dir = false, $exclude)
         foreach ($files as $file)
         {
             $file = str_replace('\\', '/', $file);
+            echo $file."<br>";
 
             // Ignore "." and ".." folders
             if( in_array(substr($file, strrpos($file, '/')+1), array('.', '..')) )
                 continue;
 
-            $file = realpath($file);
 
             if (is_dir($file) === true)
             {
@@ -72,6 +77,8 @@ function Zip($source, $destination, $include_dir = false, $exclude)
 									$zip->addFromString(str_replace($source . '/', '', $file), file_get_contents($file));
 								}
             }
+            $uri = str_replace($source . '/', '', $file);
+            $zip->renameName(basename($uri), str_replace('_', '-', basename($uri)));
         }
     }
     else if (is_file($source) === true)
@@ -82,9 +89,8 @@ function Zip($source, $destination, $include_dir = false, $exclude)
     return $zip->close();
 }
 
-
 unlink('./grapher.zip');
-$exclude=array('/imagetemp/','.DS_Store');
+$exclude=array('/imagetemp/','DS_Store');
 $return = Zip('./grapher/', './grapher.zip',true,$exclude);
 
 

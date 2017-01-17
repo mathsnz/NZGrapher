@@ -1,4 +1,4 @@
-<?php $v=20160813;?>
+<?php include 'version.php'; ?>
 <html v=<?php echo $v; ?>>
 <head>
 	<script src="./jquery-1.11.1.min.js"></script>

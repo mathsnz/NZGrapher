@@ -40,7 +40,7 @@ set_time_limit(0);
 if(isset($_POST['password']) || isset($_POST['yup'])){
 	include 'password.php';
 	if($password==$_POST['password'] || file_exists('./windowsapp.php')){
-		file_put_contents("Tmpfile.zip", fopen("https://www.jake4maths.com/grapher.zip", 'r'));
+		file_put_contents("Tmpfile.zip", fopen("https://raw.githubusercontent.com/mathsnz/NZGrapher/master/grapher.zip", 'r'));
 
 		$zip = new ZipArchive;
 		if ($zip->open('Tmpfile.zip') === TRUE) {
@@ -56,16 +56,19 @@ if(isset($_POST['password']) || isset($_POST['yup'])){
 	}
 }
 
-if(file_exists('./index.php')){
-	$v = fgets(fopen('./index.php', 'r'));
-	$v = substr($v,9,8);
+if(file_exists('./version.php')){
+	include './version.php';
 	echo "Current Version: $v<br>";
 } else {
 	echo "Not Currently Installed<br>";
 	$v=0;
 }
+if(!extension_loaded('zip')){
+	$write="no";
+	$error = "to enable the zip extension";
+}
 
-$latest = floatval(file_get_contents('https://www.jake4maths.com/grapherversion.php'));
+$latest = floatval(file_get_contents('https://raw.githubusercontent.com/mathsnz/NZGrapher/master/grapherversion.php'));
 echo "Latest Version: $latest<br><br>";
 
 $filename = './test.txt';
