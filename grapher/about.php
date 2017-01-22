@@ -56,7 +56,7 @@
 		}
 
 		$latest = 0;
-		$latest = floatval(file_get_contents('https://raw.githubusercontent.com/mathsnz/NZGrapher/master/grapherversion.php'));
+		$latest = floatval(file_get_contents('http://raw.githubusercontent.com/mathsnz/NZGrapher/master/grapherversion.php'));
 
 
 		if($v<$latest){echo "<span style='color:#f00;'>Your version of NZGrapher is out of date<br>

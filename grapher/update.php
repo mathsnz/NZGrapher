@@ -40,7 +40,7 @@ set_time_limit(0);
 if(isset($_POST['password']) || isset($_POST['yup'])){
 	include 'password.php';
 	if($password==$_POST['password'] || file_exists('./windowsapp.php')){
-		file_put_contents("Tmpfile.zip", fopen("https://raw.githubusercontent.com/mathsnz/NZGrapher/master/grapher.zip", 'r'));
+		file_put_contents("Tmpfile.zip", fopen("http://raw.githubusercontent.com/mathsnz/NZGrapher/master/grapher.zip", 'r'));
 
 		$zip = new ZipArchive;
 		if ($zip->open('Tmpfile.zip') === TRUE) {
@@ -68,7 +68,7 @@ if(!extension_loaded('zip')){
 	$error = "to enable the zip extension";
 }
 
-$latest = floatval(file_get_contents('https://raw.githubusercontent.com/mathsnz/NZGrapher/master/grapherversion.php'));
+$latest = floatval(file_get_contents('http://raw.githubusercontent.com/mathsnz/NZGrapher/master/grapherversion.php'));
 echo "Latest Version: $latest<br><br>";
 
 $filename = './test.txt';
