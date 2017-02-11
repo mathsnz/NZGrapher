@@ -163,15 +163,7 @@ function pie($im,$xpoints,$diameter,$centerx,$centery){
 	$size=11;
 	$total=array_sum($freq);
 	$rot=-90;
-	foreach($freq as $key => $value){
-		$angle=$value/$total*360;
-		$col=stringToColorCode($im,$key);
-		$start=round($rot);
-		$end=round($rot+$angle);
-		echo "$start - $end - $key<br>";
-		imagefilledarc($im,$centerx,$centery,$diameter,$diameter,$start,630,$col,0);
-		$rot=$rot+$angle;
-	}
+	imageellipse($im,$centerx,$centery,$diameter,$diameter,$black);
 	$rot=270;
 	foreach($freq as $key => $value){
 		$angle=$value/$total*360;
@@ -180,6 +172,18 @@ function pie($im,$xpoints,$diameter,$centerx,$centery){
 		$pix_x=round($diameter/2*cos(deg2rad($start))+$centerx);
 		$pix_y=round($diameter/2*sin(deg2rad($start))+$centery);
 		imageline($im, $centerx, $centery, $pix_x, $pix_y, $black);
+		$rot=$rot+$angle;
+	}
+	$rot=270;
+	foreach($freq as $key => $value){
+		$angle=$value/$total*360;
+		$start=round($rot);
+		$end=round($rot+$angle);
+		$half=($start+$end)/2;
+		$col=stringToColorCode($im,$key);
+		$pix_x=round($diameter*0.4*cos(deg2rad($half))+$centerx);
+		$pix_y=round($diameter*0.4*sin(deg2rad($half))+$centery);
+		imagefill($im,$pix_x,$pix_y,$col);
 		$rot=$rot+$angle;
 	}
 	$rot=270;

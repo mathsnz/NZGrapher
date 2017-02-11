@@ -76,6 +76,10 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2017-02-11</b><br>
+	- Bug Fixes.<br>
+	- Fixes to Time Series Module.<br>
+	<br>
 	<b>2016-06-18</b><br>
 	- Bug Fixes.<br>
 	- Even Huger speed increase to all sampling.<br>

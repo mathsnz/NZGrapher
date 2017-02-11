@@ -1927,40 +1927,75 @@ function checkforts(xpoints){
 		return 'Error: You must select a time series variable for variable 1<br> eg: 2001 or 2001M01 or 2001Q1 or 2001D1 or 2001W1 or 2001H01';
 	}
 
+/*
 	if(!$.isNumeric(xpoints[0].substr(0,1)) || !($.isNumeric(xpoints[0]) && xpoints[0].length==4) && xpoints[0].substr(4,1)!="Q" && xpoints[0].substr(4,1)!="M" && xpoints[0].substr(4,1)!="D" && xpoints[0].substr(4,1)!="W" && xpoints[0].substr(4,1)!="H"){
 		return 'Error: You must select a time series variable for variable 1<br> eg: 2001 or 2001M01 or 2001Q1 or 2001D1 or 2001W1 or 2001H01';
 	}
-
-	if(xpoints[0].length==4){
+*/
+	if($.isNumeric(xpoints[0])){
 		return '1';
 	}
-	if(xpoints[0].substr(4,1)=="Q"){
+	checker=xpoints[0].split('Q')
+	if($.isNumeric(checker[0]) && $.isNumeric(checker[1])){
 		return '4';
 	}
-	if(xpoints[0].substr(4,1)=="M"){
+	checker=xpoints[0].split('M')
+	if($.isNumeric(checker[0]) && $.isNumeric(checker[1])){
 		return '12';
 	}
-	if(xpoints[0].substr(4,1)=="D"){
+	checker=xpoints[0].split('D')
+	if($.isNumeric(checker[0]) && $.isNumeric(checker[1])){
 		return '7';
 	}
-	if(xpoints[0].substr(4,1)=="W"){
+	checker=xpoints[0].split('W')
+	if($.isNumeric(checker[0]) && $.isNumeric(checker[1])){
 		return '5';
 	}
-	if(xpoints[0].substr(4,1)=="H"){
+	checker=xpoints[0].split('H')
+	if($.isNumeric(checker[0]) && $.isNumeric(checker[1])){
 		return '24';
 	}
 
-	return "Error: invalid time series format.";
+	return "Error: You must select a time series variable for variable 1<br> eg: 2001 or 2001M01 or 2001Q1 or 2001D1 or 2001W1 or 2001H01";
 }
 
 function maketsxpoints(xpoints,seasons){
 	tsxpoints=[];
 
+	if($.isNumeric(xpoints[0])){
+		split="none"
+	}
+	checker=xpoints[0].split('Q')
+	if($.isNumeric(checker[0]) && $.isNumeric(checker[1])){
+		split="Q"
+	}
+	checker=xpoints[0].split('M')
+	if($.isNumeric(checker[0]) && $.isNumeric(checker[1])){
+		split="M"
+	}
+	checker=xpoints[0].split('D')
+	if($.isNumeric(checker[0]) && $.isNumeric(checker[1])){
+		split="D"
+	}
+	checker=xpoints[0].split('W')
+	if($.isNumeric(checker[0]) && $.isNumeric(checker[1])){
+		split="W"
+	}
+	checker=xpoints[0].split('H')
+	if($.isNumeric(checker[0]) && $.isNumeric(checker[1])){
+		split="H"
+	}
+
+
 	for (index in xpoints){
 		xpoint = xpoints[index];
-		year = xpoint.substr(0,4);
-		season = xpoint.substr(5);
-		if(season.length==""){season=1;}
+		point = xpoint.split(split);
+		year = point[0];
+		if (split=="none"){
+			season=1;
+		} else {
+			season=point[1];
+		}
 		newxpoint = add(year,(season-1)/seasons).toFixed(4);
 		tsxpoints[index]=newxpoint;
 	}

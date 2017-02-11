@@ -8,20 +8,20 @@ function newtimeseries(){
 	$('#yvar').show();
 	$('#zvar').show();
 	$('#differentaxisshow').show();
-	
+
 	var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
-	
+
 	//set size
 	var width = $('#width').val();
 	var height = $('#height').val();
-	
+
 	ctx.canvas.width = width;
 	ctx.canvas.height = height;
-	
+
 	ctx.fillStyle = "#ffffff";
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
-	
+
 	if($('#longtermtrend').is(":checked")){var longtermtrend="yes";} else {var longtermtrend = "no";}
 	if($('#seasonal').is(":checked")){var seasonal="yes";} else {var seasonal = "no";}
 
@@ -30,11 +30,11 @@ function newtimeseries(){
 	ctx.font = "bold 20px Roboto";
 	ctx.textAlign="center";
 	ctx.fillText($('#title').val(),width/2,30);
-	
+
 	if(seasonal=='yes'){
 		width=width*0.7;
 	}
-	
+
 	//get points
 	var xpoints = $('#xvar').val().split(",");
 	xpoints.pop();
@@ -42,25 +42,25 @@ function newtimeseries(){
 	ypoints.pop();
 	var zpoints = $('#zvar').val().split(",");
 	zpoints.pop();
-	
+
 	seasons = checkforts(xpoints);
-	
+
 	if(seasons.substr(0,5)=="Error"){
 		return seasons;
 	}
-	
+
 	if(ypoints.length==0){
 		return 'Error: You must select a numeric variable for variable 2';
 	}
-	
+
 	tsxpoints = maketsxpoints(xpoints,seasons);
-	
+
 	// order the time series from smallest to largest
 	//check if zpoints
 	if(zpoints.length==0){
 		//1) combine the arrays:
 		var list = [];
-		for (var j in tsxpoints) 
+		for (var j in tsxpoints)
 			list.push({'tsxpoint': tsxpoints[j], 'ypoint': ypoints[j]});
 
 		//2) sort:
@@ -72,11 +72,11 @@ function newtimeseries(){
 		for (var k = 0; k < list.length; k++) {
 			tsxpoints[k] = list[k].tsxpoint;
 			ypoints[k] = list[k].ypoint;
-		}		
+		}
 	} else {
 		//1) combine the arrays:
 		var list = [];
-		for (var j in tsxpoints) 
+		for (var j in tsxpoints)
 			list.push({'tsxpoint': tsxpoints[j], 'ypoint': ypoints[j], 'zpoint': zpoints[j]});
 
 		//2) sort:
@@ -89,20 +89,20 @@ function newtimeseries(){
 			tsxpoints[k] = list[k].tsxpoint;
 			ypoints[k] = list[k].ypoint;
 			zpoints[k] = list[k].zpoint;
-		}	
+		}
 	}
-	
+
 	ctx.lineWidth = 1;
 	ctx.strokeStyle = 'rgba(0,0,0,1)';
 	ctx.rect(50,50,width-100,height-100);
 	ctx.stroke();
-	
+
 	//x-axis title
 	ctx.fillStyle = '#000000';
 	ctx.font = "bold 15px Roboto";
 	ctx.textAlign="center";
 	ctx.fillText($('#xaxis').val(),width/2,height-10);
-	
+
 	//y-axis title
 	if($('#yaxis').val() != "Y Axis Title"){
 		var x, y;
@@ -117,30 +117,31 @@ function newtimeseries(){
 		ctx.fillText($('#yaxis').val(), 0, 0);
 		ctx.restore();
 	}
-	
+
 	var xmin = Math.min.apply(null, tsxpoints);
 	var xmax = Math.max.apply(null, tsxpoints);
-	
+
 	var minmaxstep = axisminmaxstep(xmin,xmax);
 	var minxtick=minmaxstep[0];
 	var maxxtick=minmaxstep[1];
 	var xstep=minmaxstep[2];
+	if(xstep<1){xstep=1;}
 
 	left = 60;
 	right = width-60;
 	gtop = 60;
 	gbottom = height-60;
-	
+
 	horaxis(ctx,left,right,add(gbottom,10),minxtick,maxxtick,xstep);
-	
+
 	var pointsforminmax=[];
 	for (var index in ypoints){
 		pointsforminmax.push(ypoints[index]);
 	}
-	
+
 	if($('#differentaxis').is(":checked")){var differentaxis="yes";} else {var differentaxis = "no";}
 	if($('#startfinish').is(":checked")){var startfinish="yes";} else {var startfinish = "no";}
-	
+
 	if(longtermtrend=='yes'){
 		stlresponse=stl(tsxpoints,ypoints,seasons);
 		trend = stlresponse[0];
@@ -148,40 +149,40 @@ function newtimeseries(){
 		s = stlresponse[2];
 		r = stlresponse[3];
 	}
-	
+
 	if(zpoints.length>0){
 		if(differentaxis=="yes"){
 			pointsforzminmax=[];
 			for (var index in zpoints){
 				pointsforzminmax.push(zpoints[index]);
-			}	
+			}
 			var zmin = Math.min.apply(null, pointsforzminmax);
 			var zmax = Math.max.apply(null, pointsforzminmax);
-			
+
 			var minmaxstep = axisminmaxstep(zmin,zmax);
 			var minztick=minmaxstep[0];
 			var maxztick=minmaxstep[1];
 			var zstep=minmaxstep[2];
-			
+
 			rvertaxis(ctx,gtop,gbottom,right+10,minztick,maxztick,zstep);
-			
+
 			zshiftforseasonal=Math.ceil((maxztick+minztick)/2/zstep)*zstep;
 			rvertaxis(ctx,gtop,gbottom,right+width/0.7*0.3+10,minztick-zshiftforseasonal,maxztick-zshiftforseasonal,zstep);
 		} else {
 			for (var index in zpoints){
 				pointsforminmax.push(zpoints[index]);
-			}	
+			}
 		}
 	}
-	
+
 	var ymin = Math.min.apply(null, pointsforminmax);
 	var ymax = Math.max.apply(null, pointsforminmax);
-	
+
 	var minmaxstep = axisminmaxstep(ymin,ymax);
 	var minytick=minmaxstep[0];
 	var maxytick=minmaxstep[1];
 	var ystep=minmaxstep[2];
-	
+
 	vertaxis(ctx,gtop,gbottom,left-10,minytick,maxytick,ystep);
 	if(seasonal=="yes"){
 		shiftforseasonal=Math.ceil((maxytick+minytick)/2/ystep)*ystep;
@@ -211,7 +212,7 @@ function newtimeseries(){
 		ctx.fillText("Seasonal Effect", 0, 0);
 		ctx.restore();
 	}
-	
+
 	if($('#addmult option:selected').text()=="Multiplicative"){var multiplicative="yes";} else {var multiplicative = "no";}
 	if($('#labels').is(":checked")){var labels="yes";} else {var labels = "no";}
 	ytrendpts=[];
@@ -233,17 +234,17 @@ function newtimeseries(){
 					ctx.textAlign="right";
 				}
 				ctx.fillStyle = 'rgba(255,255,255,1)';
-				ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel-2);	
-				ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel+2,trendpixel-2);	
-				ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel+2);	
-				ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel+2,trendpixel+2);	
+				ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel-2);
+				ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel+2,trendpixel-2);
+				ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel+2);
+				ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel+2,trendpixel+2);
 				if(zpoints.length>0){
 					ctx.fillStyle = 'rgba(48,145,255,1)';
 				} else {
-					ctx.fillStyle = 'rgba(0,0,0,1)';	
+					ctx.fillStyle = 'rgba(0,0,0,1)';
 				}
 				ctx.font = "bold 12px Roboto";
-				ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel,trendpixel);		
+				ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel,trendpixel);
 			}
 			lasttrendpixel=trendpixel;
 			if(seasonal=='yes'){
@@ -279,7 +280,7 @@ function newtimeseries(){
 			ctx.fillStyle = 'rgba(0,0,255,1)';
 			ctx.font = "10px Roboto";
 			ctx.textAlign="left";
-			ctx.fillText(parseInt(add(index,1)),add(add(xpixel,2),2),add(ypixel,4));	
+			ctx.fillText(parseInt(add(index,1)),add(add(xpixel,2),2),add(ypixel,4));
 		}
 		lastxpixel = xpixel;
 		lastypixel = ypixel;
@@ -288,7 +289,7 @@ function newtimeseries(){
 		ctx.lineWidth = 3;
 		drawSpline(ctx,ytrendpts,0.5);
 	}
-		
+
 	if(zpoints.length>0){
 		if(longtermtrend=='yes'){
 			stlresponse=stl(tsxpoints,zpoints,seasons);
@@ -317,19 +318,19 @@ function newtimeseries(){
 				}
 				ztrendpts.push(xpixel,trendpixel);
 				ctx.lineWidth = 1;
-				if(startfinish=="yes" && (index==0 || index==tsxpoints.length-1)){	
+				if(startfinish=="yes" && (index==0 || index==tsxpoints.length-1)){
 					ctx.textAlign="left";
 					if(index==0){
 						ctx.textAlign="right";
 					}
 					ctx.fillStyle = 'rgba(255,255,255,1)';
-					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel-2);	
-					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel+2,trendpixel-2);	
-					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel+2);	
-					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel+2,trendpixel+2);	
+					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel-2);
+					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel+2,trendpixel-2);
+					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel+2);
+					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel+2,trendpixel+2);
 					ctx.fillStyle = 'rgba(191,108,36,1)';
 					ctx.font = "bold 12px Roboto";
-					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel,trendpixel);	
+					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel,trendpixel);
 				}
 				lasttrendpixel=trendpixel;
 				if(differentaxis=="yes"){
@@ -361,7 +362,7 @@ function newtimeseries(){
 				ctx.fillStyle = 'rgba(0,0,255,1)';
 				ctx.font = "10px Roboto";
 				ctx.textAlign="left";
-				ctx.fillText(parseInt(add(index,1)),add(xpixel,4),add(ypixel,4));	
+				ctx.fillText(parseInt(add(index,1)),add(xpixel,4),add(ypixel,4));
 			}
 			lastxpixel = xpixel;
 			lastypixel = ypixel;
@@ -369,7 +370,7 @@ function newtimeseries(){
 		if(longtermtrend=="yes"){
 			ctx.lineWidth = 3;
 			drawSpline(ctx,ztrendpts,0.5);
-		}	
+		}
 		if(differentaxis=="yes"){
 			lefta=" (left axis)";
 			righta=" (right axis)";
@@ -389,7 +390,7 @@ function newtimeseries(){
 		line(ctx,left,add(gtop,15),add(left,10),add(gtop,15));
 		ctx.fillText($("#zvar option:selected").text()+righta,add(left,15),add(gtop,20));
 	}
-	
+
 	if(seasonal=='yes'){
 		width=width/0.7;
 	}
@@ -405,17 +406,17 @@ function newtimeseriesrecomp(){
 	$('#startfinishshow').show();
 	$('#xvar').show();
 	$('#yvar').show();
-	
+
 	var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
-	
+
 	//set size
 	var width = $('#width').val();
 	var height = $('#height').val();
-	
+
 	ctx.canvas.width = width;
 	ctx.canvas.height = height;
-	
+
 	ctx.fillStyle = "#ffffff";
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -424,29 +425,29 @@ function newtimeseriesrecomp(){
 	ctx.font = "bold 20px Roboto";
 	ctx.textAlign="center";
 	ctx.fillText($('#title').val(),width/2,30);
-	
+
 	//get points
 	var xpoints = $('#xvar').val().split(",");
 	xpoints.pop();
 	var ypoints = $('#yvar').val().split(",");
 	ypoints.pop();
-	
+
 	seasons = checkforts(xpoints);
-	
+
 	if(seasons.substr(0,5)=="Error"){
 		return seasons;
 	}
-	
+
 	if(ypoints.length==0){
 		return 'Error: You must select a numeric variable for variable 2';
 	}
-	
+
 	tsxpoints = maketsxpoints(xpoints,seasons);
-	
+
 	// order the time series from smallest to largest
 	//1) combine the arrays:
 	var list = [];
-	for (var j in tsxpoints) 
+	for (var j in tsxpoints)
 		list.push({'tsxpoint': tsxpoints[j], 'ypoint': ypoints[j]});
 
 	//2) sort:
@@ -459,20 +460,18 @@ function newtimeseriesrecomp(){
 		tsxpoints[k] = list[k].tsxpoint;
 		ypoints[k] = list[k].ypoint;
 	}
-	
-	console.log(tsxpoints);
-	
+
 	ctx.lineWidth = 1;
 	ctx.strokeStyle = 'rgba(0,0,0,1)';
 	ctx.rect(50,50,width-100,height-100);
 	ctx.stroke();
-	
+
 	//x-axis title
 	ctx.fillStyle = '#000000';
 	ctx.font = "bold 15px Roboto";
 	ctx.textAlign="center";
 	ctx.fillText($('#xaxis').val(),width/2,height-10);
-	
+
 	//y-axis title
 	if($('#yaxis').val() != "Y Axis Title"){
 		var x, y;
@@ -487,10 +486,10 @@ function newtimeseriesrecomp(){
 		ctx.fillText($('#yaxis').val(), 0, 0);
 		ctx.restore();
 	}
-	
+
 	var xmin = Math.min.apply(null, tsxpoints);
 	var xmax = Math.max.apply(null, tsxpoints);
-	
+
 	var minmaxstep = axisminmaxstep(xmin,xmax);
 	var minxtick=minmaxstep[0];
 	var maxxtick=minmaxstep[1];
@@ -500,50 +499,50 @@ function newtimeseriesrecomp(){
 	right = width-60;
 	gtop = 60;
 	gbottom = height-60;
-	
+
 	horaxis(ctx,left,right,add(gbottom,10),minxtick,maxxtick,xstep);
-	
+
 	var pointsforminmax=[];
 	for (var index in ypoints){
 		pointsforminmax.push(ypoints[index]);
 	}
-	
+
 	var abslowest = Math.min.apply(null, pointsforminmax);
 	var abshighest = Math.max.apply(null, pointsforminmax);
-	
+
 	if($('#startfinish').is(":checked")){var startfinish="yes";} else {var startfinish = "no";}
-	
+
 	stlresponse=stl(tsxpoints,ypoints,seasons);
 	trend = stlresponse[0];
 	fitted = stlresponse[1];
 	s = stlresponse[2];
 	r = stlresponse[3];
-	
+
 	for (var index in trend){
 		pointsforminmax.push(trend[index]);
 	}
-	
+
 	for (var index in fitted){
 		pointsforminmax.push(fitted[index]);
 	}
-	
+
 	pointsforsminmax=[]
 	for (var index in s){
 		pointsforsminmax.push(s[index]);
 	}
-	
+
 	pointsforrminmax=[]
 	for (var index in r){
 		pointsforrminmax.push(r[index]);
 	}
-	
+
 	var ymin = Math.min.apply(null, pointsforminmax);
 	var ymax = Math.max.apply(null, pointsforminmax);
 	var smin = Math.min.apply(null, pointsforsminmax);
 	var smax = Math.max.apply(null, pointsforsminmax);
 	var rmin = Math.min.apply(null, pointsforrminmax);
 	var rmax = Math.max.apply(null, pointsforrminmax);
-	
+
 	var minmaxstep = axisminmaxstep(ymin,ymax);
 	var minytick=minmaxstep[0];
 	var maxytick=minmaxstep[1];
@@ -552,17 +551,17 @@ function newtimeseriesrecomp(){
 	var maxstick=Math.ceil(smax/ystep)*ystep;
 	var minrtick=Math.floor(rmin/ystep)*ystep;
 	var maxrtick=Math.ceil(rmax/ystep)*ystep;
-	
+
 	ysteps = (maxytick-minytick)/ystep;
 	ssteps = Math.abs(minstick/ystep)+Math.abs(maxstick/ystep);
 	rsteps = Math.abs(minrtick/ystep)+Math.abs(maxrtick/ystep);
-	
+
 	totalsteps = ysteps + ssteps + rsteps;
-		
+
 	gbottom = (height-160)*ysteps/totalsteps+gtop;
-	
+
 	vertaxis(ctx,gtop,gbottom,left-10,minytick,maxytick,ystep);
-	
+
 	ctx.lineWidth = 2;
 	ctx.strokeStyle = 'rgba(0,200,0,1)';
 	for (index in tsxpoints){
@@ -574,7 +573,7 @@ function newtimeseriesrecomp(){
 		lastxpixel = xpixel;
 		lastypixel = ypixel;
 	}
-	
+
 	if($('#addmult option:selected').text()=="Multiplicative"){var multiplicative="yes";} else {var multiplicative = "no";}
 	if($('#labels').is(":checked")){var labels="yes";} else {var labels = "no";}
 	trendpts=[];
@@ -589,42 +588,42 @@ function newtimeseriesrecomp(){
 				ctx.textAlign="right";
 			}
 			ctx.fillStyle = 'rgba(255,255,255,1)';
-			ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel-2);	
-			ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel+2,trendpixel-2);	
-			ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel+2);	
-			ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel+2,trendpixel+2);	
-			ctx.fillStyle = 'rgba(0,0,255,1)';	
+			ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel-2);
+			ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel+2,trendpixel-2);
+			ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel+2);
+			ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel+2,trendpixel+2);
+			ctx.fillStyle = 'rgba(0,0,255,1)';
 			ctx.font = "bold 12px Roboto";
-			ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel,trendpixel);		
+			ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel,trendpixel);
 		}
 		if(index != 0){
 			ctx.strokeStyle = 'rgba(0,0,0,1)';
 			line(ctx,xpixel,ypixel,lastxpixel,lastypixel);
 			ctx.lineWidth = 1;
-		} 
+		}
 		if(labels == "yes"){
 			ctx.fillStyle = 'rgba(0,0,255,1)';
 			ctx.font = "10px Roboto";
 			ctx.textAlign="left";
-			ctx.fillText(parseInt(add(index,1)),add(add(xpixel,2),2),add(ypixel,4));	
+			ctx.fillText(parseInt(add(index,1)),add(add(xpixel,2),2),add(ypixel,4));
 		}
 		lasttrendpixel=trendpixel;
 		lastfittedpixel=fitted;
 		lastxpixel = xpixel;
 		lastypixel = ypixel;
 	}
-	
+
 	ctx.strokeStyle = 'rgba(0,0,255,1)';
 	ctx.lineWidth = 3;
 	drawSpline(ctx,trendpts,0.5)
-	
+
 	ctx.strokeStyle = 'rgba(0,0,0,1)';
 	line (ctx,left,gtop,left+20,gtop);
 	ctx.fillStyle = 'rgba(0,0,0,1)';
 	ctx.font = "12px Roboto";
 	ctx.textAlign="left";
-	ctx.fillText("Raw Data",left+25,gtop+5);	
-	
+	ctx.fillText("Raw Data",left+25,gtop+5);
+
 	gtop+=15;
 	ctx.lineWidth = 3;
 	ctx.strokeStyle = 'rgba(0,0,255,1)';
@@ -632,8 +631,8 @@ function newtimeseriesrecomp(){
 	ctx.fillStyle = 'rgba(0,0,0,1)';
 	ctx.font = "12px Roboto";
 	ctx.textAlign="left";
-	ctx.fillText("Trend",left+25,gtop+5);	
-	
+	ctx.fillText("Trend",left+25,gtop+5);
+
 	gtop+=15;
 	ctx.lineWidth = 2;
 	ctx.strokeStyle = 'rgba(0,200,0,1)';
@@ -641,15 +640,15 @@ function newtimeseriesrecomp(){
 	ctx.fillStyle = 'rgba(0,0,0,1)';
 	ctx.font = "12px Roboto";
 	ctx.textAlign="left";
-	ctx.fillText("Trend + Seasonal",left+25,gtop+5);	
-	
+	ctx.fillText("Trend + Seasonal",left+25,gtop+5);
+
 	ctx.lineWidth = 1;
 	ctx.strokeStyle = 'rgba(0,0,0,1)';
 	line(ctx,left-10,gbottom+10,right+10,gbottom+10);
-	
+
 	gtop = gbottom+20;
 	gbottom = (height-160)*ssteps/totalsteps+gtop;
-	
+
 	rvertaxis(ctx,gtop,gbottom,right+10,minstick,maxstick,ystep);
 	ctx.strokeStyle = 'rgba(0,0,0,0.3)';
 	zero = convertvaltopixel(0,minstick,maxstick,gbottom,gtop);
@@ -665,7 +664,7 @@ function newtimeseriesrecomp(){
 			ctx.fillStyle = 'rgba(0,0,255,1)';
 			ctx.font = "10px Roboto";
 			ctx.textAlign="left";
-			ctx.fillText(parseInt(add(index,1)),add(add(xpixel,2),2),add(ypixel,4));	
+			ctx.fillText(parseInt(add(index,1)),add(add(xpixel,2),2),add(ypixel,4));
 		}
 		lastxpixel = xpixel;
 		lastypixel = ypixel;
@@ -675,13 +674,13 @@ function newtimeseriesrecomp(){
 	ctx.font = "12px Roboto";
 	ctx.textAlign="left";
 	ctx.fillText("Seasonal",left+25,gtop+5);
-	
+
 	ctx.strokeStyle = 'rgba(0,0,0,1)';
 	line(ctx,left-10,gbottom+10,right+10,gbottom+10);
-	
+
 	gtop = gbottom+20;
 	gbottom = (height-160)*rsteps/totalsteps+gtop;
-	
+
 	vertaxis(ctx,gtop,gbottom,left-10,minrtick,maxrtick,ystep);
 	ctx.strokeStyle = 'rgba(0,0,0,0.3)';
 	zero = convertvaltopixel(0,minrtick,maxrtick,gbottom,gtop);
@@ -693,7 +692,7 @@ function newtimeseriesrecomp(){
 		line(ctx,left,highlimit,right,highlimit);
 	}
 	if(limit>minrtick){
-		line(ctx,left,lowlimit,right,lowlimit);	
+		line(ctx,left,lowlimit,right,lowlimit);
 	}
 	ctx.strokeStyle = 'rgba(255,0,0,1)';
 	line (ctx,left,gtop,left+20,gtop);
@@ -707,7 +706,7 @@ function newtimeseriesrecomp(){
 			ctx.fillStyle = 'rgba(0,0,255,1)';
 			ctx.font = "10px Roboto";
 			ctx.textAlign="left";
-			ctx.fillText(parseInt(add(index,1)),add(add(xpixel,2),2),add(ypixel,4));	
+			ctx.fillText(parseInt(add(index,1)),add(add(xpixel,2),2),add(ypixel,4));
 		}
 		lastxpixel = xpixel;
 		lastypixel = ypixel;
@@ -715,8 +714,8 @@ function newtimeseriesrecomp(){
 	ctx.fillStyle = 'rgba(0,0,0,1)';
 	ctx.font = "12px Roboto";
 	ctx.textAlign="left";
-	ctx.fillText("Residual",left+25,gtop+5);	
-		
+	ctx.fillText("Residual",left+25,gtop+5);
+
 	labelgraph(ctx,width,height);
 
 	var dataURL = canvas.toDataURL();
@@ -749,7 +748,7 @@ function stl(xpoints,ypoints,seasons){
 	il=innerloop(xpoints,raw,T,n_s,n_l,n_t);
 	T=il[0];
 	S=il[1];
-	
+
 	fitted=[];
 	r=[];
 	trend=[];
@@ -784,6 +783,7 @@ function nextodd(n){
 }
 
 function innerloop(xpoints,raw,T,n_s,n_l,n_t){
+
 	detrended=[];
 	for (index in xpoints){
 		xpoint=xpoints[index].toString();
@@ -799,12 +799,11 @@ function innerloop(xpoints,raw,T,n_s,n_l,n_t){
 		for (index in xpoints){
 			xpoint=xpoints[index];
 			year=Math.floor(xpoint);
-			season=(xpoint-year).toPrecision(8);
+			season=(xpoint-year).toFixed(4);
 			xpoint=xpoint.toString();
 			if(cyclesubseries[season] === undefined){cyclesubseries[season]=[];}
 			cyclesubseries[season][xpoint]=detrended[xpoint];
 		}
-		
 		for (index in cyclesubseries){
 			season=index;
 			values=cyclesubseries[season];
@@ -820,32 +819,30 @@ function innerloop(xpoints,raw,T,n_s,n_l,n_t){
 				if(key<minkey){minkey=key;}
 				if(key>maxkey){maxkey=key;}
 			}
-			forpoints.push((parseFloat(maxkey)+1).toPrecision(8));
-			forpoints.push((minkey-1).toPrecision(8));
+			forpoints.push((parseFloat(maxkey)+1).toFixed(4));
+			forpoints.push((minkey-1).toFixed(4));
 			cyclesubseries[season]=loess(keys,vals,n_s,forpoints,75);
 		}
-		
 		C=[];
 		for (index in cyclesubseries){
 			for (x in cyclesubseries[index]){
-				C[parseFloat(x).toPrecision(8)]=cyclesubseries[index][x];
+				C[parseFloat(x).toFixed(4)]=cyclesubseries[index][x];
 			}
-			
+
 		}
-		
+
 		Ckeys=[];
 		for (index in C){
-			Ckeys.push(parseFloat(index).toPrecision(8));
+			Ckeys.push(parseFloat(index).toFixed(4));
 		}
 		Ckeys.sort(function(a, b){return a-b});
 		L=[];
 		for (index in Ckeys){
 			key=Ckeys[index];
-			L[parseFloat(key).toPrecision(8)]=C[key];
+			L[parseFloat(key).toFixed(4)]=C[key];
 		}
 		L=movingaverage(L,seasons);
 		L=movingaverage(L,seasons);
-		
 		keys=[]
 		vals=[];
 		for (key in L){
@@ -853,7 +850,6 @@ function innerloop(xpoints,raw,T,n_s,n_l,n_t){
 			vals.push(L[key]);
 		}
 		L=loess(keys,vals,n_l,keys,88);
-		
 		S=[];
 		for (index in xpoints){
 			xpoint=xpoints[index].toString();
@@ -863,9 +859,8 @@ function innerloop(xpoints,raw,T,n_s,n_l,n_t){
 				S[xpoint]=C[xpoint]-L[xpoint];
 			}
 		}
-		
 		S2=[];
-		
+
 		for (index in xpoints){
 			xpoint=xpoints[index];
 			year=Math.floor(xpoint);
@@ -873,9 +868,9 @@ function innerloop(xpoints,raw,T,n_s,n_l,n_t){
 			if(S2[season] === undefined){S2[season]=[];}
 			S2[season][xpoint]=S[xpoint.toString()];
 		}
-		
+
 		S=[];
-		
+
 		for (index in S2){
 			values = S2[index];
 			total=0;
@@ -890,19 +885,19 @@ function innerloop(xpoints,raw,T,n_s,n_l,n_t){
 				S[index.toString()]=mean;
 			}
 		}
-		
+
 		Skeys=[];
 		Svals=[];
 		for (index in S){
-			Skeys.push(parseFloat(index).toPrecision(8));
+			Skeys.push(parseFloat(index).toFixed(4));
 			Svals[index]=S[index];
 		}
 		Skeys.sort(function(a, b){return a-b});
-		
+
 		S=[];
 		for (index in Skeys){
 			key=Skeys[index];
-			S[parseFloat(key).toPrecision(8)]=Svals[key];
+			S[parseFloat(key).toFixed(4)]=Svals[key];
 		}
 	}
 	deseasonalised=[];
@@ -914,7 +909,7 @@ function innerloop(xpoints,raw,T,n_s,n_l,n_t){
 		deseasonalisedval.push(raw[xpoint]-S[xpoint]);
 		deseasonalised[xpoint]=(raw[xpoint]-S[xpoint]);
 	}
-	
+
 	T=loess(deseasonalisedkey,deseasonalisedval,n_t,deseasonalisedkey,123);
 	return [T,S];
 }
@@ -956,7 +951,7 @@ function movingaverage(array,length){
 			}
 			cmm/=length;
 		}
-		cmms[parseFloat(xs[i]).toPrecision(8)]=cmm;
+		cmms[parseFloat(xs[i]).toFixed(4)]=cmm;
 		i++;
 	}
 	return cmms;
@@ -975,7 +970,7 @@ function loess(xpoints,ypoints,nPts,xvals,row){
 			distances[i]=Math.abs(xpoint-currentx);
 			i++;
 		}
-		
+
 		smallestndistances=[];
 		for (index in distances){
 			if(smallestndistances.length<nPts){
@@ -999,7 +994,7 @@ function loess(xpoints,ypoints,nPts,xvals,row){
 			}
 			points.push(point);
 		}
-		
+
 		distances=smallestndistances;
 		distances.sort(function(a, b){return a-b});
 		maxdis=distances[distances.length-1];
@@ -1012,13 +1007,13 @@ function loess(xpoints,ypoints,nPts,xvals,row){
 			u=Math.abs(distance)/maxdis;
 			weights[i]=Math.pow((1-Math.pow(u,3)),3);
 		}
-		
+
 		SumWts = 0;
 		SumWtX = 0;
 		SumWtX2 = 0;
 		SumWtY = 0;
 		SumWtXY = 0;
-		
+
 		for(index in points){
 			i=points[index];
 			SumWts = SumWts + weights[i];
@@ -1028,11 +1023,11 @@ function loess(xpoints,ypoints,nPts,xvals,row){
 			SumWtXY = SumWtXY + parseFloat(xpoints[i]) * parseFloat(ypoints[i]) * weights[i];
 		}
 		Denom = SumWts * SumWtX2 - Math.pow(SumWtX,2);
-		if(Denom==0){return("Error: invalid denominator for LOESS row");}
+		if(Denom==0){console.log('oh dear - invalid denominator for LOESS row');return("Error: invalid denominator for LOESS row");}
 		//calculate the regression coefficients, and finally the loess value
 		WLRSlope = (SumWts * SumWtXY - SumWtX * SumWtY) / Denom;
 		WLRIntercept = (SumWtX2 * SumWtY - SumWtX * SumWtXY) / Denom;
-		yreturn[currentx.toPrecision(8)] = WLRSlope * currentx + WLRIntercept;
+		yreturn[currentx.toFixed(4)] = WLRSlope * currentx + WLRIntercept;
 	}
 	return yreturn;
 }
@@ -1041,23 +1036,23 @@ function getControlPoints(x0,y0,x1,y1,x2,y2,t){
     //  x0,y0,x1,y1 are the coordinates of the end (knot) pts of this segment
     //  x2,y2 is the next knot -- not connected here but needed to calculate p2
     //  p1 is the control point calculated here, from x1 back toward x0.
-    //  p2 is the next control point, calculated here and returned to become the 
+    //  p2 is the next control point, calculated here and returned to become the
     //  next segment's p1.
     //  t is the 'tension' which controls how far the control points spread.
-    
+
     //  Scaling factors: distances from this knot to the previous and following knots.
     var d01=Math.sqrt(Math.pow(x1-x0,2)+Math.pow(y1-y0,2));
     var d12=Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));
-   
+
     var fa=t*d01/(d01+d12);
     var fb=t-fa;
-  
+
     var p1x=x1+fa*(x0-x2);
     var p1y=y1+fa*(y0-y2);
 
     var p2x=x1-fb*(x0-x2);
-    var p2y=y1-fb*(y0-y2);  
-    
+    var p2y=y1-fb*(y0-y2);
+
     return [p1x,p1y,p2x,p2y]
 }
 
@@ -1065,12 +1060,12 @@ function drawSpline(ctx,pts,t){
     ctx.save();
     var cp=[];   // array of control points, as x0,y0,x1,y1,...
     var n=pts.length;
-	
+
 	// Draw an open curve, not connected at the ends
 	for(var i=0;i<n-4;i+=2){
 		cp=cp.concat(getControlPoints(pts[i],pts[i+1],pts[i+2],pts[i+3],pts[i+4],pts[i+5],t));
-	}    
-	for(var i=2;i<pts.length-5;i+=2){ 
+	}
+	for(var i=2;i<pts.length-5;i+=2){
 		ctx.beginPath();
 		ctx.moveTo(pts[i],pts[i+1]);
 		ctx.bezierCurveTo(cp[2*i-2],cp[2*i-1],cp[2*i],cp[2*i+1],pts[i+2],pts[i+3]);
@@ -1083,7 +1078,7 @@ function drawSpline(ctx,pts,t){
 	ctx.quadraticCurveTo(cp[0],cp[1],pts[2],pts[3]);
 	ctx.stroke();
 	ctx.closePath();
-	
+
 	ctx.beginPath();
 	ctx.moveTo(pts[n-2],pts[n-1]);
 	ctx.quadraticCurveTo(cp[2*n-10],cp[2*n-9],pts[n-4],pts[n-3]);
