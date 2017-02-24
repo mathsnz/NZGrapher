@@ -80,6 +80,10 @@ To Do List
 	- Bug Fixes.<br>
 	- Fixes to Time Series Module.<br>
 	<br>
+	<b>2017-02-24</b><br>
+	- Bug Fixes.<br>
+	- Abililty to open file by url (adding ?url=http://whatever.com to the end of the link to grapher).<br>
+	<br>
 	<b>2016-06-18</b><br>
 	- Bug Fixes.<br>
 	- Even Huger speed increase to all sampling.<br>

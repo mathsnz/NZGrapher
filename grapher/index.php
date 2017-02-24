@@ -328,9 +328,14 @@ if(isset($_POST['csv_data'])){
 	$csv_data=urldecode($_POST['csv_data']);
 }
 
+if(isset($_GET['url'])){
+	$file = $_GET['url'];
+}
+
 //Load the csv file into a string
 $csv = file_get_contents($file);
 if(isset($csv_data)){$csv=$csv_data;}
+if(isset($_GET['url'])){$csv_data=$csv;}
 foreach ($delimiters as $key => $delim) {
     $res[$key] = substr_count($csv, $delim);
 }
@@ -350,6 +355,9 @@ if(isset($csv_data)){
 			if($i==0){
 				$i="id";
 				$cols=count($line);
+			}
+			if(count($line)<$cols){
+				break;
 			}
 			echo "<tr";
 			if($i=="id"){echo " class=tabletop";}
