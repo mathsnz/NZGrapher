@@ -502,6 +502,7 @@ echo "\n</table></body></html>";
 	<input type="hidden" id=longtermtrendform name=longtermtrend value='no'>
 	<input type="hidden" id=boxnowhiskerform name=boxnowhisker value='no'>
 	<input type="hidden" id=boxnooutlierform name=boxnooutlier value='no'>
+	<input type="hidden" id=scalefactor name=scalefactor value='1'>
 </form>
 <div id=helper onclick="if(document.getElementById('helppopup').style.display=='block'){document.getElementById('helppopup').style.display='none'}else{document.getElementById('helppopup').style.display='block'}"><span>Help</span></div>
 <div id=helppopup class="callout">
@@ -669,6 +670,9 @@ if(substr($dataset,0,6)!="SECURE"){
 			<span id=colorname><span style='display:inline-block;width:50px;'>Colour: </span><input type="text" id="colorlabel" name="colorlabel" value="Color Label"><br></span>
 			<span style='display:inline-block;width:50px;'>Size: </span><select id="standardsize" name="standardsize" onchange="updategraph()" style='width:140px;height:19px;'>
 				<option>Auto</option>
+				<?php
+				//<option>Auto - High Res</option>
+				?>
 				<option>Standard</option>
 				<option>Short</option>
 				<option>Small</option>

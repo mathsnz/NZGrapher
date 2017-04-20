@@ -27,9 +27,10 @@ function newtimeseries(){
 
 	//graph title
 	ctx.fillStyle = '#000000';
-	ctx.font = "bold 20px Roboto";
+	fontsize = 20*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
 	ctx.textAlign="center";
-	ctx.fillText($('#title').val(),width/2,30);
+	ctx.fillText($('#title').val(),width/2,30*scalefactor);
 
 	if(seasonal=='yes'){
 		width=width*0.7;
@@ -68,6 +69,12 @@ function newtimeseries(){
 			return ((a.tsxpoint < b.tsxpoint) ? -1 : ((a.tsxpoint == b.tsxpoint) ? 0 : 1));
 		});
 
+		if($.isNumeric(list[0].tsxpoint)){
+			list.sort(function(a, b) {
+				return (a.tsxpoint - b.tsxpoint);
+			});
+		}
+
 		//3) separate them back out:
 		for (var k = 0; k < list.length; k++) {
 			tsxpoints[k] = list[k].tsxpoint;
@@ -84,6 +91,12 @@ function newtimeseries(){
 			return ((a.tsxpoint < b.tsxpoint) ? -1 : ((a.tsxpoint == b.tsxpoint) ? 0 : 1));
 		});
 
+		if($.isNumeric(list[0].tsxpoint)){
+			list.sort(function(a, b) {
+				return (a.tsxpoint - b.tsxpoint);
+			});
+		}
+
 		//3) separate them back out:
 		for (var k = 0; k < list.length; k++) {
 			tsxpoints[k] = list[k].tsxpoint;
@@ -92,25 +105,27 @@ function newtimeseries(){
 		}
 	}
 
-	ctx.lineWidth = 1;
+	ctx.lineWidth = 1*scalefactor;
 	ctx.strokeStyle = 'rgba(0,0,0,1)';
-	ctx.rect(50,50,width-100,height-100);
+	ctx.rect(50*scalefactor,50*scalefactor,width-100*scalefactor,height-100*scalefactor);
 	ctx.stroke();
 
 	//x-axis title
 	ctx.fillStyle = '#000000';
-	ctx.font = "bold 15px Roboto";
+	fontsize = 15*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
 	ctx.textAlign="center";
-	ctx.fillText($('#xaxis').val(),width/2,height-10);
+	ctx.fillText($('#xaxis').val(),width/2,height-10*scalefactor);
 
 	//y-axis title
 	if($('#yaxis').val() != "Y Axis Title"){
 		var x, y;
-		x=12;
+		x=12*scalefactor;
 		y=height/2;
 		ctx.save();
 		ctx.fillStyle = '#000000';
-		ctx.font = "bold 15px Roboto";
+		fontsize = 15*scalefactor;
+		ctx.font = "bold "+fontsize+"px Roboto";
 		ctx.translate(x, y);
 		ctx.rotate(-Math.PI/2);
 		ctx.textAlign = "center";
@@ -127,12 +142,12 @@ function newtimeseries(){
 	var xstep=minmaxstep[2];
 	if(xstep<1){xstep=1;}
 
-	left = 60;
-	right = width-60;
-	gtop = 60;
-	gbottom = height-60;
+	left = 60*scalefactor;
+	right = width-60*scalefactor;
+	gtop = 60*scalefactor;
+	gbottom = height-60*scalefactor;
 
-	horaxis(ctx,left,right,add(gbottom,10),minxtick,maxxtick,xstep);
+	horaxis(ctx,left,right,add(gbottom,10*scalefactor),minxtick,maxxtick,xstep);
 
 	var pointsforminmax=[];
 	for (var index in ypoints){
@@ -164,10 +179,10 @@ function newtimeseries(){
 			var maxztick=minmaxstep[1];
 			var zstep=minmaxstep[2];
 
-			rvertaxis(ctx,gtop,gbottom,right+10,minztick,maxztick,zstep);
+			rvertaxis(ctx,gtop,gbottom,right+10*scalefactor,minztick,maxztick,zstep);
 
 			zshiftforseasonal=Math.ceil((maxztick+minztick)/2/zstep)*zstep;
-			rvertaxis(ctx,gtop,gbottom,right+width/0.7*0.3+10,minztick-zshiftforseasonal,maxztick-zshiftforseasonal,zstep);
+			rvertaxis(ctx,gtop,gbottom,right+width/0.7*0.3+10*scalefactor,minztick-zshiftforseasonal,maxztick-zshiftforseasonal,zstep);
 		} else {
 			for (var index in zpoints){
 				pointsforminmax.push(zpoints[index]);
@@ -183,29 +198,31 @@ function newtimeseries(){
 	var maxytick=minmaxstep[1];
 	var ystep=minmaxstep[2];
 
-	vertaxis(ctx,gtop,gbottom,left-10,minytick,maxytick,ystep);
+	vertaxis(ctx,gtop,gbottom,left-10*scalefactor,minytick,maxytick,ystep);
 	if(seasonal=="yes"){
 		shiftforseasonal=Math.ceil((maxytick+minytick)/2/ystep)*ystep;
-		vertaxis(ctx,gtop,gbottom,right+80,minytick-shiftforseasonal,maxytick-shiftforseasonal,ystep);
-		ctx.lineWidth = 1;
+		vertaxis(ctx,gtop,gbottom,right+80*scalefactor,minytick-shiftforseasonal,maxytick-shiftforseasonal,ystep);
+		ctx.lineWidth = 1*scalefactor;
 		ctx.strokeStyle = 'rgba(0,0,0,1)';
-		seasonleft=right+90;
+		seasonleft=right+90*scalefactor;
 		seasonright=width/0.7*0.3+right;
-		ctx.rect(seasonleft-10,gtop-10,seasonright-seasonleft+20,gbottom-gtop+20);
+		ctx.rect(seasonleft-10*scalefactor,gtop-10*scalefactor,seasonright-seasonleft+20*scalefactor,gbottom-gtop+20*scalefactor);
 		ctx.stroke();
-		horaxis(ctx,seasonleft,seasonright,add(gbottom,10),1,seasons,1);
+		horaxis(ctx,seasonleft,seasonright,add(gbottom,10*scalefactor),1,seasons,1);
 		//x-axis title
 		ctx.fillStyle = '#000000';
-		ctx.font = "bold 15px Roboto";
+		fontsize = 15*scalefactor;
+		ctx.font = "bold "+fontsize+"px Roboto";
 		ctx.textAlign="center";
-		ctx.fillText("Season",(seasonleft+seasonright)/2,height-10);
+		ctx.fillText("Season",(seasonleft+seasonright)/2,height-10*scalefactor);
 		//y-axis title
 		var x, y;
-		x=seasonleft-40;
+		x=seasonleft-40*scalefactor;
 		y=height/2;
 		ctx.save();
 		ctx.fillStyle = '#000000';
-		ctx.font = "bold 15px Roboto";
+		fontsize = 15*scalefactor;
+		ctx.font = "bold "+fontsize+"px Roboto";
 		ctx.translate(x, y);
 		ctx.rotate(-Math.PI/2);
 		ctx.textAlign = "center";
@@ -243,7 +260,8 @@ function newtimeseries(){
 				} else {
 					ctx.fillStyle = 'rgba(0,0,0,1)';
 				}
-				ctx.font = "bold 12px Roboto";
+				fontsize = 12*scalefactor;
+				ctx.font = "bold "+fontsize+"px Roboto";
 				ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel,trendpixel);
 			}
 			lasttrendpixel=trendpixel;
@@ -278,7 +296,8 @@ function newtimeseries(){
 		}
 		if(labels == "yes"){
 			ctx.fillStyle = 'rgba(0,0,255,1)';
-			ctx.font = "10px Roboto";
+			fontsize = 10*scalefactor;
+			ctx.font = fontsize+"px Roboto";
 			ctx.textAlign="left";
 			ctx.fillText(parseInt(add(index,1)),add(add(xpixel,2),2),add(ypixel,4));
 		}
@@ -286,7 +305,7 @@ function newtimeseries(){
 		lastypixel = ypixel;
 	}
 	if(longtermtrend=="yes"){
-		ctx.lineWidth = 3;
+		ctx.lineWidth = 3*scalefactor;
 		drawSpline(ctx,ytrendpts,0.5);
 	}
 
@@ -317,7 +336,7 @@ function newtimeseries(){
 					trendpixel=convertvaltopixel(trend[index],maxytick,minytick,gtop,gbottom);
 				}
 				ztrendpts.push(xpixel,trendpixel);
-				ctx.lineWidth = 1;
+				ctx.lineWidth = 1*scalefactor;
 				if(startfinish=="yes" && (index==0 || index==tsxpoints.length-1)){
 					ctx.textAlign="left";
 					if(index==0){
@@ -329,7 +348,8 @@ function newtimeseries(){
 					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel+2);
 					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel+2,trendpixel+2);
 					ctx.fillStyle = 'rgba(191,108,36,1)';
-					ctx.font = "bold 12px Roboto";
+					fontsize = 12*scalefactor;
+					ctx.font = "bold "+fontsize+"px Roboto";
 					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel,trendpixel);
 				}
 				lasttrendpixel=trendpixel;
@@ -360,7 +380,8 @@ function newtimeseries(){
 			}
 			if(labels == "yes"){
 				ctx.fillStyle = 'rgba(0,0,255,1)';
-				ctx.font = "10px Roboto";
+				fontsize = 10*scalefactor;
+				ctx.font = fontsize+"px Roboto";
 				ctx.textAlign="left";
 				ctx.fillText(parseInt(add(index,1)),add(xpixel,4),add(ypixel,4));
 			}
@@ -368,7 +389,7 @@ function newtimeseries(){
 			lastypixel = ypixel;
 		}
 		if(longtermtrend=="yes"){
-			ctx.lineWidth = 3;
+			ctx.lineWidth = 3*scalefactor;
 			drawSpline(ctx,ztrendpts,0.5);
 		}
 		if(differentaxis=="yes"){
@@ -378,17 +399,18 @@ function newtimeseries(){
 			lefta="";
 			righta="";
 		}
-		ctx.lineWidth = 2;
+		ctx.lineWidth = 2*scalefactor;
 		ctx.textAlign="left";
-		ctx.font = "13px Roboto";
+		fontsize = 13*scalefactor;
+		ctx.font = fontsize+"px Roboto";
 		ctx.strokeStyle = 'rgba(48,145,255,1)';
 		ctx.fillStyle = 'rgba(48,145,255,1)';
-		line(ctx,left,gtop,add(left,10),gtop);
-		ctx.fillText($("#yvar option:selected").text()+lefta,add(left,15),add(gtop,5));
+		line(ctx,left,gtop,add(left,10*scalefactor),gtop);
+		ctx.fillText($("#yvar option:selected").text()+lefta,add(left,15*scalefactor),add(gtop,5*scalefactor));
 		ctx.strokeStyle = 'rgba(191,108,36,1)';
 		ctx.fillStyle = 'rgba(191,108,36,1)';
-		line(ctx,left,add(gtop,15),add(left,10),add(gtop,15));
-		ctx.fillText($("#zvar option:selected").text()+righta,add(left,15),add(gtop,20));
+		line(ctx,left,add(gtop,15*scalefactor),add(left,10*scalefactor),add(gtop,15*scalefactor));
+		ctx.fillText($("#zvar option:selected").text()+righta,add(left,15*scalefactor),add(gtop,20*scalefactor));
 	}
 
 	if(seasonal=='yes'){
@@ -401,6 +423,7 @@ function newtimeseries(){
 }
 
 function newtimeseriesrecomp(){
+
 	$('#labelshow').show();
 	$('#addmultshow').show();
 	$('#startfinishshow').show();
@@ -408,7 +431,7 @@ function newtimeseriesrecomp(){
 	$('#yvar').show();
 
 	var canvas = document.getElementById('myCanvas');
-    var ctx = canvas.getContext('2d');
+  var ctx = canvas.getContext('2d');
 
 	//set size
 	var width = $('#width').val();
@@ -422,9 +445,10 @@ function newtimeseriesrecomp(){
 
 	//graph title
 	ctx.fillStyle = '#000000';
-	ctx.font = "bold 20px Roboto";
+	fontsize=20*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
 	ctx.textAlign="center";
-	ctx.fillText($('#title').val(),width/2,30);
+	ctx.fillText($('#title').val(),width/2,30*scalefactor);
 
 	//get points
 	var xpoints = $('#xvar').val().split(",");
@@ -461,25 +485,26 @@ function newtimeseriesrecomp(){
 		ypoints[k] = list[k].ypoint;
 	}
 
-	ctx.lineWidth = 1;
+	ctx.lineWidth = 1*scalefactor;
 	ctx.strokeStyle = 'rgba(0,0,0,1)';
-	ctx.rect(50,50,width-100,height-100);
+	ctx.rect(50*scalefactor,50*scalefactor,width-100*scalefactor,height-100*scalefactor);
 	ctx.stroke();
 
 	//x-axis title
 	ctx.fillStyle = '#000000';
-	ctx.font = "bold 15px Roboto";
+	fontsize = 15*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
 	ctx.textAlign="center";
-	ctx.fillText($('#xaxis').val(),width/2,height-10);
+	ctx.fillText($('#xaxis').val(),width/2,height-10*scalefactor);
 
 	//y-axis title
 	if($('#yaxis').val() != "Y Axis Title"){
 		var x, y;
-		x=12;
+		x=12*scalefactor;
 		y=height/2;
 		ctx.save();
 		ctx.fillStyle = '#000000';
-		ctx.font = "bold 15px Roboto";
+		ctx.font = "bold "+fontsize+"px Roboto";
 		ctx.translate(x, y);
 		ctx.rotate(-Math.PI/2);
 		ctx.textAlign = "center";
@@ -495,12 +520,12 @@ function newtimeseriesrecomp(){
 	var maxxtick=minmaxstep[1];
 	var xstep=minmaxstep[2];
 
-	left = 60;
-	right = width-60;
-	gtop = 60;
-	gbottom = height-60;
+	left = 60*scalefactor;
+	right = width-60*scalefactor;
+	gtop = 60*scalefactor;
+	gbottom = height-60*scalefactor;
 
-	horaxis(ctx,left,right,add(gbottom,10),minxtick,maxxtick,xstep);
+	horaxis(ctx,left,right,add(gbottom,10*scalefactor),minxtick,maxxtick,xstep);
 
 	var pointsforminmax=[];
 	for (var index in ypoints){
@@ -558,11 +583,11 @@ function newtimeseriesrecomp(){
 
 	totalsteps = ysteps + ssteps + rsteps;
 
-	gbottom = (height-160)*ysteps/totalsteps+gtop;
+	gbottom = (height-160*scalefactor)*ysteps/totalsteps+gtop;
 
-	vertaxis(ctx,gtop,gbottom,left-10,minytick,maxytick,ystep);
+	vertaxis(ctx,gtop,gbottom,left-10*scalefactor,minytick,maxytick,ystep);
 
-	ctx.lineWidth = 2;
+	ctx.lineWidth = 2*scalefactor;
 	ctx.strokeStyle = 'rgba(0,200,0,1)';
 	for (index in tsxpoints){
 		xpixel=convertvaltopixel(tsxpoints[index],minxtick,maxxtick,left,right);
@@ -599,7 +624,7 @@ function newtimeseriesrecomp(){
 		if(index != 0){
 			ctx.strokeStyle = 'rgba(0,0,0,1)';
 			line(ctx,xpixel,ypixel,lastxpixel,lastypixel);
-			ctx.lineWidth = 1;
+			ctx.lineWidth = 1*scalefactor;
 		}
 		if(labels == "yes"){
 			ctx.fillStyle = 'rgba(0,0,255,1)';
@@ -614,42 +639,44 @@ function newtimeseriesrecomp(){
 	}
 
 	ctx.strokeStyle = 'rgba(0,0,255,1)';
-	ctx.lineWidth = 3;
+	ctx.lineWidth = 2*scalefactor;
 	drawSpline(ctx,trendpts,0.5)
 
-	ctx.strokeStyle = 'rgba(0,0,0,1)';
-	line (ctx,left,gtop,left+20,gtop);
-	ctx.fillStyle = 'rgba(0,0,0,1)';
-	ctx.font = "12px Roboto";
-	ctx.textAlign="left";
-	ctx.fillText("Raw Data",left+25,gtop+5);
+	fontsize=12*scalefactor;
 
-	gtop+=15;
-	ctx.lineWidth = 3;
+	ctx.strokeStyle = 'rgba(0,0,0,1)';
+	line (ctx,left,gtop,left+20*scalefactor,gtop);
+	ctx.fillStyle = 'rgba(0,0,0,1)';
+	ctx.font = fontsize+"px Roboto";
+	ctx.textAlign="left";
+	ctx.fillText("Raw Data",left+25*scalefactor,gtop+5*scalefactor);
+
+	gtop+=15*scalefactor;
+	ctx.lineWidth = 3*scalefactor;
 	ctx.strokeStyle = 'rgba(0,0,255,1)';
-	line (ctx,left,gtop,left+20,gtop);
+	line (ctx,left,gtop,left+20*scalefactor,gtop);
 	ctx.fillStyle = 'rgba(0,0,0,1)';
-	ctx.font = "12px Roboto";
+	ctx.font = fontsize+"px Roboto";
 	ctx.textAlign="left";
-	ctx.fillText("Trend",left+25,gtop+5);
+	ctx.fillText("Trend",left+25*scalefactor,gtop+5*scalefactor);
 
-	gtop+=15;
-	ctx.lineWidth = 2;
+	gtop+=15*scalefactor;
+	ctx.lineWidth = 2*scalefactor;
 	ctx.strokeStyle = 'rgba(0,200,0,1)';
-	line (ctx,left,gtop,left+20,gtop);
+	line (ctx,left,gtop,left+20*scalefactor,gtop);
 	ctx.fillStyle = 'rgba(0,0,0,1)';
-	ctx.font = "12px Roboto";
+	ctx.font = fontsize+"px Roboto";
 	ctx.textAlign="left";
-	ctx.fillText("Trend + Seasonal",left+25,gtop+5);
+	ctx.fillText("Trend + Seasonal",left+25*scalefactor,gtop+5*scalefactor);
 
-	ctx.lineWidth = 1;
+	ctx.lineWidth = 1*scalefactor;
 	ctx.strokeStyle = 'rgba(0,0,0,1)';
-	line(ctx,left-10,gbottom+10,right+10,gbottom+10);
+	line(ctx,left-10*scalefactor,gbottom+10*scalefactor,right+10*scalefactor,gbottom+10*scalefactor);
 
-	gtop = gbottom+20;
-	gbottom = (height-160)*ssteps/totalsteps+gtop;
+	gtop = gbottom+20*scalefactor;
+	gbottom = (height-160*scalefactor)*ssteps/totalsteps+gtop;
 
-	rvertaxis(ctx,gtop,gbottom,right+10,minstick,maxstick,ystep);
+	rvertaxis(ctx,gtop,gbottom,right+10*scalefactor,minstick,maxstick,ystep);
 	ctx.strokeStyle = 'rgba(0,0,0,0.3)';
 	zero = convertvaltopixel(0,minstick,maxstick,gbottom,gtop);
 	line(ctx,left,zero,right,zero)
@@ -661,27 +688,29 @@ function newtimeseriesrecomp(){
 			line(ctx,xpixel,ypixel,lastxpixel,lastypixel);
 		}
 		if(labels == "yes"){
+			fontsize = 10*scalefactor;
 			ctx.fillStyle = 'rgba(0,0,255,1)';
-			ctx.font = "10px Roboto";
+			ctx.font = fontsize+"px Roboto";
 			ctx.textAlign="left";
 			ctx.fillText(parseInt(add(index,1)),add(add(xpixel,2),2),add(ypixel,4));
 		}
 		lastxpixel = xpixel;
 		lastypixel = ypixel;
 	}
-	line (ctx,left,gtop,left+20,gtop);
+	line (ctx,left,gtop,left+20*scalefactor,gtop);
 	ctx.fillStyle = 'rgba(0,0,0,1)';
-	ctx.font = "12px Roboto";
+	fontsize = 12*scalefactor;
+	ctx.font = fontsize+"px Roboto";
 	ctx.textAlign="left";
-	ctx.fillText("Seasonal",left+25,gtop+5);
+	ctx.fillText("Seasonal",left+25*scalefactor,gtop+5*scalefactor);
 
 	ctx.strokeStyle = 'rgba(0,0,0,1)';
-	line(ctx,left-10,gbottom+10,right+10,gbottom+10);
+	line(ctx,left-10*scalefactor,gbottom+10*scalefactor,right+10*scalefactor,gbottom+10*scalefactor);
 
-	gtop = gbottom+20;
-	gbottom = (height-160)*rsteps/totalsteps+gtop;
+	gtop = gbottom+20*scalefactor;
+	gbottom = (height-160*scalefactor)*rsteps/totalsteps+gtop;
 
-	vertaxis(ctx,gtop,gbottom,left-10,minrtick,maxrtick,ystep);
+	vertaxis(ctx,gtop,gbottom,left-10*scalefactor,minrtick,maxrtick,ystep);
 	ctx.strokeStyle = 'rgba(0,0,0,0.3)';
 	zero = convertvaltopixel(0,minrtick,maxrtick,gbottom,gtop);
 	limit=(abshighest-abslowest)/10;
@@ -695,7 +724,7 @@ function newtimeseriesrecomp(){
 		line(ctx,left,lowlimit,right,lowlimit);
 	}
 	ctx.strokeStyle = 'rgba(255,0,0,1)';
-	line (ctx,left,gtop,left+20,gtop);
+	line (ctx,left,gtop,left+20*scalefactor,gtop);
 	for (index in tsxpoints){
 		xpixel=convertvaltopixel(tsxpoints[index],minxtick,maxxtick,left,right);
 		ypixel=convertvaltopixel(r[index],maxrtick,minrtick,gtop,gbottom);
@@ -703,18 +732,20 @@ function newtimeseriesrecomp(){
 			line(ctx,xpixel,ypixel,lastxpixel,lastypixel);
 		}
 		if(labels == "yes"){
+			fontsize = 10*scalefactor;
 			ctx.fillStyle = 'rgba(0,0,255,1)';
-			ctx.font = "10px Roboto";
+			ctx.font = fontsize+"px Roboto";
 			ctx.textAlign="left";
 			ctx.fillText(parseInt(add(index,1)),add(add(xpixel,2),2),add(ypixel,4));
 		}
 		lastxpixel = xpixel;
 		lastypixel = ypixel;
 	}
+	fontsize = 12*scalefactor;
 	ctx.fillStyle = 'rgba(0,0,0,1)';
-	ctx.font = "12px Roboto";
+	ctx.font = fontsize+"px Roboto";
 	ctx.textAlign="left";
-	ctx.fillText("Residual",left+25,gtop+5);
+	ctx.fillText("Residual",left+25*scalefactor,gtop+5*scalefactor);
 
 	labelgraph(ctx,width,height);
 

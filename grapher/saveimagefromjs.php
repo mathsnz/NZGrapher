@@ -6,6 +6,7 @@
 
 //converting
 $img = $_POST['imgBase64'];
+$highres = $_POST['highres'];
 $img = str_replace('data:image/png;base64,', '', $img);
 $img = str_replace(' ', '+', $img);
 $fileData = base64_decode($img);
@@ -15,8 +16,13 @@ $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGH
 $fileName = "./imagetemp/$randomString.png";
 file_put_contents($fileName, $fileData);
 
+$extrastyle='';
+if($highres=='yes'){
+	$extrastyle='style="width:100%;height:100%;"';
+}
+
 //display
-echo "<img src='./imagetemp/$randomString.png'>";
+echo "<img $extrastyle src='./imagetemp/$randomString.png'>";
 
 // Free up memory
 $path = './imagetemp/';

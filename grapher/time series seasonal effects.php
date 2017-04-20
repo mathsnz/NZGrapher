@@ -1,10 +1,11 @@
 <?php
 //regresion?
+$scalefactor=$_POST['scalefactor'];
 $regression=$_POST['regression'];
 //graph title
 $title=stripslashes($_POST['title']);
 //yaxis lavel
-$ylabel=stripslashes($_POST['yaxis']); 
+$ylabel=stripslashes($_POST['yaxis']);
 //xaxis label
 $xlabel=stripslashes($_POST['xaxis']);
 //labels?
@@ -56,14 +57,16 @@ $width=$width*0.5;
 //make image white
 imagefill ($im, 0, 0, $white);
 
+imagesetthickness($im, $scalefactor);
+
 //draw area of graph
-imagerectangle ($im, 50, 50, $width-50, $height-50, $black);
-imagerectangle ($im, $width+50, 50, $width+$width-50, $height-50, $black);
+imagerectangle ($im, 50*$scalefactor, 50*$scalefactor, $width-50*$scalefactor, $height-50*$scalefactor, $black);
+imagerectangle ($im, $width+50*$scalefactor, 50*$scalefactor, $width+$width-50*$scalefactor, $height-50*$scalefactor, $black);
 
 //graph title
-$bbox = imagettfbbox(12, 0, $bold, $title);
+$bbox = imagettfbbox(14*$scalefactor, 0, $bold, $title);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im, 14, 0, $width-$w/2, 30, $black, $bold, $title);
+imagettftext($im, 14*$scalefactor, 0, $width-$w/2, 30*$scalefactor, $black, $bold, $title);
 
 
 
@@ -76,18 +79,18 @@ $xpoints=tsxpoints($xpoints,$seasons);
 //
 
 //yaxis label
-$bbox = imagettfbbox(12, 0, $bold, $ylabel);
+$bbox = imagettfbbox(12*$scalefactor, 0, $bold, $ylabel);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im,12,90,15,$height/2+$w/2,$black,$bold,$ylabel);
-$bbox = imagettfbbox(12, 0, $bold, "Seasonal Effect");
+imagettftext($im,12*$scalefactor,90*$scalefactor,15*$scalefactor,$height/2+$w/2,$black,$bold,$ylabel);
+$bbox = imagettfbbox(12*$scalefactor, 0, $bold, "Seasonal Effect");
 $w = $bbox[4]-$bbox[0];
-imagettftext($im,12,90,$width+15,$height/2+$w/2,$black,$bold,"Seasonal Effect");
+imagettftext($im,12*$scalefactor,90*$scalefactor,$width+15*$scalefactor,$height/2+$w/2,$black,$bold,"Seasonal Effect");
 
 //xaxis label
-$bbox = imagettfbbox(12, 0, $bold, $xlabel);
+$bbox = imagettfbbox(12*$scalefactor, 0, $bold, $xlabel);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im,12,0,$width/2-$w/2,$height-15,$black,$bold,$xlabel);
-imagettftext($im,12,0,$width+$width/2-$w/2,$height-15,$black,$bold,$xlabel);
+imagettftext($im,12*$scalefactor,0,$width/2-$w/2,$height-15*$scalefactor,$black,$bold,$xlabel);
+imagettftext($im,12*$scalefactor,0,$width+$width/2-$w/2,$height-15*$scalefactor,$black,$bold,$xlabel);
 
 function format_number_significant_figures($number, $sf) {
   // How many decimal places do we round and format to?
@@ -99,22 +102,22 @@ function format_number_significant_figures($number, $sf) {
   return number_format($number, 0 == $number ? 0 : $dp,".","");
 }
 
-function FirstSF($number) { 
-    $multiplier = 1; 
+function FirstSF($number) {
+    $multiplier = 1;
 	if ($number==0){
-		return 0; 
+		return 0;
 	} else {
-		while ($number < 0.1) { 
-			$number *= 10; 
-			$multiplier /= 10; 
-		} 
-		while ($number >= 1) { 
-			$number /= 10; 
-			$multiplier *= 10; 
-		} 
-		return round($number, 1) * 10; 
+		while ($number < 0.1) {
+			$number *= 10;
+			$multiplier /= 10;
+		}
+		while ($number >= 1) {
+			$number /= 10;
+			$multiplier *= 10;
+		}
+		return round($number, 1) * 10;
 	}
-} 
+}
 
 //holt winters
 
@@ -133,34 +136,34 @@ $minxtick=round($minx/$step)*$step;
 $maxxtick=round($maxx/$step)*$step;
 
 //min x mark
-$bbox = imagettfbbox(12, 0, $con, $minxtick);
+$bbox = imagettfbbox(10*$scalefactor, 0, $con, $minxtick);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im, 10, 0, 60-$w/2, $height-30, $black, $con, $minxtick);
-imageline ($im, 60, $height-50, 60, $height-45, $black);
+imagettftext($im, 10*$scalefactor, 0, 60*$scalefactor-$w/2, $height-30*$scalefactor, $black, $con, $minxtick);
+imageline ($im, 60*$scalefactor, $height-50*$scalefactor, 60*$scalefactor, $height-45*$scalefactor, $black);
 //max x mark
-$bbox = imagettfbbox(12, 0, $con, $maxxtick);
+$bbox = imagettfbbox(12*$scalefactor, 0, $con, $maxxtick);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im, 10, 0, $width-60-$w/2, $height-30, $black, $con, $maxxtick);
-imageline ($im, $width-60, $height-50, $width-60, $height-45, $black);
+imagettftext($im, 10*$scalefactor, 0, $width-60*$scalefactor-$w/2, $height-30*$scalefactor, $black, $con, $maxxtick);
+imageline ($im, $width-60*$scalefactor, $height-50*$scalefactor, $width-60*$scalefactor, $height-45*$scalefactor, $black);
 
 //other ticks
 $i=1;
-$distanceright=60;
+$distanceright=60*$scalefactor;
 $xtick=$minxtick;
 while($i<$steps){
-	$distanceright=$distanceright+($width-120)/$steps;
+	$distanceright=$distanceright+($width-120*$scalefactor)/$steps;
 	$xtick=$xtick+$step;
-	$bbox = imagettfbbox(12, 0, $con, $xtick);
+	$bbox = imagettfbbox(10*$scalefactor, 0, $con, $xtick);
 	$w = $bbox[4]-$bbox[0];
-	imagettftext($im, 10, 0, $distanceright-$w/2, $height-30, $black, $con, $xtick); 
-	imageline ($im, $distanceright, $height-50, $distanceright, $height-45, $black);
+	imagettftext($im, 10*$scalefactor, 0, $distanceright-$w/2, $height-30*$scalefactor, $black, $con, $xtick);
+	imageline ($im, $distanceright, $height-50*$scalefactor, $distanceright, $height-45*$scalefactor, $black);
 	$i++;
 }
 
 //set font size for x-axis
 $size=0;
 $w=0;
-while($w<30 && $size<11){
+while($w<30*$scalefactor && $size<11*$scalefactor){
 	$bbox = imagettfbbox($size, 0, $reg, $minxtick);
 	$w1 = $bbox[4]-$bbox[0];
 	$bbox = imagettfbbox($size, 0, $reg, $maxxtick);
@@ -173,25 +176,25 @@ $size--;
 //min x mark
 $bbox = imagettfbbox($size, 0, $con, $minxtick);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im, $size, 0, $width+60-$w/2, $height-30, $black, $con, $minxtick);
-imageline ($im, $width+60, $height-50, $width+60, $height-45, $black);
+imagettftext($im, $size, 0, $width+60*$scalefactor-$w/2, $height-30*$scalefactor, $black, $con, $minxtick);
+imageline ($im, $width+60*$scalefactor, $height-50*$scalefactor, $width+60*$scalefactor, $height-45*$scalefactor, $black);
 //max x mark
 $bbox = imagettfbbox($size, 0, $con, $maxxtick);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im, $size, 0, $width+$width-60-$w/2, $height-30, $black, $con, $maxxtick);
-imageline ($im, $width+$width-60, $height-50, $width+$width-60, $height-45, $black);
+imagettftext($im, $size, 0, $width+$width-60*$scalefactor-$w/2, $height-30*$scalefactor, $black, $con, $maxxtick);
+imageline ($im, $width+$width-60*$scalefactor, $height-50*$scalefactor, $width+$width-60*$scalefactor, $height-45*$scalefactor, $black);
 
 //other ticks
 $i=1;
-$distanceright=$width+60;
+$distanceright=$width+60*$scalefactor;
 $xtick=$minxtick;
 while($i<$steps){
-	$distanceright=$distanceright+($width-120)/$steps;
+	$distanceright=$distanceright+($width-120*$scalefactor)/$steps;
 	$xtick=$xtick+$step;
 	$bbox = imagettfbbox($size, 0, $con, $xtick);
 	$w = $bbox[4]-$bbox[0];
-	imagettftext($im, $size, 0, $distanceright-$w/2, $height-30, $black, $con, $xtick); 
-	imageline ($im, $distanceright, $height-50, $distanceright, $height-45, $black);
+	imagettftext($im, $size, 0, $distanceright-$w/2, $height-30*$scalefactor, $black, $con, $xtick);
+	imageline ($im, $distanceright, $height-50*$scalefactor, $distanceright, $height-45*$scalefactor, $black);
 	$i++;
 }
 
@@ -225,7 +228,7 @@ if($minytick==$maxytick){$minytick--;}
 //set font size for y-axis
 $size=0;
 $w=0;
-while($w<25 && $size<11){
+while($w<25*$scalefactor && $size<11*$scalefactor){
 	$bbox = imagettfbbox($size, 0, $con, $minytick);
 	$w1 = $bbox[4]-$bbox[0];
 	$bbox = imagettfbbox($size, 0, $con, $maxytick);
@@ -238,26 +241,26 @@ $size--;
 //min y mark
 $bbox = imagettfbbox($size, 0, $con, $minytick);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im, $size, 0, 43-$w, $height-55, $black, $con, $minytick);
-imageline ($im, 45, $height-60, 50, $height-60, $black);
+imagettftext($im, $size, 0, 43*$scalefactor-$w, $height-55*$scalefactor, $black, $con, $minytick);
+imageline ($im, 45*$scalefactor, $height-60*$scalefactor, 50*$scalefactor, $height-60*$scalefactor, $black);
 //max y mark
 $bbox = imagettfbbox($size, 0, $con, $maxytick);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im, $size, 0, 43-$w, 65, $black, $con, $maxytick);
-imageline ($im, 45, 60, 50, 60, $black);
+imagettftext($im, $size, 0, 43*$scalefactor-$w, 65*$scalefactor, $black, $con, $maxytick);
+imageline ($im, 45*$scalefactor, 60*$scalefactor, 50*$scalefactor, 60*$scalefactor, $black);
 
 //other ticks
 $i=1;
-$distancedown=$height-60;
+$distancedown=$height-60*$scalefactor;
 $ytick=$minytick;
 while($i<$steps){
-	$distancedown=$distancedown-($height-120)/$steps;
+	$distancedown=$distancedown-($height-120*$scalefactor)/$steps;
 	$ytick=$ytick+$step;
 	if(abs($ytick)<=pow(10,-10)){$ytick=0;}
 	$bbox = imagettfbbox($size, 0, $con, $ytick);
 	$w = $bbox[4]-$bbox[0];
-	imagettftext($im, $size, 0, 43-$w, $distancedown+5, $black, $con, $ytick);
-	imageline ($im, 45, $distancedown, 50, $distancedown, $black);
+	imagettftext($im, $size, 0, 43*$scalefactor-$w, $distancedown+5*$scalefactor, $black, $con, $ytick);
+	imageline ($im, 45*$scalefactor, $distancedown, 50*$scalefactor, $distancedown, $black);
 	$i++;
 }
 
@@ -295,7 +298,7 @@ $steps=($maxrtick-$minrtick)/$step;
 //set font size for r-axis
 $size=0;
 $w=0;
-while($w<25 && $size<11){
+while($w<25*$scalefactor && $size<11*$scalefactor){
 	$bbox = imagettfbbox($size, 0, $reg, $minrtick);
 	$w1 = $bbox[4]-$bbox[0];
 	$bbox = imagettfbbox($size, 0, $reg, $maxrtick);
@@ -309,26 +312,26 @@ $size--;
 //min s mark
 $bbox = imagettfbbox($size, 0, $con, $minrtick);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im, $size, 0, $width+43-$w, $height-55, $black, $con, $minrtick);
-imageline ($im, $width+45, $height-60, $width+50, $height-60, $black);
+imagettftext($im, $size, 0, $width+43*$scalefactor-$w, $height-55*$scalefactor, $black, $con, $minrtick);
+imageline ($im, $width+45*$scalefactor, $height-60*$scalefactor, $width+50*$scalefactor, $height-60*$scalefactor, $black);
 //max s mark
 $bbox = imagettfbbox($size, 0, $con, $maxrtick);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im, $size, 0, $width+43-$w, 65, $black, $con, $maxrtick);
-imageline ($im, $width+45, 60, $width+50, 60, $black);
+imagettftext($im, $size, 0, $width+43*$scalefactor-$w, 65*$scalefactor, $black, $con, $maxrtick);
+imageline ($im, $width+45*$scalefactor, 60*$scalefactor, $width+50*$scalefactor, 60*$scalefactor, $black);
 
 //other ticks
 $i=1;
-$distancedown=$height-60;
+$distancedown=$height-60*$scalefactor;
 $rtick=$minrtick;
 while($i<$steps){
-	$distancedown=$distancedown-($height-120)/$steps;
+	$distancedown=$distancedown-($height-120*$scalefactor)/$steps;
 	$rtick=$rtick+$step;
 	if(abs($rtick)<=pow(10,-10)){$rtick=0;}
 	$bbox = imagettfbbox($size, 0, $con, $rtick);
 	$w = $bbox[4]-$bbox[0];
-	imagettftext($im, $size, 0, $width+43-$w, $distancedown+5, $black, $con, $rtick);
-	imageline ($im, $width+45, $distancedown, $width+50, $distancedown, $black);
+	imagettftext($im, $size, 0, $width+43*$scalefactor-$w, $distancedown+5*$scalefactor, $black, $con, $rtick);
+	imageline ($im, $width+45*$scalefactor, $distancedown, $width+50*$scalefactor, $distancedown, $black);
 	$i++;
 }
 
@@ -345,8 +348,8 @@ while($i<count($xpoints)){
 	$year=substr($xpoints[$i],0,4);
 	$xvalue=round(($xpoints[$i]-$year+1/$seasons)*$seasons);
 	$yvalue=$ypoints[$i];
-	$xpixel=60+($width-120)*($xvalue-$minxtick)/($maxxtick-$minxtick);
-	$ypixel=$height-60-($height-120)*($yvalue-$minytick)/($maxytick-$minytick);
+	$xpixel=60*$scalefactor+($width-120*$scalefactor)*($xvalue-$minxtick)/($maxxtick-$minxtick);
+	$ypixel=$height-60*$scalefactor-($height-120*$scalefactor)*($yvalue-$minytick)/($maxytick-$minytick);
 	$n = ($year-$firstyear)/($lastyear-$firstyear);
 	$col = ColorHSLToRGB($n*$end,$sat,$lum);
 	$color = imagecolorallocatealpha($im, $col['r'], $col['g'], $col['b'], 0.8);
@@ -354,7 +357,7 @@ while($i<count($xpoints)){
 		imageline($im,$lastxpixel,$lastypixel,$xpixel,$ypixel,$color);
 	}
 	if ($xvalue==1 || $xvalue==$seasons) {
-		imagettftext($im, 7, 0, $xpixel+3, $ypixel+4, $color, $reg, $year);
+		imagettftext($im, 7*$scalefactor, 0, $xpixel+3*$scalefactor, $ypixel+4*$scalefactor, $color, $reg, $year);
 	}
 	$lastxpixel=$xpixel;
 	$lastypixel=$ypixel;
@@ -377,8 +380,8 @@ while($i<count($xpoints)){
 	$xvalue=round(($xpoints[$i]-$year+1/$seasons)*$seasons);
 	$yvalue=$s[$i];
 	array_push($r[$xvalue],$yvalue);
-	$xpixel=$width+60+($width-120)*($xvalue-$minxtick)/($maxxtick-$minxtick);
-	$ypixel=$height-60-($height-120)*($yvalue-$minrtick)/($maxrtick-$minrtick);
+	$xpixel=$width+60*$scalefactor+($width-120*$scalefactor)*($xvalue-$minxtick)/($maxxtick-$minxtick);
+	$ypixel=$height-60*$scalefactor-($height-120*$scalefactor)*($yvalue-$minrtick)/($maxrtick-$minrtick);
 	if($xvalue!=1 && $i>1){
 		imageline($im,$lastxpixel,$lastypixel,$xpixel,$ypixel,$color);
 	}
@@ -392,24 +395,24 @@ $i=1;
 while($i<=$seasons){
 	$xvalue=$i;
 	$yvalue=array_sum($r[$i])/count($r[$i]);
-	$xpixel=$width+60+($width-120)*($xvalue-$minxtick)/($maxxtick-$minxtick);
-	$ypixel=$height-60-($height-120)*($yvalue-$minrtick)/($maxrtick-$minrtick);
+	$xpixel=$width+60*$scalefactor+($width-120*$scalefactor)*($xvalue-$minxtick)/($maxxtick-$minxtick);
+	$ypixel=$height-60*$scalefactor-($height-120*$scalefactor)*($yvalue-$minrtick)/($maxrtick-$minrtick);
 	if($xvalue!=1 && $i>1){
 		imageline($im,$lastxpixel,$lastypixel,$xpixel,$ypixel,$black);
 	}
 	imageellipse($im,$xpixel,$ypixel,5,5,$black);
 	$lastxpixel=$xpixel;
 	$lastypixel=$ypixel;
-	
+
 	$i++;
 }
 
 
-$zero=$height-60-($height-120)*(-$minrtick)/($maxrtick-$minrtick);
-imageline($im,$width+60,$zero,$width*2-60,$zero,$color);
+$zero=$height-60*$scalefactor-($height-120*$scalefactor)*(-$minrtick)/($maxrtick-$minrtick);
+imageline($im,$width+60*$scalefactor,$zero,$width*2-60*$scalefactor,$zero,$color);
 
 
-imageline($im,60,60,80,60,$color);imagettftext($im, 10, 0, 85, 65, $black, $reg, "Raw Data");
+imageline($im,60*$scalefactor,60*$scalefactor,80*$scalefactor,60*$scalefactor,$black);imagettftext($im, 10*$scalefactor, 0, 85*$scalefactor, 65*$scalefactor, $black, $reg, "Raw Data");
 
 $width=$width*2;
 include('labelgraph.php');
@@ -418,7 +421,12 @@ $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGH
 // output png and save
 imagepng($im,'imagetemp/TimeSeriesSeasonal-'.$randomString.'.png');
 
-echo "<img style='position:absolute;top:0px;left:0px;' src='imagetemp/TimeSeriesSeasonal-".$randomString.".png' />";
+$extrastyle="";
+if($scalefactor==5){
+	$extrastyle='width:100%;height:100%;';
+}
+
+echo "<img style='position:absolute;top:0px;left:0px;$extrastyle' src='imagetemp/TimeSeriesSeasonal-".$randomString.".png' />";
 ?>
 
 	<script type="text/javascript">
@@ -441,10 +449,10 @@ imagedestroy($im);
 $path = 'imagetemp/';
 if ($handle = opendir($path)) {
 	while (false !== ($file = readdir($handle))) {
-		if ((time()-filectime($path.$file)) > 1800) {  
+		if ((time()-filectime($path.$file)) > 1800) {
 			if (is_file($path.$file)) {
 				unlink($path.$file);
-			}	
+			}
 		}
 	}
 }

@@ -9,6 +9,8 @@ document.addEventListener("paste", function(e) {
     document.execCommand("insertHTML", false, text);
 });
 
+var scalefactor;
+
 $(function(){
 
 	$('#graph').on('load', function(){
@@ -835,6 +837,7 @@ function updategraphgo(){
 	document.getElementById('sizeform').value=document.getElementById('size').value;
 	document.getElementById('transform').value=document.getElementById('trans').value;
 	document.getElementById("form").action=document.getElementById('type').value+'.php';
+  scalefactor=1;
 	if(document.getElementById('standardsize').value=='Standard'){
 		document.getElementById('width').value=800;
 		document.getElementById('height').value=600;
@@ -844,10 +847,15 @@ function updategraphgo(){
 	} else if (document.getElementById('standardsize').value=='Small'){
 		document.getElementById('width').value=500;
 		document.getElementById('height').value=400;
+	} else if (document.getElementById('standardsize').value=='Auto - High Res') {
+		document.getElementById('width').value=document.getElementById('graphdiv').offsetWidth*5;
+		document.getElementById('height').value=document.getElementById('graphdiv').offsetHeight*5;
+    scalefactor=5;
 	} else {
-		document.getElementById('width').value=document.getElementById('graphdiv').offsetWidth;
-		document.getElementById('height').value=document.getElementById('graphdiv').offsetHeight;
-	}
+    document.getElementById('width').value=document.getElementById('graphdiv').offsetWidth;
+  	document.getElementById('height').value=document.getElementById('graphdiv').offsetHeight;
+  }
+  $('#scalefactor').val(scalefactor);
 	var thedatain = encodeURI(document.getElementById('datain').value);
 	document.getElementById('datain').value=thedatain;
 	if(document.getElementById('type').value!='pairs plot'){
@@ -885,11 +893,16 @@ function jsgraphtoimage(dataURL) {
 		$('#jsgraph').html('<br><br>'+dataURL);
 		$('#loading').hide();
 	} else {
+    highres='no';
+    if (document.getElementById('standardsize').value=='Auto - High Res'){
+      highres='yes';
+    }
 		$.ajax({
 			type: "POST",
 			url: "saveimagefromjs.php",
 			data: {
-				imgBase64: dataURL
+				imgBase64: dataURL,
+        highres: highres
 			},
 			success: function(data){
 				$('#jsgraph').html(data);
@@ -1221,15 +1234,16 @@ function line(ctx,x1,y1,x2,y2){
 
 function horaxis(ctx,x1,x2,y,min,max,step){
 	ctx.fillStyle = '#000000';
-	ctx.lineWidth = 1;
-	line(ctx,add(x1,-10),y,add(x2,10),y);
-	ctx.font = "13px Roboto";
+	ctx.lineWidth = 1*scalefactor;
+	line(ctx,add(x1,-10*scalefactor),y,add(x2,10*scalefactor),y);
+  fontsize = 13*scalefactor;
+	ctx.font = fontsize+"px Roboto";
 	ctx.textAlign="center";
 	var curx = min;
 	while (curx<=max){
 		var xpixel = convertvaltopixel(curx,min,max,x1,x2);
-		line(ctx,xpixel,y,xpixel,add(y,6));
-		ctx.fillText(curx,xpixel,add(y,18));
+		line(ctx,xpixel,y,xpixel,add(y,6*scalefactor));
+		ctx.fillText(curx,xpixel,add(y,18*scalefactor));
 		curx=parseFloat(add(curx,step).toPrecision(8));
 	}
 
@@ -1237,23 +1251,24 @@ function horaxis(ctx,x1,x2,y,min,max,step){
 
 function vertaxis(ctx,y1,y2,x,min,max,step){
 	ctx.fillStyle = '#000000';
-	ctx.lineWidth = 1;
-	line(ctx,x,add(y1,-10),x,add(y2,10));
-	ctx.font = "13px Roboto";
+	ctx.lineWidth = 1*scalefactor;
+	line(ctx,x,add(y1,-10*scalefactor),x,add(y2,10*scalefactor));
+  fontsize = 13*scalefactor;
+	ctx.font = fontsize+"px Roboto";
 	ctx.textAlign="right";
 	var cury = min;
 	while (cury<=max){
 		var ypixel = convertvaltopixel(cury,min,max,y2,y1);
-		line(ctx,x,ypixel,add(x,-6),ypixel);
-		fsize=13;
+		line(ctx,x,ypixel,add(x,-6*scalefactor),ypixel);
+		fsize=13*scalefactor;
 		ctx.font = fsize+"px Roboto";
 		width = ctx.measureText(cury).width;
-		while(width>30){
+		while(width>30*scalefactor){
 			fsize=fsize-1;
 			ctx.font = fsize+"px Roboto";
 			width = ctx.measureText(cury).width;
 		}
-		ctx.fillText(cury,add(x,-7),add(ypixel,4));
+		ctx.fillText(cury,add(x,-7*scalefactor),add(ypixel,4*scalefactor));
 		cury=parseFloat(add(cury,step).toPrecision(10));
 	}
 
@@ -1261,23 +1276,24 @@ function vertaxis(ctx,y1,y2,x,min,max,step){
 
 function rvertaxis(ctx,y1,y2,x,min,max,step){
 	ctx.fillStyle = '#000000';
-	ctx.lineWidth = 1;
-	line(ctx,x,add(y1,-10),x,add(y2,10));
-	ctx.font = "13px Roboto";
+	ctx.lineWidth = 1*scalefactor;
+	line(ctx,x,add(y1,-10*scalefactor),x,add(y2,10*scalefactor));
+  fontsize = 13*scalefactor;
+	ctx.font = fontsize+"px Roboto";
 	ctx.textAlign="left";
 	var cury = min;
 	while (cury<=max){
 		var ypixel = convertvaltopixel(cury,min,max,y2,y1);
-		line(ctx,x,ypixel,add(x,6),ypixel);
-		fsize=13;
+		line(ctx,x,ypixel,add(x,6*scalefactor),ypixel);
+		fsize=13*scalefactor;
 		ctx.font = fsize+"px Roboto";
 		width = ctx.measureText(cury).width;
-		while(width>30){
+		while(width>30*scalefactor){
 			fsize=fsize-1;
 			ctx.font = fsize+"px Roboto";
 			width = ctx.measureText(cury).width;
 		}
-		ctx.fillText(cury,add(x,7),add(ypixel,4));
+		ctx.fillText(cury,add(x,7*scalefactor),add(ypixel,4*scalefactor));
 		cury=parseFloat(add(cury,step).toPrecision(10));
 	}
 
@@ -1721,11 +1737,12 @@ function newdotplot(){
 function labelgraph(ctx,width,height){
 	//label the graph as from mathsnz
 	ctx.fillStyle = '#000000';
-	ctx.font = "13px Roboto";
+  fontsize = 13*scalefactor;
+	ctx.font = fontsize+"px Roboto";
 	ctx.textAlign="left";
-	ctx.fillText("Made with NZGrapher",10,height-10);
+	ctx.fillText("Made with NZGrapher",10*scalefactor,height-10*scalefactor);
 	ctx.textAlign="right";
-	ctx.fillText("www.mathsnz.com",width-10,height-10);
+	ctx.fillText("www.mathsnz.com",width-10*scalefactor,height-10*scalefactor);
 }
 
 function plotysplit(ctx,left,right,oypixel,minxtick,maxxtick,xstep,maxheight,points,xpoints,ypoints,colors,allygroups){

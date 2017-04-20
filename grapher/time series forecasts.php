@@ -1,10 +1,11 @@
 <?php
+$scalefactor=$_POST['scalefactor'];
 //regresion?
 $regression=$_POST['regression'];
 //graph title
 $title=stripslashes($_POST['title']);
 //yaxis lavel
-$ylabel=stripslashes($_POST['yaxis']); 
+$ylabel=stripslashes($_POST['yaxis']);
 //xaxis label
 $xlabel=stripslashes($_POST['xaxis']);
 //labels?
@@ -47,7 +48,7 @@ $green = imagecolorallocate($im, 0, 255, 0);
 $aqua = imagecolorallocate($im, 0, 200, 200);
 $blue = imagecolorallocate($im, 0, 0, 255);
 $grey = imagecolorallocate($im, 125, 125, 125);
-$red75 = imagecolorallocatealpha ($im,255, 0, 0, 100);
+$red75 = imagecolorallocatealpha ($im,255, 200, 200, 0);
 $reg = './Roboto-Regular.ttf';
 $con = './RobotoCondensed-Regular.ttf';
 $bold = './Roboto-Bold.ttf';
@@ -55,15 +56,15 @@ $bold = './Roboto-Bold.ttf';
 //make image white
 imagefill ($im, 0, 0, $white);
 
+imagesetthickness($im, $scalefactor);
+
 //draw area of graph
-imagerectangle ($im, 50, 50, $width-50, $height-50, $black);
+imagerectangle ($im, 50*$scalefactor, 50*$scalefactor, $width-50*$scalefactor, $height-50*$scalefactor, $black);
 
 //graph title
-$bbox = imagettfbbox(12, 0, $bold, $title);
+$bbox = imagettfbbox(14*$scalefactor, 0, $bold, $title);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im, 14, 0, $width/2-$w/2, 30, $black, $bold, $title);
-
-
+imagettftext($im, 14*$scalefactor, 0, $width/2-$w/2, 30*$scalefactor, $black, $bold, $title);
 
 //x points
 $seasons=checkseasons($xpoints);
@@ -74,14 +75,14 @@ $xpoints=tsxpoints($xpoints,$seasons);
 //
 
 //yaxis label
-$bbox = imagettfbbox(12, 0, $bold, $ylabel);
+$bbox = imagettfbbox(12*$scalefactor, 0, $bold, $ylabel);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im,12,90,15,$height/2+$w/2,$black,$bold,$ylabel);
+imagettftext($im,12*$scalefactor,90*$scalefactor,15*$scalefactor,$height/2+$w/2,$black,$bold,$ylabel);
 
 //xaxis label
-$bbox = imagettfbbox(12, 0, $bold, $xlabel);
+$bbox = imagettfbbox(12*$scalefactor, 0, $bold, $xlabel);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im,12,0,$width/2-$w/2,$height-5,$black,$bold,$xlabel);
+imagettftext($im,12*$scalefactor,0,$width/2-$w/2,$height-5*$scalefactor,$black,$bold,$xlabel);
 
 function format_number_significant_figures($number, $sf) {
   // How many decimal places do we round and format to?
@@ -93,22 +94,22 @@ function format_number_significant_figures($number, $sf) {
   return number_format($number, 0 == $number ? 0 : $dp,".","");
 }
 
-function FirstSF($number) { 
-    $multiplier = 1; 
+function FirstSF($number) {
+    $multiplier = 1;
 	if ($number==0){
-		return 0; 
+		return 0;
 	} else {
-		while ($number < 0.1) { 
-			$number *= 10; 
-			$multiplier /= 10; 
-		} 
-		while ($number >= 1) { 
-			$number /= 10; 
-			$multiplier *= 10; 
-		} 
-		return round($number, 1) * 10; 
+		while ($number < 0.1) {
+			$number *= 10;
+			$multiplier /= 10;
+		}
+		while ($number >= 1) {
+			$number /= 10;
+			$multiplier *= 10;
+		}
+		return round($number, 1) * 10;
 	}
-} 
+}
 
 //holt winters
 
@@ -125,9 +126,9 @@ list($a,$b,$s)=hwinit($ypoints,$seasons);
 		$error+=pow($ypoint-($a[$i-1]+$b[$i-1]+$s[$i-$seasons]),2);
 		$i++;
 	}
-		
+
 	$error=sqrt($error/$i);
-	
+
 function purebell($std_deviation) {
 	$rand1 = (float)mt_rand()/(float)mt_getrandmax();
 	$rand2 = (float)mt_rand()/(float)mt_getrandmax();
@@ -135,7 +136,7 @@ function purebell($std_deviation) {
 	$random_number = ($gaussian_number * $std_deviation);
 	return $random_number;
 }
-	
+
 
 	$trend=array();
 	$forecasts=array();
@@ -155,7 +156,7 @@ function purebell($std_deviation) {
 		$forecasts[$c]=array($x,$t+$s[$season]);
 		$c++;
 	}
-	
+
 
 	$bsforecasts=array();
 	$c=0;
@@ -163,7 +164,7 @@ function purebell($std_deviation) {
 		$bsforecasts[$c]=array();
 		$c++;
 	}
-	
+
 	$z=0;
 	while($z<1000){
 		$bstrend=array();
@@ -176,11 +177,11 @@ function purebell($std_deviation) {
 			$bstrend[$c]=$t;
 			array_push($bsforecasts[$c],$t+$s[$season]);
 			$c++;
-		}	
+		}
 		$z++;
 	}
-	
-	
+
+
 	$x=max($xpoints);
 	$c=0;
 	while($c<$seasons*2){
@@ -190,7 +191,7 @@ function purebell($std_deviation) {
 		$forecastsmax[$c]=$bsforecasts[$c][975];
 		$c++;
 	}
-	
+
 if ($multiplicative=="yes"){
 	foreach($forecasts as $c => $forcast){
 		$forecasts[$c][1]=exp($forecasts[$c][1]);
@@ -213,7 +214,7 @@ if ($multiplicative=="yes"){
 	}
 }
 
-if($_POST['regression']=="yes"){	
+if($_POST['regression']=="yes"){
 	$c=0;
 	$x=max($xpoints);
 	echo "
@@ -310,7 +311,7 @@ $steps=($maxxtick-$minxtick)/$step;
 //set font size for x-axis
 $size=0;
 $w=0;
-while($w<30 && $size<11){
+while($w<30*$scalefactor && $size<11*$scalefactor){
 	$bbox = imagettfbbox($size, 0, $reg, $minxtick);
 	$w1 = $bbox[4]-$bbox[0];
 	$bbox = imagettfbbox($size, 0, $reg, $maxxtick);
@@ -324,25 +325,25 @@ $size--;
 //min x mark
 $bbox = imagettfbbox($size, 0, $con, $minxtick);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im, $size, 0, 60-$w/2, $height-30, $black, $con, $minxtick);
-imageline ($im, 60, $height-50, 60, $height-45, $black);
+imagettftext($im, $size, 0, 60*$scalefactor-$w/2, $height-30*$scalefactor, $black, $con, $minxtick);
+imageline ($im, 60*$scalefactor, $height-50*$scalefactor, 60*$scalefactor, $height-45*$scalefactor, $black);
 //max x mark
 $bbox = imagettfbbox($size, 0, $con, $maxxtick);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im, $size, 0, $width-60-$w/2, $height-30, $black, $con, $maxxtick);
-imageline ($im, $width-60, $height-50, $width-60, $height-45, $black);
+imagettftext($im, $size, 0, $width-60*$scalefactor-$w/2, $height-30*$scalefactor, $black, $con, $maxxtick);
+imageline ($im, $width-60*$scalefactor, $height-50*$scalefactor, $width-60*$scalefactor, $height-45*$scalefactor, $black);
 
 //other ticks
 $i=1;
-$distanceright=60;
+$distanceright=60*$scalefactor;
 $xtick=$minxtick;
 while($i<$steps){
-	$distanceright=$distanceright+($width-120)/$steps;
+	$distanceright=$distanceright+($width-120*$scalefactor)/$steps;
 	$xtick=$xtick+$step;
 	$bbox = imagettfbbox($size, 0, $con, $xtick);
 	$w = $bbox[4]-$bbox[0];
-	imagettftext($im, $size, 0, $distanceright-$w/2, $height-30, $black, $con, $xtick); 
-	imageline ($im, $distanceright, $height-50, $distanceright, $height-45, $black);
+	imagettftext($im, $size, 0, $distanceright-$w/2, $height-30*$scalefactor, $black, $con, $xtick);
+	imageline ($im, $distanceright, $height-50*$scalefactor, $distanceright, $height-45*$scalefactor, $black);
 	$i++;
 }
 
@@ -375,7 +376,7 @@ $steps=($maxytick-$minytick)/$step;
 //set font size for y-axis
 $size=0;
 $w=0;
-while($w<25 && $size<11){
+while($w<25*$scalefactor && $size<11*$scalefactor){
 	$bbox = imagettfbbox($size, 0, $reg, $minytick);
 	$w1 = $bbox[4]-$bbox[0];
 	$bbox = imagettfbbox($size, 0, $reg, $maxytick);
@@ -388,25 +389,25 @@ $size--;
 //min y mark
 $bbox = imagettfbbox($size, 0, $con, $minytick);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im, $size, 0, 43-$w, $height-55, $black, $con, $minytick);
-imageline ($im, 45, $height-60, 50, $height-60, $black);
+imagettftext($im, $size, 0, 43*$scalefactor-$w, $height-55*$scalefactor, $black, $con, $minytick);
+imageline ($im, 45*$scalefactor, $height-60*$scalefactor, 50*$scalefactor, $height-60*$scalefactor, $black);
 //max y mark
 $bbox = imagettfbbox($size, 0, $con, $maxytick);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im, $size, 0, 43-$w, 65, $black, $con, $maxytick);
-imageline ($im, 45, 60, 50, 60, $black);
+imagettftext($im, $size, 0, 43*$scalefactor-$w, 65*$scalefactor, $black, $con, $maxytick);
+imageline ($im, 45*$scalefactor, 60*$scalefactor, 50*$scalefactor, 60*$scalefactor, $black);
 
 //other ticks
 $i=1;
-$distancedown=$height-60;
+$distancedown=$height-60*$scalefactor;
 $ytick=$minytick;
 while($i<$steps){
-	$distancedown=$distancedown-($height-120)/$steps;
+	$distancedown=$distancedown-($height-120*$scalefactor)/$steps;
 	$ytick=$ytick+$step;
 	$bbox = imagettfbbox($size, 0, $con, $ytick);
 	$w = $bbox[4]-$bbox[0];
-	imagettftext($im, $size, 0, 43-$w, $distancedown+5, $black, $con, $ytick);
-	imageline ($im, 45, $distancedown, 50, $distancedown, $black);
+	imagettftext($im, $size, 0, 43*$scalefactor-$w, $distancedown+5*$scalefactor, $black, $con, $ytick);
+	imageline ($im, 45*$scalefactor, $distancedown, 50*$scalefactor, $distancedown, $black);
 	$i++;
 }
 
@@ -418,27 +419,27 @@ $lastypixel=0;
 while($i<count($xpoints)){
 	$xvalue=$xpoints[$i];
 	$yvalue=$ypoints[$i];
-	$xpixel=60+($width-120)*($xvalue-$minxtick)/($maxxtick-$minxtick);
-	$ypixel=$height-60-($height-120)*($yvalue-$minytick)/($maxytick-$minytick);
+	$xpixel=60*$scalefactor+($width-120*$scalefactor)*($xvalue-$minxtick)/($maxxtick-$minxtick);
+	$ypixel=$height-60*$scalefactor-($height-120*$scalefactor)*($yvalue-$minytick)/($maxytick-$minytick);
 	if($i>0){
 		imageline($im,$lastxpixel,$lastypixel,$xpixel,$ypixel,$black);
 	}
 	$lastxpixel=$xpixel;
 	$lastypixel=$ypixel;
 	$i++;
-	if($label=="yes") {imagettftext($im, 7, 0, $xpixel+3, $ypixel+4, $blue, $reg, $i);}
+	if($label=="yes") {imagettftext($im, 7*$scalefactor, 0, $xpixel+3*$scalefactor, $ypixel+4*$scalefactor, $blue, $reg, $i);}
 }
 
 $i=0;
 $lastxpixel=0;
 $lastypixel=0;
 
-imagesetthickness($im,2);
+imagesetthickness($im,2*$scalefactor);
 while($i<count($xpoints)){
 	$xvalue=$xpoints[$i];
 	$yvalue=$fitted[$i];
-	$xpixel=60+($width-120)*($xvalue-$minxtick)/($maxxtick-$minxtick);
-	$ypixel=$height-60-($height-120)*($yvalue-$minytick)/($maxytick-$minytick);
+	$xpixel=60*$scalefactor+($width-120*$scalefactor)*($xvalue-$minxtick)/($maxxtick-$minxtick);
+	$ypixel=$height-60*$scalefactor-($height-120*$scalefactor)*($yvalue-$minytick)/($maxytick-$minytick);
 	if($i>0){
 		imageline($im,$lastxpixel,$lastypixel,$xpixel,$ypixel,$aqua);
 	}
@@ -446,7 +447,7 @@ while($i<count($xpoints)){
 	$lastypixel=$ypixel;
 	$i++;
 }
-imagesetthickness($im,1);
+imagesetthickness($im,1*$scalefactor);
 
 $i=0;
 $lastxpixel=0;
@@ -454,41 +455,28 @@ $lastypixel=0;
 while($i<count($xpoints)){
 	$xvalue=$xpoints[$i];
 	$yvalue=$ypoints[$i];
-	$xpixel=60+($width-120)*($xvalue-$minxtick)/($maxxtick-$minxtick);
-	$ypixel=$height-60-($height-120)*($yvalue-$minytick)/($maxytick-$minytick);
+	$xpixel=60*$scalefactor+($width-120*$scalefactor)*($xvalue-$minxtick)/($maxxtick-$minxtick);
+	$ypixel=$height-60*$scalefactor-($height-120*$scalefactor)*($yvalue-$minytick)/($maxytick-$minytick);
 	if($i>0){
 		imageline($im,$lastxpixel,$lastypixel,$xpixel,$ypixel,$black);
 	}
 	$lastxpixel=$xpixel;
 	$lastypixel=$ypixel;
 	$i++;
-	if($label=="yes") {imagettftext($im, 7, 0, $xpixel+3, $ypixel+4, $blue, $reg, $i);}
+	if($label=="yes") {imagettftext($im, 7*$scalefactor, 0, $xpixel+3*$scalefactor, $ypixel+4*$scalefactor, $blue, $reg, $i);}
 }
 
 $i=0;
 $dlastxpixel=$lastxpixel;
 $dlastypixel=$lastypixel;
 
-while($i<count($forecasts)){
-	$xvalue=$forecasts[$i][0];
-	$yvalue=$forecasts[$i][1];
-	$xpixel=60+($width-120)*($xvalue-$minxtick)/($maxxtick-$minxtick);
-	$ypixel=$height-60-($height-120)*($yvalue-$minytick)/($maxytick-$minytick);
-	imagesetthickness($im,2);
-	imageline($im,$lastxpixel,$lastypixel,$xpixel,$ypixel,$red);
-	imagesetthickness($im,1);
-	$lastxpixel=$xpixel;
-	$lastypixel=$ypixel;
-	$i++;
-}
-
 $errorband=array($dlastxpixel,$dlastypixel);
 $i=0;
 while($i<count($forecastsmin)){
 	$xvalue=$forecasts[$i][0];
 	$yvalue=$forecastsmin[$i];
-	$xpixel=60+($width-120)*($xvalue-$minxtick)/($maxxtick-$minxtick);
-	$ypixel=$height-60-($height-120)*($yvalue-$minytick)/($maxytick-$minytick);
+	$xpixel=60*$scalefactor+($width-120*$scalefactor)*($xvalue-$minxtick)/($maxxtick-$minxtick);
+	$ypixel=$height-60*$scalefactor-($height-120*$scalefactor)*($yvalue-$minytick)/($maxytick-$minytick);
 	array_push($errorband,$xpixel,$ypixel);
 	$i++;
 }
@@ -499,19 +487,32 @@ while($i>0){
 	$i--;
 	$xvalue=$forecasts[$i][0];
 	$yvalue=$forecastsmax[$i];
-	$xpixel=60+($width-120)*($xvalue-$minxtick)/($maxxtick-$minxtick);
-	$ypixel=$height-60-($height-120)*($yvalue-$minytick)/($maxytick-$minytick);
+	$xpixel=60*$scalefactor+($width-120*$scalefactor)*($xvalue-$minxtick)/($maxxtick-$minxtick);
+	$ypixel=$height-60*$scalefactor-($height-120*$scalefactor)*($yvalue-$minytick)/($maxytick-$minytick);
 	array_push($errorband,$xpixel,$ypixel);
-}	
+}
 
-imagefilledpolygon($im,$errorband,count($errorband)/2,$red75); 	
+imagefilledpolygon($im,$errorband,count($errorband)/2,$red75);
+
+while($i<count($forecasts)){
+	$xvalue=$forecasts[$i][0];
+	$yvalue=$forecasts[$i][1];
+	$xpixel=60*$scalefactor+($width-120*$scalefactor)*($xvalue-$minxtick)/($maxxtick-$minxtick);
+	$ypixel=$height-60*$scalefactor-($height-120*$scalefactor)*($yvalue-$minytick)/($maxytick-$minytick);
+	imagesetthickness($im,2*$scalefactor);
+	imageline($im,$lastxpixel,$lastypixel,$xpixel,$ypixel,$red);
+	imagesetthickness($im,1*$scalefactor);
+	$lastxpixel=$xpixel;
+	$lastypixel=$ypixel;
+	$i++;
+}
 
 
-imageline($im,60,60,80,60,$black);imagettftext($im, 10, 0, 85, 65, $black, $reg, "Raw Data");
-imagesetthickness($im,2);
-imageline($im,60,75,80,75,$aqua);imagettftext($im, 10, 0, 85, 80, $black, $reg, "Historic Predictions");
-imagefilledpolygon($im,array(60,85,80,85,80,95,60,95),4,$red75);imageline($im,60,90,80,90,$red);imagettftext($im, 10, 0, 85, 95, $black, $reg, "Predictions");
-imagesetthickness($im,1);
+imageline($im,60*$scalefactor,60*$scalefactor,80*$scalefactor,60*$scalefactor,$black);imagettftext($im, 10*$scalefactor, 0, 85*$scalefactor, 65*$scalefactor, $black, $reg, "Raw Data");
+imagesetthickness($im,2*$scalefactor);
+imageline($im,60*$scalefactor,75*$scalefactor,80*$scalefactor,75*$scalefactor,$aqua);imagettftext($im, 10*$scalefactor, 0, 85*$scalefactor, 80*$scalefactor, $black, $reg, "Historic Predictions");
+imagefilledpolygon($im,array(60*$scalefactor,85*$scalefactor,80*$scalefactor,85*$scalefactor,80*$scalefactor,95*$scalefactor,60*$scalefactor,95*$scalefactor),4,$red75);imageline($im,60*$scalefactor,90*$scalefactor,80*$scalefactor,90*$scalefactor,$red);imagettftext($im, 10*$scalefactor, 0, 85*$scalefactor, 95*$scalefactor, $black, $reg, "Predictions");
+imagesetthickness($im,1*$scalefactor);
 
 include('labelgraph.php');
 
@@ -520,7 +521,13 @@ $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGH
 // output png and save
 imagepng($im,'imagetemp/TimeSeriesForecasts-'.$randomString.'.png');
 
-echo "<img style='position:absolute;top:0px;left:0px;' src='imagetemp/TimeSeriesForecasts-".$randomString.".png' />";
+
+$extrastyle="";
+if($scalefactor==5){
+	$extrastyle='width:100%;height:100%;';
+}
+
+echo "<img style='position:absolute;top:0px;left:0px;$extrastyle' src='imagetemp/TimeSeriesForecasts-".$randomString.".png' />";
 ?>
 
 	<script type="text/javascript">
@@ -543,10 +550,10 @@ imagedestroy($im);
 $path = 'imagetemp/';
 if ($handle = opendir($path)) {
 	while (false !== ($file = readdir($handle))) {
-		if ((time()-filectime($path.$file)) > 1800) {  
+		if ((time()-filectime($path.$file)) > 1800) {
 			if (is_file($path.$file)) {
 				unlink($path.$file);
-			}	
+			}
 		}
 	}
 }
