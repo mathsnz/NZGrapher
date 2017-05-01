@@ -1239,7 +1239,7 @@ function horaxis(ctx,x1,x2,y,min,max,step){
   fontsize = 13*scalefactor;
 	ctx.font = fontsize+"px Roboto";
 	ctx.textAlign="center";
-	var curx = parseFloat(min).toPrecision(8);
+	var curx = parseFloat(min.toPrecision(8));
 	while (curx<=max){
 		var xpixel = convertvaltopixel(curx,min,max,x1,x2);
 		line(ctx,xpixel,y,xpixel,add(y,6*scalefactor));
@@ -1256,7 +1256,7 @@ function vertaxis(ctx,y1,y2,x,min,max,step){
   fontsize = 13*scalefactor;
 	ctx.font = fontsize+"px Roboto";
 	ctx.textAlign="right";
-	var cury = parseFloat(min).toPrecision(8);
+	var cury = parseFloat(min.toPrecision(8));
 	while (cury<=max){
 		var ypixel = convertvaltopixel(cury,min,max,y2,y1);
 		line(ctx,x,ypixel,add(x,-6*scalefactor),ypixel);
@@ -1281,7 +1281,7 @@ function rvertaxis(ctx,y1,y2,x,min,max,step){
   fontsize = 13*scalefactor;
 	ctx.font = fontsize+"px Roboto";
 	ctx.textAlign="left";
-	var cury = parseFloat(min).toPrecision(8);
+	var cury = parseFloat(min.toPrecision(8));
 	while (cury<=max){
 		var ypixel = convertvaltopixel(cury,min,max,y2,y1);
 		line(ctx,x,ypixel,add(x,6*scalefactor),ypixel);
