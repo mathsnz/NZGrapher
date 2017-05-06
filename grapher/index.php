@@ -70,14 +70,6 @@ if (screen.availWidth < 760)
     mvp.setAttribute('content','width=1024');
 }
 </script>
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=1719125018325234";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
 <div id=tour onclick="document.getElementById('tour').style.display='none';document.cookie='overlay=none';" style='display:none';>
 <table style='position:absolute;width:80%;height:80%;top:10%;left:10%;'>
 	<tr><td style='vertical-align:top;text-align:left;'>
@@ -542,7 +534,6 @@ if(substr($dataset,0,6)!="SECURE"){
 				<td style='width:50%;padding:10px;vertical-align:top;'>
 					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Been here before?</b></span><br>
 					I'm just a normal maths teacher, this is all done in my spare time, and I don't get anything out of it apart from seeing it being used... NZGrapher is provided <b>free of charge</b>... but if you want to <b><a href='http://www.mathsnz.com/donate.html' target='_blank'>donate</a></b> to help cover costs that'd be great, like us on <a href='https://www.facebook.com/mathsnz' target='_blank'>facebook</a>.<br>
-					<div style='border:none;position:absolute;top:270px;right:10px;' class="fb-like" data-href="//www.facebook.com/mathsnz" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
 					<br>
 					Something not working or have an idea to make NZGrapher better... please <a href='//www.mathsnz.com/contact.html' target='_blank'>let me know</a>.<br>
 			</tr>
@@ -556,6 +547,7 @@ if(substr($dataset,0,6)!="SECURE"){
 
 		?>
 		<small><br>NZGrapher uses cookies... if you're not happy with this don't use this website.</small>
+		<iframe id=welcomeframe src='https://server.mathsnz.com/nzgrapherwelcome.php?server=<?php echo urlencode($_SERVER['SERVER_NAME']); ?>' scrolling='no'></iframe>
 	</div>
 </div>
 <div id=graphdiv>
