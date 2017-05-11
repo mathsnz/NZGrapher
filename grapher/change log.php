@@ -76,7 +76,10 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
-	<b>2017-05-07</b><br>
+	<b>2017-05-12</b><br>
+	- Bug Fixes.<br>
+	<br>
+	<b>2017-05-11</b><br>
 	- Bug Fixes.<br>
 	- Feedback Module.<br>
 	- Grid Lines.<br>
