@@ -8,6 +8,7 @@ function newtimeseries(){
 	$('#yvar').show();
 	$('#zvar').show();
 	$('#differentaxisshow').show();
+	$('#gridlinesshow').show();
 
 	var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
@@ -179,10 +180,10 @@ function newtimeseries(){
 			var maxztick=minmaxstep[1];
 			var zstep=minmaxstep[2];
 
-			rvertaxis(ctx,gtop,gbottom,right+10*scalefactor,minztick,maxztick,zstep);
+			rvertaxis(ctx,gtop,gbottom,right+10*scalefactor,minztick,maxztick,zstep,left);
 
 			zshiftforseasonal=Math.ceil((maxztick+minztick)/2/zstep)*zstep;
-			rvertaxis(ctx,gtop,gbottom,right+width/0.7*0.3+10*scalefactor,minztick-zshiftforseasonal,maxztick-zshiftforseasonal,zstep);
+			rvertaxis(ctx,gtop,gbottom,right+width/0.7*0.3+10*scalefactor,minztick-zshiftforseasonal,maxztick-zshiftforseasonal,zstep,seasonleft);
 		} else {
 			for (var index in zpoints){
 				pointsforminmax.push(zpoints[index]);
@@ -198,10 +199,10 @@ function newtimeseries(){
 	var maxytick=minmaxstep[1];
 	var ystep=minmaxstep[2];
 
-	vertaxis(ctx,gtop,gbottom,left-10*scalefactor,minytick,maxytick,ystep);
+	vertaxis(ctx,gtop,gbottom,left-10*scalefactor,minytick,maxytick,ystep,right+10*scalefactor);
 	if(seasonal=="yes"){
 		shiftforseasonal=Math.ceil((maxytick+minytick)/2/ystep)*ystep;
-		vertaxis(ctx,gtop,gbottom,right+80*scalefactor,minytick-shiftforseasonal,maxytick-shiftforseasonal,ystep);
+		vertaxis(ctx,gtop,gbottom,right+80*scalefactor,minytick-shiftforseasonal,maxytick-shiftforseasonal,ystep,seasonright+10*scalefactor);
 		ctx.lineWidth = 1*scalefactor;
 		ctx.strokeStyle = 'rgba(0,0,0,1)';
 		seasonleft=right+90*scalefactor;
@@ -429,6 +430,7 @@ function newtimeseriesrecomp(){
 	$('#startfinishshow').show();
 	$('#xvar').show();
 	$('#yvar').show();
+	$('#gridlinesshow').show();
 
 	var canvas = document.getElementById('myCanvas');
   var ctx = canvas.getContext('2d');

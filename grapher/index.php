@@ -644,6 +644,9 @@ if(substr($dataset,0,6)!="SECURE"){
 			<span id=startfinishshow>
 				<input type="checkbox" onclick="updategraph();" id="startfinish" name="startfinish" value="yes"> Start / End Points<br>
 			</span>
+			<span id=gridlinesshow>
+				<input type="checkbox" onclick="updategraph();" id="gridlines" name="gridlines" value="yes"> Gridlines<br>
+			</span>
 			<span id=addmultshow>
 				Type:<br>
 				<select onchange="updategraph();" id="addmult" name="addmult" value="Additive">
@@ -660,7 +663,7 @@ if(substr($dataset,0,6)!="SECURE"){
 			<span style='display:inline-block;width:50px;'>x-axis: </span><input type="text" id="xaxis" name="xaxis" value="X Axis Title"><br>
 			<span style='display:inline-block;width:50px;'>y-axis: </span><input type="text" id="yaxis" name="yaxis" value="Y Axis Title"><br>
 			<span id=colorname><span style='display:inline-block;width:50px;'>Colour: </span><input type="text" id="colorlabel" name="colorlabel" value="Color Label"><br></span>
-			<span style='display:inline-block;width:50px;'>Size: </span><select id="standardsize" name="standardsize" onchange="updategraph()" style='width:140px;height:19px;'>
+			<span style='display:inline-block;width:50px;'>Size: </span><select id="standardsize" name="standardsize" onchange="updategraph()" style='width:120px;height:19px;'>
 				<option>Auto</option>
 				<?php
 				//<option>Auto - High Res</option>
@@ -673,7 +676,7 @@ if(substr($dataset,0,6)!="SECURE"){
 </table>
 <div id=sizediv><span id=pointsizename>Point Size:</span> <input id=size type="range" min=3 max=19 step=2 value=7	onchange="updategraph()"></div>
 <div id=transdiv>Transparency: <input id=trans type="range" min=0 max=100 step=10 value=50 onchange="updategraph()"></div>
-<div id=update>
+<div id=updater>
 <?php
 if(isset($_GET['dev'])){
 	?>
@@ -683,6 +686,7 @@ if(isset($_GET['dev'])){
 }
 ?>
 <span onclick="moreoptions()">More Options</span> <span onclick="updategraph()">Update Graph</span></div>
+<div class=button style='position:absolute;top:5px;right:5px;' onclick="feedback()">Send Feedback</div>
 </div>
 <div id=originaldataholder style="display:none;">
 </div>
@@ -797,12 +801,38 @@ if(isset($_GET['dev'])){
 	</div>
 </div>
 <div id=sites>
-<a href='//www.jake4maths.com/grapher' style='color:#000;'>NZGrapher</a>
-<a href='//www.mathsnz.com'>MathsNZ</a>
-<a href='//students.mathsnz.com'>MathsNZ Students</a>
-<a href='//www.jake4maths.com/generator'>MathsNZ Question Generator</a>
-<a href='//secure.mathsnz.com'>MathsNZ Secure</a>
-<a href='https://jakewills.github.io'>All Projects</a>
+<a href='https://www.jake4maths.com/grapher/' style='color:#000;'>NZGrapher</a>
+<a href='https://www.mathsnz.com/'>MathsNZ</a>
+<a href='https://students.mathsnz.com/'>MathsNZ Students</a>
+<a href='https://www.jake4maths.com/generator/'>MathsNZ Question Generator</a>
+<a href='https://secure.mathsnz.com/'>MathsNZ Secure</a>
+<a href='https://www.jpw.nz/'>All Projects</a>
 </div>
+<script type="text/javascript" src="./html2canvas.js"></script>
+<script type="text/javascript">
+  function feedback(){
+    $('#feedbackdiv').remove();
+		$('body').append("<div id=feedbackdiv style='border-radius:3px;text-align:center;background-color:#fff;box-shadow: 0px 0px 2px #aaa;position:fixed;top:50%;left:50%;width:500px;margin-left:-260px;padding:10px;margin-top:-160px;height:300px;border:1px solid #ccc;z-index:999;'><div style='position:absolute;top:1px;right:5px;cursor:pointer;border:none;' onclick='closefeedbackbox()'>&#10006;</div><b>Send Feedback</b><br><br><form method=post target='feedbackframe' action='https://hosted.assay.co.nz/feedback/grapher.php' onsubmit='this.submit();$(\"#feedbackdiv\").hide();return false;'><input type=hidden name=feedbackleft id=feedbackleft><input type=hidden name=feedbackvariable id=feedbackvariable><input type=hidden name=feedbackcontrols id=feedbackcontrols><input type=hidden name=feedbackgraphdiv id=feedbackgraphdiv><input name=server type=hidden value=<?php echo $actual_link; ?>><textarea placeholder=Feedback style='width:500px;height:150px;' name=feedback></textarea><br><br><input style='width:500px;' name=email placeholder='put your email here if you are happy to be contacted about this.'><br><br><input type=submit class=button value='Send Feedback'></form><iframe src='' style='display:none;' name=feedbackframe></iframe></div>");
+		html2canvas(document.getElementById('left')).then(function(canvas) {
+        img = canvas.toDataURL();
+				$('#feedbackleft').val(img);
+    });
+		html2canvas(document.getElementById('variable')).then(function(canvas) {
+				img = canvas.toDataURL();
+				$('#feedbackvariable').val(img);
+		});
+		html2canvas(document.getElementById('controls')).then(function(canvas) {
+				img = canvas.toDataURL();
+				$('#feedbackcontrols').val(img);
+		});
+		html2canvas(document.getElementById('graphdiv')).then(function(canvas) {
+				img = canvas.toDataURL();
+				$('#feedbackgraphdiv').val(img);
+		});
+  }
+  function closefeedbackbox(){
+    $('#feedbackdiv').remove();
+  }
+</script>
 </body>
 </html>

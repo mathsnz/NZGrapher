@@ -1,5 +1,12 @@
-body {
+body, textarea, input {
 	font-family: 'Roboto', sans-serif;
+}
+
+textarea, input{
+	font-size:11px;
+}
+
+body{
 	overflow:hidden;
 }
 
@@ -213,7 +220,7 @@ td.button {
 	width:20%;
 }
 
-#tour table td span, #helper span, #update span, a.button{
+#tour table td span, #helper span, #updater span, a.button, .button{
 	background-color:rgba(0,100,200,0.85);
 	display:inline-block;
 	padding:10px;
@@ -221,10 +228,12 @@ td.button {
 	color:#fff;
 	text-align:center;
 	text-decoration:none;
+	cursor: pointer;
+	border:none;
 }
 
-#update {
-	position:absolite;
+#updater {
+	position:absolute;
 	bottom:5px;
 	right:5px;
 	cursor:pointer;
@@ -238,7 +247,7 @@ td.button {
 	cursor:pointer;
 	border:none;
 }
-#sum, #reg, #meandotshow, #startfinishshow, #differentaxisshow, #for, #boxplotshow, #regshow, #intervalshow, #labelshow, #colorname, #arrowsshow , #quadraticshow, #cubicshow, #expshow, #logshow, #powshow,#regtypeshow, #jittershow, #yxshow, #highboxplotshow, #btypeshow, #addmultshow, #longtermtrendshow, #boxnowhiskershow, #boxnooutliershow, #seasonalshow{
+#sum, #reg, #meandotshow, #startfinishshow, #gridlinesshow, #differentaxisshow, #for, #boxplotshow, #regshow, #intervalshow, #labelshow, #colorname, #arrowsshow , #quadraticshow, #cubicshow, #expshow, #logshow, #powshow,#regtypeshow, #jittershow, #yxshow, #highboxplotshow, #btypeshow, #addmultshow, #longtermtrendshow, #boxnowhiskershow, #boxnooutliershow, #seasonalshow{
 	display:none;
 }
 #regtypeshow, #btypeshow, #addmultshow{
@@ -252,9 +261,13 @@ input, select{
 	border:1px solid #ccc;
 }
 
+input[type=text]{
+	width:120px;
+}
+
 #sizediv {
 	position:absolute;
-	right:3px;
+	left:313px;
 	top:3px;
 	border:none;
 	font-size:12px;
@@ -262,7 +275,7 @@ input, select{
 }
 #transdiv {
 	position:absolute;
-	right:3px;
+	left:313px;
 	top:27px;
 	border:none;
 	font-size:12px;

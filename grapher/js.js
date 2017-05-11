@@ -652,6 +652,7 @@ function graphchange(obj){
 	document.getElementById('addmultshow').style.display='none';
 	document.getElementById('longtermtrendshow').style.display='none';
 	document.getElementById('startfinishshow').style.display='none';
+	document.getElementById('gridlinesshow').style.display='none';
 	document.getElementById('seasonalshow').style.display='none';
 	document.getElementById('boxnowhiskershow').style.display='none';
 	document.getElementById('boxnooutliershow').style.display='none';
@@ -1232,7 +1233,8 @@ function line(ctx,x1,y1,x2,y2){
 	ctx.stroke();
 }
 
-function horaxis(ctx,x1,x2,y,min,max,step){
+function horaxis(ctx,x1,x2,y,min,max,step,gridlinetop){
+  if (typeof gridlinetop === 'undefined') { gridlinetop = 50; }
 	ctx.fillStyle = '#000000';
 	ctx.lineWidth = 1*scalefactor;
 	line(ctx,add(x1,-10*scalefactor),y,add(x2,10*scalefactor),y);
@@ -1240,26 +1242,44 @@ function horaxis(ctx,x1,x2,y,min,max,step){
 	ctx.font = fontsize+"px Roboto";
 	ctx.textAlign="center";
 	var curx = parseFloat(min.toPrecision(8));
+  gridlines = false;
+  if($('#gridlines').is(':checked')){
+    gridlines=true;
+  }
 	while (curx<=max){
 		var xpixel = convertvaltopixel(curx,min,max,x1,x2);
 		line(ctx,xpixel,y,xpixel,add(y,6*scalefactor));
 		ctx.fillText(curx,xpixel,add(y,18*scalefactor));
+    if(gridlines){
+      ctx.strokeStyle="#ddd";
+      line(ctx,xpixel,gridlinetop,xpixel,y);
+      ctx.strokeStyle="#000";
+    }
 		curx=parseFloat(add(curx,step).toPrecision(8));
 	}
-
 }
 
-function vertaxis(ctx,y1,y2,x,min,max,step){
+function vertaxis(ctx,y1,y2,x,min,max,step, gridlinetop){
+  if (typeof gridlinetop === 'undefined') { gridlinetop = $('#graphdiv').width()-50; }
 	ctx.fillStyle = '#000000';
 	ctx.lineWidth = 1*scalefactor;
 	line(ctx,x,add(y1,-10*scalefactor),x,add(y2,10*scalefactor));
   fontsize = 13*scalefactor;
 	ctx.font = fontsize+"px Roboto";
 	ctx.textAlign="right";
+  gridlines = false;
+  if($('#gridlines').is(':checked')){
+    gridlines=true;
+  }
 	var cury = parseFloat(min.toPrecision(8));
 	while (cury<=max){
 		var ypixel = convertvaltopixel(cury,min,max,y2,y1);
 		line(ctx,x,ypixel,add(x,-6*scalefactor),ypixel);
+    if(gridlines){
+      ctx.strokeStyle="#ddd";
+  		line(ctx,gridlinetop,ypixel,x,ypixel);
+      ctx.strokeStyle="#000";
+    }
 		fsize=13*scalefactor;
 		ctx.font = fsize+"px Roboto";
 		width = ctx.measureText(cury).width;
@@ -1274,17 +1294,26 @@ function vertaxis(ctx,y1,y2,x,min,max,step){
 
 }
 
-function rvertaxis(ctx,y1,y2,x,min,max,step){
+function rvertaxis(ctx,y1,y2,x,min,max,step,gridlinetop){
+  if (typeof gridlinetop === 'undefined') { gridlinetop = 50; }
 	ctx.fillStyle = '#000000';
 	ctx.lineWidth = 1*scalefactor;
 	line(ctx,x,add(y1,-10*scalefactor),x,add(y2,10*scalefactor));
   fontsize = 13*scalefactor;
 	ctx.font = fontsize+"px Roboto";
 	ctx.textAlign="left";
+  if($('#gridlines').is(':checked')){
+    gridlines=true;
+  }
 	var cury = parseFloat(min.toPrecision(8));
 	while (cury<=max){
 		var ypixel = convertvaltopixel(cury,min,max,y2,y1);
 		line(ctx,x,ypixel,add(x,6*scalefactor),ypixel);
+    if(gridlines){
+      ctx.strokeStyle="#ddd";
+  		line(ctx,gridlinetop,ypixel,x,ypixel);
+      ctx.strokeStyle="#000";
+    }
 		fsize=13*scalefactor;
 		ctx.font = fsize+"px Roboto";
 		width = ctx.measureText(cury).width;
@@ -1578,6 +1607,7 @@ function newdotplot(){
 	$('#color').show();
 	$('#colorname').show();
 	$('#greyscaleshow').show();
+	$('#gridlinesshow').show();
 
 	var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
@@ -2059,6 +2089,7 @@ function bootstrap(mm){
 	$('#interval').prop('checked', false);
 	$('#intervallim').prop('checked', false);
 	$('#regression').prop('checked', false);
+	$('#gridlinesshow').show();
 
 	if(mm=='mean'){
 		$('#boxplot').prop('checked', false);

@@ -78,6 +78,11 @@ To Do List
 ?>
 	<b>2017-05-07</b><br>
 	- Bug Fixes.<br>
+	- Feedback Module.<br>
+	- Grid Lines.<br>
+	<br>
+	<b>2017-05-07</b><br>
+	- Bug Fixes.<br>
 	<br>
 	<b>2017-05-01</b><br>
 	- Bug Fixes.<br>
