@@ -202,11 +202,11 @@ function newtimeseries(){
 	vertaxis(ctx,gtop,gbottom,left-10*scalefactor,minytick,maxytick,ystep,right+10*scalefactor);
 	if(seasonal=="yes"){
 		shiftforseasonal=Math.ceil((maxytick+minytick)/2/ystep)*ystep;
+		seasonright=width/0.7*0.3+right;
+		seasonleft=right+90*scalefactor;
 		vertaxis(ctx,gtop,gbottom,right+80*scalefactor,minytick-shiftforseasonal,maxytick-shiftforseasonal,ystep,seasonright+10*scalefactor);
 		ctx.lineWidth = 1*scalefactor;
 		ctx.strokeStyle = 'rgba(0,0,0,1)';
-		seasonleft=right+90*scalefactor;
-		seasonright=width/0.7*0.3+right;
 		ctx.rect(seasonleft-10*scalefactor,gtop-10*scalefactor,seasonright-seasonleft+20*scalefactor,gbottom-gtop+20*scalefactor);
 		ctx.stroke();
 		horaxis(ctx,seasonleft,seasonright,add(gbottom,10*scalefactor),1,seasons,1);
