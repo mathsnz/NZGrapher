@@ -283,7 +283,7 @@ $(function(){
 			})
 			var allvals=values;
 			uniquevalues=unique( values );
-			if(uniquevalues.length<10){
+			if(uniquevalues.length<500){
 				uniquevalues.sort();
 				var value="";
 				$.each(uniquevalues, function( index, val ) {
