@@ -76,6 +76,9 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2017-05-26</b><br>
+	- Bug Fixes.<br>
+	<br>
 	<b>2017-05-23</b><br>
 	- Big increase to the limit on the number of different fields you can sample on.<br>
 	<br>

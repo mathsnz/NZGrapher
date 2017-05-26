@@ -180,7 +180,7 @@ $(function(){
 		$ ("#sampling").hide();
 		window.setTimeout(function(){
 		var orderby = $('#orderby option:selected').text();
-		var index = $("#data td:contains('"+orderby+"')").filter(function() {
+		var index = $("#data td:contains('"+orderby.split("'")[0]+"')").filter(function() {
 					return $(this).text() === orderby;
 				}).index() + 1;
 		var num = $('[id^="order-"]').length;
@@ -190,7 +190,7 @@ $(function(){
 			ordername = ordername.slice(6);
 			if(ordername!=''){
 				//$("#data td:nth-child(" + index + "):contains('"+ordername+"')").html('<div contenteditable="true">'+ordernum+'. '+ordername+'<br></div>');
-				$("#data td:nth-child(" + index + "):contains('"+ordername+"')").filter(function() {
+				$("#data td:nth-child(" + index + "):contains('"+ordername.split("'")[0]+"')").filter(function() {
 					return $(this).text() === ordername;
 				}).html('<div contenteditable="true">'+ordernum+'. '+ordername+'<br></div>');
 			}
@@ -344,7 +344,7 @@ $(function(){
 			$("#sampling").hide();
 		} else {
 			var sampleon = $('#sampleon option:selected').text();
-			var index = $("#data td:contains('"+sampleon+"')").filter(function() {
+			var index = $("#data td:contains('"+sampleon.split("'")[0]+"')").filter(function() {
 					return $(this).text() === sampleon;
 				}).index() + 1;
 			var num = $('[id^="sample-"]').length;
@@ -352,7 +352,7 @@ $(function(){
 				var  samplesize = $('[id^="sample-"]')[i].value;
 				var  samplename = $('[id^="sample-"]')[i].id;
 				samplename = samplename.slice(7);
-				var rows = $("#data td:nth-child(" + index + "):contains('"+samplename+"')").filter(function() {
+				var rows = $("#data td:nth-child(" + index + "):contains('"+samplename.split("'")[0]+"')").filter(function() {
 					return $(this).text() === samplename;
 				});
 				var parentrows = rows.parent();
@@ -398,7 +398,7 @@ $(function(){
 			return false;
 		}
 		$("#filterdiv").hide();
-		var index = $("#data td:contains('"+filterby+"')").filter(function() {
+		var index = $("#data td:contains('"+filterby.split("'")[0]+"')").filter(function() {
 				return $(this).text() === filterby;
 			}).index() - 1;
 		var a=0;
@@ -479,10 +479,10 @@ $(function(){
 		var type = encodeURIComponent($('#newvarcom option:selected').text());
 		var var1 = $('#newvar1 option:selected').text();
 		var var2 = $('#newvar2 option:selected').text();
-		var index1 = $("#data td:contains('"+var1+"')").filter(function() {
+		var index1 = $("#data td:contains('"+var1.split("'")[0]+"')").filter(function() {
 			return $(this).text() === var1;
 		}).index() - 1;
-		var index2 = $("#data td:contains('"+var2+"')").filter(function() {
+		var index2 = $("#data td:contains('"+var2.split("'")[0]+"')").filter(function() {
 			return $(this).text() === var2;
 		}).index() - 1;
 		var a=0;
@@ -518,7 +518,7 @@ $(function(){
 		var a = parseFloat($('#newvarca').val());
 		var as = encodeURIComponent($('#newvarcas option:selected').text());
 		var b = parseFloat($('#newvarcb').val());
-		var index = $("#data td:contains('"+cx+"')").filter(function() {
+		var index = $("#data td:contains('"+cx.split("'")[0]+"')").filter(function() {
 			return $(this).text() === cx;
 		}).index() - 1;
 		var i=0;
@@ -603,6 +603,7 @@ $(function(){
 		document.getElementById("data").innerHTML = newtable;
 		$('#data td div').attr('contenteditable','true');
 		$('#originaldataholder').html($('#data').html());
+    $('#type').val('about');
 		updatebox();
 	});
 
@@ -2018,8 +2019,17 @@ function checkforts(xpoints){
 	if($.isNumeric(checker[0]) && $.isNumeric(checker[1])){
 		return '24';
 	}
+	checker=xpoints[0].split('C')
+	if($.isNumeric(checker[0]) && $.isNumeric(checker[1])){
+    s=0;
+    for (var j in xpoints){
+      ts = xpoints[j].split('C')[1]
+      if(ts>s){s=ts};
+    }
+    return s;
+	}
 
-	return "Error: You must select a time series variable for variable 1<br> eg: 2001 or 2001M01 or 2001Q1 or 2001D1 or 2001W1 or 2001H01";
+	return "Error: You must select a time series variable for variable 1<br> eg: 2001 or 2001M01 or 2001Q1 or 2001D1 or 2001W1 or 2001H01 or 2001C05";
 }
 
 function maketsxpoints(xpoints,seasons){
@@ -2047,6 +2057,10 @@ function maketsxpoints(xpoints,seasons){
 	checker=xpoints[0].split('H')
 	if($.isNumeric(checker[0]) && $.isNumeric(checker[1])){
 		split="H"
+	}
+	checker=xpoints[0].split('C')
+	if($.isNumeric(checker[0]) && $.isNumeric(checker[1])){
+		split="C"
 	}
 
 

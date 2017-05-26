@@ -1,4 +1,4 @@
-<?php include 'version.php'; ?>
+<?php include './version.php'; ?>
 <html v=<?php echo $v; ?>>
 <head>
 	<script src="./jquery-1.11.1.min.js"></script>
@@ -341,6 +341,7 @@ $first_key = key($res);
 $del = $delimiters[$first_key];
 
 if(isset($csv_data)){
+	$csv_data = preg_replace('/\r\n|\n\r|\n|\r/', '\n', $csv_data);
 	$lines = explode("\n", $csv_data);
 	foreach ($lines as $line) {
 		$line = str_getcsv($line);
