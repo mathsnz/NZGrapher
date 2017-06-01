@@ -39,6 +39,14 @@ set_time_limit(0);
 
 $latest = floatval(file_get_contents('http://raw.githubusercontent.com/mathsnz/NZGrapher/master/grapherversion.php'));
 
+if(file_exists('./version.php')){
+	include './version.php';
+	echo "Current Version: $v<br>";
+} else {
+	echo "Not Currently Installed<br>";
+	$v=0;
+}
+
 if(isset($_POST['password']) || isset($_POST['yup']) || isset($_GET['password'])){
 	include 'password.php';
 	if($password==$_POST['password'] || file_exists('./windowsapp.php') || ($password==$_GET['password'] && $latest>$v)){
@@ -58,13 +66,6 @@ if(isset($_POST['password']) || isset($_POST['yup']) || isset($_GET['password'])
 	}
 }
 
-if(file_exists('./version.php')){
-	include './version.php';
-	echo "Current Version: $v<br>";
-} else {
-	echo "Not Currently Installed<br>";
-	$v=0;
-}
 if(!extension_loaded('zip')){
 	$write="no";
 	$error = "to enable the zip extension";
