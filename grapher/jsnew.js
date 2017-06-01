@@ -183,6 +183,7 @@ function newtimeseries(){
 			rvertaxis(ctx,gtop,gbottom,right+10*scalefactor,minztick,maxztick,zstep,left);
 
 			zshiftforseasonal=Math.ceil((maxztick+minztick)/2/zstep)*zstep;
+			seasonleft=right+90*scalefactor;
 			rvertaxis(ctx,gtop,gbottom,right+width/0.7*0.3+10*scalefactor,minztick-zshiftforseasonal,maxztick-zshiftforseasonal,zstep,seasonleft);
 		} else {
 			for (var index in zpoints){

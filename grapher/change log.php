@@ -76,6 +76,9 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2017-06-02</b><br>
+	- Bug Fixes.<br>
+	<br>
 	<b>2017-05-26</b><br>
 	- Bug Fixes.<br>
 	<br>
