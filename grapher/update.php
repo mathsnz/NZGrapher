@@ -49,7 +49,7 @@ if(file_exists('./version.php')){
 
 if(isset($_POST['password']) || isset($_POST['yup']) || isset($_GET['password'])){
 	include 'password.php';
-	if($password==$_POST['password'] || file_exists('./windowsapp.php') || ($password==$_GET['password'] && $latest>$v)){
+	if($password==$_POST['password'] || file_exists('./windowsapp.php') || $password==$_GET['password']){
 		file_put_contents("Tmpfile.zip", fopen("http://raw.githubusercontent.com/mathsnz/NZGrapher/master/grapher.zip", 'r'));
 
 		$zip = new ZipArchive;
