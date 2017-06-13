@@ -9,8 +9,8 @@
 			col = col || "na";
 			error = error || "na";
 			$.post( "//tracking.jake4maths.com/graphererror.php", { msg: encodeURIComponent(msg), url: encodeURIComponent(url), line: encodeURIComponent(line), col: encodeURIComponent(col), error: encodeURIComponent(error) } );
-			console.log('there was an error');
-			return false;
+			console.log('there was an error - '+msg);
+			return true;
 	  }
 	</script>
 	<title>NZGrapher</title>
@@ -420,7 +420,7 @@ echo "\n</table></body></html>";
 	<option value=" "> </option>
 </select><td>Graph Type: <td>
 <select style='width:120px' id=type onChange="graphchange(this);">
-	<option value='about'>About</option>
+	<option value='newabout'>About</option>
 	<option value='graphs'>Graphs Information</option>
 	<option disabled></option>
 	<option value='pairs plot'>Pairs Plot</option>
@@ -428,6 +428,7 @@ echo "\n</table></body></html>";
 	<option value='newdotplot'>Dot Plot (and Box and Whisker)</option>
 	<option value='bar and area graph'>Bar Graph (and Area Graph)</option>
 	<option value='histogram'>Histogram</option>
+	<option value='histogramf'>Histogram - Frequency</option>
 	<option value='pie chart'>Pie Chart</option>
 	<option value='scatter'>Scatter Graph</option>
 	<option value='residuals'>Residuals Plot</option>
@@ -496,6 +497,8 @@ echo "\n</table></body></html>";
 	<input type="hidden" id=boxnowhiskerform name=boxnowhisker value='no'>
 	<input type="hidden" id=boxnooutlierform name=boxnooutlier value='no'>
 	<input type="hidden" id=scalefactor name=scalefactor value='1'>
+	<input type="hidden" id=invertform name=invert value='no'>
+	<input type="hidden" id=thicklinesform name=thicklines value='no'>
 </form>
 <div id=helper onclick="if(document.getElementById('helppopup').style.display=='block'){document.getElementById('helppopup').style.display='none'}else{document.getElementById('helppopup').style.display='block'}"><span>Help</span></div>
 <div id=helppopup class="callout">
@@ -548,7 +551,11 @@ if(substr($dataset,0,6)!="SECURE"){
 
 		?>
 		<small><br>NZGrapher uses cookies... if you're not happy with this don't use this website.</small>
+		<?php
+		/*
 		<iframe id=welcomeframe src='https://server.mathsnz.com/nzgrapherwelcome.php?server=<?php echo urlencode($_SERVER['SERVER_NAME']); ?>' scrolling='no'></iframe>
+		*/
+		?>
 	</div>
 </div>
 <div id=graphdiv>
@@ -654,6 +661,12 @@ if(substr($dataset,0,6)!="SECURE"){
 					<option>Additive</option>
 					<option>Multiplicative</option>
 				</select>
+			</span>
+			<span id=invertshow>
+				<input type="checkbox" onclick="updategraph();" id="invert" name="invert" value="yes"> Invert Colours<br>
+			</span>
+			<span id=thicklinesshow>
+				<input type="checkbox" onclick="updategraph();" id="thicklines" name="thicklines" value="yes"> Thick Lines<br>
 			</span>
 			<span id=grayscaleshow>
 				<input type="checkbox" onclick="updategraph();" id="grayscale" name="grayscale" value="yes"> Gray Scale <br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(do not use on Firefox)<br>

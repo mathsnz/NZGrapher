@@ -247,7 +247,7 @@ td.button {
 	cursor:pointer;
 	border:none;
 }
-#sum, #reg, #meandotshow, #startfinishshow, #gridlinesshow, #differentaxisshow, #for, #boxplotshow, #regshow, #intervalshow, #labelshow, #colorname, #arrowsshow , #quadraticshow, #cubicshow, #expshow, #logshow, #powshow,#regtypeshow, #jittershow, #yxshow, #highboxplotshow, #btypeshow, #addmultshow, #longtermtrendshow, #boxnowhiskershow, #boxnooutliershow, #seasonalshow{
+#sum, #reg, #meandotshow, #startfinishshow, #gridlinesshow, #differentaxisshow, #for, #invertshow, #thicklinesshow, #boxplotshow, #regshow, #intervalshow, #labelshow, #colorname, #arrowsshow , #quadraticshow, #cubicshow, #expshow, #logshow, #powshow,#regtypeshow, #jittershow, #yxshow, #highboxplotshow, #btypeshow, #addmultshow, #longtermtrendshow, #boxnowhiskershow, #boxnooutliershow, #seasonalshow{
 	display:none;
 }
 #regtypeshow, #btypeshow, #addmultshow{
@@ -347,9 +347,9 @@ input[type=text]{
 	top:50%;
 	left:50%;
 	width:853px;
-	height:540px;
+	height:470px;
 	margin-left:-427px;
-	margin-top:-270px;
+	margin-top:-235px;
 	z-index:102;
 	border: 1px solid #ccc;
 	overflow: hidden;

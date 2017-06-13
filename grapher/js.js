@@ -603,7 +603,7 @@ $(function(){
 		document.getElementById("data").innerHTML = newtable;
 		$('#data td div').attr('contenteditable','true');
 		$('#originaldataholder').html($('#data').html());
-    $('#type').val('about');
+    $('#type').val('newabout');
 		updatebox();
 	});
 
@@ -658,11 +658,13 @@ function graphchange(obj){
 	document.getElementById('boxnowhiskershow').style.display='none';
 	document.getElementById('boxnooutliershow').style.display='none';
 	document.getElementById('meandotshow').style.display='none';
-	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='time series forecasts' || obj.value=='old time series forecasts' || obj.value=='histogram' || obj.value=='pie chart' || obj.value=='bar and area graph' || obj.value=='residuals' || obj.value=='time series' || obj.value=='time series re-composition' || obj.value=='time series seasonal effects'){document.getElementById('xvar').style.display='inline';document.getElementById('yvar').style.display='inline';};
+	document.getElementById('invertshow').style.display='none';
+	document.getElementById('thicklinesshow').style.display='none';
+	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='time series forecasts' || obj.value=='old time series forecasts' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart' || obj.value=='bar and area graph' || obj.value=='residuals' || obj.value=='time series' || obj.value=='time series re-composition' || obj.value=='time series seasonal effects'){document.getElementById('xvar').style.display='inline';document.getElementById('yvar').style.display='inline';};
 	if(obj.value=='bootstrap'){document.getElementById('yvar').style.display='none';document.getElementById('yvar').selectedIndex=0;};
-	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='time series forecasts' || obj.value=='old time series forecasts' || obj.value=='histogram' || obj.value=='pie chart'){document.getElementById('regshow').style.display='inline';};
+	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='time series forecasts' || obj.value=='old time series forecasts' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart'){document.getElementById('regshow').style.display='inline';};
 	if(obj.value=='dotplot'  || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='residuals' || obj.value.substring(0,4)=='time' || obj.value.substring(0,8)=='old time'){document.getElementById('labelshow').style.display='inline';};
-	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='histogram' || obj.value=='pie chart'){document.getElementById('sum').style.display='inline';};
+	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart'){document.getElementById('sum').style.display='inline';};
 	if(obj.value=='paired experiment'){document.getElementById('arrowsshow').style.display='inline';};
 	if(obj.value=='dotplot'){document.getElementById('highboxplotshow').style.display='inline';};
 	if(obj.value=='dotplot'){document.getElementById('boxnowhiskershow').style.display='inline';};
@@ -672,6 +674,10 @@ function graphchange(obj){
 	if(obj.value=='time series forecasts'){document.getElementById('for').style.display='inline';};
 	if(obj.value.substring(0,4)=='time'){document.getElementById('addmultshow').style.display='inline';};
 	if(obj.value=='time series'){document.getElementById('longtermtrendshow').style.display='inline';};
+  if(obj.value=='scatter'){
+    document.getElementById('invertshow').style.display='inline';
+    document.getElementById('thicklinesshow').style.display='inline';
+  }
 	if(obj.value=='dotplot' || obj.value=='paired experiment'){
 		document.getElementById('boxplotshow').style.display='inline';
 		document.getElementById('intervalshow').style.display='inline';
@@ -680,13 +686,13 @@ function graphchange(obj){
 		document.getElementById('sizediv').style.display='block';
 		document.getElementById('pointsizename').innerHTML='Point Size:';
 	};
-	if(obj.value=='histogram'){
+	if(obj.value=='histogram' || obj.value=='histogramf'){
 		document.getElementById('sizediv').style.display='block';
 		document.getElementById('pointsizename').innerHTML='Interval Width:';
 	};
 	if(obj.value=='bootstrap'){document.getElementById('btypeshow').style.display='inline';};
 	if(obj.value=='scatter' || obj.value=='dotplot' || obj.value=='paired experiment' || obj.value=='residuals'){document.getElementById('transdiv').style.display='block';};
-	if(obj.value=='scatter' || obj.value=='dotplot'){document.getElementById('zvar').style.display='inline';};
+	if(obj.value=='scatter' || obj.value=='dotplot' || obj.value=='histogramf'){document.getElementById('zvar').style.display='inline';};
 	if(obj.value=='scatter' || obj.value=='dotplot' || obj.value=='paired experiment'){document.getElementById('color').style.display='inline';document.getElementById('colorname').style.display='inline';};
 
 	updategraph();
@@ -829,6 +835,16 @@ function updategraphgo(){
 	} else {
 		document.getElementById('longtermtrendform').value='no';
 	}
+	if(document.getElementById('invert').checked){
+		document.getElementById('invertform').value='yes';
+	} else {
+		document.getElementById('invertform').value='no';
+	}
+	if(document.getElementById('thicklines').checked){
+		document.getElementById('thicklinesform').value='yes';
+	} else {
+		document.getElementById('thicklinesform').value='no';
+	}
 	document.getElementById('titleform').value=document.getElementById('title').value;
 	document.getElementById('xaxisform').value=document.getElementById('xaxis').value;
 	document.getElementById('yaxisform').value=document.getElementById('yaxis').value;
@@ -864,7 +880,7 @@ function updategraphgo(){
 		document.getElementById('datain').value="";
 	}
 	w=$('#type').val();
-	newgraphs = ['newdotplot','newtimeseries','newbootstrapcimedian','newbootstrapcimean','newtimeseriesrecomp'];
+	newgraphs = ['newdotplot','newtimeseries','newbootstrapcimedian','newbootstrapcimean','newtimeseriesrecomp','newabout'];
 	if ($.inArray(w,newgraphs)>-1){
 		$('#graph').hide();
 		$('#jsgraph').show();
@@ -894,7 +910,10 @@ function jsgraphtoimage(dataURL) {
 	if(error == 'Error') {
 		$('#jsgraph').html('<br><br>'+dataURL);
 		$('#loading').hide();
-	} else {
+	} else if(error == "DISPL"){
+    $('#jsgraph').html(dataURL.substr(5));
+		$('#loading').hide();
+  } else {
     highres='no';
     if (document.getElementById('standardsize').value=='Auto - High Res'){
       highres='yes';
@@ -1587,10 +1606,16 @@ function minnooutliers(values,lq,uq){
 	return newmin;
 }
 
-
+function newabout(){
+  var width = $('#width').val()-22;
+  var height = $('#height').val()-22;
+  content = "DISPL<div style='width:"+width+"px;height:"+height+"px;overflow-y:scroll;padding:10px;text-align:left;'><center>\n\t<h1>About <img src='logob.png' style='position:relative;top:22px;height:65px;'><\/h1>\n\t<a href='https:\/\/www.facebook.com\/mathsnz' target='_blank'>Check us out on Facebook<\/a><br><br>\n\t\t\n\t<script async src=\"\/\/pagead2.googlesyndication.com\/pagead\/js\/adsbygoogle.js\"><\/script>\n\t<!-- NZGrapher -->\n\t<ins class=\"adsbygoogle\"\n\t     style=\"display:block\"\n\t     data-ad-client=\"ca-pub-5760539585908771\"\n\t     data-ad-slot=\"7109793646\"\n\t     data-ad-format=\"auto\"><\/ins>\n\t<script>\n\t(adsbygoogle = window.adsbygoogle || []).push({});\n\t<\/script>\n<\/center><br><br>\tNZGrapher has been developed by Jake Wills, a maths teacher in New Zealand specifically for supporting the teaching of the NCEA Statistics Standards. The idea behind NZGrapher was to be able to run on <b>any device<\/b>, without an install. NZGrapher was developed to run on anything with a browser, computers, iPads, ChromeBooks, Microsoft Surface, Android, even Phones. On the iPad the best way to make it work is click on the <img src='share.jpg' style='position:relative;top:0px;left:0px;' height=15> button and add it to your home screen. NZGrapher is provided free of charge... but <a href='http:\/\/www.mathsnz.com\/donate.html' target='_blank'>donations<\/a> are gladly accepted.<br>\n\t<br>\n\tIf you would like to arrange to have NZGrapher <b>hosted at your school<\/b> (just for your own school's use, or shared with others if you want) this can normally be easily arranged, as most schools already have a server capable of running NZGrapher (you need a web server running PHP). If this is of interest to you please see full details on <a href='http:\/\/www.mathsnz.com\/localgrapher.html' target='_blank'>MathsNZ<\/a>.<br>\n\t<br>\n\t<b>Help<\/b><br>\n\tYou can access <b><a target='_blank' href=\"\/\/students.mathsnz.com\/nzgrapher\">video tutorials<\/a><\/b> to help you getting started on <a target='_blank' href=\"http:\/\/students.mathsnz.com\/nzgrapher\">MathsNZ Students<\/a>. They are organised in two ways, firstly by the type of graph you are trying to draw, and secondly by the NCEA standard that they relate to. There is a help button in the middle of the bottom which will give you an overlay explaining what each of the sections does. The data section on the left also allows you to edit the data directly just by clicking on the part you want to edit and typing the changes in.<br>\n\t<br>\n\t<b>Graphs<\/b><br>\n\tFor information on what each graph type does, change the graph type (currently set to About) to 'Graphs Information'.<br>\n\t<br>\n\t<b>Dataset Information<\/b>\n\tInformation on all of the datasets, what each of the columns are and where the dataset is from is available from <a target='_blank' href=\"http:\/\/students.mathsnz.com\/nzgrapher\/nzgrapher_c.html\">MathsNZ Students<\/a>.<br>\n\t<br>\n\t<b>Saving \/ Copying Graphs<\/b><br>\n\tTo save or copy the graph right click on it or tap and hold if you are using a Tablet and the options should show up for copying and saving.<br>\n\t<br>\n\t<b>Updates<\/b><br>\n\tA full list if changes is always available by changing the graph type to 'change log'. You can also like me on <a href='https:\/\/www.facebook.com\/mathsnz' target='_blank'>facebook<\/a> or sign up to the newsletter by <a href='http:\/\/eepurl.com\/4JD3v' target='_blank'>clicking here<\/a>.<br>\n\t<br>\n\t<b>For Teachers<\/b><br>\n\tNZ Grapher also supports custom folders for assessments or your own datasets, allowing students with iPads to access assessment material, as they do not support uploading of files. If you are a teacher and would like me to set up a custom folder for you, please let me know. You can contact me at <a href='http:\/\/www.mathsnz.com\/contact.html' target='_blank'>MathsNZ<\/a>. Once the folder is set up you can manage the files inside it via a password protected page.<br>\n\t<br>\n\t<b>More Info<\/b><br>\n\tI created NZGrapher as a labour of love... if you find it useful please consider dropping me a line to say thanks, and if you have a bit of spare cash I wouldn't complain if you gave me a small donation. You can donate either via <b>PayPal<\/b> (using a credit \/ debit card or your PayPal account) or via a <b>bank transfer<\/b> (<a href='http:\/\/www.mathsnz.com\/contact.html' target='_blank'>contact me<\/a> for the bank account number). I can provide you with a <b>receipt<\/b> if needed.<br>\n\t<br>\n\tPlease don't feel any pressure to donate as you can use NZGrapher <b>for free<\/b>, but donations are appreciated.<br>\n    <br>\n\t<center>\n\t<form action=\"https:\/\/www.paypal.com\/cgi-bin\/webscr\" method=\"post\" target=\"_blank\">\n\t\t<input type=\"hidden\" name=\"cmd\" value=\"_s-xclick\">\n\t\t<input type=\"hidden\" name=\"hosted_button_id\" value=\"VZ2MNV3YGV5QL\">\n\t\t<input type=\"image\" src=\"btn_donateCC_LG.gif\" style='border:none !important' border=\"0\" name=\"submit\" alt=\"PayPal - The safer, easier way to pay online!\">\n\t<\/form>\n\t<\/center>\n</div>"
+  return content
+}
 
 function newdotplot(){
 	$('#regshow').show();
+	$('#invertshow').show();
 	$('#labelshow').show();
 	$('#sum').show();
 	$('#highboxplotshow').show();
@@ -1760,9 +1785,29 @@ function newdotplot(){
 
 
 	labelgraph(ctx,width,height);
+  if($('#invert').is(":checked")){
+    invert(ctx)
+  }
 
 	var dataURL = canvas.toDataURL();
 	return dataURL;
+}
+
+function invert(ctx){
+  var imageData = ctx.getImageData(0, 0, $('#width').val(), $('#height').val());
+  var data = imageData.data;
+
+  for(var i = 0; i < data.length; i += 4) {
+    // red
+    data[i] = 255 - data[i];
+    // green
+    data[i + 1] = 255 - data[i + 1];
+    // blue
+    data[i + 2] = 255 - data[i + 2];
+  }
+
+  // overwrite original image
+  ctx.putImageData(imageData, 0, 0);
 }
 
 function labelgraph(ctx,width,height){

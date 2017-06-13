@@ -409,6 +409,11 @@ while($i<count($xpoints)){
 }
 
 $rtop=20;
+
+if($_POST['thicklines']=="yes"){
+  imagesetthickness($plot,5);
+}
+
 if($regression=="yes") {
 	require_once( './PolynomialRegression/PolynomialRegression/PolynomialRegression.php' );
 
@@ -739,6 +744,10 @@ if(strlen($pointsremoved)>22){
 	$bbox = imagettfbbox(8, 0, $reg, $pointsremoved);
 	$w = $bbox[4]-$bbox[0];
 	imagettftext($im, 8, 0, $width-$w, 12, $black, $reg, $pointsremoved);
+}
+
+if($_POST['invert']=="yes"){
+  imagefilter($im,IMG_FILTER_NEGATE);
 }
 
 $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);

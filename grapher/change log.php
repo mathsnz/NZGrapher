@@ -76,6 +76,11 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2017-06-13</b><br>
+	- Bug Fixes.<br>
+	- Changes to Dotplot and Scatter Graph for visually impared students.<br>
+	- New graph type of Histogram Frequency
+	<br>
 	<b>2017-06-02</b><br>
 	- Bug Fixes.<br>
 	<br>

@@ -47,6 +47,8 @@ if(file_exists('./version.php')){
 	$v=0;
 }
 
+echo "Latest Version: $latest<br><br>";
+
 if(isset($_POST['password']) || isset($_POST['yup']) || isset($_GET['password'])){
 	include 'password.php';
 	if($password==$_POST['password'] || file_exists('./windowsapp.php') || $password==$_GET['password']){
@@ -70,8 +72,6 @@ if(!extension_loaded('zip')){
 	$write="no";
 	$error = "to enable the zip extension";
 }
-
-echo "Latest Version: $latest<br><br>";
 
 $filename = './test.txt';
 if (file_put_contents($filename,"1")) {
