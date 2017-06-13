@@ -17,6 +17,8 @@ $xlabel=stripslashes($_POST['xaxis']);
 $label=$_POST['labels'];
 //color
 $colorlabel=stripslashes($_POST['colorlabel']);
+//color
+$rf=$_POST['relativefrequency'];
 //points
 if(isset($_POST['xvals'])){$xpoints=explode(',', $_POST['xvals']);} else {$xpoints=array("");}
 if(isset($_POST['yvals'])){$ypoints=explode(',', $_POST['yvals']);} else {$ypoints=array("");}
@@ -84,13 +86,13 @@ if($numcategories>5 && is_numeric($zpoints[0])==TRUE){
 	$c3max=format_number_significant_figures($c2max+$range/4,2);
 	foreach($zpoints as $zpoint){
 		if ($zpoint<$c1max){
-			$ypoints[$i]="a: < $c1max";
+			$zpoints[$i]="a: < $c1max";
 		} else if ($zpoint<$c2max){
-			$ypoints[$i]="b: $c1max - $c2max";
+			$zpoints[$i]="b: $c1max - $c2max";
 		} else if ($zpoint<$c3max){
-			$ypoints[$i]="c: $c2max - $c3max";
+			$zpoints[$i]="c: $c2max - $c3max";
 		} else {
-			$ypoints[$i]="d: > $c3max";
+			$zpoints[$i]="d: > $c3max";
 		}
 		$i++;
 	}
@@ -103,7 +105,7 @@ if($numcategories>5){
 if($numcategories==0){
 	$numcategories=1;
 	foreach($xpoints as $key => $value){
-		$ypoints[$key]=" ";
+		$zpoints[$key]=" ";
 	}
 }
 
@@ -336,13 +338,17 @@ $xstep=$step;
 foreach($data as $category => $values){
 	$data[$category]=array_count_values($values);
 	ksort($data[$category]);
-	array_push($maxfreq,max($data[$category]));
+	$sum=1;
+	if($rf==1){
+		$sum = array_sum($data[$category]);
+	}
+	array_push($maxfreq,max($data[$category])/$sum);
 }
 $maxfreq=max($maxfreq);
 $numcategories=count($data);
 
 //y axis ticks
-$miny=0.1;
+$miny=0.01;
 $maxy=$maxfreq;
 $range=$maxy-$miny;
 $rangeround=format_number_significant_figures($range,1);
@@ -444,20 +450,21 @@ imagettftext($plot, 10, 0, $imwidth-$w-1, $imheight*0.4, $black, $bold, $categor
 imagecopy ($plot, $xaxis, 0, $imheight-26, 0, 0, $axiswidth+20, $axisheight);
 imagecopy ($plot, $yaxis, 0, 0, 0, 0, $yaxiswidth, $yaxisheight);
 
+$xpoints=$odata[strval($category)];
+$med=Quartile($xpoints,0.5);
+$mean=format_number_significant_figures(array_sum($xpoints)/count($xpoints),5);
+$num=count($xpoints);
 
 foreach ($values as $xbucket => $freq){
 	$x1=($axiswidth-80)*($xbucket-$minxtick)/($maxxtick-$minxtick)+70;
 	$y1=$yaxisheight-26;
 	$x2=($axiswidth-80)*($xbucket+$xstep-$minxtick)/($maxxtick-$minxtick)+70;
-	$y2=$yaxisheight-26-($freq/$maxytick)*($yaxisheight-36);
+	$div=1;
+	if($rf==1){$div=$num;}
+	$y2=$yaxisheight-26-($freq/$maxytick)*($yaxisheight-36)/$div;
 	imagefilledrectangle($plot,$x1,$y1,$x2,$y2,$lightgrey);
 	imagerectangle($plot,$x1,$y1,$x2,$y2,$black);
 }
-
-$xpoints=$odata[strval($category)];
-$med=Quartile($xpoints,0.5);
-$mean=format_number_significant_figures(array_sum($xpoints)/count($xpoints),5);
-$num=count($xpoints);
 
 $top=10;
 if($regression=="yes") {
@@ -507,6 +514,7 @@ echo "<img style='position:absolute;top:0px;left:0px;' src='imagetemp/Histogram-
 	</script>
 
 <?php
+
 // Free up memory
 imagedestroy($im);
 $path = 'imagetemp/';

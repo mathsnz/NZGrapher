@@ -660,6 +660,7 @@ function graphchange(obj){
 	document.getElementById('meandotshow').style.display='none';
 	document.getElementById('invertshow').style.display='none';
 	document.getElementById('thicklinesshow').style.display='none';
+	document.getElementById('relativefrequencyshow').style.display='none';
 	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='time series forecasts' || obj.value=='old time series forecasts' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart' || obj.value=='bar and area graph' || obj.value=='residuals' || obj.value=='time series' || obj.value=='time series re-composition' || obj.value=='time series seasonal effects'){document.getElementById('xvar').style.display='inline';document.getElementById('yvar').style.display='inline';};
 	if(obj.value=='bootstrap'){document.getElementById('yvar').style.display='none';document.getElementById('yvar').selectedIndex=0;};
 	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='time series forecasts' || obj.value=='old time series forecasts' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart'){document.getElementById('regshow').style.display='inline';};
@@ -674,6 +675,7 @@ function graphchange(obj){
 	if(obj.value=='time series forecasts'){document.getElementById('for').style.display='inline';};
 	if(obj.value.substring(0,4)=='time'){document.getElementById('addmultshow').style.display='inline';};
 	if(obj.value=='time series'){document.getElementById('longtermtrendshow').style.display='inline';};
+  if(obj.value=='histogramf'){document.getElementById('relativefrequencyshow').style.display='inline';}
   if(obj.value=='scatter'){
     document.getElementById('invertshow').style.display='inline';
     document.getElementById('thicklinesshow').style.display='inline';
@@ -844,6 +846,11 @@ function updategraphgo(){
 		document.getElementById('thicklinesform').value='yes';
 	} else {
 		document.getElementById('thicklinesform').value='no';
+	}
+	if(document.getElementById('relativefrequency').checked){
+		document.getElementById('relativefrequencyform').value='1';
+	} else {
+		document.getElementById('relativefrequencyform').value='no';
 	}
 	document.getElementById('titleform').value=document.getElementById('title').value;
 	document.getElementById('xaxisform').value=document.getElementById('xaxis').value;

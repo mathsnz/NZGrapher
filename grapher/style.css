@@ -247,7 +247,7 @@ td.button {
 	cursor:pointer;
 	border:none;
 }
-#sum, #reg, #meandotshow, #startfinishshow, #gridlinesshow, #differentaxisshow, #for, #invertshow, #thicklinesshow, #boxplotshow, #regshow, #intervalshow, #labelshow, #colorname, #arrowsshow , #quadraticshow, #cubicshow, #expshow, #logshow, #powshow,#regtypeshow, #jittershow, #yxshow, #highboxplotshow, #btypeshow, #addmultshow, #longtermtrendshow, #boxnowhiskershow, #boxnooutliershow, #seasonalshow{
+#sum, #reg, #meandotshow, #startfinishshow, #gridlinesshow, #differentaxisshow, #for, #invertshow, #relativefrequencyshow, #thicklinesshow, #boxplotshow, #regshow, #intervalshow, #labelshow, #colorname, #arrowsshow , #quadraticshow, #cubicshow, #expshow, #logshow, #powshow,#regtypeshow, #jittershow, #yxshow, #highboxplotshow, #btypeshow, #addmultshow, #longtermtrendshow, #boxnowhiskershow, #boxnooutliershow, #seasonalshow{
 	display:none;
 }
 #regtypeshow, #btypeshow, #addmultshow{

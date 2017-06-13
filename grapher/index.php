@@ -499,6 +499,7 @@ echo "\n</table></body></html>";
 	<input type="hidden" id=scalefactor name=scalefactor value='1'>
 	<input type="hidden" id=invertform name=invert value='no'>
 	<input type="hidden" id=thicklinesform name=thicklines value='no'>
+	<input type="hidden" id=relativefrequencyform name=relativefrequency value='0'>
 </form>
 <div id=helper onclick="if(document.getElementById('helppopup').style.display=='block'){document.getElementById('helppopup').style.display='none'}else{document.getElementById('helppopup').style.display='block'}"><span>Help</span></div>
 <div id=helppopup class="callout">
@@ -667,6 +668,9 @@ if(substr($dataset,0,6)!="SECURE"){
 			</span>
 			<span id=thicklinesshow>
 				<input type="checkbox" onclick="updategraph();" id="thicklines" name="thicklines" value="yes"> Thick Lines<br>
+			</span>
+			<span id=relativefrequencyshow>
+				<input type="checkbox" onclick="updategraph();" id="relativefrequency" name="relativefrequency" value="yes"> Relative Freq.<br>
 			</span>
 			<span id=grayscaleshow>
 				<input type="checkbox" onclick="updategraph();" id="grayscale" name="grayscale" value="yes"> Gray Scale <br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(do not use on Firefox)<br>
