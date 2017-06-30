@@ -428,7 +428,7 @@ echo "\n</table></body></html>";
 	<option value='newdotplot'>Dot Plot (and Box and Whisker)</option>
 	<option value='bar and area graph'>Bar Graph (and Area Graph)</option>
 	<option value='histogram'>Histogram</option>
-	<option value='histogramf'>Histogram - Frequency</option>
+	<option value='histogramf'>Histogram - Summary Data</option>
 	<option value='pie chart'>Pie Chart</option>
 	<option value='scatter'>Scatter Graph</option>
 	<option value='residuals'>Residuals Plot</option>

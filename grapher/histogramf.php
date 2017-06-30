@@ -17,7 +17,7 @@ $xlabel=stripslashes($_POST['xaxis']);
 $label=$_POST['labels'];
 //color
 $colorlabel=stripslashes($_POST['colorlabel']);
-//color
+//relative frequency
 $rf=$_POST['relativefrequency'];
 //points
 if(isset($_POST['xvals'])){$xpoints=explode(',', $_POST['xvals']);} else {$xpoints=array("");}
@@ -348,7 +348,7 @@ $maxfreq=max($maxfreq);
 $numcategories=count($data);
 
 //y axis ticks
-$miny=0.01;
+$miny=0.0001;
 $maxy=$maxfreq;
 $range=$maxy-$miny;
 $rangeround=format_number_significant_figures($range,1);

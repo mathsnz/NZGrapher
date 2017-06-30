@@ -10,13 +10,15 @@ $intervallim=$_POST['intervallim'];
 //graph title
 $title=stripslashes($_POST['title']);
 //yaxis lavel
-$ylabel=stripslashes($_POST['yaxis']); 
+$ylabel=stripslashes($_POST['yaxis']);
 //xaxis label
 $xlabel=stripslashes($_POST['xaxis']);
 //labels?
 $label=$_POST['labels'];
 //color
 $colorlabel=stripslashes($_POST['colorlabel']);
+//relative frequency
+$rf=$_POST['relativefrequency'];
 //points
 if(isset($_POST['xvals'])){$xpoints=explode(',', $_POST['xvals']);} else {$xpoints=array("");}
 if(isset($_POST['yvals'])){$ypoints=explode(',', $_POST['yvals']);} else {$ypoints=array("");}
@@ -133,22 +135,22 @@ function format_number_significant_figures($number, $sf) {
   return number_format($number, 0 == $number ? 0 : $dp,".","");
 }
 
-function FirstSF($number) { 
-    $multiplier = 1; 
+function FirstSF($number) {
+    $multiplier = 1;
 	if ($number==0){
-		return 0; 
+		return 0;
 	} else {
-		while ($number < 0.1) { 
-			$number *= 10; 
-			$multiplier /= 10; 
-		} 
-		while ($number >= 1) { 
-			$number /= 10; 
-			$multiplier *= 10; 
-		} 
-		return round($number, 1) * 10; 
+		while ($number < 0.1) {
+			$number *= 10;
+			$multiplier /= 10;
+		}
+		while ($number >= 1) {
+			$number /= 10;
+			$multiplier *= 10;
+		}
+		return round($number, 1) * 10;
 	}
-} 
+}
 
 
 //x axis ticks
@@ -249,9 +251,9 @@ $steps=($maxxtick-$minxtick)/$step;
 //Temp image for x-axis
 $axisheight=30;
 $axiswidth=$width-100;
-// define temp image 
-$xaxis = imagecreatetruecolor($axiswidth+20, $axisheight); 
-imagefill ($xaxis, 0, 0, $white); 
+// define temp image
+$xaxis = imagecreatetruecolor($axiswidth+20, $axisheight);
+imagefill ($xaxis, 0, 0, $white);
 
 //set font size for x-axis
 $size=0;
@@ -289,7 +291,7 @@ while($i<$steps){
 	$xtick=$xtick+$step;
 	$bbox = imagettfbbox($size, 0, $reg, $xtick);
 	$w = $bbox[4]-$bbox[0];
-	imagettftext($xaxis, $size, 0, $distanceright-$w/2, 20, $black, $reg, $xtick); 
+	imagettftext($xaxis, $size, 0, $distanceright-$w/2, 20, $black, $reg, $xtick);
 	imageline ($xaxis, $distanceright, 0, $distanceright, 5, $black);
 	$i++;
 }
@@ -311,13 +313,17 @@ $xstep=$step;
 foreach($data as $category => $values){
 	$data[$category]=array_count_values($values);
 	ksort($data[$category]);
-	array_push($maxfreq,max($data[$category]));
+	$sum=1;
+	if($rf==1){
+		$sum = array_sum($data[$category]);
+	}
+	array_push($maxfreq,max($data[$category])/$sum);
 }
 $maxfreq=max($maxfreq);
 $numcategories=count($data);
 
 //y axis ticks
-$miny=0.1;
+$miny=0.0001;
 $maxy=$maxfreq;
 $range=$maxy-$miny;
 $rangeround=format_number_significant_figures($range,1);
@@ -345,9 +351,9 @@ $steps=($maxytick-$minytick)/$step;
 //Temp image for y-axis
 $yaxisheight=($height-80)/$numcategories;
 $yaxiswidth=50;
-// define temp image 
-$yaxis = imagecreatetruecolor($yaxiswidth, $yaxisheight); 
-imagefill ($yaxis, 0, 0, $white); 
+// define temp image
+$yaxis = imagecreatetruecolor($yaxiswidth, $yaxisheight);
+imagefill ($yaxis, 0, 0, $white);
 
 //xaxis line
 imageline ($yaxis, 49, 10, 49, $yaxisheight-26, $black);
@@ -408,49 +414,52 @@ $i=0;
 //TEMP IMAGE FOR THE CATEGORY
 $imheight=($height-80)/$numcategories;
 $imwidth=($width-50);
-// define temp image 
+// define temp image
 if($imwidth<1 || $imheight<1){echo "Invalid Image Dimensions";die();}
-$plot = imagecreatetruecolor($imwidth, $imheight); 
-imagefill ($plot, 0, 0, $white); 
+$plot = imagecreatetruecolor($imwidth, $imheight);
+imagefill ($plot, 0, 0, $white);
 $bbox = imagettfbbox(10, 0, $bold, $category);
 $w = $bbox[4]-$bbox[0];
-imagettftext($plot, 10, 0, $imwidth-$w-1, $imheight*0.4, $black, $bold, $category); 
+imagettftext($plot, 10, 0, $imwidth-$w-1, $imheight*0.4, $black, $bold, $category);
 
 imagecopy ($plot, $xaxis, 0, $imheight-26, 0, 0, $axiswidth+20, $axisheight);
 imagecopy ($plot, $yaxis, 0, 0, 0, 0, $yaxiswidth, $yaxisheight);
-
-
-foreach ($values as $xbucket => $freq){
-	$x1=($axiswidth-80)*($xbucket-$minxtick)/($maxxtick-$minxtick)+70;
-	$y1=$yaxisheight-26;
-	$x2=($axiswidth-80)*($xbucket+$xstep-$minxtick)/($maxxtick-$minxtick)+70;
-	$y2=$yaxisheight-26-($freq/$maxytick)*($yaxisheight-36);
-	imagefilledrectangle($plot,$x1,$y1,$x2,$y2,$lightgrey);
-	imagerectangle($plot,$x1,$y1,$x2,$y2,$black);
-}
 
 $xpoints=$odata[strval($category)];
 $med=Quartile($xpoints,0.5);
 $mean=format_number_significant_figures(array_sum($xpoints)/count($xpoints),5);
 $num=count($xpoints);
 
+foreach ($values as $xbucket => $freq){
+	$x1=($axiswidth-80)*($xbucket-$minxtick)/($maxxtick-$minxtick)+70;
+	$y1=$yaxisheight-26;
+	$x2=($axiswidth-80)*($xbucket+$xstep-$minxtick)/($maxxtick-$minxtick)+70;
+	$div=1;
+	if($rf==1){$div=$num;}
+	$y2=$yaxisheight-26-($freq/$maxytick)*($yaxisheight-36)/$div;
+	imagefilledrectangle($plot,$x1,$y1,$x2,$y2,$lightgrey);
+	imagerectangle($plot,$x1,$y1,$x2,$y2,$black);
+}
+
+
+
 $top=10;
 if($regression=="yes") {
-	imagettftext($plot, 8, 0, 60, $top, $red, $reg, "med:  $med"); 
-	imagettftext($plot, 8, 0, 60, $top+10, $red, $reg, "mean:  $mean"); 
-	imagettftext($plot, 8, 0, 60, $top+20, $red, $reg, "num:  $num"); 
+	imagettftext($plot, 8, 0, 60, $top, $red, $reg, "med:  $med");
+	imagettftext($plot, 8, 0, 60, $top+10, $red, $reg, "mean:  $mean");
+	imagettftext($plot, 8, 0, 60, $top+20, $red, $reg, "num:  $num");
 }
-	
-// copy the temp image back to the subset image 
+
+// copy the temp image back to the subset image
 imagecopy ($im, $plot, 30, $offset, 0, 0, $imwidth, $imheight);
-// destroy temp images, clear memory 
-imagedestroy($plot); 
+// destroy temp images, clear memory
+imagedestroy($plot);
 
 $offset=$offset+$imheight;
 
 }
-// destroy temp images, clear memory 
-imagedestroy($xaxis); 
+// destroy temp images, clear memory
+imagedestroy($xaxis);
 
 include('labelgraph.php');
 
@@ -487,10 +496,10 @@ imagedestroy($im);
 $path = 'imagetemp/';
 if ($handle = opendir($path)) {
 	while (false !== ($file = readdir($handle))) {
-		if ((time()-filectime($path.$file)) > 1800) {  
+		if ((time()-filectime($path.$file)) > 1800) {
 			if (is_file($path.$file)) {
 				unlink($path.$file);
-			}	
+			}
 		}
 	}
 }
