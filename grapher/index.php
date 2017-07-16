@@ -17,15 +17,13 @@
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,700|Roboto+Condensed' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="style.css?v=<?php
 		date_default_timezone_set('Pacific/Auckland');
-		echo date('Ymdhms');
+		echo $v;
 	?>">
 	<script src="./js.js?v=<?php
-		date_default_timezone_set('Pacific/Auckland');
-		echo date('Ymdhms');
+		echo $v;
 	?>"></script>
 	<script src="./jsnew.js?v=<?php
-		date_default_timezone_set('Pacific/Auckland');
-		echo date('Ymdhms');
+		echo $v;
 	?>"></script>
 	<meta name="description" content="NZGrapher is a free web based graphing tool. NZ Grapher was designed for New Zealand Schools by a New Zealand Teacher.">
 	<link rel="apple-touch-icon" sizes="57x57" href="./icon/apple-icon-57x57.png">
@@ -179,8 +177,12 @@ function isSecure() {
 
 $protocol = isSecure() === true ? 'https://' : 'http://';
 $actual_link = urlencode($protocol.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']);
+$time = date('U');
+$randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
 if(file_exists('./windowsapp.php')){$actual_link='Windows App v2';}
-echo "<img src='//www.jake4maths.com/trackingimage.php?v=$v&url=$actual_link'>";
+echo "<script>
+$.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&time=$time&r=$randomString');
+</script>";
 ?>
 </div>
 

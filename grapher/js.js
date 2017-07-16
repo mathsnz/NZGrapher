@@ -747,6 +747,7 @@ function updategraph(){
 	});
 }
 function updategraphgo(){
+  $.get('https://tracking.jake4maths.com/graphimage.php?g='+$('#type').val()+'&r='+Math.random().toString(36).substr(2));
 	if(!$('#xvar').length){
 		alert('NZGrapher is not loaded properly... please load again with a valid dataset.');
 		window.location = './';
