@@ -51,7 +51,7 @@ echo "Latest Version: $latest<br><br>";
 
 if(isset($_POST['password']) || isset($_POST['yup']) || isset($_GET['password'])){
 	include 'password.php';
-	$password="";
+	$pw="";
 	if(isset($_POST['password'])){$pw=$_POST['password'];}
 	if(isset($_GET['password'])){$pw=$_GET['password'];}
 	if($password==$pw || file_exists('./windowsapp.php') || $password==$pw){
