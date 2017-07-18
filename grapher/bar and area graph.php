@@ -13,13 +13,15 @@ $interval=$_POST['interval'];
 //graph title
 $title=stripslashes($_POST['title']);
 //yaxis lavel
-$ylabel=stripslashes($_POST['yaxis']); 
+$ylabel=stripslashes($_POST['yaxis']);
 //xaxis label
 $xlabel=stripslashes($_POST['xaxis']);
 //labels?
 $label=$_POST['labels'];
 //color
 $colorlabel=stripslashes($_POST['colorlabel']);
+//relative frequency
+$rf=$_POST['relativefrequency'];
 //points
 if(isset($_POST['xvals'])){$xpoints=explode(',', $_POST['xvals']);} else {$xpoints=array("");}
 if(isset($_POST['yvals'])){$ypoints=explode(',', $_POST['yvals']);} else {$ypoints=array("");}
@@ -46,22 +48,22 @@ function format_number_significant_figures($number, $sf) {
   return number_format($number, 0 == $number ? 0 : $dp,".","");
 }
 
-function FirstSF($number) { 
-    $multiplier = 1; 
+function FirstSF($number) {
+    $multiplier = 1;
 	if ($number==0){
-		return 0; 
+		return 0;
 	} else {
-		while ($number < 0.1) { 
-			$number *= 10; 
-			$multiplier /= 10; 
-		} 
-		while ($number >= 1) { 
-			$number /= 10; 
-			$multiplier *= 10; 
-		} 
-		return round($number, 1) * 10; 
+		while ($number < 0.1) {
+			$number *= 10;
+			$multiplier /= 10;
+		}
+		while ($number >= 1) {
+			$number /= 10;
+			$multiplier *= 10;
+		}
+		return round($number, 1) * 10;
 	}
-} 
+}
 
 // Create image and define colours
 if($width<1 || $height<1){echo "Invalid Image Dimensions";die();}
@@ -100,10 +102,16 @@ if(empty($ypoints)){
 	$freq=array_count_values($xpoints);
 	ksort($freq);
 	$num=count($freq);
-	
+
 	//y axis ticks
-	$miny=0.1;
+	$miny=0.0001;
 	$maxy=max($freq);
+	if($rf==1){
+		$sum = array_sum($freq);
+		$maxy = $maxy / $sum;
+	} else {
+		$sum = 1;
+	}
 	$range=$maxy-$miny;
 	$rangeround=format_number_significant_figures($range,1);
 	$steps=FirstSF($rangeround);
@@ -164,16 +172,17 @@ if(empty($ypoints)){
 		imageline ($im, 45, $distancedown, 50, $distancedown, $black);
 		$i++;
 	}
-	
+
 	//yaxis label
 	$bbox = imagettfbbox(12, 0, $bold, "Frequency");
 	$w = $bbox[4]-$bbox[0];
 	imagettftext($im,12,90,15,$height/2+$w/2,$black,$bold,"Frequency");
-	
+
 	$shift=($width-120)/$num;
 	$left=60+$shift/2;
-	
+
 	foreach($freq as $key => $value){
+		$value = $value / $sum;
 		$bbox = imagettfbbox($size, 0, $reg, $key);
 		$w = $bbox[4]-$bbox[0];
 		imagettftext($im, $size, 0, $left-$w/2, $height-35, $black, $reg, $key);
@@ -211,11 +220,11 @@ if(empty($ypoints)){
 		$percentx=$vals[$catx]/$countx;
 		$xa=$xb;
 		$xb=$xa+($width-100)*$percentx;
-		
+
 		$bbox = imagettfbbox(10, 0, $reg, $catx);
 		$w = $bbox[4]-$bbox[0];
 		imagettftext($im,10,0,($xa+$xb)/2-$w/2,$height-35,$black,$reg,$catx);
-		
+
 		$numy=count($full[$catx]);
 		$full[$catx]=array_count_values($full[$catx]);
 		sort($catsy);
@@ -266,10 +275,10 @@ imagedestroy($im);
 $path = 'imagetemp/';
 if ($handle = opendir($path)) {
 	while (false !== ($file = readdir($handle))) {
-		if ((time()-filectime($path.$file)) > 1800) {  
+		if ((time()-filectime($path.$file)) > 1800) {
 			if (is_file($path.$file)) {
 				unlink($path.$file);
-			}	
+			}
 		}
 	}
 }

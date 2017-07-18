@@ -675,7 +675,7 @@ function graphchange(obj){
 	if(obj.value=='time series forecasts'){document.getElementById('for').style.display='inline';};
 	if(obj.value.substring(0,4)=='time'){document.getElementById('addmultshow').style.display='inline';};
 	if(obj.value=='time series'){document.getElementById('longtermtrendshow').style.display='inline';};
-  if(obj.value=='histogramf' || obj.value=='histogram'){document.getElementById('relativefrequencyshow').style.display='inline';}
+  if(obj.value=='histogramf' || obj.value=='histogram' || obj.value=='bar and area graph'){document.getElementById('relativefrequencyshow').style.display='inline';}
   if(obj.value=='scatter'){
     document.getElementById('invertshow').style.display='inline';
     document.getElementById('thicklinesshow').style.display='inline';

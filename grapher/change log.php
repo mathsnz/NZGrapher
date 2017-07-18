@@ -76,6 +76,9 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2017-07-19</b><br>
+	- Added relative frequency option to bar graph.<br>
+	<br>
 	<b>2017-07-16</b><br>
 	- Bug Fixes.<br>
 	<br>
