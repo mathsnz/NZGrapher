@@ -1,12 +1,17 @@
-document.addEventListener("paste", function(e) {
-    // cancel paste
+$(document).on('paste', function(e) {
     e.preventDefault();
-
-    // get text representation of clipboard
-    var text = e.clipboardData.getData("text/plain");
-
-    // insert text manually
-    document.execCommand("insertHTML", false, text);
+    var text = '';
+    if (e.clipboardData || e.originalEvent.clipboardData) {
+      text = (e.originalEvent || e).clipboardData.getData('text/plain');
+    } else if (window.clipboardData) {
+      text = window.clipboardData.getData('Text');
+    }
+    if (document.queryCommandSupported('insertText')) {
+      document.execCommand('insertText', false, text);
+    } else {
+      document.execCommand('paste', false, text);
+    }
+    $('#textarea').val(text);
 });
 
 var scalefactor;
