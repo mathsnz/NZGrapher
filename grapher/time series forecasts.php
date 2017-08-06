@@ -251,7 +251,7 @@ if($_POST['regression']=="yes"){
 		<div id=content>
 		<table><tr><th>Time<th>Min<th>Prediction<th>Max";
 	while($c<$seasons*2){
-		$x=$x+1/$seasons;
+		$x=ceil(($x+1/$seasons)*10000)/10000;
 		$min=format_number_significant_figures($forecastsmin[$c],5);
 		$pred=format_number_significant_figures($forecasts[$c][1],5);
 		$max=format_number_significant_figures($forecastsmax[$c],5);

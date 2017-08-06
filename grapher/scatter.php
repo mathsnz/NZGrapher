@@ -704,20 +704,20 @@ if($yx=="yes") {
 	$step=($maxxtick-$minxtick)/500;
 	$lastxpixel="";
 	$lastypixel="";
-	$i=0;
+	$w=0;
 	while($x<=$maxxtick){
 		$y=$x;
 		$xpixel=10+($imwidth-20)*($x-$minxtick)/($maxxtick-$minxtick);
 		$ypixel=($imheight-10)-($imheight-20)*($y-$minytick)/($maxytick-$minytick);
 		if($lastxpixel!="" && $lastypixel!=""){
-			if($i/5==round($i/5)){
+			if($w/5==round($w/5)){
 				imageline($plot,$lastxpixel,$lastypixel,$xpixel,$ypixel,$black);
 			}
 		}
 		$x+=$step;
 		$lastxpixel=$xpixel;
 		$lastypixel=$ypixel;
-		$i++;
+		$w++;
 	}
 
 	$equation="- - - y = x";

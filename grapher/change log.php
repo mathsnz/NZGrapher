@@ -76,6 +76,9 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2017-08-06</b><br>
+	- Various Bug Fixes.<br>
+	<br>
 	<b>2017-07-21</b><br>
 	- Fixed a bug in FireFox preventing the pasting of tables.<br>
 	<br>
