@@ -76,6 +76,8 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2017-11-25</b><br>
+	- Changes to dot plots to make the points not round before graphing to be more statitsically accurate.<br>
 	<b>2017-08-06</b><br>
 	- Various Bug Fixes.<br>
 	<br>

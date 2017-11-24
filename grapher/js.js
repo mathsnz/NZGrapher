@@ -1874,9 +1874,9 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		var index = indexes[index];
 		var value = values[index];
 		thisvalues.push(value);
-		var xpixel = convertvaltopixel(value,minxtick,maxxtick,left,right);
-		xpixel = Math.floor(xpixel/(rad*2))*rad*2;
-		xpixels.push([index,xpixel]);
+		var rawxpixel = convertvaltopixel(value,minxtick,maxxtick,left,right);
+		xpixel = Math.floor(rawxpixel/(rad*3))*rad*3;
+		xpixels.push([index,xpixel,rawxpixel]);
 	}
 	var minval = Math.min.apply(null, thisvalues);
 	var lq = lowerquartile(thisvalues);
@@ -1909,11 +1909,12 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 	var lastxpixel=0;
 	var yheight = rad*2;
 	if ((maxheight-10)/maxpoints<yheight){yheight=(maxheight-10)/maxpoints;}
-	xpixels.sort(function(a, b) {return a[1] - b[1]})
+	xpixels.sort(function(a, b) {return a[2] - b[2]})
 	if($('#labels').is(":checked")){var labels="yes";} else {var labels = "no";}
 	$.each(xpixels, function( key, value ) {
 		key = value[0];
 		xpixel = value [1];
+		rawxpixel = value [2];
 		ctx.beginPath();
 		if(lastxpixel==xpixel){
 			ypixel = ypixel - yheight;
@@ -1922,7 +1923,7 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		}
 		lastxpixel = xpixel;
 		ctx.strokeStyle = colors[key];
-		ctx.arc(xpixel,ypixel,rad,0,2*Math.PI);
+		ctx.arc(rawxpixel,ypixel,rad,0,2*Math.PI);
 		ctx.stroke();
 		//text
 		if(labels == "yes"){
