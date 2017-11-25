@@ -1847,7 +1847,7 @@ function plotysplit(ctx,left,right,oypixel,minxtick,maxxtick,xstep,maxheight,poi
 				group = allygroups[index];
 				points = ydifferentgroups[group];
 				if(points){
-					plotdotplot(ctx,points,xpoints,minxtick,maxxtick,oypixel,left,right,thismaxheight,colors);
+					plotdotplot(ctx,points,xpoints,minxtick,maxxtick,oypixel,left,right,thismaxheight,colors,2);
 				}
 				ctx.fillStyle = '#000000';
 				ctx.font = "bold 15px Roboto";
@@ -1859,12 +1859,12 @@ function plotysplit(ctx,left,right,oypixel,minxtick,maxxtick,xstep,maxheight,poi
 			return ydifferentgroups;
 		}
 	} else {
-		plotdotplot(ctx,points,xpoints,minxtick,maxxtick,oypixel,left,right,maxheight,colors);
+		plotdotplot(ctx,points,xpoints,minxtick,maxxtick,oypixel,left,right,maxheight,colors,2);
 	}
 	return 'good';
 }
 
-function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,maxheight,colors){
+function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,maxheight,colors,sort){
 
 	ctx.lineWidth = 2;
 	var rad = $('#size').val()/2;
@@ -1909,7 +1909,7 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 	var lastxpixel=0;
 	var yheight = rad*2;
 	if ((maxheight-10)/maxpoints<yheight){yheight=(maxheight-10)/maxpoints;}
-	xpixels.sort(function(a, b) {return a[2] - b[2]})
+	xpixels.sort(function(a, b) {return a[sort] - b[sort]})
 	if($('#labels').is(":checked")){var labels="yes";} else {var labels = "no";}
 	$.each(xpixels, function( key, value ) {
 		key = value[0];
@@ -2260,7 +2260,7 @@ function bootstrap(mm){
 	colors = makeblankcolors(xpoints.length,alpha);
 
 	for (var index in allydifferentgroups){
-		plotdotplot(ctx,allydifferentgroups[index],xpoints,minxtick,maxxtick,oypixel,left,right,maxheight,colors);
+		plotdotplot(ctx,allydifferentgroups[index],xpoints,minxtick,maxxtick,oypixel,left,right,maxheight,colors,2);
 		ctx.fillStyle = '#000000';
 		ctx.font = "bold 15px Roboto";
 		ctx.textAlign="right";
@@ -2407,15 +2407,15 @@ function bootstrap(mm){
 		i++;
 	}
 
-	bootstrapdifs.sort(function(a, b){return a-b});
-
 	maxheight=height*0.5-100;
 
 	if($('#labels').is(":checked")){var waslabels="yes";} else {var waslabels = "no";}
 	$('#labels')[0].checked=false;
-	plotdotplot(ctx,bspoints,bootstrapdifs,minxtick,maxxtick,oypixel,left,right,maxheight,colors);
+	plotdotplot(ctx,bspoints,bootstrapdifs,minxtick,maxxtick,oypixel,left,right,maxheight,colors,1);
 	if(waslabels=="yes"){$('#labels')[0].checked=true;}
 
+	bootstrapdifs.sort(function(a, b){return a-b});
+	
 	y=oypixel-3;
 	ctx.lineWidth = 2;
 	ctx.strokeStyle = 'rgb(0,0,255)';
