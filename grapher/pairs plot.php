@@ -169,7 +169,7 @@ foreach($data as $xpoints){
 			$y2=$y1+$plotheight;
 			if(is_numeric($ypoints[0])){
 				if($x!=$y){
-					$map.="<area shape='rect' coords='$x1,$y1,$x2,$y2' href=\"javascript:window.parent.document.getElementById('xvar').selectedIndex=$x+1;window.parent.document.getElementById('yvar').selectedIndex=$y+1;window.parent.document.getElementById('type').value='scatter';window.parent.document.getElementById('xaxis').value=window.parent.document.getElementById('xvar').options[window.parent.document.getElementById('xvar').selectedIndex].text;window.parent.document.getElementById('yaxis').value=window.parent.document.getElementById('yvar').options[window.parent.document.getElementById('yvar').selectedIndex].text;parent.graphchange(window.parent.document.getElementById('type'));parent.updategraph();\" alt='$x1 - $y1'>";
+					$map.="<area shape='rect' coords='$x1,$y1,$x2,$y2' href=\"javascript:window.parent.document.getElementById('xvar').selectedIndex=$x+1;window.parent.document.getElementById('yvar').selectedIndex=$y+1;window.parent.document.getElementById('type').value='newscatter';window.parent.document.getElementById('xaxis').value=window.parent.document.getElementById('xvar').options[window.parent.document.getElementById('xvar').selectedIndex].text;window.parent.document.getElementById('yaxis').value=window.parent.document.getElementById('yvar').options[window.parent.document.getElementById('yvar').selectedIndex].text;parent.graphchange(window.parent.document.getElementById('type'));parent.updategraph();\" alt='$x1 - $y1'>";
 					imagerectangle($im,$x1,$y1,$x2,$y2,$black);
 					$miny=min($ypoints);
 					$maxy=max($ypoints);

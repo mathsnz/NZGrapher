@@ -77,7 +77,12 @@ To Do List
 */
 ?>
 	<b>2017-11-25</b><br>
-	- Changes to dot plots to make the points not round before graphing to be more statitsically accurate.<br>
+	- Re-write of Scatter Plot module into Javascript.<br>
+	- Can now manually set min and max for x and y axis on scatter graphs using "More Options".<br>
+	<br>
+	<b>2017-11-25</b><br>
+	- Changes to dot plots to make the points not round before graphing to be more statistically accurate.<br>
+	<br>
 	<b>2017-08-06</b><br>
 	- Various Bug Fixes.<br>
 	<br>

@@ -432,7 +432,7 @@ echo "\n</table></body></html>";
 	<option value='histogram'>Histogram</option>
 	<option value='histogramf'>Histogram - Summary Data</option>
 	<option value='pie chart'>Pie Chart</option>
-	<option value='scatter'>Scatter Graph</option>
+	<option value='newscatter'>Scatter Graph</option>
 	<option value='residuals'>Residuals Plot</option>
 	<option disabled></option>
 	<option value='bootstrap'>Bootstrap Single Variable</option>
@@ -450,6 +450,7 @@ echo "\n</table></body></html>";
 	<option value='time series forecasts'>&nbsp;&nbsp;&nbsp;Forecasts</option>
 	<option disabled></option>
 	<option value='dotplot'>OLD: Dot Plot (and Box and Whisker)</option>
+	<option value='scatter'>OLD: Scatter Graph</option>
 	<option value='bootstrap confidence interval - median'>OLD: Bootstrap Confidence Interval - Median</option>
 	<option value='bootstrap confidence interval - mean'>OLD: Bootstrap Confidence Interval - Mean</option>
 	<option value='time series'>OLD: Time Series</option>
@@ -817,6 +818,13 @@ if(isset($_GET['dev'])){
 			For creating axis limits it pretend the ____ value is ____
 			<tr><td>Min:<td><input id=boxplotmin value=auto>
 			<tr><td>Max:<td><input id=boxplotmax value=auto>
+			<tr><td>&nbsp;
+			<tr><td colspan=2><b>Scatter Graphs:</b><br>
+			For creating axis limits it pretend the ____ value is ____
+			<tr><td>Min X:<td><input id=scatplotminx value=auto>
+			<tr><td>Max X:<td><input id=scatplotmaxx value=auto>
+			<tr><td>Min Y:<td><input id=scatplotminy value=auto>
+			<tr><td>Max Y:<td><input id=scatplotmaxy value=auto>
 		</table>
 	</div>
 </div>
