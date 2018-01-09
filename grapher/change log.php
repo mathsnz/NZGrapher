@@ -76,7 +76,7 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
-	<b>2017-11-25</b><br>
+	<b>2018-01-09</b><br>
 	- Re-write of Scatter Plot module into Javascript.<br>
 	- Can now manually set min and max for x and y axis on scatter graphs using "More Options".<br>
 	<br>
