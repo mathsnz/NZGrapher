@@ -133,6 +133,7 @@ Upload your own file: <input type="file" name="file" id="filebox" style='width:8
 		<div style='border:1px solid #ccc;background-color:#ddd;width:70px;height:17px;border-radius:5px;padding:3px 5px 3px 5px;font-size:12px;text-align:center;position:absolute;top:-2px;left:135px;'>Choose File</div>
 </form>
 <div style='border:1px solid #ccc;background-color:#ddd;width:70px;height:17px;border-radius:5px;padding:3px 5px 3px 5px;font-size:12px;text-align:center;position:absolute;top:-2px;left:225px;cursor:pointer;' onclick='document.getElementById("pastetext").style.display="block";document.getElementById("textarea").value="";document.getElementById("textarea").focus();'>Paste Table</div>
+<div style='border:1px solid #ccc;background-color:#ddd;width:70px;height:17px;border-radius:5px;padding:3px 5px 3px 5px;font-size:12px;text-align:center;position:absolute;top:-2px;left:315px;cursor:pointer;' onclick='document.getElementById("pastelink").style.display="block";document.getElementById("linkarea").value="";document.getElementById("linkarea").focus();'>Paste Link</div>
 </div>
 <div id=pastetext style='z-index:16;position:fixed;height:100%;width:100%;top:0px;left:0px;background:rgba(255,255,255,0.5);display:none;'>
 <div style='position:absolute;top:50%;left:50%;width:400px;height:300px;z-index:12;text-align:center;padding:5px;margin-left:-205px;margin-top:-155px;'>
@@ -141,6 +142,16 @@ Upload your own file: <input type="file" name="file" id="filebox" style='width:8
 <br>
 <a href='#' class=button onclick='document.getElementById("pastetext").style.display="none"' id=import>Import</a>
 <a href='#' class=button onclick='document.getElementById("pastetext").style.display="none"'>Close</a>
+</div>
+</div>
+<div id=pastelink style='z-index:16;position:fixed;height:100%;width:100%;top:0px;left:0px;background:rgba(255,255,255,0.5);display:none;'>
+<div style='position:absolute;top:50%;left:50%;width:400px;height:300px;z-index:12;text-align:center;padding:5px;margin-left:-205px;margin-top:-155px;'>
+<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>Paste your link here</div><br>
+Note: the link needs to be accessible on the web for this to work, and must be to a CSV file.<br>
+<textarea style='width:400px;height:190px;resize:none;' id=linkarea></textarea><br>
+<br>
+<a href='#' class=button onclick='document.getElementById("pastelink").style.display="none"' id=importlink>Import</a>
+<a href='#' class=button onclick='document.getElementById("pastelink").style.display="none"'>Close</a>
 </div>
 </div>
 
@@ -572,60 +583,60 @@ if(substr($dataset,0,6)!="SECURE"){
 	<tr><td style='width:130px;font-size:12px;'>
 		<div id=addtograph>
 			<span id=arrowsshow>
-				<input type="checkbox" onclick="updategraph();" id="arrows" name="arrows" value="yes"> Arrows<br>
+				<label><input type="checkbox" onclick="updategraph();" id="arrows" name="arrows" value="yes"> Arrows</label><br>
 			</span>
-			<span id=regshow>
+			<span id=regshow><label>
 				<input type="checkbox" onclick="updategraph();" id="regression" name="regression" value="yes">
 					<span id=sum>Summaries</span>
 					<span id=reg>Regression Line</span>
 					<span id=for>Forecast output</span>
-				<br>
+				</label><br>
 			</span>
-			<span id=boxplotshow>
-				<input type="checkbox" onclick="updategraph();" id="boxplot" name="boxplot" value="yes"> Box Plots<br>
+			<span id=boxplotshow><label>
+				<input type="checkbox" onclick="updategraph();" id="boxplot" name="boxplot" value="yes"> Box Plots</label><br>
 			</span>
-			<span id=highboxplotshow>
-				<input type="checkbox" onclick="updategraph();" id="highboxplot" name="highboxplot" value="yes"> High Box Plot<br>
+			<span id=highboxplotshow><label>
+				<input type="checkbox" onclick="updategraph();" id="highboxplot" name="highboxplot" value="yes"> High Box Plot</label><br>
 			</span>
-			<span id=boxnowhiskershow>
-				<input type="checkbox" onclick="updategraph();" id="boxnowhisker" name="boxnowhisker" value="yes"> Box (No Whisker)<br>
+			<span id=boxnowhiskershow><label>
+				<input type="checkbox" onclick="updategraph();" id="boxnowhisker" name="boxnowhisker" value="yes"> Box (No Whisker)</label><br>
 			</span>
-			<span id=boxnooutliershow>
-				<input type="checkbox" onclick="updategraph();" id="boxnooutlier" name="boxnooutlier" value="yes"> Box (No Outlier)<br>
+			<span id=boxnooutliershow><label>
+				<input type="checkbox" onclick="updategraph();" id="boxnooutlier" name="boxnooutlier" value="yes"> Box (No Outlier)</label><br>
 			</span>
 			<span id=intervalshow>
-				<input type="checkbox" onclick="updategraph();" id="interval" name="interval" value="yes"> Informal C-I<br>
-				<input type="checkbox" onclick="updategraph();" id="intervallim" name="intervallim" value="yes"> C-I Limits<br>
+				<label><input type="checkbox" onclick="updategraph();" id="interval" name="interval" value="yes"> Informal C-I</label><br>
+				<label><input type="checkbox" onclick="updategraph();" id="intervallim" name="intervallim" value="yes"> C-I Limits</label><br>
 			</span>
-			<span id=labelshow>
-				<input type="checkbox" onclick="updategraph();" id="labels" name="labels" value="yes"> Point Labels<br>
+			<span id=labelshow><label>
+				<input type="checkbox" onclick="updategraph();" id="labels" name="labels" value="yes"> Point Labels</label><br>
 			</span>
-			<span id=meandotshow>
-				<input type="checkbox" onclick="updategraph();" id="meandot" name="meandot" value="yes"> Mean Dot<br>
+			<span id=meandotshow><label>
+				<input type="checkbox" onclick="updategraph();" id="meandot" name="meandot" value="yes"> Mean Dot</label><br>
 			</span>
-			<span id=jittershow>
-				<input type="checkbox" onclick="updategraph();" id="jitter" name="jitter" value="yes"> Jitter<br>
+			<span id=jittershow><label>
+				<input type="checkbox" onclick="updategraph();" id="jitter" name="jitter" value="yes"> Jitter</label><br>
 			</span>
-			<span id=quadraticshow>
-				<input type="checkbox" onclick="updategraph();" id="quadratic" name="quadratic" value="yes"> Quadratic<br>
+			<span id=quadraticshow><label>
+				<input type="checkbox" onclick="updategraph();" id="quadratic" name="quadratic" value="yes"> Quadratic</label><br>
 			</span>
-			<span id=cubicshow>
-				<input type="checkbox" onclick="updategraph();" id="cubic" name="cubic" value="yes"> Cubic<br>
+			<span id=cubicshow><label>
+				<input type="checkbox" onclick="updategraph();" id="cubic" name="cubic" value="yes"> Cubic</label><br>
 			</span>
-			<span id=expshow>
-				<input type="checkbox" onclick="updategraph();" id="exp" name="exp" value="yes"> y=a*exp(b*x)<br>
+			<span id=expshow><label>
+				<input type="checkbox" onclick="updategraph();" id="exp" name="exp" value="yes"> y=a*exp(b*x)</label><br>
 			</span>
-			<span id=logshow>
-				<input type="checkbox" onclick="updategraph();" id="log" name="log" value="yes"> y=a*ln(x)+b<br>
+			<span id=logshow><label>
+				<input type="checkbox" onclick="updategraph();" id="log" name="log" value="yes"> y=a*ln(x)+b</label><br>
 			</span>
-			<span id=powshow>
-				<input type="checkbox" onclick="updategraph();" id="pow" name="pow" value="yes"> y=a*x^b<br>
+			<span id=powshow><label>
+				<input type="checkbox" onclick="updategraph();" id="pow" name="pow" value="yes"> y=a*x^b</label><br>
 			</span>
-			<span id=yxshow>
-				<input type="checkbox" onclick="updategraph();" id="yx" name="yx" value="yes"> y=x<br>
+			<span id=yxshow><label>
+				<input type="checkbox" onclick="updategraph();" id="yx" name="yx" value="yes"> y=x</label><br>
 			</span>
-			<span id=differentaxisshow>
-				<input type="checkbox" onclick="updategraph();" id="differentaxis" name="differentaxis" value="yes"> Different Axis<br>
+			<span id=differentaxisshow><label>
+				<input type="checkbox" onclick="updategraph();" id="differentaxis" name="differentaxis" value="yes"> Different Axis</label><br>
 			</span>
 			<span id=regtypeshow>
 				Regression Type:<br>
@@ -647,17 +658,17 @@ if(substr($dataset,0,6)!="SECURE"){
 					<option>Standard Deviation</option>
 				</select>
 			</span>
-			<span id=longtermtrendshow>
-				<input type="checkbox" onclick="if(this.checked==true){$('#seasonal')[0].checked=true;}else{$('#seasonal')[0].checked=false;};updategraph();" id="longtermtrend" name="longtermtrend" value="yes"> Long Term Trend<br>
+			<span id=longtermtrendshow><label>
+				<input type="checkbox" onclick="if(this.checked==true){$('#seasonal')[0].checked=true;}else{$('#seasonal')[0].checked=false;};updategraph();" id="longtermtrend" name="longtermtrend" value="yes"> Long Term Trend</label><br>
 			</span>
-			<span id=seasonalshow>
-				<input type="checkbox" onclick="if(this.checked==true){$('#longtermtrend')[0].checked=true;};updategraph();" id="seasonal" name="seasonal" value="yes"> Seasonal<br>
+			<span id=seasonalshow><label>
+				<input type="checkbox" onclick="if(this.checked==true){$('#longtermtrend')[0].checked=true;};updategraph();" id="seasonal" name="seasonal" value="yes"> Seasonal</label><br>
 			</span>
-			<span id=startfinishshow>
-				<input type="checkbox" onclick="updategraph();" id="startfinish" name="startfinish" value="yes"> Start / End Points<br>
+			<span id=startfinishshow><label>
+				<input type="checkbox" onclick="updategraph();" id="startfinish" name="startfinish" value="yes"> Start / End Points</label><br>
 			</span>
-			<span id=gridlinesshow>
-				<input type="checkbox" onclick="updategraph();" id="gridlines" name="gridlines" value="yes"> Gridlines<br>
+			<span id=gridlinesshow><label>
+				<input type="checkbox" onclick="updategraph();" id="gridlines" name="gridlines" value="yes"> Gridlines</label><br>
 			</span>
 			<span id=addmultshow>
 				Type:<br>
@@ -666,25 +677,25 @@ if(substr($dataset,0,6)!="SECURE"){
 					<option>Multiplicative</option>
 				</select>
 			</span>
-			<span id=invertshow>
-				<input type="checkbox" onclick="updategraph();" id="invert" name="invert" value="yes"> Invert Colours<br>
+			<span id=invertshow><label>
+				<input type="checkbox" onclick="updategraph();" id="invert" name="invert" value="yes"> Invert Colours</label><br>
 			</span>
-			<span id=thicklinesshow>
-				<input type="checkbox" onclick="updategraph();" id="thicklines" name="thicklines" value="yes"> Thick Lines<br>
+			<span id=thicklinesshow><label>
+				<input type="checkbox" onclick="updategraph();" id="thicklines" name="thicklines" value="yes"> Thick Lines</label><br>
 			</span>
-			<span id=relativefrequencyshow>
-				<input type="checkbox" onclick="updategraph();" id="relativefrequency" name="relativefrequency" value="yes"> Relative Freq.<br>
+			<span id=relativefrequencyshow><label>
+				<input type="checkbox" onclick="updategraph();" id="relativefrequency" name="relativefrequency" value="yes"> Relative Freq.</label><br>
 			</span>
-			<span id=grayscaleshow>
-				<input type="checkbox" onclick="updategraph();" id="grayscale" name="grayscale" value="yes"> Gray Scale <br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(do not use on Firefox)<br>
+			<span id=grayscaleshow><label>
+				<input type="checkbox" onclick="updategraph();" id="grayscale" name="grayscale" value="yes"> Gray Scale <br>(do not use on Firefox)</label><br>
 			</span>
 		</div>
-		<td><span style='font-size:12px;'>
+		<td><span style='font-size:12px;line-height:27px;'>
 			<span style='display:inline-block;width:50px;'>Title: </span><input type="text" id="title" name="title" value="Graph Title"><br>
 			<span style='display:inline-block;width:50px;'>x-axis: </span><input type="text" id="xaxis" name="xaxis" value="X Axis Title"><br>
 			<span style='display:inline-block;width:50px;'>y-axis: </span><input type="text" id="yaxis" name="yaxis" value="Y Axis Title"><br>
 			<span id=colorname><span style='display:inline-block;width:50px;'>Colour: </span><input type="text" id="colorlabel" name="colorlabel" value="Color Label"><br></span>
-			<span style='display:inline-block;width:50px;'>Size: </span><select id="standardsize" name="standardsize" onchange="updategraph()" style='width:120px;height:19px;'>
+			<span style='display:inline-block;width:50px;'>Size: </span><select id="standardsize" name="standardsize" onchange="updategraph()" style='width:120px;'>
 				<option>Auto</option>
 				<?php
 				//<option>Auto - High Res</option>

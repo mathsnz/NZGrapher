@@ -34,7 +34,15 @@ if($type=="regression") {
 	$c=$coefficients[ 0 ];
 	$m=$coefficients[ 1 ];
 	
-	echo json_encode(array('c'=>$c,'m'=>$m));
+	$r = "ERROR";
+	if($i>1){
+		$den=(($sumxx-((1/$i)*$sumx*$sumx)))*($sumyy-((1/$i)*$sumy*$sumy));
+		if($den>0){
+			$r=($sumxy-((1/$i)*$sumx*$sumy))/sqrt($den);
+		}
+	}
+	
+	echo json_encode(array('c'=>$c,'m'=>$m,'r'=>$r));
 }
 
 if($type=="quadratic") {

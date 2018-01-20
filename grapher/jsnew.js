@@ -236,6 +236,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			data=JSON.parse(data);
 			c = parseFloat(data.c).toPrecision(5);
 			m = parseFloat(data.m).toPrecision(5);
+			r = parseFloat(data.r).toPrecision(5);
 		})
 		x = minxtick;
 		lasty=0;
@@ -253,6 +254,8 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			x = add(x,step);
 		}
 		ctx.fillText($('#yaxis').val()+" = "+m+" * "+$('#xaxis').val()+" + "+c,left, equationtop);
+		equationtop = add(equationtop,15);
+		ctx.fillText("r = "+r,left, equationtop);
 		equationtop = add(equationtop,15);
 	}
 	
@@ -414,7 +417,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		ctx.setLineDash([]);
 	}
 	
-	if($('#regression, #cubic, #quadratic, #yx').is(":checked")){
+	if($('#regression, #cubic, #quadratic, #yx', '#exp', '#pow', '#log').is(":checked")){
 		ctx.fillText("n = "+num,left, equationtop);
 	}
 

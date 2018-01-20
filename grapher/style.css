@@ -53,7 +53,7 @@ a {
 
 #left {
 	top:110px;
-	bottom:130px;
+	bottom:170px;
 	right:60%;
 	left:0;
 	overflow:auto;
@@ -108,7 +108,7 @@ td.button {
 }
 
 #variable {
-	height:100px;
+	height:140px;
 	right:60%;
 	bottom:30px;
 	left:0;
@@ -119,7 +119,7 @@ td.button {
 	left:40%;
 	right:0;
 	top:50px;
-	bottom:130px;
+	bottom:170px;
 	border-left:none;
 	text-align:center;
 	border:none;
@@ -134,7 +134,7 @@ td.button {
 }
 
 #controls {
-	height:100px;
+	height:140px;
 	left:40%;
 	bottom:30px;
 	right:0;
@@ -143,6 +143,7 @@ td.button {
 
 #variable table td, #controls table td {
 	font-size:12px;
+	height:27px;
 }
 
 #overlay{
@@ -160,7 +161,7 @@ td.button {
 	left:40%;
 	right:0;
 	top:50px;
-	bottom:130px;
+	bottom:170px;
 	border-left:none;
 	text-align:center;
 	z-index:5;
@@ -187,11 +188,31 @@ td.button {
 	display:none;
 }
 
-#variable input[type=checkbox] {
-   position: absolute;
-   top: -9999px;
-   left: -9999px;
+input[type=checkbox]::before { 
+    content: "";
+    background-image: url('./unchecked.png');
+    background-size: 15px 15px;
+    display: inline-block;
+    width:15px;
+    height:15px;
 }
+input[type=checkbox]:checked::before { 
+    background-image: url('./checked.png');
+}
+
+#addtograph span {
+	text-indent:-20px;
+	display:block;
+	padding-left:20px;
+}
+#addtograph span span {
+	display:inline;
+	padding-left:0px;
+}
+#addtograph select {
+	margin-left:-20px;
+}
+
 #variable label {
 	appearance:button;
 	-moz-appearance:button; /* Firefox */
@@ -256,9 +277,16 @@ td.button {
 }
 input, select{
 	font-family: 'Roboto', sans-serif;
-	font-size:11px;
-	padding:1px 3px 1px 3px;
+	font-size:12px;
+	padding:3px;
 	border:1px solid #ccc;
+	border-radius:3px;
+	padding:3px;
+	background-color:#fff;
+}
+
+label {
+	cursor:pointer;
 }
 
 input[type=text]{
@@ -300,7 +328,7 @@ input[type=text]{
 	z-index:15;
 	display:block;
 	width:125px;
-	height:100px;
+	height:140px;
 	overflow-y:scroll;
 	font-family:'Roboto Condensed', sans-serif;
 }
