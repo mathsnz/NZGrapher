@@ -76,6 +76,9 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2018-02-03</b><br>
+	- Improvement to Update Graph button.<br>
+	<br>
 	<b>2018-01-21</b><br>
 	- Styling Changes.<br>
 	- Option to paste link to URL (note: must be accessible on the web for this to work).<br>

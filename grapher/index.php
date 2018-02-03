@@ -717,7 +717,7 @@ if(isset($_GET['dev'])){
 	<?php
 }
 ?>
-<span onclick="moreoptions()">More Options</span> <span onclick="updategraph()">Update Graph</span></div>
+<span onclick="moreoptions()">More Options</span> <span onclick="updatebox()">Update Graph</span></div>
 <div class=button style='position:absolute;top:5px;right:5px;' onclick="feedback()">Send Feedback</div>
 </div>
 <div id=originaldataholder style="display:none;">

@@ -345,7 +345,6 @@ $(function(){
 			}
 			document.getElementById('updating').style.display = "none";
 			updatebox();
-			updategraph();
 			$("#sampling").hide();
 		} else {
 			var sampleon = $('#sampleon option:selected').text();
@@ -382,7 +381,6 @@ $(function(){
 			});
 			document.getElementById('updating').style.display = "none";
 			updatebox();
-			updategraph();
 			$("#sampling").hide();
 		}
 		}, 0.0001);
@@ -423,7 +421,6 @@ $(function(){
 		});
 		$("#sampling").hide();
 		updatebox();
-		updategraph();
 	});
 
 
@@ -437,7 +434,6 @@ $(function(){
 		$('#data').html($('#originaldataholder').html());
 		$('#data td div').attr('contenteditable','true');
 		updatebox();
-		updategraph();
 	});
 
 	$( "#newvarc2" ).click(function(){
@@ -512,7 +508,6 @@ $(function(){
 		});
 		$('#data td div').attr('contenteditable','true');
 		updatebox();
-		updategraph();
 		$ ("#sampling").hide();
 	});
 
@@ -562,7 +557,6 @@ $(function(){
 		});
 		$('#data td div').attr('contenteditable','true');
 		updatebox();
-		updategraph();
 		$ ("#sampling").hide();
 	});
 
