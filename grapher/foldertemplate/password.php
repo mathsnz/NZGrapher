@@ -1,1 +1,1 @@
-sdafo7a
+<?php $correctpass='sdafo7a'; ?>
