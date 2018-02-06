@@ -26,7 +26,7 @@ if(isset($_GET['foldername'])){
 	recurse_copy($src,$dst);
 	$password = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
 
-	file_put_contents("./$foldername/password.php",$password);
+	file_put_contents("./$foldername/password.php","<?php \$correctpass='$password'; ?>");
 
 	echo "Hi there,<br>
 	<br>
