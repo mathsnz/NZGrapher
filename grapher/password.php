@@ -1,3 +1,0 @@
-<?php
-$password="lskjdnhflia7";
-?>
