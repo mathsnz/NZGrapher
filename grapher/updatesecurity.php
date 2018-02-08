@@ -10,6 +10,8 @@ foreach ($files as $file){
 	}
 	file_put_contents($file,"<?php \$correctpass='$password'; ?>");
 	file_put_contents($dir."/index.php",file_get_contents('./updatesecuritynewindex.php'));
+	file_put_contents($dir."/delete.php",file_get_contents('./updatesecuritynewdelete.php'));
+	file_put_contents($dir."/upload.php",file_get_contents('./updatesecuritynewupload.php'));
 }
 
 echo "Done";
