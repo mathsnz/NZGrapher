@@ -36,6 +36,7 @@ if($loggedin==0){
 
 error_reporting(0);
 if ($_GET['check']=="yes") {
+	if(substr($_GET['fn'],0,1)=='.' || substr($_GET['fn'],0,1)=='/'){die('cannot delete outside of folder');}
 	unlink ($_GET['fn']);
 	header('Location: index.php');
 } else {

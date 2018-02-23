@@ -33,10 +33,10 @@ if($loggedin==0){
 		die();
 
 }
-
-$allowedExts = array("csv");
+$_FILES["file"]["name"] = basename($_FILES["file"]["name"]);
 $temp = explode(".", $_FILES["file"]["name"]);
 $extension = end($temp);
+if(strtolower($extension)!="csv"){die('Invalid Extension');}
 echo "<center>";
 
 $mimes = array('application/vnd.ms-excel','application/csv','text/plain','text/csv','text/tsv','text/comma-separated-values');
