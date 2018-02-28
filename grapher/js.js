@@ -665,28 +665,30 @@ function graphchange(obj){
 	document.getElementById('invertshow').style.display='none';
 	document.getElementById('thicklinesshow').style.display='none';
 	document.getElementById('relativefrequencyshow').style.display='none';
-	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='time series forecasts' || obj.value=='old time series forecasts' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart' || obj.value=='bar and area graph' || obj.value=='residuals' || obj.value=='time series' || obj.value=='time series re-composition' || obj.value=='time series seasonal effects'){document.getElementById('xvar').style.display='inline';document.getElementById('yvar').style.display='inline';};
+	document.getElementById('residualsforcexshow').style.display='none';
+	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='time series forecasts' || obj.value=='old time series forecasts' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart' || obj.value=='bar and area graph' || obj.value=='residuals' || obj.value=='time series' || obj.value=='time series re-composition' || obj.value=='time series seasonal effects'){document.getElementById('xvar').style.display='block';document.getElementById('yvar').style.display='block';};
 	if(obj.value=='bootstrap'){document.getElementById('yvar').style.display='none';document.getElementById('yvar').selectedIndex=0;};
-	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='time series forecasts' || obj.value=='old time series forecasts' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart'){document.getElementById('regshow').style.display='inline';};
-	if(obj.value=='dotplot'  || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='residuals' || obj.value.substring(0,4)=='time' || obj.value.substring(0,8)=='old time'){document.getElementById('labelshow').style.display='inline';};
-	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart'){document.getElementById('sum').style.display='inline';};
-	if(obj.value=='paired experiment'){document.getElementById('arrowsshow').style.display='inline';};
-	if(obj.value=='dotplot'){document.getElementById('highboxplotshow').style.display='inline';};
-	if(obj.value=='dotplot'){document.getElementById('boxnowhiskershow').style.display='inline';};
-	if(obj.value=='dotplot'){document.getElementById('boxnooutliershow').style.display='inline';};
-	if(obj.value=='residuals'){document.getElementById('regtypeshow').style.display='inline';};
-	if(obj.value=='scatter'){document.getElementById('jittershow').style.display='inline';document.getElementById('reg').style.display='inline';document.getElementById('quadraticshow').style.display='inline';document.getElementById('cubicshow').style.display='inline';document.getElementById('expshow').style.display='inline';document.getElementById('logshow').style.display='inline';document.getElementById('powshow').style.display='inline';document.getElementById('yxshow').style.display='inline';};
-	if(obj.value=='time series forecasts'){document.getElementById('for').style.display='inline';};
-	if(obj.value.substring(0,4)=='time'){document.getElementById('addmultshow').style.display='inline';};
-	if(obj.value=='time series'){document.getElementById('longtermtrendshow').style.display='inline';};
-  if(obj.value=='histogramf' || obj.value=='histogram' || obj.value=='bar and area graph'){document.getElementById('relativefrequencyshow').style.display='inline';}
+	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='time series forecasts' || obj.value=='old time series forecasts' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart'){document.getElementById('regshow').style.display='block';};
+	if(obj.value=='dotplot'  || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='residuals' || obj.value.substring(0,4)=='time' || obj.value.substring(0,8)=='old time'){document.getElementById('labelshow').style.display='block';};
+	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart'){document.getElementById('sum').style.display='block';};
+	if(obj.value=='paired experiment'){document.getElementById('arrowsshow').style.display='block';};
+	if(obj.value=='dotplot'){document.getElementById('highboxplotshow').style.display='block';};
+	if(obj.value=='dotplot'){document.getElementById('boxnowhiskershow').style.display='block';};
+	if(obj.value=='dotplot'){document.getElementById('boxnooutliershow').style.display='block';};
+	if(obj.value=='residuals'){document.getElementById('regtypeshow').style.display='block';};
+	if(obj.value=='scatter'){document.getElementById('jittershow').style.display='block';document.getElementById('reg').style.display='block';document.getElementById('quadraticshow').style.display='block';document.getElementById('cubicshow').style.display='block';document.getElementById('expshow').style.display='block';document.getElementById('logshow').style.display='block';document.getElementById('powshow').style.display='block';document.getElementById('yxshow').style.display='block';};
+	if(obj.value=='time series forecasts'){document.getElementById('for').style.display='block';};
+	if(obj.value.substring(0,4)=='time'){document.getElementById('addmultshow').style.display='block';};
+	if(obj.value=='time series'){document.getElementById('longtermtrendshow').style.display='block';};
+  if(obj.value=='histogramf' || obj.value=='histogram' || obj.value=='bar and area graph'){document.getElementById('relativefrequencyshow').style.display='block';}
+  if(obj.value=='residuals'){document.getElementById('residualsforcexshow').style.display='block';}
   if(obj.value=='scatter'){
-    document.getElementById('invertshow').style.display='inline';
-    document.getElementById('thicklinesshow').style.display='inline';
+    document.getElementById('invertshow').style.display='block';
+    document.getElementById('thicklinesshow').style.display='block';
   }
 	if(obj.value=='dotplot' || obj.value=='paired experiment'){
-		document.getElementById('boxplotshow').style.display='inline';
-		document.getElementById('intervalshow').style.display='inline';
+		document.getElementById('boxplotshow').style.display='block';
+		document.getElementById('intervalshow').style.display='block';
 	};
 	if(obj.value=='scatter' || obj.value=='dotplot' || obj.value=='paired experiment' || obj.value=='residuals' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r'){
 		document.getElementById('sizediv').style.display='block';
@@ -856,6 +858,11 @@ function updategraphgo(){
 		document.getElementById('relativefrequencyform').value='1';
 	} else {
 		document.getElementById('relativefrequencyform').value='no';
+	}
+	if(document.getElementById('residualsforcex').checked){
+		document.getElementById('residualsforcexform').value='yes';
+	} else {
+		document.getElementById('residualsforcexform').value='no';
 	}
 	document.getElementById('titleform').value=document.getElementById('title').value;
 	document.getElementById('xaxisform').value=document.getElementById('xaxis').value;

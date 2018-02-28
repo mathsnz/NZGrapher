@@ -514,6 +514,7 @@ echo "\n</table></body></html>";
 	<input type="hidden" id=invertform name=invert value='no'>
 	<input type="hidden" id=thicklinesform name=thicklines value='no'>
 	<input type="hidden" id=relativefrequencyform name=relativefrequency value='0'>
+	<input type="hidden" id=residualsforcexform name=residualsforcex value='no'>
 </form>
 <div id=helper onclick="if(document.getElementById('helppopup').style.display=='block'){document.getElementById('helppopup').style.display='none'}else{document.getElementById('helppopup').style.display='block'}"><span>Help</span></div>
 <div id=helppopup class="callout">
@@ -637,6 +638,9 @@ if(substr($dataset,0,6)!="SECURE"){
 			</span>
 			<span id=differentaxisshow><label>
 				<input type="checkbox" onclick="updategraph();" id="differentaxis" name="differentaxis" value="yes"> Different Axis</label><br>
+			</span>
+			<span id=residualsforcexshow><label>
+				<input type="checkbox" onclick="updategraph();" id="residualsforcex" name="residualsforcex" value="yes"> Change X Axis</label><br>
 			</span>
 			<span id=regtypeshow>
 				Regression Type:<br>

@@ -284,7 +284,9 @@ foreach($xpoints as $x){
 		$fitted=$a*pow($x,$b);
 	}
 	$residual=$ypoints[$i]-$fitted;
-	$xpoints[$i]=$fitted;
+	if($_POST['residualsforcex']=="no"){
+		$xpoints[$i]=$fitted;
+	}
 	$ypoints[$i]=$residual;
 	$i++;
 }
