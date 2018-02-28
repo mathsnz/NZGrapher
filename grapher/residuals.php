@@ -101,10 +101,16 @@ $bbox = imagettfbbox(12, 0, $bold, "Residual");
 $w = $bbox[4]-$bbox[0];
 imagettftext($im,12,90,15,$height/2+$w/2,$black,$bold,"Residual");
 
+if($_POST['residualsforcex']=="no"){
+	$label = "Fitted";
+} else {
+	$label = "Explanatory";
+}
+
 //xaxis lavel
-$bbox = imagettfbbox(12, 0, $bold, "Fitted");
+$bbox = imagettfbbox(12, 0, $bold, $label);
 $w = $bbox[4]-$bbox[0];
-imagettftext($im,12,0,$width/2-$w/2,$height-5,$black,$bold,"Fitted");
+imagettftext($im,12,0,$width/2-$w/2,$height-5,$black,$bold,$label);
 
 function format_number_significant_figures($number, $sf) {
   // How many decimal places do we round and format to?
