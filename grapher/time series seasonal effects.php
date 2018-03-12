@@ -353,7 +353,7 @@ while($i<count($xpoints)){
 	$n = ($year-$firstyear)/($lastyear-$firstyear);
 	$col = ColorHSLToRGB($n*$end,$sat,$lum);
 	$color = imagecolorallocatealpha($im, $col['r'], $col['g'], $col['b'], 0.8);
-	if($xvalue!=1 && $i>1){
+	if($xvalue!=1 && $lastxpixel!=0){
 		imageline($im,$lastxpixel,$lastypixel,$xpixel,$ypixel,$color);
 	}
 	if ($xvalue==1 || $xvalue==$seasons) {
