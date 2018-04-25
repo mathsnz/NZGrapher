@@ -205,11 +205,6 @@ $(function(){
 		updatebox();
 	});
 
-	$ ("#closeorder").click(function(){
-		$ ("#sampling").hide();
-		$ ("#orderdiv").hide();
-	});
-
 	$( "#sort" ).click(function() {
 		$ ("#sortdiv").show();
 		$ ("#sampling").show();
@@ -242,11 +237,6 @@ $(function(){
 		});
 		//finally empty the select and append the items from the array
 		$('#filterby').empty().append( options.join() );
-	});
-
-	$ ("#closesort").click(function(){
-		$ ("#sampling").hide();
-		$ ("#sortdiv").hide();
 	});
 
 	$ ("#sortgo").click(function(){
@@ -424,12 +414,6 @@ $(function(){
 	});
 
 
-	$ ("#closesample").click(function(){
-		$ ("#sampling").hide();
-		$ ("#samplediv").hide();
-	});
-
-
 	$( "#reset" ).click(function() {
 		$('#data').html($('#originaldataholder').html());
 		$('#data td div').attr('contenteditable','true');
@@ -560,19 +544,16 @@ $(function(){
 		$ ("#sampling").hide();
 	});
 
-	$ ("#closenewvar").click(function(){
-		$ ("#sampling").hide();
-		$ ("#newvardiv").hide();
-	});
-
-	$ ("#closefilter").click(function(){
+	$ (".close").click(function(){
 		$ ("#sampling").hide();
 		$ ("#filterdiv").hide();
-	});
-
-	$ ("#closenewvarc").click(function(){
-		$ ("#sampling").hide();
+		$ ("#newvardiv").hide();
 		$ ("#newvarcdiv").hide();
+		$ ("#orderdiv").hide();
+		$ ("#sortdiv").hide();
+		$ ("#samplediv").hide();
+		$ ("#converttimediv").hide();
+		$ ("#encodetimediv").hide();
 	});
 
 	$( "#update" ).click(updatebox);
@@ -2659,10 +2640,6 @@ function newtimeseries(){
 			var zstep=minmaxstep[2];
 
 			rvertaxis(ctx,gtop,gbottom,right+10*scalefactor,minztick,maxztick,zstep,left);
-
-			zshiftforseasonal=Math.ceil((maxztick+minztick)/2/zstep)*zstep;
-			seasonleft=right+90*scalefactor;
-			rvertaxis(ctx,gtop,gbottom,right+width/0.7*0.3+10*scalefactor,minztick-zshiftforseasonal,maxztick-zshiftforseasonal,zstep,seasonleft);
 		} else {
 			for (var index in zpoints){
 				pointsforminmax.push(zpoints[index]);
@@ -2678,17 +2655,64 @@ function newtimeseries(){
 	var maxytick=minmaxstep[1];
 	var ystep=minmaxstep[2];
 
+	if($('#addmult option:selected').text()=="Multiplicative"){var multiplicative="yes";} else {var multiplicative = "no";}
 	vertaxis(ctx,gtop,gbottom,left-10*scalefactor,minytick,maxytick,ystep,right+10*scalefactor);
 	if(seasonal=="yes"){
-		shiftforseasonal=Math.ceil((maxytick+minytick)/2/ystep)*ystep;
 		seasonright=width/0.7*0.3+right;
 		seasonleft=right+90*scalefactor;
-		vertaxis(ctx,gtop,gbottom,right+80*scalefactor,minytick-shiftforseasonal,maxytick-shiftforseasonal,ystep,seasonright+10*scalefactor);
 		ctx.lineWidth = 1*scalefactor;
 		ctx.strokeStyle = 'rgba(0,0,0,1)';
 		ctx.rect(seasonleft-10*scalefactor,gtop-10*scalefactor,seasonright-seasonleft+20*scalefactor,gbottom-gtop+20*scalefactor);
 		ctx.stroke();
 		horaxis(ctx,seasonleft,seasonright,add(gbottom,10*scalefactor),1,seasons,1);
+		if(multiplicative=="yes"){
+			smult=[];
+			pointsforminmax=[];
+			for (var index in fitted){
+				smult[index]=fitted[index]/trend[index];
+				pointsforminmax.push(smult[index]);
+			}
+			if(zpoints.length>0 && differentaxis!="yes"){
+				stlresponse=stl(tsxpoints,zpoints,seasons);
+				trend = stlresponse[0];
+				fitted = stlresponse[1];
+				s = stlresponse[2];
+				r = stlresponse[3];
+				for (var index in fitted){
+					pointsforminmax.push(fitted[index]/trend[index]);
+				}
+			}
+			var smin = Math.min.apply(null, pointsforminmax);
+			var smax = Math.max.apply(null, pointsforminmax);
+			var minmaxstep = axisminmaxstep(smin,smax);
+			var minstick=minmaxstep[0];
+			var maxstick=minmaxstep[1];
+			var sstep=minmaxstep[2];
+			vertaxis(ctx,gtop,gbottom,right+80*scalefactor,minstick,maxstick,sstep,seasonright+10*scalefactor);
+			if(differentaxis!="yes"){
+				//0 Line
+				ypixel = convertvaltopixel(1,maxstick,minstick,gtop,gbottom);
+				ctx.beginPath();
+				ctx.setLineDash([5, 5]);
+				ctx.moveTo(seasonleft-10*scalefactor, ypixel);
+				ctx.lineTo(seasonright+10*scalefactor, ypixel);
+				ctx.stroke();
+				ctx.setLineDash([]);
+			}
+		} else {
+			shiftforseasonal=Math.ceil((maxytick+minytick)/2/ystep)*ystep;
+			vertaxis(ctx,gtop,gbottom,right+80*scalefactor,minytick-shiftforseasonal,maxytick-shiftforseasonal,ystep,seasonright+10*scalefactor);
+			if(differentaxis!="yes"){
+				//0 Line
+				ypixel = convertvaltopixel(0,maxytick-shiftforseasonal,minytick-shiftforseasonal,gtop,gbottom);
+				ctx.beginPath();
+				ctx.setLineDash([5, 5]);
+				ctx.moveTo(seasonleft-10*scalefactor, ypixel);
+				ctx.lineTo(seasonright+10*scalefactor, ypixel);
+				ctx.stroke();
+				ctx.setLineDash([]);
+			}
+		} 
 		//x-axis title
 		ctx.fillStyle = '#000000';
 		fontsize = 15*scalefactor;
@@ -2710,7 +2734,6 @@ function newtimeseries(){
 		ctx.restore();
 	}
 
-	if($('#addmult option:selected').text()=="Multiplicative"){var multiplicative="yes";} else {var multiplicative = "no";}
 	if($('#labels').is(":checked")){var labels="yes";} else {var labels = "no";}
 	ytrendpts=[];
 	for (index in tsxpoints){
@@ -2746,24 +2769,16 @@ function newtimeseries(){
 			}
 			lasttrendpixel=trendpixel;
 			if(seasonal=='yes'){
-				seasonypixel=convertvaltopixel(s[index],maxytick-shiftforseasonal,minytick-shiftforseasonal,gtop,gbottom);
+				if(multiplicative=="yes"){
+					seasonypixel=convertvaltopixel(smult[index],maxstick,minstick,gtop,gbottom);
+				} else {
+					seasonypixel=convertvaltopixel(s[index],maxytick-shiftforseasonal,minytick-shiftforseasonal,gtop,gbottom);
+				}
 				point=parseFloat(tsxpoints[index]);
 				season=Math.round((point-Math.floor(point))*seasons+1);
 				seasonxpixel=convertvaltopixel(season,1,seasons,seasonleft,seasonright);
 				if(season!=1 && index!=0){
-					if(multiplicative=="yes"){
-						if(zpoints.length>0){
-							ctx.strokeStyle = 'rgba(48,145,255,0.3)';
-						} else {
-							ctx.strokeStyle = 'rgba(0,0,0,0.3)';
-						}
-						line(ctx,seasonxpixel,seasonypixel,lastseasonxpixel,lastseasonypixel);
-						if(zpoints.length>0){
-							ctx.strokeStyle = 'rgba(48,145,255,1)';
-						} else {
-							ctx.strokeStyle = 'rgba(0,0,0,1)';
-						}
-					} else if(parseFloat(index)<=parseFloat(seasons)){
+					if(parseFloat(index)<=parseFloat(seasons)){
 						line(ctx,seasonxpixel,seasonypixel,lastseasonxpixel,lastseasonypixel);
 					}
 				}
@@ -2796,6 +2811,34 @@ function newtimeseries(){
 			fitted = stlresponse[1];
 			s = stlresponse[2];
 			r = stlresponse[3];
+		}
+		if(multiplicative=="yes"){
+			smult=[];
+			pointsforminmax=[];
+			for (var index in fitted){
+				smult[index]=fitted[index]/trend[index];
+				pointsforminmax.push(smult[index]);
+			}
+			if(differentaxis=="yes"){
+				var smin = Math.min.apply(null, pointsforminmax);
+				var smax = Math.max.apply(null, pointsforminmax);
+				var minmaxstep = axisminmaxstep(smin,smax);
+				var minstick=minmaxstep[0];
+				var maxstick=minmaxstep[1];
+				var sstep=minmaxstep[2];
+			}
+		}
+		if(differentaxis=="yes"){
+			if(multiplicative=="yes"){
+				ctx.strokeStyle = 'rgba(0,0,0,1)';
+				seasonleft=right+90*scalefactor;
+				rvertaxis(ctx,gtop,gbottom,right+width/0.7*0.3+10*scalefactor,minstick,maxstick,sstep,seasonleft);
+			} else {
+				ctx.strokeStyle = 'rgba(0,0,0,1)';
+				zshiftforseasonal=Math.ceil((maxztick+minztick)/2/zstep)*zstep;
+				seasonleft=right+90*scalefactor;
+				rvertaxis(ctx,gtop,gbottom,right+width/0.7*0.3+10*scalefactor,minztick-zshiftforseasonal,maxztick-zshiftforseasonal,zstep,seasonleft);
+			}
 		}
 		ctx.strokeStyle = 'rgba(191,108,36,1)';
 		ztrendpts=[]
@@ -2833,21 +2876,23 @@ function newtimeseries(){
 					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel,trendpixel);
 				}
 				lasttrendpixel=trendpixel;
-				if(differentaxis=="yes"){
-					seasonypixel=convertvaltopixel(s[index],maxztick-zshiftforseasonal,minztick-zshiftforseasonal,gtop,gbottom);
-				} else {
-					seasonypixel=convertvaltopixel(s[index],maxytick-shiftforseasonal,minytick-shiftforseasonal,gtop,gbottom);
-				}
 				if(seasonal=='yes'){
+					if(multiplicative=="yes"){
+						seasonypixel=convertvaltopixel(smult[index],maxstick,minstick,gtop,gbottom);
+					} else {
+						if(differentaxis=="yes"){
+							seasonypixel=convertvaltopixel(s[index],maxztick-zshiftforseasonal,minztick-zshiftforseasonal,gtop,gbottom);
+						} else {
+							seasonypixel=convertvaltopixel(s[index],maxytick-shiftforseasonal,minytick-shiftforseasonal,gtop,gbottom);
+						}
+					}
+					
 					point=parseFloat(tsxpoints[index]);
 					season=Math.round((point-Math.floor(point))*seasons+1);
 					seasonxpixel=convertvaltopixel(season,1,seasons,seasonleft,seasonright);
 					if(season!=1 && index!=0){
-						if(multiplicative=="yes"){
-							ctx.strokeStyle = 'rgba(191,108,36,0.3)';
-							line(ctx,seasonxpixel,seasonypixel,lastseasonxpixel,lastseasonypixel);
-							ctx.strokeStyle = 'rgba(191,108,36,1)';
-						} else if(parseFloat(index)<=parseFloat(seasons)){
+						
+						if(parseFloat(index)<=parseFloat(seasons)){
 							line(ctx,seasonxpixel,seasonypixel,lastseasonxpixel,lastseasonypixel);
 						}
 					}
@@ -3597,4 +3642,429 @@ function drawSpline(ctx,pts,t){
 	ctx.stroke();
 	ctx.closePath();
     ctx.restore();
+}
+
+function newscatter(){
+	$('#reg').show();
+	$('#regshow').show();
+	$('#labelshow').show();
+	$('#jittershow').show();
+	$('#quadraticshow').show();
+	$('#cubicshow').show();
+	$('#expshow').show();
+	$('#logshow').show();
+	$('#powshow').show();
+	$('#yxshow').show();
+	$('#invertshow').show();
+	$('#thicklinesshow').show();
+	$('#xvar').show();
+	$('#yvar').show();
+	$('#zvar').show();
+	$('#color').show();
+	$('#colorname').show();
+	$('#greyscaleshow').show();
+	$('#sizediv').show();
+	$('#pointsizename').html('Point Size:');
+	$('#transdiv').show();
+
+	var canvas = document.getElementById('myCanvas');
+	var ctx = canvas.getContext('2d');
+	
+	//set size
+	var width = $('#width').val();
+	var height = $('#height').val();
+
+	ctx.canvas.width = width;
+	ctx.canvas.height = height;
+
+	ctx.fillStyle = "#ffffff";
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+	//graph title
+	ctx.fillStyle = '#000000';
+	fontsize=20*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
+	ctx.textAlign="center";
+	ctx.fillText($('#title').val(),width/2,30*scalefactor);
+	
+	//x-axis title
+	ctx.fillStyle = '#000000';
+	ctx.font = "bold 15px Roboto";
+	ctx.textAlign="center";
+	ctx.fillText($('#xaxis').val(),width/2,height-10);
+	
+	//y-axis title
+	x=20;
+	y=height/2;
+	ctx.save();
+	ctx.fillStyle = '#000000';
+	ctx.font = "bold 15px Roboto";
+	ctx.translate(x, y);
+	ctx.rotate(-Math.PI/2);
+	ctx.textAlign = "center";
+	ctx.fillText($('#yaxis').val(), 0, 0);
+	ctx.restore();
+	
+	//get points
+	var xpoints = $('#xvar').val().split(",");
+	xpoints.pop();
+	var ypoints = $('#yvar').val().split(",");
+	ypoints.pop();
+	var zpoints = $('#zvar').val().split(",");
+	zpoints.pop();
+
+	//check for numeric value
+	var points=[];
+	var allpoints=[];
+	var pointsremoved=[];
+	var pointsforminmax=[];
+	var pointsforminmaxy=[];
+	countx=0;
+	county=0;
+	for (var index in xpoints){
+		if($.isNumeric(xpoints[index])){countx++;}
+		if($.isNumeric(ypoints[index])){county++;}
+		if($.isNumeric(xpoints[index]) && $.isNumeric(ypoints[index])){
+			points.push(index);
+			allpoints.push(index);
+			pointsforminmax.push(xpoints[index]);
+			pointsforminmaxy.push(ypoints[index]);
+		} else {
+			pointsremoved.push(add(index,1));
+		}
+	}
+
+	if(countx==0){
+		return 'Error: You must select a numeric variable for variable 1';
+	}
+
+	if(county==0){
+		return 'Error: You must select a numeric variable for variable 2';
+	}
+
+	if(pointsremoved.length!=0){
+		ctx.fillStyle = '#000000';
+		ctx.font = "13px Roboto";
+		ctx.textAlign="right";
+		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-50,50);
+	}
+
+	if(points.length==0){
+		return 'Error: You must select a numeric variable for variable 1';
+	}
+
+	var oypixel=height-60;
+	var maxheight=height-120;
+	var left=90;
+	var right=width-60;
+	var gtop=90;
+	var bottom=height-60;
+
+	var xmin = Math.min.apply(null, pointsforminmax);
+	var xmax = Math.max.apply(null, pointsforminmax);
+	var ymin = Math.min.apply(null, pointsforminmaxy);
+	var ymax = Math.max.apply(null, pointsforminmaxy);
+	if($.isNumeric($('#scatplotminx').val())){
+		xmin=$('#scatplotminx').val();
+	}
+	if($.isNumeric($('#scatplotmaxx').val())){
+		xmax=$('#scatplotmaxx').val();
+	}
+	if($.isNumeric($('#scatplotminy').val())){
+		ymin=$('#scatplotminy').val();
+	}
+	if($.isNumeric($('#scatplotmaxy').val())){
+		ymax=$('#scatplotmaxy').val();
+	}
+	var minmaxstep = axisminmaxstep(xmin,xmax);
+	var minxtick=minmaxstep[0];
+	var maxxtick=minmaxstep[1];
+	var xstep=minmaxstep[2];
+	var minmaxstep = axisminmaxstep(ymin,ymax);
+	var minytick=minmaxstep[0];
+	var maxytick=minmaxstep[1];
+	var ystep=minmaxstep[2];
+
+	var alpha = 1-$('#trans').val()/100;
+	var colors = makecolors(alpha,ctx);
+	
+	if(zpoints.length>0){
+		zdifferentgroups = split(points,zpoints,4,3);
+		if(typeof zdifferentgroups === 'object'){
+			zgroups = Object.keys(zdifferentgroups);
+			zgroups.sort();
+			thisleft=60;
+			eachwidth=(width-40)/zgroups.length;
+			for (index in zgroups){
+				group = zgroups[index];
+				points = zdifferentgroups[group];
+
+				thisright = add(thisleft,eachwidth);
+
+				ctx.fillStyle = '#000000';
+				ctx.font = "bold 15px Roboto";
+				ctx.textAlign="center";
+				ctx.fillText(group,add(thisleft,thisright-50)/2,oypixel-maxheight);
+				
+				plotscatter(ctx,points,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,add(thisleft,30),thisright-50,colors);
+
+				thisleft = add(thisleft,eachwidth);
+			}
+		} else {
+			return zdifferentgroups;
+		}
+	} else {
+		plotscatter(ctx,points,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,left,right,colors);
+	}
+	
+	labelgraph(ctx,width,height);
+	
+	if($('#invert').is(":checked")){
+		invert(ctx)
+	}
+
+	var dataURL = canvas.toDataURL();
+	return dataURL;
+}
+
+function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,left,right,colors){
+	horaxis(ctx,left,right,add(bottom,10),minxtick,maxxtick,xstep);
+	vertaxis (ctx,gtop,bottom,left-10,minytick,maxytick,ystep);
+	ctx.lineWidth = 2;
+	if($('#thicklines').is(":checked")){
+		ctx.lineWidth = 5;
+	}
+	if($('#labels').is(":checked")){var labels="yes";} else {var labels = "no";}
+	var rad = $('#size').val()/2;
+	num = 0;
+	xcurvefit="";
+	ycurvefit="";
+	for (var index in indexes){
+		var index = indexes[index];
+		var xpoint = xpoints[index];
+		var ypoint = ypoints[index];
+		xcurvefit+=xpoint+",";
+		ycurvefit+=ypoint+",";
+		var xpixel = convertvaltopixel(xpoint,minxtick,maxxtick,left,right);
+		var ypixel = convertvaltopixel(ypoint,minytick,maxytick,bottom,gtop);
+		if($('#jitter').is(":checked")){
+			xpixel = add(xpixel,randint(-3,3));
+			ypixel = add(ypixel,randint(-3,3));
+		}
+		ctx.beginPath();
+		ctx.strokeStyle = colors[index];
+		ctx.arc(xpixel,ypixel,rad,0,2*Math.PI);
+		ctx.stroke();
+		if(labels == "yes"){
+			ctx.fillStyle = 'rgba(0,0,255,1)';
+			ctx.font = "10px Roboto";
+			ctx.textAlign="left";
+			ctx.fillText(parseInt(add(index,1)),add(add(xpixel,rad),2),add(ypixel,4));
+		}
+		num++;
+	}
+
+	equationtop = gtop;
+	ctx.textAlign="left";
+	ctx.fillStyle = '#000';
+	ctx.font = "13px Roboto";
+	ctx.lineWidth = 1;
+	if($('#thicklines').is(":checked")){
+		ctx.lineWidth = 3;
+	}
+	
+	$.ajaxSetup({async:false});
+	
+	if($('#regression').is(":checked")){
+		ctx.fillStyle='#f00';
+		ctx.strokeStyle='#f00';
+		$.post('curvefitter.php',{xvals:xcurvefit,yvals:ycurvefit,type:'regression'}).done(function(data){
+			data=JSON.parse(data);
+			c = parseFloat(data.c).toPrecision(5);
+			m = parseFloat(data.m).toPrecision(5);
+			r = parseFloat(data.r).toPrecision(5);
+		})
+		x = minxtick;
+		lasty=0;
+		step = (maxxtick - minxtick)/100;
+		while(x<maxxtick){
+			y = add(m * x,c);
+			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
+			ypixel = convertvaltopixel(y,minytick,maxytick,bottom,gtop);
+			if(x>minxtick && y>=minytick && y<=maxytick && lasty>=minytick && lasty<=maxytick){
+				line(ctx,lastxpixel,lastypixel,xpixel,ypixel);
+			}
+			lastxpixel=xpixel;
+			lastypixel=ypixel;
+			lasty = y;
+			x = add(x,step);
+		}
+		ctx.fillText($('#yaxis').val()+" = "+m+" * "+$('#xaxis').val()+" + "+c,left, equationtop);
+		equationtop = add(equationtop,15);
+		ctx.fillText("r = "+r,left, equationtop);
+		equationtop = add(equationtop,15);
+	}
+	
+	if($('#quadratic').is(":checked")){
+		ctx.fillStyle='#00f';
+		ctx.strokeStyle='#00f';
+		$.post('curvefitter.php',{xvals:xcurvefit,yvals:ycurvefit,type:'quadratic'}).done(function(data){
+			data=JSON.parse(data);
+			a = parseFloat(data.c).toPrecision(5);
+			b = parseFloat(data.b).toPrecision(5);
+			c = parseFloat(data.a).toPrecision(5);
+		})
+		x = minxtick;
+		lasty=0;
+		step = (maxxtick - minxtick)/100;
+		while(x<maxxtick){
+			y = add(add(a * Math.pow(x,2),b * x),c);
+			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
+			ypixel = convertvaltopixel(y,minytick,maxytick,bottom,gtop);
+			if(x>minxtick && y>=minytick && y<=maxytick && lasty>=minytick && lasty<=maxytick){
+				line(ctx,lastxpixel,lastypixel,xpixel,ypixel);
+			}
+			lastxpixel=xpixel;
+			lastypixel=ypixel;
+			lasty = y;
+			x = add(x,step);
+		}
+		ctx.fillText($('#yaxis').val()+" = "+a+" * "+$('#xaxis').val()+"^2 + "+b+" * "+$('#xaxis').val()+" + "+c,left, equationtop);
+		equationtop = add(equationtop,15);
+	}
+	
+	if($('#cubic').is(":checked")){
+		ctx.fillStyle='#0f0';
+		ctx.strokeStyle='#0f0';
+		$.post('curvefitter.php',{xvals:xcurvefit,yvals:ycurvefit,type:'cubic'}).done(function(data){
+			data=JSON.parse(data);
+			a = parseFloat(data.d).toPrecision(5);
+			b = parseFloat(data.c).toPrecision(5);
+			c = parseFloat(data.b).toPrecision(5);
+			d = parseFloat(data.a).toPrecision(5);
+		})
+		x = minxtick;
+		lasty=0;
+		step = (maxxtick - minxtick)/100;
+		while(x<maxxtick){
+			y = add(add(add(a * Math.pow(x,3),b * Math.pow(x,2)),c * x),d);
+			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
+			ypixel = convertvaltopixel(y,minytick,maxytick,bottom,gtop);
+			if(x>minxtick && y>=minytick && y<=maxytick && lasty>=minytick && lasty<=maxytick){
+				line(ctx,lastxpixel,lastypixel,xpixel,ypixel);
+			}
+			lastxpixel=xpixel;
+			lastypixel=ypixel;
+			lasty = y;
+			x = add(x,step);
+		}
+		ctx.fillText($('#yaxis').val()+" = "+a+" * "+$('#xaxis').val()+"^3 + "+b+" * "+$('#xaxis').val()+"^2 + "+c+" * "+$('#xaxis').val()+" + "+d,left, equationtop);
+		equationtop = add(equationtop,15);
+	}
+	
+	if($('#exp').is(":checked")){
+		ctx.fillStyle='#952BFF';
+		ctx.strokeStyle='#952BFF';
+		$.post('curvefitter.php',{xvals:xcurvefit,yvals:ycurvefit,type:'exp'}).done(function(data){
+			data=JSON.parse(data);
+			a = parseFloat(data.a).toPrecision(5);
+			b = parseFloat(data.b).toPrecision(5);
+		})
+		x = minxtick;
+		lasty=0;
+		step = (maxxtick - minxtick)/100;
+		while(x<maxxtick){
+			y = a * Math.exp(b*x);
+			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
+			ypixel = convertvaltopixel(y,minytick,maxytick,bottom,gtop);
+			if(x>minxtick && y>=minytick && y<=maxytick && lasty>=minytick && lasty<=maxytick){
+				line(ctx,lastxpixel,lastypixel,xpixel,ypixel);
+			}
+			lastxpixel=xpixel;
+			lastypixel=ypixel;
+			lasty = y;
+			x = add(x,step);
+		}
+		ctx.fillText($('#yaxis').val()+" = "+a+" * exp("+b+" * "+$('#xaxis').val()+")",left, equationtop);
+		equationtop = add(equationtop,15);
+	}
+	
+	if($('#log').is(":checked")){
+		ctx.fillStyle='#FF972E';
+		ctx.strokeStyle='#FF972E';
+		$.post('curvefitter.php',{xvals:xcurvefit,yvals:ycurvefit,type:'log'}).done(function(data){
+			data=JSON.parse(data);
+			a = parseFloat(data.a).toPrecision(5);
+			b = parseFloat(data.b).toPrecision(5);
+		})
+		x = minxtick;
+		lasty=0;
+		step = (maxxtick - minxtick)/100;
+		while(x<maxxtick){
+			y = add(a * Math.log(x),b);
+			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
+			ypixel = convertvaltopixel(y,minytick,maxytick,bottom,gtop);
+			if(x>minxtick && y>=minytick && y<=maxytick && lasty>=minytick && lasty<=maxytick){
+				line(ctx,lastxpixel,lastypixel,xpixel,ypixel);
+			}
+			lastxpixel=xpixel;
+			lastypixel=ypixel;
+			lasty = y;
+			x = add(x,step);
+		}
+		ctx.fillText($('#yaxis').val()+" = "+a+" * log("+$('#xaxis').val()+") + "+b,left, equationtop);
+		equationtop = add(equationtop,15);
+	}
+	
+	if($('#pow').is(":checked")){
+		ctx.fillStyle='#3ED2D2';
+		ctx.strokeStyle='#3ED2D2';
+		$.post('curvefitter.php',{xvals:xcurvefit,yvals:ycurvefit,type:'pow'}).done(function(data){
+			data=JSON.parse(data);
+			a = parseFloat(data.a).toPrecision(5);
+			b = parseFloat(data.b).toPrecision(5);
+		})
+		x = minxtick;
+		lasty=0;
+		step = (maxxtick - minxtick)/100;
+		while(x<maxxtick){
+			y = a * Math.pow(x,b);
+			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
+			ypixel = convertvaltopixel(y,minytick,maxytick,bottom,gtop);
+			if(x>minxtick && y>=minytick && y<=maxytick && lasty>=minytick && lasty<=maxytick){
+				line(ctx,lastxpixel,lastypixel,xpixel,ypixel);
+			}
+			lastxpixel=xpixel;
+			lastypixel=ypixel;
+			lasty = y;
+			x = add(x,step);
+		}
+		ctx.fillText($('#yaxis').val()+" = "+a+" * "+$('#xaxis').val()+" ^ "+b,left, equationtop);
+		equationtop = add(equationtop,15);
+	}
+	
+	if($('#yx').is(":checked")){
+		ctx.fillStyle = '#000';
+		ctx.strokeStyle='#000';
+		ctx.setLineDash([5, 5]);
+		min = minxtick;
+		if(min<minytick){min=minytick;}
+		max = maxxtick;
+		if(max>maxytick){max=maxytick;}
+		if(min<max){
+			var mnx = convertvaltopixel(min,minxtick,maxxtick,left,right);
+			var mny = convertvaltopixel(min,minytick,maxytick,bottom,gtop);
+			var mxx = convertvaltopixel(max,minxtick,maxxtick,left,right);
+			var mxy = convertvaltopixel(max,minytick,maxytick,bottom,gtop);
+			line(ctx,mnx,mny,mxx,mxy);
+		}
+		ctx.fillText("- - - y = x",left, equationtop);
+		equationtop = add(equationtop,15);
+		ctx.setLineDash([]);
+	}
+	
+	if($('#regression, #cubic, #quadratic, #yx', '#exp', '#pow', '#log').is(":checked")){
+		ctx.fillText("n = "+num,left, equationtop);
+	}
+
 }

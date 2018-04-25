@@ -9,7 +9,7 @@
 			col = col || "na";
 			error = error || "na";
 			$.post( "//tracking.jake4maths.com/graphererror.php", { msg: encodeURIComponent(msg), url: encodeURIComponent(url), line: encodeURIComponent(line), col: encodeURIComponent(col), error: encodeURIComponent(error) } );
-			console.log('there was an error - '+msg);
+			console.log('there was an error in '+url+' on line '+line+' - '+msg);
 			return true;
 	  }
 	</script>
@@ -285,6 +285,9 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 	<li id=newvar>Create New Variable (From 2 Variables)</li>
 	<li id=newvarc2>Create New Variable (Linear Function)</li>
 	<li id=filter>Filter Data</li>
+	<li id=addindex onclick="addindex()">Add Graphable Index Column</li>
+	<li id=addindex onclick="converttimeshow()">Convert Time Column</li>
+	<li id=addindex onclick="encodetimeshow()">Encode Time Column</li>
 </ul>
 </div>
 
@@ -457,15 +460,11 @@ echo "\n</table></body></html>";
 	<option disabled></option>
 	<option value='newtimeseries'>Time Series</option>
 	<option value='newtimeseriesrecomp'>&nbsp;&nbsp;&nbsp;Re-Composition</option>
-	<option value='time series seasonal effects'>&nbsp;&nbsp;&nbsp;Seasonal Effects</option>
-	<option value='time series forecasts'>&nbsp;&nbsp;&nbsp;Forecasts</option>
+	<option value='newtimeseriesseasonaleffects'>&nbsp;&nbsp;&nbsp;Seasonal Effects</option>
+	<option value='newtimeseriessforecasts'>&nbsp;&nbsp;&nbsp;Forecasts</option>
 	<option disabled></option>
-	<option value='dotplot'>OLD: Dot Plot (and Box and Whisker)</option>
-	<option value='scatter'>OLD: Scatter Graph</option>
-	<option value='bootstrap confidence interval - median'>OLD: Bootstrap Confidence Interval - Median</option>
-	<option value='bootstrap confidence interval - mean'>OLD: Bootstrap Confidence Interval - Mean</option>
-	<option value='time series'>OLD: Time Series</option>
-	<option value='time series re-composition'>OLD: Time Series Recomposition</option>
+	<option value='time series seasonal effects'>OLD: Time Series Seasonal Effects</option>
+	<option value='time series forecasts'>OLD: Time Series Forecasts</option>
 	<option disabled></option>
 	<option value='change log'>Change Log</option>
 	<option value='update'>Update</option>
@@ -736,7 +735,7 @@ if(isset($_GET['dev'])){
 </div>
 <div id="samplediv" style="z-index:99;max-height:80%;overflow-y:auto;display:none;padding:10px;position:absolute;border:none;box-shadow: 0px 0px 10px rgba(0,0,0,0.5);top:50%;left:50%;-webkit-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);">
 	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>Sample</div>
-	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' id=closesample>&times;</div><br>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' class=close>&times;</div><br>
 	<span id=samplecontents style="font-size:14px">
 		Sample With: <select style='width:120px' onChange="" id=sampleon></select><br><br>
 		<center>
@@ -749,7 +748,7 @@ if(isset($_GET['dev'])){
 </div>
 <div id="orderdiv" style="z-index:6;display:none;padding:10px;position:absolute;border:none;box-shadow: 0px 0px 10px rgba(0,0,0,0.5);top:50%;left:50%;-webkit-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);">
 	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=ordertitle>Reorder</div>
-	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' id=closeorder>&times;</div><br>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' class=close>&times;</div><br>
 	<span id=samplecontents style="font-size:14px">
 		Reorder: <select style='width:120px' onChange="" id=orderby></select><br><br>
 		<center>
@@ -761,7 +760,7 @@ if(isset($_GET['dev'])){
 </div>
 <div id="newvardiv" style="z-index:6;display:none;padding:10px;position:absolute;border:none;box-shadow: 0px 0px 10px rgba(0,0,0,0.5);top:50%;left:50%;-webkit-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);">
 	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=ordertitle>Create New Variable (From 2 Variables)</div>
-	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' id=closenewvar>&times;</div><br>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' class=close>&times;</div><br>
 	<span id=samplecontents style="font-size:14px">
 		<select style='width:120px' onChange="" id=newvar1></select>
 		<select style='width:50px' onChange="" id=newvarcom>
@@ -778,7 +777,7 @@ if(isset($_GET['dev'])){
 </div>
 <div id="newvarcdiv" style="z-index:6;display:none;padding:10px;position:absolute;border:none;box-shadow: 0px 0px 10px rgba(0,0,0,0.5);top:50%;left:50%;-webkit-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);">
 	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=ordertitle>Create New Variable (Linear Function)</div>
-	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' id=closenewvarc>&times;</div><br>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' class=close>&times;</div><br>
 	<span id=samplecontents style="font-size:14px">
 		<select style='width:120px' onChange="" id=newvarcx></select>
 		<select style='width:50px' onChange="" id=newvarcmd>
@@ -798,7 +797,7 @@ if(isset($_GET['dev'])){
 </div>
 <div id="sortdiv" style="z-index:6;display:none;padding:10px;position:absolute;border:none;box-shadow: 0px 0px 10px rgba(0,0,0,0.5);top:50%;left:50%;-webkit-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);">
 	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=ordertitle>Sort Data by Variable</div>
-	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' id=closesort>&times;</div><br>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' class=close>&times;</div><br>
 	<span id=sortcontents style="font-size:14px">
 		Sort By: <select style='width:120px' onChange="" id=sortby></select><br><br>
 		<center>
@@ -809,7 +808,7 @@ if(isset($_GET['dev'])){
 </div>
 <div id="filterdiv" style="z-index:6;display:none;padding:10px;position:absolute;border:none;box-shadow: 0px 0px 10px rgba(0,0,0,0.5);top:50%;left:50%;-webkit-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);">
 	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=filtertitle>Filter Data</div>
-	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' id=closefilter>&times;</div><br>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' class=close>&times;</div><br>
 	<span id=filtercontents style="font-size:14px">
 		Filter By: <select style='width:120px' onChange="" id=filterby></select><br>
 		Between: <input style='width:50px' onChange="" id=filtermin>
@@ -817,6 +816,50 @@ if(isset($_GET['dev'])){
 		<center>
 		<br>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=filtergo>Filter</a><br><br>
+		</center>
+	</span>
+</div>
+<div id="converttimediv" style="z-index:6;display:none;padding:10px;position:absolute;border:none;box-shadow: 0px 0px 10px rgba(0,0,0,0.5);top:50%;left:50%;-webkit-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);">
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=filtertitle>Convert Time Column</div>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' class=close>&times;</div><br>
+	<span id=filtercontents style="font-size:14px">
+		Time Column: <select style='width:120px' onChange="" id=converttimecol></select><br>
+		Convert To: <select style='width:120px' onChange="" id=converttimeto>
+			<option>Seconds</option>
+			<option>Minutes</option>
+			<option>Hours</option>
+			<option>Days</option>
+		</select>
+		<center>
+		<br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' onclick='converttimego()'>Convert</a><br><br>
+		</center>
+	</span>
+</div>
+<div id="encodetimediv" style="z-index:6;display:none;padding:10px;position:absolute;border:none;box-shadow: 0px 0px 10px rgba(0,0,0,0.5);top:50%;left:50%;-webkit-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);">
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=filtertitle>Encode Time Column</div>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' class=close>&times;</div><br>
+	<span id=filtercontents style="font-size:14px">
+		This is used to encode a normal time or date field into a format NZGrapher can use for it's time series module.<br>
+		Time Column: <select style='width:120px' onChange="" id=encodetimecol></select><br>
+		Average / Sum: <select style='width:120px' onChange="" id=encodetimesumavg>
+			<option value=avg>Average (Mean)</option>
+			<option value=sum>Sum</option>
+		</select><br>
+		Data Type: <select style='width:120px' onChange="customshowhide()" id=encodetimetype>
+			<option>Quarterly</option>
+			<option>Monthly</option>
+			<option>Daily</option>
+			<option>Hourly</option>
+			<option>Custom</option>
+		</select><br>
+		<span id=encodecustomshow>
+		Custom Period Length: <input id=encodelength><br>
+		Custom Seasons Per Period: <input id=encodeseasons><br>
+		</span>
+		<br>
+		<center>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' onclick='encodetimego()'>Encode</a><br><br>
 		</center>
 	</span>
 </div>

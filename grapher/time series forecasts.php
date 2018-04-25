@@ -117,6 +117,7 @@ include_once ('holtwinters.php');
 
 list($a,$b,$s)=hwinit($ypoints,$seasons);
 
+
 	$i=0;
 	$error=0;
 	foreach($ypoints as $ypoint){

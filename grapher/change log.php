@@ -76,6 +76,13 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2018-04-25</b><br>
+	- Upgrade of 'Time Series' graph.<br>
+	- Upgrade of 'Time Series Seasonal Effects' graph.<br>
+	- Upgrade of 'Time Series Forecasts' graph.<br>
+	- New Option under 'Sample and More' -> 'Convert Time' to convert dates or times into seconds, minutes, hours or days (great for bivariate data).<br>
+	- New Option under 'Sample and More' -> 'Encode Time' to encode dates / times into the correct format for the time series module. It averages / sums the numerical values and finds the most common non-numerical values if there is more than one time in each interval.<br>
+	<br>
 	<b>2018-02-03</b><br>
 	- Improvement to Update Graph button.<br>
 	<br>
