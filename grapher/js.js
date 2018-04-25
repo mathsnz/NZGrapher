@@ -152,7 +152,7 @@ $(function(){
 			var allvals=values;
 			uniquevalues=unique( values );
 			if(uniquevalues.length<10){
-				uniquevalues.sort();
+				uniquevalues.sort(sortorder);
 				var value="";
 				$.each(uniquevalues, function( index, val ) {
 					var num=countval(allvals,val);
@@ -279,7 +279,7 @@ $(function(){
 			var allvals=values;
 			uniquevalues=unique( values );
 			if(uniquevalues.length<500){
-				uniquevalues.sort();
+				uniquevalues.sort(sortorder);
 				var value="";
 				$.each(uniquevalues, function( index, val ) {
 					var num=countval(allvals,val);
@@ -1459,7 +1459,7 @@ function makecolors(alpha,ctx){
 		for (var i in colorpoints) {
 			colorindexs[i] = colorpoints[i];
 		}
-		colorindexs.sort();
+		colorindexs.sort(sortorder);
 		$.unique(colorindexs);
 		var thecolors=[];
 		var colorcount = colorindexs.length;
@@ -1708,7 +1708,7 @@ function newdotplot(){
 		allydifferentgroups = split(allpoints,ypoints,10,2);
 		if(typeof allydifferentgroups === 'object'){
 			allygroups = Object.keys(allydifferentgroups);
-			allygroups.sort().reverse();
+			allygroups.sort(sortorder).reverse();
 			for (index in allydifferentgroups){
 				group = index;
 				depoints=allydifferentgroups[index];
@@ -1729,7 +1729,7 @@ function newdotplot(){
 		zdifferentgroups = split(points,zpoints,4,3);
 		if(typeof zdifferentgroups === 'object'){
 			zgroups = Object.keys(zdifferentgroups);
-			zgroups.sort();
+			zgroups.sort(sortorder);
 			thisleft=60;
 			eachwidth=(width-40)/zgroups.length;
 			for (index in zgroups){
@@ -1829,7 +1829,7 @@ function plotysplit(ctx,left,right,oypixel,minxtick,maxxtick,xstep,maxheight,poi
 		ydifferentgroups = split(points,ypoints,10,2);
 		if(typeof ydifferentgroups === 'object'){
 			ygroups = Object.keys(ydifferentgroups);
-			ygroups.sort().reverse();
+			ygroups.sort(sortorder).reverse();
 			thismaxheight = maxheight/allygroups.length;
 			for (index in allygroups){
 				group = allygroups[index];
@@ -2199,7 +2199,7 @@ function bootstrap(mm){
 		allydifferentgroups = split(allpoints,ypoints,2,2);
 		if(typeof allydifferentgroups === 'object'){
 			allygroups = Object.keys(allydifferentgroups);
-			allygroups.sort().reverse();
+			allygroups.sort(sortorder).reverse();
 			for (index in allydifferentgroups){
 				group = index;
 				depoints=allydifferentgroups[index];
@@ -3792,7 +3792,7 @@ function newscatter(){
 		zdifferentgroups = split(points,zpoints,4,3);
 		if(typeof zdifferentgroups === 'object'){
 			zgroups = Object.keys(zdifferentgroups);
-			zgroups.sort();
+			zgroups.sort(sortorder);
 			thisleft=60;
 			eachwidth=(width-40)/zgroups.length;
 			for (index in zgroups){
