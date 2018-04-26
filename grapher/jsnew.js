@@ -918,9 +918,9 @@ function encodetimeshow(){
 
 function customshowhide(){
 	if($('#encodetimetype').val()=='Custom'){
-		$('#encodecustomshow').show();
+		$('.encodecustomshow').show();
 	} else {
-		$('#encodecustomshow').hide();
+		$('.encodecustomshow').hide();
 	}
 }
 
@@ -959,7 +959,7 @@ function encodetimego(){
 		split="H";
 		pad="00";
 	} else {
-		length = $('#encodelength').val();
+		length = $('#encodelength').val()*$('#encodemult').val();
 		seasons = $('#encodeseasons').val();
 		split="C";
 		pad="";
@@ -986,7 +986,7 @@ function encodetimego(){
 		} else {
 			currentseason=1;
 		}
-		while((currentseason<seasons && currentyear<lastyear) || (currentseason<=lastseason && currentyear==lastyear)){
+		while((currentseason<=seasons && currentyear<lastyear) || (currentseason<=lastseason && currentyear==lastyear)){
 			timestamp = currentyear + split + (pad + currentseason).slice(-pad.length)
 			data[timestamp]=[];
 			data[timestamp][0]=[timestamp];
@@ -1031,7 +1031,6 @@ function encodetimego(){
 						for (var index in val){
 							sum = add(sum,val[index]);
 						}
-						console.log(sumavg);
 						if(sumavg=="avg"){
 							sum = parseFloat((sum/val.length).toPrecision(5));
 						}
@@ -1060,7 +1059,6 @@ function encodetimego(){
 		}
 		i++;
 	}
-	console.log(newtable);
 	document.getElementById("data").innerHTML = newtable;
 	$('#data td div').attr('contenteditable','true');
 	$('#type').val('newabout');
@@ -1088,10 +1086,10 @@ function converttots(time,seasons,length){
 		part1=Math.floor(time/length);
 		part2=add(Math.floor((time/length-part1)*seasons),1);
 		pad="";
-		i=0;
-		while(i<seasons.toString().length){
+		l=0;
+		while(l<seasons.toString().length){
 			pad+="0";
-			i++;
+			l++;
 		}
 		part2 = (pad+part2).slice(-seasons.toString().length);
 		return part1+"C"+part2;

@@ -841,22 +841,27 @@ if(isset($_GET['dev'])){
 	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' class=close>&times;</div><br>
 	<span id=filtercontents style="font-size:14px">
 		This is used to encode a normal time or date field into a format NZGrapher can use for it's time series module.<br>
-		Time Column: <select style='width:120px' onChange="" id=encodetimecol></select><br>
-		Average / Sum: <select style='width:120px' onChange="" id=encodetimesumavg>
+		<table>
+		<tr><td>Time Column:<td><select style='width:120px' onChange="" id=encodetimecol></select><br>
+		<tr><td>Average / Sum:<td><select style='width:120px' onChange="" id=encodetimesumavg>
 			<option value=avg>Average (Mean)</option>
 			<option value=sum>Sum</option>
 		</select><br>
-		Data Type: <select style='width:120px' onChange="customshowhide()" id=encodetimetype>
+		<tr><td>Data Type:<td><select style='width:120px' onChange="customshowhide()" id=encodetimetype>
 			<option>Quarterly</option>
 			<option>Monthly</option>
 			<option>Daily</option>
 			<option>Hourly</option>
 			<option>Custom</option>
 		</select><br>
-		<span id=encodecustomshow>
-		Custom Period Length: <input id=encodelength><br>
-		Custom Seasons Per Period: <input id=encodeseasons><br>
-		</span>
+		<tr class=encodecustomshow><td>Custom Period Length:<td><input id=encodelength><select id=encodemult>
+			<option value=1000>Seconds</option>
+			<option value=60000>Minutes</option>
+			<option value=3600000>Hours</option>
+			<option value=86400000>Days</option>
+		</select><br>
+		<tr class=encodecustomshow><td>Custom Seasons Per Period:<td><input id=encodeseasons><br>
+		</table>
 		<br>
 		<center>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' onclick='encodetimego()'>Encode</a><br><br>
