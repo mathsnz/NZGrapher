@@ -513,9 +513,10 @@ function newtimeseriessforecasts(){
 			max = parseFloat(forecastsmax[c].toPrecision(5));
 			year = Math.floor(x);
 			month=Math.round((x-year)*seasons)+1;
-			if(month>seasons)
-			month=1;
-			year++;
+			if(month>seasons){
+				month=1;
+				year++;
+			}
 
 			if(seasons==1){
 				split=""
