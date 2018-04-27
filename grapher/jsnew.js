@@ -1100,12 +1100,9 @@ function converttots(time,seasons,length){
 function getWeekNumber(d) {
     // Copy date so don't modify original
     d = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-    // Set to nearest Thursday: current date + 4 - current day number
-    // Make Sunday's day number 7
-    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
-    // Calculate full weeks to nearest Thursday
+    d.setDate(d.getDate() - d.getDay());
     var weekNo = Math.ceil(( ( (d) / 86400000) + 1)/7);
-    // Return array of year and week number
+    // Return week number
     return weekNo;
 }
 
