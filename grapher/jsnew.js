@@ -939,29 +939,34 @@ function encodetimego(){
 	});
 	lowesttime = Math.min.apply(null,items);
 	highesttime = Math.max.apply(null,items);
-	if(type=='Quarterly'){
+	if(type=='Quarter'){
 		length = 0;
+		start = 0;
 		seasons = 4;
 		split="Q";
 		pad="0";
-	} else if(type=='Monthly'){
+	} else if(type=='Month'){
 		length = 0;
+		start = 0;
 		seasons = 12;
 		split="M";
 		pad="00";
-	} else if(type=='Daily'){
+	} else if(type=='Day'){
 		length = 0;
+		start = 0;
 		seasons = 7;
 		split="D";
 		pad="0";
-	} else if(type=='Hourly'){
+	} else if(type=='Hour'){
 		length = 0;
+		start = 0;
 		seasons = 24;
 		split="H";
 		pad="00";
 	} else {
-		length = $('#encodelength').val()*$('#encodemult').val();
+		length = $('#encodelength').val()*$('#encodemult').val()*$('#encodeseasons').val();
 		seasons = $('#encodeseasons').val();
+		start = Date.parse($('#encodestart').val());
 		split="C";
 		pad="";
 		i=0;
@@ -972,12 +977,12 @@ function encodetimego(){
 	}
 	data = [];
 	data['0000']=['TS'];
-	firstseason = converttots(lowesttime,seasons,length);
+	firstseason = converttots(lowesttime-start,seasons,length);
 	firstseason = firstseason.split(split);
 	currentyear=firstseason[0];
 	firstyear=firstseason[0];
 	firstseason=firstseason[1];
-	lastseason = converttots(highesttime,seasons,length);
+	lastseason = converttots(highesttime-start,seasons,length);
 	lastseason = lastseason.split(split);
 	lastyear=lastseason[0];
 	lastseason=lastseason[1];
@@ -1003,7 +1008,7 @@ function encodetimego(){
 	i=0;
 	$('#data tr').each( function(){
 		time = Date.parse($(this).children().eq(col-1).text());
-		time = converttots(time,seasons,length);
+		time = converttots(time-start,seasons,length);
 		c = 1;
 		$(this).children('td').each(function(){
 			if(i==0){
@@ -1024,7 +1029,9 @@ function encodetimego(){
 		for (vkey in value){
 			val = value[vkey];
 			if(typeof val == "object"){
-				if(val.length==1){
+				if(val.length==0){
+					data[key][vkey]="-";
+				} else if(val.length==1){
 					data[key][vkey]=val[0];
 				} else {
 					if($.isNumeric(data[key][vkey][0])){

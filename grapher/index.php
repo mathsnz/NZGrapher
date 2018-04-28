@@ -847,20 +847,21 @@ if(isset($_GET['dev'])){
 			<option value=avg>Average (Mean)</option>
 			<option value=sum>Sum</option>
 		</select><br>
-		<tr><td>Data Type:<td><select style='width:120px' onChange="customshowhide()" id=encodetimetype>
-			<option>Quarterly</option>
-			<option>Monthly</option>
-			<option>Daily</option>
-			<option>Hourly</option>
+		<tr><td>Season Length:<td><select style='width:120px' onChange="customshowhide()" id=encodetimetype>
+			<option>Quarter</option>
+			<option>Month</option>
+			<option>Day</option>
+			<option>Hour</option>
 			<option>Custom</option>
 		</select><br>
-		<tr class=encodecustomshow><td>Custom Period Length:<td><input id=encodelength><select id=encodemult>
+		<tr class=encodecustomshow><td>Custom Season Length:<td><input id=encodelength><select id=encodemult>
 			<option value=1000>Seconds</option>
 			<option value=60000>Minutes</option>
 			<option value=3600000>Hours</option>
 			<option value=86400000>Days</option>
 		</select><br>
 		<tr class=encodecustomshow><td>Custom Seasons Per Period:<td><input id=encodeseasons><br>
+		<tr class=encodecustomshow><td>Custom Seasons Start:<td><input id=encodestart><br>
 		</table>
 		<br>
 		<center>

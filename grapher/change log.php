@@ -76,6 +76,9 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2018-04-29</b><br>
+	- Bug fixes for time series encode.<br>
+	<br>
 	<b>2018-04-25</b><br>
 	- Upgrade of 'Time Series' graph.<br>
 	- Upgrade of 'Time Series Seasonal Effects' graph.<br>
