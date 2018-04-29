@@ -1014,11 +1014,7 @@ function encodetimego(){
 			if(i==0){
 				data['0000'][c]=$(this).text();
 			} else {
-				if(c==(col-1)){
-					data[time][c].push('-');
-				} else {
-					data[time][c].push($(this).text());
-				}
+				data[time][c].push($(this).text());
 			}
 			c++;
 		});
