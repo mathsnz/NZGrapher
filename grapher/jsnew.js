@@ -964,7 +964,7 @@ function encodetimego(){
 		split="H";
 		pad="00";
 	} else {
-		length = $('#encodelength').val()*$('#encodemult').val()*$('#encodeseasons').val();
+		length = $('#encodelength').val()*$('#encodemult').val();
 		seasons = $('#encodeseasons').val();
 		start = Date.parse($('#encodestart').val());
 		split="C";

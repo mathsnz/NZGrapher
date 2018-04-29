@@ -854,14 +854,14 @@ if(isset($_GET['dev'])){
 			<option>Hour</option>
 			<option>Custom</option>
 		</select><br>
-		<tr class=encodecustomshow><td>Custom Season Length:<td><input id=encodelength><select id=encodemult>
+		<tr class=encodecustomshow><td>Custom Period Length:<td><input id=encodelength><select id=encodemult>
 			<option value=1000>Seconds</option>
 			<option value=60000>Minutes</option>
 			<option value=3600000>Hours</option>
 			<option value=86400000>Days</option>
 		</select><br>
 		<tr class=encodecustomshow><td>Custom Seasons Per Period:<td><input id=encodeseasons><br>
-		<tr class=encodecustomshow><td>Custom Seasons Start:<td><input id=encodestart><br>
+		<tr class=encodecustomshow><td>Custom Seasons Start:<td><input id=encodestart> (must be equal to or before the first time)<br>
 		</table>
 		<br>
 		<center>
