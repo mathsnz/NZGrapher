@@ -872,13 +872,24 @@ function converttimego(){
 	var convertto = $('#converttimeto').val();
 	i=0;
 	items=[];
+	minmax=[];
 	$('#data tr td:nth-child('+col+')').each( function(){
 		if(i!=0){
-			items.push( Date.parse($(this).text()) );
+			test = Date.parse($(this).text());
+			if($.isNumeric(test)){
+				items.push(test);
+				minmax.push(test);
+			} else{
+				test = Date.parse('1 Jan '+$(this).text());
+				if($.isNumeric(test)){
+					minmax.push(test);
+				}
+				items.push(test);
+			}
 		}
 		i++;
 	});
-	lowesttime = Math.min.apply(null,items);
+	lowesttime = Math.min.apply(null,minmax);
 	i=0;
 	divideby = 1;
 	if(convertto == 'Seconds'){divideby=1000;}

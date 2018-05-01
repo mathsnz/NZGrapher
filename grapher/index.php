@@ -205,7 +205,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 	</form>
 	<form id=datasource method=get style='display:inline;'>
 		<input type=hidden name=folder value="<?php echo $_GET['folder'];?>">
-		Data Source: </small><select name=dataset onChange="document.getElementById('datasource').submit();" style='width:100px;height:20px;'>
+		Data Source: </small><select name=dataset onChange="document.getElementById('datasource').submit();" style='width:100px;height:20px;padding:0px;'>
 <?php
 
 	if($fileupload=="yes"){
@@ -701,7 +701,7 @@ if(substr($dataset,0,6)!="SECURE"){
 			<span style='display:inline-block;width:50px;'>Size: </span><select id="standardsize" name="standardsize" onchange="updategraph()" style='width:120px;'>
 				<option>Auto</option>
 				<?php
-				//<option>Auto - High Res</option>
+				//echo "<option>Auto - High Res</option>";
 				?>
 				<option>Standard</option>
 				<option>Short</option>

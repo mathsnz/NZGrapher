@@ -1678,15 +1678,16 @@ function newdotplot(){
 
 	if(pointsremoved.length!=0){
 		ctx.fillStyle = '#000000';
-		ctx.font = "13px Roboto";
+		fontsize = 13*scalefactor;
+		ctx.font = fontsize+"px Roboto";
 		ctx.textAlign="right";
 		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-50,50);
 	}
 
-	var oypixel=height-60;
-	var maxheight=height-120;
-	var left=90;
-	var right=width-60;
+	var oypixel=height-60*scalefactor;
+	var maxheight=height-120*scalefactor;
+	var left=90*scalefactor;
+	var right=width-60*scalefactor;
 
 	var xmin = Math.min.apply(null, pointsforminmax);
 	var xmax = Math.max.apply(null, pointsforminmax);
@@ -1730,8 +1731,8 @@ function newdotplot(){
 		if(typeof zdifferentgroups === 'object'){
 			zgroups = Object.keys(zdifferentgroups);
 			zgroups.sort(sortorder);
-			thisleft=60;
-			eachwidth=(width-40)/zgroups.length;
+			thisleft=60*scalefactor;
+			eachwidth=(width-40*scalefactor)/zgroups.length;
 			for (index in zgroups){
 				group = zgroups[index];
 				points = zdifferentgroups[group];
@@ -1739,11 +1740,12 @@ function newdotplot(){
 				thisright = add(thisleft,eachwidth);
 
 				ctx.fillStyle = '#000000';
-				ctx.font = "bold 15px Roboto";
+				fontsize = 15*scalefactor;
+				ctx.font = "bold "+fontsize+"px Roboto";
 				ctx.textAlign="center";
-				ctx.fillText(group,add(thisleft,thisright-50)/2,oypixel-maxheight);
+				ctx.fillText(group,add(thisleft,thisright-50*scalefactor)/2,oypixel-maxheight);
 
-				var error = plotysplit(ctx,add(thisleft,30),thisright-50,oypixel,minxtick,maxxtick,xstep,maxheight,points,xpoints,ypoints,colors,allygroups);
+				var error = plotysplit(ctx,add(thisleft,30*scalefactor),thisright-50*scalefactor,oypixel,minxtick,maxxtick,xstep,maxheight,points,xpoints,ypoints,colors,allygroups);
 				if(error != 'good'){return error;}
 
 
@@ -1759,24 +1761,27 @@ function newdotplot(){
 
 	//graph title
 	ctx.fillStyle = '#000000';
-	ctx.font = "bold 20px Roboto";
+	fontsize = 20*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
 	ctx.textAlign="center";
-	ctx.fillText($('#title').val(),width/2,30);
+	ctx.fillText($('#title').val(),width/2,30*scalefactor);
 
 	//x-axis title
 	ctx.fillStyle = '#000000';
-	ctx.font = "bold 15px Roboto";
+	fontsize = 15*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
 	ctx.textAlign="center";
-	ctx.fillText($('#xaxis').val(),width/2,height-10);
+	ctx.fillText($('#xaxis').val(),width/2,height-10*scalefactor);
 
 	//y-axis title
 	if($('#yaxis').val() != "Y Axis Title"){
 		var x, y;
-		x=20;
+		x=20*scalefactor;
 		y=height/2;
 		ctx.save();
 		ctx.fillStyle = '#000000';
-		ctx.font = "bold 15px Roboto";
+		fontsize = 15*scalefactor;
+		ctx.font = "bold "+fontsize+"px Roboto";
 		ctx.translate(x, y);
 		ctx.rotate(-Math.PI/2);
 		ctx.textAlign = "center";
@@ -1824,7 +1829,7 @@ function labelgraph(ctx,width,height){
 
 function plotysplit(ctx,left,right,oypixel,minxtick,maxxtick,xstep,maxheight,points,xpoints,ypoints,colors,allygroups){
 	ctx.strokeStyle = '#000000';
-	horaxis(ctx,left,right,add(oypixel,10),minxtick,maxxtick,xstep);
+	horaxis(ctx,left,right,add(oypixel,10*scalefactor),minxtick,maxxtick,xstep);
 	if(ypoints.length>0){
 		ydifferentgroups = split(points,ypoints,10,2);
 		if(typeof ydifferentgroups === 'object'){
@@ -1838,9 +1843,10 @@ function plotysplit(ctx,left,right,oypixel,minxtick,maxxtick,xstep,maxheight,poi
 					plotdotplot(ctx,points,xpoints,minxtick,maxxtick,oypixel,left,right,thismaxheight,colors,2);
 				}
 				ctx.fillStyle = '#000000';
-				ctx.font = "bold 15px Roboto";
+				fontsize = 15*scalefactor;
+				ctx.font = "bold "+fontsize+"px Roboto";
 				ctx.textAlign="right";
-				ctx.fillText(group,right+10,oypixel-thismaxheight/2);
+				ctx.fillText(group,right+10*scalefactor,oypixel-thismaxheight/2);
 				oypixel = oypixel-thismaxheight;
 			}
 		} else {
@@ -1854,8 +1860,8 @@ function plotysplit(ctx,left,right,oypixel,minxtick,maxxtick,xstep,maxheight,poi
 
 function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,maxheight,colors,sort){
 
-	ctx.lineWidth = 2;
-	var rad = $('#size').val()/2;
+	ctx.lineWidth = 2*scalefactor;
+	var rad = $('#size').val()/2*scalefactor;
 	var thisvalues = [];
 	var xpixels = [];
 	for (var index in indexes){
@@ -1896,7 +1902,7 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 	var ypixel=oypixel;
 	var lastxpixel=0;
 	var yheight = rad*2;
-	if ((maxheight-10)/maxpoints<yheight){yheight=(maxheight-10)/maxpoints;}
+	if ((maxheight-10*scalefactor)/maxpoints<yheight){yheight=(maxheight-10*scalefactor)/maxpoints;}
 	xpixels.sort(function(a, b) {return a[sort] - b[sort]})
 	if($('#labels').is(":checked")){var labels="yes";} else {var labels = "no";}
 	$.each(xpixels, function( key, value ) {
@@ -1907,7 +1913,7 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		if(lastxpixel==xpixel){
 			ypixel = ypixel - yheight;
 		} else {
-			ypixel = oypixel-10;
+			ypixel = oypixel-10*scalefactor;
 		}
 		lastxpixel = xpixel;
 		ctx.strokeStyle = colors[key];
@@ -1916,9 +1922,10 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		//text
 		if(labels == "yes"){
 			ctx.fillStyle = 'rgba(0,0,255,1)';
-			ctx.font = "10px Roboto";
+			fontsize = 10*scalefactor;
+			ctx.font = fontsize+"px Roboto";
 			ctx.textAlign="left";
-			ctx.fillText(parseInt(add(key,1)),add(add(xpixel,rad),2),add(ypixel,4));
+			ctx.fillText(parseInt(add(key,1)),add(add(rawxpixel,rad),2*scalefactor),add(ypixel,4*scalefactor));
 		}
 	});
 	var mingraph = convertvaltopixel(minval,minxtick,maxxtick,left,right);
@@ -1933,12 +1940,12 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		var y = oypixel - maxheight*0.1;
 		var h = maxheight*0.1;
 		ctx.strokeStyle = 'rgb(0,0,0)';
-		ctx.lineWidth = 1;
-		line(ctx,mingraph,add(y,-5),mingraph,add(y,5));
+		ctx.lineWidth = 1*scalefactor;
+		line(ctx,mingraph,add(y,-5*scalefactor),mingraph,add(y,5*scalefactor));
 		line(ctx,lqgraph,add(y,-h),lqgraph,add(y,h));
 		line(ctx,medgraph,add(y,-h),medgraph,add(y,h));
 		line(ctx,uqgraph,add(y,-h),uqgraph,add(y,h));
-		line(ctx,maxgraph,add(y,-5),maxgraph,add(y,5));
+		line(ctx,maxgraph,add(y,-5*scalefactor),maxgraph,add(y,5*scalefactor));
 		line(ctx,mingraph,y,lqgraph,y);
 		line(ctx,lqgraph,add(y,h),uqgraph,add(y,h));
 		line(ctx,lqgraph,add(y,-h),uqgraph,add(y,-h));
@@ -1948,12 +1955,12 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		var y = oypixel - maxheight*0.8;
 		var h = maxheight*0.1;
 		ctx.strokeStyle = 'rgb(0,0,0)';
-		ctx.lineWidth = 1;
-		line(ctx,mingraph,add(y,-5),mingraph,add(y,5));
+		ctx.lineWidth = 1*scalefactor;
+		line(ctx,mingraph,add(y,-5*scalefactor),mingraph,add(y,5*scalefactor));
 		line(ctx,lqgraph,add(y,-h),lqgraph,add(y,h));
 		line(ctx,medgraph,add(y,-h),medgraph,add(y,h));
 		line(ctx,uqgraph,add(y,-h),uqgraph,add(y,h));
-		line(ctx,maxgraph,add(y,-5),maxgraph,add(y,5));
+		line(ctx,maxgraph,add(y,-5*scalefactor),maxgraph,add(y,5*scalefactor));
 		line(ctx,mingraph,y,lqgraph,y);
 		line(ctx,lqgraph,add(y,h),uqgraph,add(y,h));
 		line(ctx,lqgraph,add(y,-h),uqgraph,add(y,-h));
@@ -1963,7 +1970,7 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		var y = oypixel - maxheight*0.1;
 		var h = maxheight*0.1;
 		ctx.strokeStyle = 'rgb(0,0,0)';
-		ctx.lineWidth = 1;
+		ctx.lineWidth = 1*scalefactor;
 		line(ctx,lqgraph,add(y,-h),lqgraph,add(y,h));
 		line(ctx,medgraph,add(y,-h),medgraph,add(y,h));
 		line(ctx,uqgraph,add(y,-h),uqgraph,add(y,h));
@@ -1974,12 +1981,12 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		var y = oypixel - maxheight*0.1;
 		var h = maxheight*0.1;
 		ctx.strokeStyle = 'rgb(0,0,0)';
-		ctx.lineWidth = 1;
-		line(ctx,minnooutliersgraph,add(y,-5),minnooutliersgraph,add(y,5));
+		ctx.lineWidth = 1*scalefactor;
+		line(ctx,minnooutliersgraph,add(y,-5*scalefactor),minnooutliersgraph,add(y,5*scalefactor));
 		line(ctx,lqgraph,add(y,-h),lqgraph,add(y,h));
 		line(ctx,medgraph,add(y,-h),medgraph,add(y,h));
 		line(ctx,uqgraph,add(y,-h),uqgraph,add(y,h));
-		line(ctx,maxnooutliersgraph,add(y,-5),maxnooutliersgraph,add(y,5));
+		line(ctx,maxnooutliersgraph,add(y,-5*scalefactor),maxnooutliersgraph,add(y,5*scalefactor));
 		line(ctx,minnooutliersgraph,y,lqgraph,y);
 		line(ctx,lqgraph,add(y,h),uqgraph,add(y,h));
 		line(ctx,lqgraph,add(y,-h),uqgraph,add(y,-h));
@@ -1988,17 +1995,18 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 
 	if($('#regression').is(":checked")){
 		ctx.fillStyle = 'rgba(255,0,0,1)';
-		ctx.font = "11px Roboto";
+		fontsize = 11*scalefactor;
+		ctx.font = fontsize+"px Roboto";
 		ctx.textAlign="left";
 		var ypix=oypixel-maxheight/2;
-		ctx.fillText('min: '+minval,left-60,ypix-44);
-		ctx.fillText('lq: '+lq,left-60,ypix-33);
-		ctx.fillText('med: '+med,left-60,ypix-22);
-		ctx.fillText('mean: '+mean,left-60,ypix-11);
-		ctx.fillText('uq: '+uq,left-60,ypix);
-		ctx.fillText('max: '+maxval,left-60,ypix+11);
-		ctx.fillText('sd: '+sd,left-60,ypix+22);
-		ctx.fillText('num: '+num,left-60,ypix+33);
+		ctx.fillText('min: '+minval,left-60*scalefactor,ypix-44*scalefactor);
+		ctx.fillText('lq: '+lq,left-60*scalefactor,ypix-33*scalefactor);
+		ctx.fillText('med: '+med,left-60*scalefactor,ypix-22*scalefactor);
+		ctx.fillText('mean: '+mean,left-60*scalefactor,ypix-11*scalefactor);
+		ctx.fillText('uq: '+uq,left-60*scalefactor,ypix);
+		ctx.fillText('max: '+maxval,left-60*scalefactor,ypix+11*scalefactor);
+		ctx.fillText('sd: '+sd,left-60*scalefactor,ypix+22*scalefactor);
+		ctx.fillText('num: '+num,left-60*scalefactor,ypix+33*scalefactor);
 	}
 
 	if($('#interval').is(":checked") || $('#intervallim').is(":checked")){
@@ -2008,17 +2016,18 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		intervalmingraph = convertvaltopixel(intervalmin,minxtick,maxxtick,left,right);
 		intervalmaxgraph = convertvaltopixel(intervalmax,minxtick,maxxtick,left,right);
 		if($('#interval').is(":checked")){
-			ctx.lineWidth = 10;
+			ctx.lineWidth = 10*scalefactor;
 			ctx.strokeStyle = 'rgb(0,0,255)';
 			line(ctx,intervalmingraph,y,intervalmaxgraph,y);
 		}
 		if($('#intervallim').is(":checked")){
-			ctx.font = "bold 10px Roboto";
+			fontsize = 10*scalefactor;
+			ctx.font = "bold "+fontsize+"px Roboto";
 			ctx.fillStyle = 'rgba(0,0,255,1)';
 			ctx.textAlign="right";
-			ctx.fillText(intervalmin,intervalmingraph,add(y,maxheight*0.1+8));
+			ctx.fillText(intervalmin,intervalmingraph,add(y,maxheight*0.1+8*scalefactor));
 			ctx.textAlign="left";
-			ctx.fillText(intervalmax,intervalmaxgraph,add(y,maxheight*0.1+8));
+			ctx.fillText(intervalmax,intervalmaxgraph,add(y,maxheight*0.1+8*scalefactor));
 		}
 	}
 
@@ -2026,7 +2035,7 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		var meangraph = convertvaltopixel(mean,minxtick,maxxtick,left,right);
 		ctx.fillStyle = 'rgba(255,0,0,1)';
 		ctx.beginPath();
-		ctx.arc(meangraph, oypixel-5, 7, 0, Math.PI*2, true);
+		ctx.arc(meangraph, oypixel-5*scalefactor, 7*scalefactor, 0, Math.PI*2, true);
 		ctx.closePath();
 		ctx.fill();
 	}
@@ -2218,15 +2227,16 @@ function bootstrap(mm){
 
 	if(pointsremoved.length!=0){
 		ctx.fillStyle = '#000000';
-		ctx.font = "13px Roboto";
+		fontsize = 13*scalefactor;
+		ctx.font = fontsize+"px Roboto";
 		ctx.textAlign="right";
 		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-50,50);
 	}
 
-	var oypixel=height*0.5-60;
-	var maxheight=height*0.25-60;
-	var left=60;
-	var right=width-60;
+	var oypixel=height*0.5-60*scalefactor;
+	var maxheight=height*0.25-60*scalefactor;
+	var left=60*scalefactor;
+	var right=width-60*scalefactor;
 
 	var xmin = Math.min.apply(null, pointsforminmax);
 	var xmax = Math.max.apply(null, pointsforminmax);
@@ -2241,7 +2251,7 @@ function bootstrap(mm){
 	var maxxtick=minmaxstep[1];
 	var xstep=minmaxstep[2];
 
-	horaxis(ctx,left,right,add(oypixel,10),minxtick,maxxtick,xstep);
+	horaxis(ctx,left,right,add(oypixel,10*scalefactor),minxtick,maxxtick,xstep);
 
 	var alpha = 1-$('#trans').val()/100;
 
@@ -2250,7 +2260,8 @@ function bootstrap(mm){
 	for (var index in allydifferentgroups){
 		plotdotplot(ctx,allydifferentgroups[index],xpoints,minxtick,maxxtick,oypixel,left,right,maxheight,colors,2);
 		ctx.fillStyle = '#000000';
-		ctx.font = "bold 15px Roboto";
+		fontsize = 15*scalefactor;
+		ctx.font = "bold "+fontsize+"px Roboto";
 		ctx.textAlign="right";
 		ctx.fillText(index,right+10,oypixel-maxheight/2);
 		oypixel = oypixel-maxheight;
@@ -2259,24 +2270,27 @@ function bootstrap(mm){
 
 	//graph title
 	ctx.fillStyle = '#000000';
-	ctx.font = "bold 20px Roboto";
+	fontsize = 20*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
 	ctx.textAlign="center";
-	ctx.fillText($('#title').val(),width/2,30);
+	ctx.fillText($('#title').val(),width/2,30*scalefactor);
 
 	//x-axis title
 	ctx.fillStyle = '#000000';
-	ctx.font = "bold 15px Roboto";
+	fontsize = 15*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
 	ctx.textAlign="center";
-	ctx.fillText($('#xaxis').val(),width/2,height*0.5-10);
+	ctx.fillText($('#xaxis').val(),width/2,height*0.5-10*scalefactor);
 
 	//y-axis title
 	if($('#yaxis').val() != "Y Axis Title"){
 		var x, y;
-		x=20;
+		x=20*scalefactor;
 		y=height/4;
 		ctx.save();
 		ctx.fillStyle = '#000000';
-		ctx.font = "bold 15px Roboto";
+		fontsize = 15*scalefactor;
+		ctx.font = "bold "+fontsize+"px Roboto";
 		ctx.translate(x, y);
 		ctx.rotate(-Math.PI/2);
 		ctx.textAlign = "center";
@@ -2334,9 +2348,10 @@ function bootstrap(mm){
 
 	//bootstrap x-axis title
 	ctx.fillStyle = '#000000';
-	ctx.font = "bold 15px Roboto";
+	fontsize = 15*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
 	ctx.textAlign="center";
-	ctx.fillText(title,width/2,height-10);
+	ctx.fillText(title,width/2,height-10*scalefactor);
 
 	// set up axis for bootstrap
 	steps=(maxxtick-minxtick)/xstep;
@@ -2347,8 +2362,8 @@ function bootstrap(mm){
 	minxtick=minxtick+offset;
 	maxxtick=maxxtick+offset;
 
-	oypixel = height - 90;
-	horaxis(ctx,left,right,add(oypixel,30),minxtick,maxxtick,xstep);
+	oypixel = height - 90*scalefactor;
+	horaxis(ctx,left,right,add(oypixel,30*scalefactor),minxtick,maxxtick,xstep);
 
 	// create the bootstrap
 
@@ -2395,7 +2410,7 @@ function bootstrap(mm){
 		i++;
 	}
 
-	maxheight=height*0.5-100;
+	maxheight=height*0.5-100*scalefactor;
 
 	if($('#labels').is(":checked")){var waslabels="yes";} else {var waslabels = "no";}
 	$('#labels')[0].checked=false;
@@ -2404,30 +2419,31 @@ function bootstrap(mm){
 
 	bootstrapdifs.sort(function(a, b){return a-b});
 	
-	y=oypixel-3;
-	ctx.lineWidth = 2;
+	y=oypixel-3*scalefactor;
+	ctx.lineWidth = 2*scalefactor;
 	ctx.strokeStyle = 'rgb(0,0,255)';
 	ctx.fillStyle = '#0000ff';
-	ctx.font = "bold 11px Roboto";
+	fontsize = 11*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
 	ctx.textAlign = "center";
 	diffpix=convertvaltopixel(diff,minxtick,maxxtick,left,right);
 	zeropix=convertvaltopixel(0,minxtick,maxxtick,left,right);
 	line(ctx,zeropix,y,diffpix,y);
-	line(ctx,diffpix-5,y-5,diffpix,y);
-	line(ctx,diffpix-5,add(y,5),diffpix,y);
-	ctx.fillText(diff,diffpix,add(y,15));
+	line(ctx,diffpix-5*scalefactor,y-5*scalefactor,diffpix,y);
+	line(ctx,diffpix-5*scalefactor,add(y,5*scalefactor),diffpix,y);
+	ctx.fillText(diff,diffpix,add(y,15*scalefactor));
 	intervalmin=bootstrapdifs[25];
 	intervalminpix=convertvaltopixel(intervalmin,minxtick,maxxtick,left,right);
 	intervalmax=bootstrapdifs[974];
 	intervalmaxpix=convertvaltopixel(intervalmax,minxtick,maxxtick,left,right);
 	ctx.textAlign = "right";
-	line(ctx,intervalminpix,add(y,18),intervalminpix,y-20);
-	ctx.fillText(intervalmin,intervalminpix,add(y,30));
+	line(ctx,intervalminpix,add(y,18*scalefactor),intervalminpix,y-20*scalefactor);
+	ctx.fillText(intervalmin,intervalminpix,add(y,30*scalefactor));
 	ctx.textAlign = "left";
-	line(ctx,intervalmaxpix,add(y,18),intervalmaxpix,y-20);
-	ctx.fillText(intervalmax,intervalmaxpix,add(y,30));
-	y=y-15;
-	ctx.lineWidth = 10;
+	line(ctx,intervalmaxpix,add(y,18*scalefactor),intervalmaxpix,y-20*scalefactor);
+	ctx.fillText(intervalmax,intervalmaxpix,add(y,30*scalefactor));
+	y=y-15*scalefactor;
+	ctx.lineWidth = 10*scalefactor;
 	line(ctx,intervalminpix,y,intervalmaxpix,y);
 
 	// from here is done.
