@@ -76,6 +76,9 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2018-05-05</b><br>
+	- Bug fixes for time series modules with custom seasons.<br>
+	<br>
 	<b>2018-04-29</b><br>
 	- Bug fixes for time series encode.<br>
 	<br>

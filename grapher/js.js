@@ -3437,7 +3437,7 @@ function innerloop(xpoints,raw,T,n_s,n_l,n_t){
 		for (index in xpoints){
 			xpoint=xpoints[index];
 			year=Math.floor(xpoint);
-			season=xpoint-year;
+			season=(xpoint-year).toFixed(4);
 			if(S2[season] === undefined){S2[season]=[];}
 			S2[season][xpoint]=S[xpoint.toString()];
 		}

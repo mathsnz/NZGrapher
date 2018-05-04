@@ -171,7 +171,17 @@ function newtimeseriesseasonaleffects(){
 		ctx.stroke();
 		ctx.setLineDash([]);
 	} else {
-		shiftforseasonal=Math.ceil((maxytick+minytick)/2/ystep)*ystep;
+		sadd=[];
+		pointsforminmax=[];
+		for (var index in fitted){
+			sadd[index]=fitted[index]-trend[index];
+			pointsforminmax.push(sadd[index]);
+		}
+		var smin = Math.min.apply(null, pointsforminmax);
+		var smax = Math.max.apply(null, pointsforminmax);
+		shiftforseasonala=Math.ceil((maxytick+minytick)/2/ystep)*ystep;
+		shiftforseasonalb=Math.floor((maxytick-smax)/ystep)*ystep;
+		shiftforseasonal=Math.min(shiftforseasonala,shiftforseasonalb);
 		vertaxis(ctx,gtop,gbottom,seasonleft-10*scalefactor,minytick-shiftforseasonal,maxytick-shiftforseasonal,ystep,seasonright+10*scalefactor);
 		//0 Line
 		ypixel = convertvaltopixel(0,maxytick-shiftforseasonal,minytick-shiftforseasonal,gtop,gbottom);
