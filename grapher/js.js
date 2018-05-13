@@ -2353,18 +2353,6 @@ function bootstrap(mm){
 	ctx.textAlign="center";
 	ctx.fillText(title,width/2,height-10*scalefactor);
 
-	// set up axis for bootstrap
-	steps=(maxxtick-minxtick)/xstep;
-	offset=minxtick+xstep*Math.floor(steps/2);
-	offset=diff-offset;
-	offset=Math.floor(offset/xstep);
-	offset=xstep*offset;
-	minxtick=minxtick+offset;
-	maxxtick=maxxtick+offset;
-
-	oypixel = height - 90*scalefactor;
-	horaxis(ctx,left,right,add(oypixel,30*scalefactor),minxtick,maxxtick,xstep);
-
 	// create the bootstrap
 
 	bootstrapdifs=[];
@@ -2409,6 +2397,22 @@ function bootstrap(mm){
 		bspoints.push(i);
 		i++;
 	}
+	
+	bootstrapdifsforsort = bootstrapdifs.slice();
+	bootstrapdifsforsort.sort(function(a, b){return a-b});
+	
+	// set up axis for bootstrap
+	steps=(maxxtick-minxtick)/xstep;
+	offset=minxtick+xstep*Math.floor(steps/2);
+	offset=diff-offset;
+	offset=bootstrapdifsforsort[25];
+	offset=Math.floor(offset/xstep);
+	offset=xstep*offset;
+	minxtick=minxtick+offset;
+	maxxtick=maxxtick+offset;
+
+	oypixel = height - 90*scalefactor;
+	horaxis(ctx,left,right,add(oypixel,30*scalefactor),minxtick,maxxtick,xstep);
 
 	maxheight=height*0.5-100*scalefactor;
 
