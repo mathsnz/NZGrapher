@@ -2405,7 +2405,7 @@ function bootstrap(mm){
 	steps=(maxxtick-minxtick)/xstep;
 	offset=minxtick+xstep*Math.floor(steps/2);
 	offset=diff-offset;
-	offset=bootstrapdifsforsort[25];
+	offset=Math.min(bootstrapdifsforsort[25],offset);
 	offset=Math.floor(offset/xstep);
 	offset=xstep*offset;
 	minxtick=minxtick+offset;
