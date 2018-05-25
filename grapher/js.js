@@ -3600,7 +3600,10 @@ function loess(xpoints,ypoints,nPts,xvals,row){
 			SumWtXY = SumWtXY + parseFloat(xpoints[i]) * parseFloat(ypoints[i]) * weights[i];
 		}
 		Denom = SumWts * SumWtX2 - Math.pow(SumWtX,2);
-		if(Denom==0){console.log('oh dear - invalid denominator for LOESS row');return("Error: invalid denominator for LOESS row");}
+		if(Denom==0){
+			console.log('oh dear - invalid denominator for LOESS row... setting to 0.0001 instead');
+			Denom=0.0001;
+		}
 		//calculate the regression coefficients, and finally the loess value
 		WLRSlope = (SumWts * SumWtXY - SumWtX * SumWtY) / Denom;
 		WLRIntercept = (SumWtX2 * SumWtY - SumWtX * SumWtXY) / Denom;

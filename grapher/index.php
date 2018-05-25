@@ -26,6 +26,7 @@
 		echo $v;
 	?>"></script>
 	<meta name="description" content="NZGrapher is a free web based graphing tool. NZ Grapher was designed for New Zealand Schools by a New Zealand Teacher.">
+	<link rel="canonical" href="https://grapher.jake4maths.com/" />
 	<link rel="apple-touch-icon" sizes="57x57" href="./icon/apple-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="./icon/apple-icon-60x60.png">
 	<link rel="apple-touch-icon" sizes="72x72" href="./icon/apple-icon-72x72.png">
@@ -566,11 +567,6 @@ if(substr($dataset,0,6)!="SECURE"){
 
 		?>
 		<small><br>NZGrapher uses cookies... if you're not happy with this don't use this website.</small>
-		<?php
-		/*
-		<iframe id=welcomeframe src='https://server.mathsnz.com/nzgrapherwelcome.php?server=<?php echo urlencode($_SERVER['SERVER_NAME']); ?>' scrolling='no'></iframe>
-		*/
-		?>
 	</div>
 </div>
 <div id=graphdiv>
@@ -892,7 +888,7 @@ if(isset($_GET['dev'])){
 	</div>
 </div>
 <div id=sites>
-<a href='https://www.jake4maths.com/grapher/' style='color:#000;'>NZGrapher</a>
+<a href='https://grapher.jake4maths.com/' style='color:#000;'>NZGrapher</a>
 <a href='https://www.mathsnz.com/'>MathsNZ</a>
 <a href='https://students.mathsnz.com/'>MathsNZ Students</a>
 <a href='https://www.jake4maths.com/generator/'>MathsNZ Question Generator</a>
