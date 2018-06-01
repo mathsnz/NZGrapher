@@ -83,7 +83,7 @@ if (screen.availWidth < 760)
 						 marker-end: url(#arrow);"
 			/>
 		</svg><br>
-		<span>Up here you can upload your own file (unless you are on an iPad).</span><td><td><td><td style='vertical-align:top;text-align:right;'>
+		<span>Under data you can upload your own file, or paste in a table.</span><td><td><td><td style='vertical-align:top;text-align:right;'>
 		<svg width="60" height="60">
 			<defs>
 				<marker id="arrow" markerWidth="13" markerHeight="13" refx="2" refy="6" orient="auto">
@@ -97,7 +97,7 @@ if (screen.availWidth < 760)
 		</svg><br>
 		<span>Up here you can choose the folder you are wanting if your school has one set up (press enter after typing it in) or select the dataset from the folder. There are lots of good ones loaded in, or you can load your own in the top left.</span>
 	<tr><td><td><td><td><td>
-	<tr><td><span>This left hand area displays your data (including the id on the left). You can add or delete rows as well as edit the data just by clicking and typing on it. To save the changes click the update button.</span><td colspan=2><span style='cursor: pointer;' onclick="document.getElementById('tour').style.display='none';document.cookie='overlay=none';">Okay, I got it.<br>Hide this overlay.</span><td><span>This area displays your graph.</span><td>
+	<tr><td><span>This left hand area displays your data (including the id on the left). You can add or delete rows as well as edit the data just by clicking and typing on it. To save the changes click the save changes in the menu.</span><td colspan=2><span style='cursor: pointer;' onclick="document.getElementById('tour').style.display='none';document.cookie='overlay=none';">Okay, I got it.<br>Hide this overlay.</span><td><span>This area displays your graph.</span><td>
 	<tr><td><td><td><td><td>
 	<tr><td style='vertical-align:bottom;text-align:left;'>
 		<span>Down here you can choose the x-variable and the y-variables as well as the type of graph you want to draw.</span><br>
@@ -128,14 +128,6 @@ if (screen.availWidth < 760)
 </table>
 </div>
 
-<div id=overlay>
-<form method="post" name=fileform id=uploadfile enctype="multipart/form-data">
-Upload your own file: <input type="file" name="file" id="filebox" style='width:82px;height:23px;position:absolute;top:-2px;left:135px;z-index:2;opacity:0;' onChange="document.getElementById('uploadfile').submit();">
-		<div style='border:1px solid #ccc;background-color:#ddd;width:70px;height:17px;border-radius:5px;padding:3px 5px 3px 5px;font-size:12px;text-align:center;position:absolute;top:-2px;left:135px;'>Choose File</div>
-</form>
-<div style='border:1px solid #ccc;background-color:#ddd;width:70px;height:17px;border-radius:5px;padding:3px 5px 3px 5px;font-size:12px;text-align:center;position:absolute;top:-2px;left:225px;cursor:pointer;' onclick='document.getElementById("pastetext").style.display="block";document.getElementById("textarea").value="";document.getElementById("textarea").focus();'>Paste Table</div>
-<div style='border:1px solid #ccc;background-color:#ddd;width:70px;height:17px;border-radius:5px;padding:3px 5px 3px 5px;font-size:12px;text-align:center;position:absolute;top:-2px;left:315px;cursor:pointer;' onclick='document.getElementById("pastelink").style.display="block";document.getElementById("linkarea").value="";document.getElementById("linkarea").focus();'>Paste Link</div>
-</div>
 <div id=pastetext style='z-index:16;position:fixed;height:100%;width:100%;top:0px;left:0px;background:rgba(255,255,255,0.5);display:none;'>
 <div style='position:absolute;top:50%;left:50%;width:400px;height:300px;z-index:12;text-align:center;padding:5px;margin-left:-205px;margin-top:-155px;'>
 <div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>Paste your table here from Excel, Word or Google Sheets</div><br><small><i>Note: Pasting a table from Google Docs doesn't work properly.</i></small><br>
@@ -148,7 +140,7 @@ Upload your own file: <input type="file" name="file" id="filebox" style='width:8
 <div id=pastelink style='z-index:16;position:fixed;height:100%;width:100%;top:0px;left:0px;background:rgba(255,255,255,0.5);display:none;'>
 <div style='position:absolute;top:50%;left:50%;width:400px;height:300px;z-index:12;text-align:center;padding:5px;margin-left:-205px;margin-top:-155px;'>
 <div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>Paste your link here</div><br>
-Note: the link needs to be accessible on the web for this to work, and must be to a CSV file.<br>
+<small><i>Note: the link needs to be accessible on the web for this to work, and must be to a CSV file.</i></small><br>
 <textarea style='width:400px;height:190px;resize:none;' id=linkarea></textarea><br>
 <br>
 <a href='#' class=button onclick='document.getElementById("pastelink").style.display="none"' id=importlink>Import</a>
@@ -199,14 +191,14 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 </div>
 
 <div id=top>
-	<div style="font-size:30px;background:none;border:none;position:absolute;top:0px;left:50%;margin-left:-87px;"><img src='logob.png' height=50></div>
-	<div style="position:absolute;top:15px;right:30px;background:none;border:none;">
+	<div style="font-size:30px;background:none;border:none;position:absolute;top:3px;left:5px;z-index:4"><img src='logow.png' height=37></div>
+	<div style="position:absolute;top:18px;right:35px;background:none;border:none;">
 	<form id=datafolder method=get style='display:inline;'>
-		<small>Folder: <input type="text" name=folder value="<?php echo $_GET['folder'];?>" style='width:80px;height:20px;'>
+		Folder: <input type="text" name=folder value="<?php echo $_GET['folder'];?>" style='width:80px;height:27px;'>
 	</form>
 	<form id=datasource method=get style='display:inline;'>
 		<input type=hidden name=folder value="<?php echo $_GET['folder'];?>">
-		Data Source: </small><select name=dataset onChange="document.getElementById('datasource').submit();" style='width:100px;height:20px;padding:0px;'>
+		Data Source: <select name=dataset onChange="document.getElementById('datasource').submit();" style='width:180px;height:27px;padding:0px;'>
 <?php
 
 	if($fileupload=="yes"){
@@ -239,10 +231,9 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 		</select>
 	</form>
 	</div>
+	<img src='3dots.png' id='3dots' style="position:absolute;height:25px;right:15px;top:17px;z-index:10;cursor:pointer;">
 </div>
-<img src='3dots.png' id='3dots' style="position:absolute;height:25px;right:12px;top:12px;z-index:10;">
-<div class="callout popup" id=showhideleftbottom style='position:absolute;right:0px;left:auto;top:55px;'>
-<b class="notch-top" style='right:5px;left:auto;'></b>
+<div class="callout popup" id=showhideleftbottom style='position:absolute;right:5px;left:auto;top:45px;'>
 <ul>
 	<li id=showhideleftli onclick="showhideleft();">Hide Left Section</li>
 	<li id=showhidebottomli onclick="showhidebottom();">Hide Bottom Section</li>
@@ -252,16 +243,25 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 <div id=showhideleft onclick="showhideleft();" style='display:none;'>&#9664;</div>
 <div id=showhidebottom onclick="showhidebottom();" style='display:none;'>&#9660;</div>
 
-<table id=buttons><tr>
-<td class=button id=rowshowhide>Row<br>(+/-)</td>
-<td class=button id=colshowhide>Column<br>(+/-)</td>
-<td class=button id=samshowhide>Sample<br>and More</td>
-<td class=button id=reset>Reset<br>Dataset</td>
-<td class=button id=update>Save Changes</td>
-</table>
+<div id=buttons><tr>
+<div class=abutton id=fileshowhide>Data</div> <div class=spacer></div>
+<div class=abutton id=rowshowhide>Row</div> <div class=spacer></div>
+<div class=abutton id=colshowhide>Column</div> <div class=spacer></div>
+<div class=abutton id=samshowhide>Sample and More</div> <div class=spacer></div>
+<div class=abutton id=reset>Reset</div> <div class=spacer></div>
+<div class=abutton id=update>Save Changes</div> <div class=spacer></div>
+<div class=abutton id=helper>Help</div>
+</div>
+
+<div id=helppopup class="callout popup">
+<ul>
+	<li onclick="window.open('//students.mathsnz.com/nzgrapher/nzgrapher_a_1.html','_blank')">Video Tutorials</li>
+	<li onclick="document.getElementById('welcome').style.display='block'">Show Welcome</li>
+	<li onclick="document.getElementById('tour').style.display='block'">Show Overlay</li>
+</ul>
+</div>
 
 <div class="callout popup" id=rowbox>
-<b class="notch-top"></b>
 <ul>
 	<li id=addrow>Add Row</li>
 	<li id=delrow>Delete Last Row</li>
@@ -269,16 +269,34 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 </ul>
 </div>
 
+<div class="callout popup" id=filepop>
+<ul>
+	<li id=addrow>
+<form method="post" name=fileform id=uploadfile enctype="multipart/form-data">
+	<input type="file" name="file" id="filebox" style='width:80px;height:17px;position:absolute;top:4px;left:6px;z-index:2;opacity:0;cursor:pointer;' onChange="document.getElementById('uploadfile').submit();">
+	<div style='color:#000;border:0px solid #ccc;width:80px;height:17px;border-radius:0px;padding:5px;font-size:14px;text-align:left;position:absolute;top:4px;left:6px;padding:0px;background:none;'>Open File</div>
+</form>
+	</li>
+	<li id=pastetableclick>Paste Table</li>
+	<li id=pastelinkclick>Paste Link</li>
+	<li id=highlightdatatable>Select Data Table</li>
+<?php
+if(substr($dataset,0,6)!="SECURE"){
+	echo "<li><a href='#' id=download style='text-decoration:none;color:#000;'>Download Data</a></li>";
+}
+?>
+</ul>
+</div>
+
 <div class="callout popup" id=colbox>
-<b class="notch-top"></b>
 <ul>
 	<li id=addcol>Add Column</li>
 	<li id=delcol>Delete Last Column</li>
+	<li id=delspeccol>Delete Specific Column</li>
 </ul>
 </div>
 
 <div class="callout popup" id=sambox>
-<b class="notch-top"></b>
 <ul>
 	<li id=sample>Sample</li>
 	<li id=sort>Sort</li>
@@ -431,7 +449,7 @@ echo "\n</table></body></html>";
 </div>
 <div id=variable>
 <form action="scatter.php" method="post" target="graph" id=form>
-<table>
+<table style='margin-left:3px;'>
 <tr><td>variable 1: <td style='width:125px'>
 <select style='width:120px;display:none;' onChange="document.getElementById('xaxis').value=this.options[this.selectedIndex].text;updategraph();" name=xvals id=xvar>
 	<option value=" "> </option>
@@ -516,20 +534,6 @@ echo "\n</table></body></html>";
 	<input type="hidden" id=relativefrequencyform name=relativefrequency value='0'>
 	<input type="hidden" id=residualsforcexform name=residualsforcex value='no'>
 </form>
-<div id=helper onclick="if(document.getElementById('helppopup').style.display=='block'){document.getElementById('helppopup').style.display='none'}else{document.getElementById('helppopup').style.display='block'}"><span>Help</span></div>
-<div id=helppopup class="callout">
-<b class="notch"></b>
-<ul>
-	<li onclick="window.open('//students.mathsnz.com/nzgrapher/nzgrapher_a_1.html','_blank')">Video Tutorials</li>
-	<li onclick="document.getElementById('welcome').style.display='block'">Show Welcome</li>
-	<li onclick="document.getElementById('tour').style.display='block'">Show Overlay</li>
-</ul>
-</div>
-<?php
-if(substr($dataset,0,6)!="SECURE"){
-	echo "<div id=helper style='right:55px;'><span><a href='#' id=download style='color:#fff;text-decoration:none;' download='data.csv'>Download Data</a></span></div>";
-}
-?>
 </div>
 
 <div id=welcome onclick="this.style.display='none';document.cookie='welcome=yes; expires=<?php
@@ -587,6 +591,9 @@ if(substr($dataset,0,6)!="SECURE"){
 					<span id=reg>Regression Line</span>
 					<span id=for>Forecast output</span>
 				</label><br>
+			</span>
+			<span id=stackdotsshow><label>
+				<input type="checkbox" onclick="updategraph();" id="stackdots" name="stackdots" value="yes"> Stack Dots</label><br>
 			</span>
 			<span id=boxplotshow><label>
 				<input type="checkbox" onclick="updategraph();" id="boxplot" name="boxplot" value="yes"> Box Plots</label><br>
@@ -739,6 +746,16 @@ if(isset($_GET['dev'])){
 			<tr><td> <td><input id="sample-">
 		</table><br>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samplego>Sample</a><br><br>
+		</center>
+	</span>
+</div>
+<div id="deletecoldiv" style="z-index:99;max-height:80%;overflow-y:auto;display:none;padding:10px;position:absolute;border:none;box-shadow: 0px 0px 10px rgba(0,0,0,0.5);top:50%;left:50%;-webkit-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);">
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>Remove Column</div>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' class=close>&times;</div><br>
+	<span id=samplecontents style="font-size:14px">
+		<center>
+		Which Column: <select style='width:120px' onChange="" id=columndel></select><br><br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=deletecolgo>Remove</a><br><br>
 		</center>
 	</span>
 </div>

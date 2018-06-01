@@ -34,42 +34,150 @@ $(function(){
 		// IF CSV, don't do event.preventDefault() or return false
 		// We actually need this to be a typical hyperlink
 	});
+	
+	var menu='hidden';
 
-
-	$( "#rowshowhide" ).click(function() {
+	$( ".abutton" ).on('click',function() {
+		if(menu=='show'){
+			menu='hidden'
+		} else {
+			menu='show'
+		}
+	});
+	
+	$( ".abutton" ).on('click mouseover',function() {
+		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
+		$("#filepop").hide();
+		$("#helppopup").hide();
+		$(".abutton" ).css("background","none");
+		$(this).css("background-color","rgba(0,100,200,0.85)");
+	});
+	
+	$( "#buttons" ).on('mouseout',function() {
+		$( ".abutton" ).css('background','none');
+	});
+	
+	$( "#rowbox" ).on('mouseover',function() {
+		$("#rowshowhide").css("background-color","rgba(0,100,200,0.85)");
+	});
+	
+	$( "#colbox" ).on('mouseover',function() {
+		$("#colshowhide").css("background-color","rgba(0,100,200,0.85)");
+	});
+	
+	$( "#sambox" ).on('mouseover',function() {
+		$("#samshowhide").css("background-color","rgba(0,100,200,0.85)");
+	});
+	
+	$( "#filepop" ).on('mouseover',function() {
+		$("#fileshowhide").css("background-color","rgba(0,100,200,0.85)");
+	});
+	
+	$( "#helppopup" ).on('mouseover',function() {
+		$("#helper").css("background-color","rgba(0,100,200,0.85)");
+	});
+	
+	$('.popup li').on('click',function() {
+		$(".abutton" ).css("background","none");
+		$(".popup" ).hide();
+		menu='hidden';
+	});
+	
+	$('#pastelinkclick').click(function() {
+		document.getElementById("pastelink").style.display="block";
+		document.getElementById("linkarea").value="";
+		document.getElementById("linkarea").focus();
+	});
+	
+	$('#pastetableclick').click(function() {
+		document.getElementById("pastetext").style.display="block";
+		document.getElementById("textarea").value="";
+		document.getElementById("textarea").focus();
+	});
+
+	$( "#fileshowhide" ).on('click mouseover',function() {
+		$("#rowbox").hide();
+		$("#colbox").hide();
+		$("#sambox").hide();
+		$("#helppopup").hide();
 		$("#showhideleftbottom").hide();
-		var width = $( "#rowshowhide" ).outerWidth();
-		var left = width*0.5-25;
+		var left = $( "#fileshowhide" )[0].getBoundingClientRect().left;
+		$("#filepop").css("left",left+"px");
+		if(menu=="show"){
+			$("#filepop").show();
+		} else {
+			$("#filepop").hide();
+		}
+	});
+
+	$( "#helper" ).on('click mouseover',function() {
+		$("#rowbox").hide();
+		$("#colbox").hide();
+		$("#sambox").hide();
+		$("#helppopup").hide();
+		$("#showhideleftbottom").hide();
+		var left = $( "#helper" )[0].getBoundingClientRect().left;
+		$("#helppopup").css("left",left+"px");
+		if(menu=="show"){
+			$("#helppopup").show();
+		} else {
+			$("#helppopup").hide();
+		}
+	});
+
+	$( "#rowshowhide" ).on('click mouseover',function() {
+		$("#colbox").hide();
+		$("#sambox").hide();
+		$("#filepop").hide();
+		$("#helppopup").hide();
+		$("#showhideleftbottom").hide();
+		var left = $( "#rowshowhide" )[0].getBoundingClientRect().left;
 		$("#rowbox").css("left",left+"px");
-		$("#rowbox").toggle();
+		if(menu=="show"){
+			$("#rowbox").show();
+		} else {
+			$("#rowbox").hide();
+		}
 	});
 
-	$( "#colshowhide" ).click(function() {
+	$( "#colshowhide" ).on('click mouseover',function() {
 		$("#rowbox").hide();
 		$("#sambox").hide();
+		$("#filepop").hide();
+		$("#helppopup").hide();
 		$("#showhideleftbottom").hide();
-		var width = $( "#colshowhide" ).outerWidth();
-		var left = width*1.5-25;
+		var left = $( "#colshowhide" )[0].getBoundingClientRect().left;
 		$("#colbox").css("left",left+"px");
-		$("#colbox").toggle();
+		if(menu=="show"){
+			$("#colbox").show();
+		} else {
+			$("#colbox").hide();
+		}
 	});
 
-	$( "#samshowhide" ).click(function() {
+	$( "#samshowhide" ).on('click mouseover',function() {
 		$("#rowbox").hide();
 		$("#colbox").hide();
+		$("#filepop").hide();
+		$("#helppopup").hide();
 		$("#showhideleftbottom").hide();
-		var width = $( "#samshowhide" ).outerWidth();
-		var left = width*2.5-25;
+		var left = $( "#samshowhide" )[0].getBoundingClientRect().left;
 		$("#sambox").css("left",left+"px");
-		$("#sambox").toggle();
+		if(menu=="show"){
+			$("#sambox").show();
+		} else {
+			$("#sambox").hide();
+		}
 	});
 
 	$( "#3dots" ).click(function() {
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
+		$("#filepop").hide();
+		$("#helppopup").hide();
 		$("#showhideleftbottom").toggle();
 	});
 
@@ -101,6 +209,7 @@ $(function(){
 	});
 	$( "#delcol" ).click(function() {
 		$('#data tr td:last-child').remove();
+		$('#type').val('newabout');
 		updatebox();
 	});
 
@@ -117,6 +226,43 @@ $(function(){
 		$("#colbox").hide();
 		$("#sambox").hide();
 		updatebox();
+	});
+	
+	$( "#deletecolgo" ).click(function() {
+		col=$('#columndel').val();
+		$('#data tr').each(function(){
+			$(this).find('td:eq('+col+')').remove();
+		})
+		var xselindex = document.getElementById("xvar").selectedIndex;
+		var yselindex = document.getElementById("yvar").selectedIndex;
+		var zselindex = document.getElementById("zvar").selectedIndex;
+		var colselindex = document.getElementById("color").selectedIndex;
+		if(xselindex>col){document.getElementById("xvar").selectedIndex=xselindex-1;}
+		if(yselindex>col){document.getElementById("yvar").selectedIndex=yselindex-1;}
+		if(zselindex>col){document.getElementById("zvar").selectedIndex=zselindex-1;}
+		if(colselindex>col){document.getElementById("color").selectedIndex=colselindex-1;}
+		updatebox();
+		$ ("#deletecoldiv").hide();
+	});
+	
+	$( "#delspeccol" ).click(function() {
+		$("#rowbox").hide();
+		$("#colbox").hide();
+		$("#sambox").hide();
+		$ ("#deletecoldiv").show();
+		var col=0;
+		var options=[];
+		$('#data tr:first td').each( function(){
+			options.push('<option value="' + col + '">' + $(this).text() + '</option>');
+			col++;
+		});
+		//finally empty the select and append the items from the array
+		$('#columndel').empty().append( options.join() );
+	});
+	
+	$( "#highlightdatatable" ).click(function() {
+		$('#filepop').hide();
+		selectText($('#data')[0]);
 	});
 
 	$( "#reorder").click(function(){
@@ -554,6 +700,7 @@ $(function(){
 		$ ("#samplediv").hide();
 		$ ("#converttimediv").hide();
 		$ ("#encodetimediv").hide();
+		$ ("#deletecoldiv").hide();
 	});
 
 	$( "#update" ).click(updatebox);
@@ -647,18 +794,20 @@ function graphchange(obj){
 	document.getElementById('thicklinesshow').style.display='none';
 	document.getElementById('relativefrequencyshow').style.display='none';
 	document.getElementById('residualsforcexshow').style.display='none';
+	document.getElementById('stackdotsshow').style.display='none';
+	document.getElementById('stackdots').checked = false;
 	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='time series forecasts' || obj.value=='old time series forecasts' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart' || obj.value=='bar and area graph' || obj.value=='residuals' || obj.value=='time series' || obj.value=='time series re-composition' || obj.value=='time series seasonal effects'){document.getElementById('xvar').style.display='block';document.getElementById('yvar').style.display='block';};
 	if(obj.value=='bootstrap'){document.getElementById('yvar').style.display='none';document.getElementById('yvar').selectedIndex=0;};
 	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='time series forecasts' || obj.value=='old time series forecasts' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart'){document.getElementById('regshow').style.display='block';};
 	if(obj.value=='dotplot'  || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='residuals' || obj.value.substring(0,4)=='time' || obj.value.substring(0,8)=='old time'){document.getElementById('labelshow').style.display='block';};
-	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart'){document.getElementById('sum').style.display='block';};
+	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart'){document.getElementById('sum').style.display='inline';};
 	if(obj.value=='paired experiment'){document.getElementById('arrowsshow').style.display='block';};
 	if(obj.value=='dotplot'){document.getElementById('highboxplotshow').style.display='block';};
 	if(obj.value=='dotplot'){document.getElementById('boxnowhiskershow').style.display='block';};
 	if(obj.value=='dotplot'){document.getElementById('boxnooutliershow').style.display='block';};
 	if(obj.value=='residuals'){document.getElementById('regtypeshow').style.display='block';};
-	if(obj.value=='scatter'){document.getElementById('jittershow').style.display='block';document.getElementById('reg').style.display='block';document.getElementById('quadraticshow').style.display='block';document.getElementById('cubicshow').style.display='block';document.getElementById('expshow').style.display='block';document.getElementById('logshow').style.display='block';document.getElementById('powshow').style.display='block';document.getElementById('yxshow').style.display='block';};
-	if(obj.value=='time series forecasts'){document.getElementById('for').style.display='block';};
+	if(obj.value=='scatter'){document.getElementById('jittershow').style.display='block';document.getElementById('reg').style.display='inline';document.getElementById('quadraticshow').style.display='block';document.getElementById('cubicshow').style.display='block';document.getElementById('expshow').style.display='block';document.getElementById('logshow').style.display='block';document.getElementById('powshow').style.display='block';document.getElementById('yxshow').style.display='block';};
+	if(obj.value=='time series forecasts'){document.getElementById('for').style.display='inline';};
 	if(obj.value.substring(0,4)=='time'){document.getElementById('addmultshow').style.display='block';};
 	if(obj.value=='time series'){document.getElementById('longtermtrendshow').style.display='block';};
   if(obj.value=='histogramf' || obj.value=='histogram' || obj.value=='bar and area graph'){document.getElementById('relativefrequencyshow').style.display='block';}
@@ -1008,16 +1157,20 @@ function updatebox(){
 	var yselindex = document.getElementById("yvar").selectedIndex;
 	var zselindex = document.getElementById("zvar").selectedIndex;
 	var colselindex = document.getElementById("color").selectedIndex;
-
+	if(xselindex==-1){xselindex=0;}
+	if(yselindex==-1){yselindex=0;}
+	if(zselindex==-1){zselindex=0;}
+	if(colselindex==-1){colselindex=0;}
+	
 	$('#xvar').empty().append( options.join() );
 	$('#yvar').empty().append( options.join() );
 	$('#zvar').empty().append( options.join() );
 	$('#color').empty().append( options.join() );
 
-	if(xselindex <= document.getElementById("xvar").length && xselindex > -1){document.getElementById("xvar").selectedIndex = xselindex;} else {$("#xvar")[0].selectedIndex = 0;}
-	if(yselindex <= document.getElementById("yvar").length && yselindex > -1){document.getElementById("yvar").selectedIndex = yselindex;} else {$("#yvar")[0].selectedIndex = 0;}
-	if(zselindex <= document.getElementById("zvar").length && zselindex > -1){document.getElementById("zvar").selectedIndex = zselindex;} else {$("#zvar")[0].selectedIndex = 0;}
-	if(colselindex <= document.getElementById("color").length && colselindex > -1){document.getElementById("color").selectedIndex = colselindex;} else {$("#color")[0].selectedIndex = 0;}
+	if(xselindex <= document.getElementById("xvar").length && xselindex > -1){document.getElementById("xvar").selectedIndex = xselindex;} else {$("#xvar")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resetx');}
+	if(yselindex <= document.getElementById("yvar").length && yselindex > -1){document.getElementById("yvar").selectedIndex = yselindex;} else {$("#yvar")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resety');}
+	if(zselindex <= document.getElementById("zvar").length && zselindex > -1){document.getElementById("zvar").selectedIndex = zselindex;} else {$("#zvar")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resetz');}
+	if(colselindex <= document.getElementById("color").length && colselindex > -1){document.getElementById("color").selectedIndex = colselindex;} else {$("#color")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resetcol');}
 
 	document.getElementById('datain').value=datain;
 	document.getElementById('titles').value=titles;
@@ -1617,6 +1770,7 @@ function newabout(){
 function newdotplot(){
 	$('#regshow').show();
 	$('#invertshow').show();
+	$('#stackdotsshow').show();
 	$('#labelshow').show();
 	$('#sum').show();
 	$('#highboxplotshow').show();
@@ -1870,6 +2024,11 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		thisvalues.push(value);
 		var rawxpixel = convertvaltopixel(value,minxtick,maxxtick,left,right);
 		xpixel = Math.floor(rawxpixel/(rad*3))*rad*3;
+		if($('#stackdots').is(':checked')){
+			xpixel = Math.floor(rawxpixel/(rad*2))*rad*2;
+		} else {
+			xpixel = Math.floor(rawxpixel/(rad*3))*rad*3;
+		}
 		xpixels.push([index,xpixel,rawxpixel]);
 	}
 	var minval = Math.min.apply(null, thisvalues);
@@ -1909,6 +2068,9 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		key = value[0];
 		xpixel = value [1];
 		rawxpixel = value [2];
+		if($('#stackdots').is(':checked')){
+			rawxpixel = xpixel;
+		}
 		ctx.beginPath();
 		if(lastxpixel==xpixel){
 			ypixel = ypixel - yheight;
@@ -2150,6 +2312,7 @@ function bootstrap(mm){
 	$('#transdiv').show();
 	$('#sizediv').show();
 	$('#greyscaleshow').show();
+	$('#stackdotsshow').show();
 	$('#pointsizename').html('Point Size:');
 	$('#boxplot').prop('checked', true);
 	$('#meandot').prop('checked', false);
@@ -4090,4 +4253,24 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		ctx.fillText("n = "+num,left, equationtop);
 	}
 
+}
+
+function selectText(element) {
+  if (/INPUT|TEXTAREA/i.test(element.tagName)) {
+    element.focus();
+    if (element.setSelectionRange) {
+      element.setSelectionRange(0, element.value.length);
+    } else {
+      element.select();
+    }
+    return;
+  }
+  
+  if (window.getSelection) { // All browsers, except IE <=8
+    window.getSelection().selectAllChildren(element);
+  } else if (document.body.createTextRange) { // IE <=8
+    var range = document.body.createTextRange();
+    range.moveToElementText(element);
+    range.select();
+  }
 }

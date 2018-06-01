@@ -28,22 +28,40 @@ div{
 }
 
 #top {
-	height:50px;
+	height:60px;
 	width:100%;
 	top:0;
 	left:0;
 	border:none;
-	background-color:#eee;
+	font-size:16px;
+	background-color:rgba(0,100,200,0.85);
 	text-align:right;
 	border-bottom:#ccc 1px solid;
 	z-index:2;
+	color:#fff;
+}
+
+#top input, #top select {
+	color:#000;
+	background-color:#fff;
+	font-size:16px;
+	border:none;
+}
+
+.spacer {
+    position: relative;
+    display: inline-block;
+    height: 10px;
+    border: none;
+    width: 1px;
+    background-color: rgba(255,255,255,0.3);
 }
 
 a {
 	color:#0064c8;
 }
 
-#overlay, #top {
+#overlay {
 	color:#000;
 }
 
@@ -52,7 +70,7 @@ a {
 }
 
 #left {
-	top:110px;
+	top:60px;
 	bottom:170px;
 	right:60%;
 	left:0;
@@ -85,26 +103,24 @@ table {
 
 #buttons {
 	position:absolute;
-	top:51px;
-	left:0px;
-	width:40%;
+	top:33px;
+	left:25px;
+	border: none;
+	height:25px;
+	background:none;
+	z-index:2;
 }
-
-td.button {
-	width:11%;
-	height:60px;
-	top:51px;
-	border: 1px solid rgba(0,100,200,1);
-	border-top:none;
-	background-color:rgba(0,100,200,0.85);
-	color:#fff;
+.abutton {
+    display: inline;
+    position: relative;
+    font-size: 16px;
+    padding: 2px;
+	padding-left:7px;
+	padding-right:7px;
+    border: none;
 	cursor:pointer;
-	font-family: Roboto, sans-serif;
-	display:table-cell;
-	text-align:center;
-	vertical-align:middle;
-	font-size:12px;
-	padding:3px;
+	color:#fff;
+	background:none;
 }
 
 #variable {
@@ -118,7 +134,7 @@ td.button {
 #graphdiv {
 	left:40%;
 	right:0;
-	top:50px;
+	top:60px;
 	bottom:170px;
 	border-left:none;
 	text-align:center;
@@ -148,7 +164,7 @@ td.button {
 
 #overlay{
 	position:absolute;
-	top:15px;
+	top:17px;
 	left:10px;
 	z-index:4;
 	font-size:12px;
@@ -160,7 +176,7 @@ td.button {
 	color:#f00;
 	left:40%;
 	right:0;
-	top:50px;
+	top:60px;
 	bottom:170px;
 	border-left:none;
 	text-align:center;
@@ -172,7 +188,6 @@ td.button {
 #updating {
 	left:0;
 	right:60%;
-	top:110px;
 	display:none;
 }
 
@@ -188,6 +203,10 @@ td.button {
 	display:none;
 }
 
+input[type=checkbox]{
+	visibility: hidden;
+}
+
 input[type=checkbox]::before { 
     content: "";
     background-image: url('./unchecked.png');
@@ -195,9 +214,11 @@ input[type=checkbox]::before {
     display: inline-block;
     width:15px;
     height:15px;
+	visibility: visible;
 }
 input[type=checkbox]:checked::before { 
     background-image: url('./checked.png');
+	background-repeat: no-repeat;
 }
 
 #addtograph span {
@@ -241,7 +262,7 @@ input[type=checkbox]:checked::before {
 	width:20%;
 }
 
-#tour table td span, #helper span, #updater span, a.button, .button{
+#tour table td span, #updater span, a.button, .button{
 	background-color:rgba(0,100,200,0.85);
 	display:inline-block;
 	padding:10px;
@@ -261,14 +282,7 @@ input[type=checkbox]:checked::before {
 	border:none;
 }
 
-#helper {
-	position:absolite;
-	bottom:5px;
-	right:5px;
-	cursor:pointer;
-	border:none;
-}
-#sum, #reg, #for, #meandotshow, #startfinishshow, #gridlinesshow, #differentaxisshow, #for, #invertshow, #relativefrequencyshow, #thicklinesshow, #boxplotshow, #regshow, #intervalshow, #labelshow, #colorname, #arrowsshow , #quadraticshow, #cubicshow, #expshow, #logshow, #powshow,#regtypeshow, #jittershow, #yxshow, #highboxplotshow, #btypeshow, #addmultshow, #longtermtrendshow, #boxnowhiskershow, #boxnooutliershow, #seasonalshow{
+#sum, #stackdotsshow, #reg, #for, #meandotshow, #startfinishshow, #gridlinesshow, #differentaxisshow, #for, #invertshow, #relativefrequencyshow, #thicklinesshow, #boxplotshow, #regshow, #intervalshow, #labelshow, #colorname, #arrowsshow , #quadraticshow, #cubicshow, #expshow, #logshow, #powshow,#regtypeshow, #jittershow, #yxshow, #highboxplotshow, #btypeshow, #addmultshow, #longtermtrendshow, #boxnowhiskershow, #boxnooutliershow, #seasonalshow{
 	display:none;
 }
 #regtypeshow, #btypeshow, #addmultshow{
@@ -279,10 +293,15 @@ input, select{
 	font-family: 'Roboto', sans-serif;
 	font-size:12px;
 	padding:3px;
-	border:1px solid #ccc;
-	border-radius:3px;
+	border:0px;
+	border-bottom:1px solid #87b9ed;
+	border-radius:0px;
 	padding:3px;
-	background-color:#fff;
+	background-color:rgba(0,0,0,0);
+}
+input:focus, select:focus{
+	outline:none;
+	border-bottom:2px solid #267bd0;
 }
 
 label {
@@ -332,34 +351,39 @@ input[type=text]{
 	overflow-y:scroll;
 	font-family:'Roboto Condensed', sans-serif;
 }
-#helppopup, .popup{
+.popup{
 	position:abolute;
-	bottom:60px;
+	bottom:45px;
 	right:5px;
 	border:none;
-	background-color:rgba(0,100,200,0.85);
+	background-color:#fff;
 	color:#fff;
 	display:none;
+	box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+	color:#000;
 }
-
-#helppopup ul, .popup ul{
+.popup ul li{
+	padding:3px;
+	font-size:14px;
+	cursor:pointer;
+}
+.popup ul{
 	list-style-type: none;
 	margin:0px;
-	padding:5px;
+	padding:3px;
 }
-#helppopup ul li, .popup ul li{
-	padding:10px;
-	font-size:12px;
-	cursor:pointer;
+.popup ul li:hover{
+	background-color:#eee;
 }
 .popup{
 	position:absolute;
 	left:0px;
-	top:120px;
+	top:55px;
 	display:none;
 	z-index:12;
 	right:auto;
 	bottom:auto;
+	color:#000;
 }
 #welcome{
 	position:fixed;
@@ -410,6 +434,7 @@ input[type=text]{
     _border-right-color: pink;
     _border-left-color: pink;
     _filter: chroma(color=pink);
+	box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
 }
 .callout .notch-top {
 	bottom:auto;
@@ -461,4 +486,10 @@ input[type=text]{
 	top:-2px;
 	background-color:#fff !important;
 	padding:0px;
+}
+#jsgraph, #jsgraph div{
+	border:none;
+}
+.tabletop, .tabletop td, .tabletop th{
+	background-color: #ddd !important;
 }
