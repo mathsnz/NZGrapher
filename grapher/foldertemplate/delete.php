@@ -35,11 +35,11 @@ if($loggedin==0){
 }
 
 error_reporting(0);
+$fn = basename($_GET['fn']);
 if ($_GET['check']=="yes") {
-	if(substr($_GET['fn'],0,1)=='.' || substr($_GET['fn'],0,1)=='/'){die('cannot delete outside of folder');}
-	unlink ($_GET['fn']);
+	unlink ($fn);
 	header('Location: index.php');
 } else {
-	echo "<center>Are you sure? <a href=\"delete.php?check=yes&fn=".urlencode($_GET['fn'])."\">Yes</a>";
+	echo "<center>Are you sure? <a href=\"delete.php?check=yes&fn=".urlencode($fn)."\">Yes</a>";
 }
 ?>

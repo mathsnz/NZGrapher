@@ -165,6 +165,7 @@ if (screen.availWidth < 760)
 	if(empty($_GET['folder'])){
 		$_GET['folder']="datasets";
 	}
+	$_GET['folder']=basename($_GET['folder']);
 	if(substr($_GET['folder'],0,1)=="."){$_GET['folder']="datasets";$_GET['dataset']="Babies.csv";}
 
 ?>
@@ -220,6 +221,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 	} else {
 		echo '<option>ERROR</option>';
 	}
+	$dataset=basename($dataset);
 	foreach($files as $file){
 		if (strtolower(substr($file,-3))=='csv'){
 			echo "<option";
