@@ -527,7 +527,7 @@ $(function(){
 	$ ("#filtergo").click(function(){
 		var filtermin = parseFloat($('#filtermin').val());
 		var filtermax = parseFloat($('#filtermax').val());
-		if(!filtermin || !filtermax){
+		if(isNaN(filtermin) || isNaN(filtermax)){
 			alert('The min and max must be set');
 			return false;
 		}

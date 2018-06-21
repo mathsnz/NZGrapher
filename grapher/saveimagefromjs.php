@@ -6,7 +6,12 @@
 
 //converting
 $img = $_POST['imgBase64'];
-$highres = $_POST['highres'];
+if(array_key_exists('highres',$_POST)){
+	$highres = $_POST['highres'];
+} else {
+	$highres = "no";
+}
+
 $img = str_replace('data:image/png;base64,', '', $img);
 $img = str_replace(' ', '+', $img);
 $fileData = base64_decode($img);

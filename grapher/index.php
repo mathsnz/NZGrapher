@@ -362,8 +362,8 @@ if(isset($_GET['url'])){
 }
 
 //Load the csv file into a string
-$csv = file_get_contents($file);
-if(isset($csv_data)){$csv=$csv_data;}
+
+if(isset($csv_data)){$csv=$csv_data;} else {$csv = file_get_contents($file);}
 if(isset($_GET['url'])){$csv_data=$csv;}
 foreach ($delimiters as $key => $delim) {
     $res[$key] = substr_count($csv, $delim);
