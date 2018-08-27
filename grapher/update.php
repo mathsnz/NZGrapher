@@ -66,6 +66,7 @@ if(isset($_POST['password']) || isset($_POST['yup']) || isset($_GET['password'])
 			echo 'Something went wrong updating NZGrapher... please try again later.<br><br>';
 		}
 		unlink("Tmpfile.zip");
+		include 'updatesecurity.php';
 	} else {
 		echo "Sorry, wrong password, try again.<br><br>";
 	}

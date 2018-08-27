@@ -45,7 +45,7 @@ $mimes = array('application/vnd.ms-excel','application/csv','text/plain','text/c
 			echo "Error: " . $_FILES["file"]["error"] . "<br>";
 		} else if (!(in_array($_FILES['file']['type'],$mimes))) {
 			echo "Error: file must be a CSV (Type: ".$_FILES["file"]["type"].")";
-		} else if ($_FILES["file"]["size"] > 100000) {
+		} else if ($_FILES["file"]["size"] > 200000) {
 			echo "Error: file too large (Size: ".$_FILES["file"]["size"].")";
 		} else {
 			    if (file_exists($_FILES["file"]["name"])) {
