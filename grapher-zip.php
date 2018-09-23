@@ -73,6 +73,7 @@ function Zip($source, $destination, $include_dir = false, $exclude)
 										$include=0;
 									}
 								}
+								if(basename($file)=="index.html"){$include==1;}
 								if($include==1){
 									$zip->addFromString(str_replace($source . '/', '', $file), file_get_contents($file));
 								}
