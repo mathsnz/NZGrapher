@@ -2,17 +2,6 @@
 <html v=<?php echo $v; ?>>
 <head>
 	<script src="./jquery-1.11.1.min.js"></script>
-	<script type="text/javascript">
-	  window.onerror = function(msg, url, line, col, error)
-	  {
-			line = line || "na";
-			col = col || "na";
-			error = error || "na";
-			$.post( "//tracking.jake4maths.com/graphererror.php", { msg: encodeURIComponent(msg), url: encodeURIComponent(url), line: encodeURIComponent(line), col: encodeURIComponent(col), error: encodeURIComponent(error) } );
-			console.log('there was an error in '+url+' on line '+line+' - '+msg);
-			return true;
-	  }
-	</script>
 	<title>NZGrapher</title>
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,700|Roboto+Condensed' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="style.css?v=<?php
@@ -460,7 +449,7 @@ echo "\n</table></body></html>";
 	<option value='newabout'>About</option>
 	<option value='graphs'>Graphs Information</option>
 	<option disabled></option>
-	<option value='pairs plot'>Pairs Plot</option>
+	<option value='newpairsplot'>Pairs Plot</option>
 	<option disabled></option>
 	<option value='newdotplot'>Dot Plot (and Box and Whisker)</option>
 	<option value='bar and area graph'>Bar Graph (and Area Graph)</option>
@@ -483,9 +472,6 @@ echo "\n</table></body></html>";
 	<option value='newtimeseriesrecomp'>&nbsp;&nbsp;&nbsp;Re-Composition</option>
 	<option value='newtimeseriesseasonaleffects'>&nbsp;&nbsp;&nbsp;Seasonal Effects</option>
 	<option value='newtimeseriessforecasts'>&nbsp;&nbsp;&nbsp;Forecasts</option>
-	<option disabled></option>
-	<option value='time series seasonal effects'>OLD: Time Series Seasonal Effects</option>
-	<option value='time series forecasts'>OLD: Time Series Forecasts</option>
 	<option disabled></option>
 	<option value='change log'>Change Log</option>
 	<option value='update'>Update</option>
@@ -914,5 +900,6 @@ if(isset($_GET['dev'])){
 <a href='https://secure.mathsnz.com/'>MathsNZ Secure</a>
 <a href='https://www.jpw.nz/'>All Projects</a>
 </div>
+<map name=graphmap id=graphmap></map>
 </body>
 </html>

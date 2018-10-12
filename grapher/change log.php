@@ -76,6 +76,9 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2018-10-09</b><br>
+	- Recode of Pairs Plot module.<br>
+	<br>
 	<b>2018-06-01</b><br>
 	- Major Visual Overhaul.<br>
 	- Addition of Delete Specific Column.<br>
