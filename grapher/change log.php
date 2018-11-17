@@ -76,6 +76,10 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2018-11-17</b><br>
+	- Add option to hide the id of points removed.<br>
+	- New Create Variable Option (from Condition) - useful for condensing categories or for creating categorical from numerical.<br>
+	<br>
 	<b>2018-10-09</b><br>
 	- Recode of Pairs Plot module.<br>
 	<br>

@@ -294,6 +294,7 @@ if(substr($dataset,0,6)!="SECURE"){
 	<li id=reorder>Reorder Variable</li>
 	<li id=newvar>Create New Variable (From 2 Variables)</li>
 	<li id=newvarc2>Create New Variable (Linear Function)</li>
+	<li id=newvarc3>Create New Variable (From Condition)</li>
 	<li id=filter>Filter Data</li>
 	<li id=addindex onclick="addindex()">Add Graphable Index Column</li>
 	<li id=addindex onclick="converttimeshow()">Convert Time Column</li>
@@ -680,6 +681,9 @@ echo "\n</table></body></html>";
 			<span id=relativefrequencyshow><label>
 				<input type="checkbox" onclick="updategraph();" id="relativefrequency" name="relativefrequency" value="yes"> Relative Freq.</label><br>
 			</span>
+			<span id=removedpointsshow><label>
+				<input type="checkbox" onclick="updategraph();" id="removedpoints" name="removedpoints" value="yes" checked> Show ID of Removed Points</label><br>
+			</span>
 			<span id=grayscaleshow><label>
 				<input type="checkbox" onclick="updategraph();" id="grayscale" name="grayscale" value="yes"> Gray Scale <br>(do not use on Firefox)</label><br>
 			</span>
@@ -793,6 +797,20 @@ if(isset($_GET['dev'])){
 		<input style='width:50px' onChange="" id=newvarcb><br><br>
 		<center>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=createcgo>Create</a><br><br>
+		</center>
+	</span>
+</div>
+<div id="newvarc3div" style="z-index:6;display:none;padding:10px;position:absolute;border:none;box-shadow: 0px 0px 10px rgba(0,0,0,0.5);top:50%;left:50%;-webkit-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);min-width:300px;">
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=ordertitle>Create New Variable (Linear Function)</div>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' class=close>&times;</div><br>
+	<span id=samplecontents style="font-size:14px">
+		<select style='width:120px' onChange="" id=newvarc3var></select><br><br>
+		Conditions:<br>
+		<span id=newvarc3conds>
+		</span>Otherwise: 'Other'<br><br>
+		<center>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' onclick='addnewcond()'>Add Condition</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=createc3go>Create</a><br><br><br>
 		</center>
 	</span>
 </div>

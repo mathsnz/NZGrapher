@@ -586,6 +586,27 @@ $(function(){
 		$('#newvarcx').empty().append( options.join() );
 	});
 
+	$( "#newvarc3" ).click(function(){
+		$("#rowbox").hide();
+		$("#colbox").hide();
+		$("#sambox").hide();
+		$("#sampling").show();
+		$("#newvarc3div").show();
+		var col=2;
+		var options=[];
+		var datain="";
+		var titles="";
+		options.push('<option></option>');
+		$('#data tr:first td').each( function(){
+			options.push('<option>' + $(this).text() + '</option>');
+			col++;
+		});
+		//finally empty the select and append the items from the array
+		$('#newvarc3var').empty().append( options.join() );
+		$('#newvarc3conds').html("");
+		addnewcond();
+	});
+
 	$( "#newvar" ).click(function(){
 		$("#rowbox").hide();
 		$("#colbox").hide();
@@ -691,6 +712,62 @@ $(function(){
 		$ ("#sampling").hide();
 	});
 
+	$( "#createc3go" ).click(function(){
+		$ ("#newvarc3div").hide();
+		var cx = $('#newvarc3var option:selected').text();
+		var index = $("#data td:contains('"+cx.split("'")[0]+"')").filter(function() {
+			return $(this).text() === cx;
+		}).index() - 1;
+		var i=0;
+		$('#data tr').each(function(){
+			if(i==0){
+				title = cx;
+				title = title + " (Conditions)";
+				$(this).append("<td><div>" + title + "<br></div></td>");
+			} else {
+				val = $(this).children('td').eq(index).text();
+				if($.isNumeric( val )){val = parseFloat(val);}
+				value = 'Other';
+				$('.condition').each(function(){
+					symbol = $(this).find('.newvarc3gle').val();
+					cond = $(this).find('.newvarc3cond').val();
+					if($.isNumeric( cond )){cond = parseFloat(cond);}
+					if(symbol=="<"){
+						if(val<cond){
+							value=$(this).find('.newvarc3newval').val();
+							return false;
+						}
+					} else if (symbol=="≤"){
+						if(val<=cond){
+							value=$(this).find('.newvarc3newval').val();
+							return false;
+						}
+					} else if (symbol=="="){
+						if(val==cond){
+							value=$(this).find('.newvarc3newval').val();
+							return false;
+						}
+					} else if (symbol=="≥"){
+						if(val>=cond){
+							value=$(this).find('.newvarc3newval').val();
+							return false;
+						}
+					} else if (symbol==">"){
+						if(val>cond){
+							value=$(this).find('.newvarc3newval').val();
+							return false;
+						}
+					}
+				})
+				$(this).append("<td><div>" + value + "<br></div></td>");
+			}
+			i++;
+		});
+		$('#data td div').attr('contenteditable','true');
+		updatebox();
+		$ ("#sampling").hide();
+	});
+
 	$ (".close").click(function(){
 		$ ("#sampling").hide();
 		$ ("#filterdiv").hide();
@@ -702,6 +779,7 @@ $(function(){
 		$ ("#converttimediv").hide();
 		$ ("#encodetimediv").hide();
 		$ ("#deletecoldiv").hide();
+		$ ("#newvarc3div").hide();
 	});
 
 	$( "#update" ).click(updatebox);
@@ -750,6 +828,9 @@ $( document ).ready(function() {
 	graphchange(document.getElementById('type'));
 });
 
+function addnewcond(){
+	$('#newvarc3conds').append("<span class=condition>If <select style='width:50px' class=newvarc3gle><option><</option><option>&le;</option><option>=</option><option>&ge;</option><option>></option></select> <input style='width:100px;position:relative;top:1px;' class=newvarc3cond> then <input style='width:100px;position:relative;top:1px;' class=newvarc3newval></span><br>");
+}
 
 function moreoptions(){
 	$("#cover").show();
@@ -797,6 +878,7 @@ function graphchange(obj){
 	document.getElementById('residualsforcexshow').style.display='none';
 	document.getElementById('stackdotsshow').style.display='none';
 	document.getElementById('stackdots').checked = false;
+	$('#removedpointsshow').hide();
 	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='time series forecasts' || obj.value=='old time series forecasts' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart' || obj.value=='bar and area graph' || obj.value=='residuals' || obj.value=='time series' || obj.value=='time series re-composition' || obj.value=='time series seasonal effects'){document.getElementById('xvar').style.display='block';document.getElementById('yvar').style.display='block';};
 	if(obj.value=='bootstrap'){document.getElementById('yvar').style.display='none';document.getElementById('yvar').selectedIndex=0;};
 	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='time series forecasts' || obj.value=='old time series forecasts' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart'){document.getElementById('regshow').style.display='block';};
@@ -1790,6 +1872,7 @@ function newdotplot(){
 	$('#colorname').show();
 	$('#greyscaleshow').show();
 	$('#gridlinesshow').show();
+	$('#removedpointsshow').show();
 
 	var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
@@ -1831,7 +1914,7 @@ function newdotplot(){
 		return 'Error: You must select a numeric variable for variable 1';
 	}
 
-	if(pointsremoved.length!=0){
+	if(pointsremoved.length!=0 && $('#removedpoints').is(":checked")){
 		ctx.fillStyle = '#000000';
 		fontsize = 13*scalefactor;
 		ctx.font = fontsize+"px Roboto";
@@ -2324,6 +2407,7 @@ function bootstrap(mm){
 	$('#intervallim').prop('checked', false);
 	$('#regression').prop('checked', false);
 	$('#gridlinesshow').show();
+	$('#removedpointsshow').show();
 
 	if(mm=='mean'){
 		$('#boxplot').prop('checked', false);
@@ -2389,7 +2473,7 @@ function bootstrap(mm){
 		return 'Error: you must select a variable with only 2 values for variable 2';
 	}
 
-	if(pointsremoved.length!=0){
+	if(pointsremoved.length!=0 && $('#removedpoints').is(":checked")){
 		ctx.fillStyle = '#000000';
 		fontsize = 13*scalefactor;
 		ctx.font = fontsize+"px Roboto";
@@ -3851,6 +3935,7 @@ function newscatter(){
 	$('#colorname').show();
 	$('#greyscaleshow').show();
 	$('#sizediv').show();
+	$('#removedpointsshow').show();
 	$('#pointsizename').html('Point Size:');
 	$('#transdiv').show();
 
@@ -3929,7 +4014,7 @@ function newscatter(){
 		return 'Error: You must select a numeric variable for variable 2';
 	}
 
-	if(pointsremoved.length!=0){
+	if(pointsremoved.length!=0 && $('#removedpoints').is(":checked")){
 		ctx.fillStyle = '#000000';
 		ctx.font = "13px Roboto";
 		ctx.textAlign="right";
