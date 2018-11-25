@@ -77,6 +77,9 @@ To Do List
 */
 ?>
 	<b>2018-11-17</b><br>
+	- Bug fix for freezing when resetting dataset after adding new columns.<br>
+	<br>
+	<b>2018-11-17</b><br>
 	- Add option to hide the id of points removed.<br>
 	- New Create Variable Option (from Condition) - useful for condensing categories or for creating categorical from numerical.<br>
 	<br>

@@ -1250,10 +1250,10 @@ function updatebox(){
 	$('#zvar').empty().append( options.join() );
 	$('#color').empty().append( options.join() );
 
-	if(xselindex <= document.getElementById("xvar").length && xselindex > -1){document.getElementById("xvar").selectedIndex = xselindex;} else {$("#xvar")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resetx');}
-	if(yselindex <= document.getElementById("yvar").length && yselindex > -1){document.getElementById("yvar").selectedIndex = yselindex;} else {$("#yvar")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resety');}
-	if(zselindex <= document.getElementById("zvar").length && zselindex > -1){document.getElementById("zvar").selectedIndex = zselindex;} else {$("#zvar")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resetz');}
-	if(colselindex <= document.getElementById("color").length && colselindex > -1){document.getElementById("color").selectedIndex = colselindex;} else {$("#color")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resetcol');}
+	if(xselindex < document.getElementById("xvar").length && xselindex > -1){document.getElementById("xvar").selectedIndex = xselindex;} else {$("#xvar")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resetx');}
+	if(yselindex < document.getElementById("yvar").length && yselindex > -1){document.getElementById("yvar").selectedIndex = yselindex;} else {$("#yvar")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resety');}
+	if(zselindex < document.getElementById("zvar").length && zselindex > -1){document.getElementById("zvar").selectedIndex = zselindex;} else {$("#zvar")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resetz');}
+	if(colselindex < document.getElementById("color").length && colselindex > -1){document.getElementById("color").selectedIndex = colselindex;} else {$("#color")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resetcol');}
 
 	document.getElementById('datain').value=datain;
 	document.getElementById('titles').value=titles;
