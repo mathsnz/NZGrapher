@@ -76,6 +76,9 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2018-12-18</b><br>
+	- New feature - Sampling Variability... <a href='https://drive.google.com/file/d/1oox1SKylU7RdJU82ER5Imiw6dtju_qh2/view' target='_blank'>see a video here</a>.<br>
+	<br>
 	<b>2018-11-17</b><br>
 	- Bug fix for freezing when resetting dataset after adding new columns.<br>
 	<br>

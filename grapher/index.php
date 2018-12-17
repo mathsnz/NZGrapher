@@ -290,6 +290,7 @@ if(substr($dataset,0,6)!="SECURE"){
 <div class="callout popup" id=sambox>
 <ul>
 	<li id=sample>Sample</li>
+	<li id=samvar>Sampling Variability</li>
 	<li id=sort>Sort</li>
 	<li id=reorder>Reorder Variable</li>
 	<li id=newvar>Create New Variable (From 2 Variables)</li>
@@ -303,6 +304,21 @@ if(substr($dataset,0,6)!="SECURE"){
 </div>
 
 <div id=left>
+<div id="samvardiv" style="display:none;z-index:99;position:absolute;top:30px;left:30px;right:30px;bottom:30px;text-align:center;padding-top:30px;">
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>Sampling Variability</div>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#data').html($('#presampledataholder').html());$('#data td div').attr('contenteditable','true');updatebox();$('#samvardiv').hide();">&times;</div><br>
+	<span id=samvarcontents style="font-size:14px">
+		This section lets you re-sample the same data while looking at a graph to see what happens when you take repeated samples. This is really useful for looking at sampling variability.<br>
+		<br>
+		Sample With: <select style='width:120px' onChange="" id=samvaron></select><br><br>
+		<center>
+		<table id=samvartable style='text-size:14px;'>
+			<tr><td> <td><input id="sample-">
+		</table><br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvargo>(Re)Sample</a><br><br>
+		</center>
+	</span>
+</div>
 <?php
 echo "<table id=data>\n\n";
 if(empty($dataset)){
@@ -718,6 +734,8 @@ if(isset($_GET['dev'])){
 <span onclick="moreoptions()">More Options</span> <span onclick="updatebox()">Update Graph</span></div>
 </div>
 <div id=originaldataholder style="display:none;">
+</div>
+<div id=presampledataholder style="display:none;">
 </div>
 <div id=loading>
 	<br><br><br><br><br><br>Loading...
