@@ -304,18 +304,22 @@ if(substr($dataset,0,6)!="SECURE"){
 </div>
 
 <div id=left>
-<div id="samvardiv" style="display:none;z-index:99;position:absolute;top:30px;left:30px;right:30px;bottom:30px;text-align:center;padding-top:30px;">
+<div id="samvardiv" style="display:none;z-index:19;position:absolute;top:30px;left:30px;right:30px;bottom:30px;text-align:center;padding-top:30px;">
 	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>Sampling Variability</div>
 	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#data').html($('#presampledataholder').html());$('#data td div').attr('contenteditable','true');updatebox();$('#samvardiv').hide();">&times;</div><br>
 	<span id=samvarcontents style="font-size:14px">
 		This section lets you re-sample the same data while looking at a graph to see what happens when you take repeated samples. This is really useful for looking at sampling variability.<br>
-		<br>
+				<br>
 		Sample With: <select style='width:120px' onChange="" id=samvaron></select><br><br>
 		<center>
 		<table id=samvartable style='text-size:14px;'>
 			<tr><td> <td><input id="sample-">
 		</table><br>
-		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvargo>(Re)Sample</a><br><br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvargo>(Re)Sample</a><br><br><br>
+		Often it is useful to <b>fix the axis</b> when looking at scatter graphs and or dot plots.<br><br>
+		<span href='#' style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick='lockaxis()'>Lock Axis Values</span>
+		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="$('#options input').val('auto');">Reset</span>
+		<span href='#' style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick='moreoptions()'>More Options</span><br>
 		</center>
 	</span>
 </div>
@@ -926,6 +930,8 @@ if(isset($_GET['dev'])){
 			<tr><td>Min Y:<td><input id=scatplotminy value=auto>
 			<tr><td>Max Y:<td><input id=scatplotmaxy value=auto>
 		</table>
+		<br><br>
+		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="$('#options input').val('auto');">Reset</span>
 	</div>
 </div>
 <div id=sites>

@@ -1,3 +1,8 @@
+var xmin;
+var xmax;
+var ymin;
+var ymax;
+
 $(document).on('paste', function(e) {
     e.preventDefault();
     var text = '';
@@ -2053,8 +2058,8 @@ function newdotplot(){
 	var left=90*scalefactor;
 	var right=width-60*scalefactor;
 
-	var xmin = Math.min.apply(null, pointsforminmax);
-	var xmax = Math.max.apply(null, pointsforminmax);
+	xmin = Math.min.apply(null, pointsforminmax);
+	xmax = Math.max.apply(null, pointsforminmax);
 	if($.isNumeric($('#boxplotmin').val())){
 		xmin=$('#boxplotmin').val();
 	}
@@ -2612,8 +2617,8 @@ function bootstrap(mm){
 	var left=60*scalefactor;
 	var right=width-60*scalefactor;
 
-	var xmin = Math.min.apply(null, pointsforminmax);
-	var xmax = Math.max.apply(null, pointsforminmax);
+	xmin = Math.min.apply(null, pointsforminmax);
+	xmax = Math.max.apply(null, pointsforminmax);
 	if($.isNumeric($('#boxplotmin').val())){
 		xmin=$('#boxplotmin').val();
 	}
@@ -2987,8 +2992,8 @@ function newtimeseries(){
 		ctx.restore();
 	}
 
-	var xmin = Math.min.apply(null, tsxpoints);
-	var xmax = Math.max.apply(null, tsxpoints);
+	xmin = Math.min.apply(null, tsxpoints);
+	xmax = Math.max.apply(null, tsxpoints);
 
 	var minmaxstep = axisminmaxstep(xmin,xmax);
 	var minxtick=minmaxstep[0];
@@ -3041,8 +3046,8 @@ function newtimeseries(){
 		}
 	}
 
-	var ymin = Math.min.apply(null, pointsforminmax);
-	var ymax = Math.max.apply(null, pointsforminmax);
+	ymin = Math.min.apply(null, pointsforminmax);
+	ymax = Math.max.apply(null, pointsforminmax);
 
 	var minmaxstep = axisminmaxstep(ymin,ymax);
 	var minytick=minmaxstep[0];
@@ -3432,8 +3437,8 @@ function newtimeseriesrecomp(){
 		ctx.restore();
 	}
 
-	var xmin = Math.min.apply(null, tsxpoints);
-	var xmax = Math.max.apply(null, tsxpoints);
+	xmin = Math.min.apply(null, tsxpoints);
+	xmax = Math.max.apply(null, tsxpoints);
 
 	var minmaxstep = axisminmaxstep(xmin,xmax);
 	var minxtick=minmaxstep[0];
@@ -3481,8 +3486,8 @@ function newtimeseriesrecomp(){
 		pointsforrminmax.push(r[index]);
 	}
 
-	var ymin = Math.min.apply(null, pointsforminmax);
-	var ymax = Math.max.apply(null, pointsforminmax);
+	ymin = Math.min.apply(null, pointsforminmax);
+	ymax = Math.max.apply(null, pointsforminmax);
 	var smin = Math.min.apply(null, pointsforsminmax);
 	var smax = Math.max.apply(null, pointsforsminmax);
 	var rmin = Math.min.apply(null, pointsforrminmax);
@@ -4158,10 +4163,10 @@ function newscatter(){
 	var gtop=90;
 	var bottom=height-60;
 
-	var xmin = Math.min.apply(null, pointsforminmax);
-	var xmax = Math.max.apply(null, pointsforminmax);
-	var ymin = Math.min.apply(null, pointsforminmaxy);
-	var ymax = Math.max.apply(null, pointsforminmaxy);
+	xmin = Math.min.apply(null, pointsforminmax);
+	xmax = Math.max.apply(null, pointsforminmax);
+	ymin = Math.min.apply(null, pointsforminmaxy);
+	ymax = Math.max.apply(null, pointsforminmaxy);
 	if($.isNumeric($('#scatplotminx').val())){
 		xmin=$('#scatplotminx').val();
 	}
@@ -4620,8 +4625,8 @@ function newtimeseriesseasonaleffects(){
 		pointsfortminmax.push(parseFloat(tsxpoints[index]));
 	}
 	
-	var ymin = Math.min.apply(null, pointsforminmax);
-	var ymax = Math.max.apply(null, pointsforminmax);
+	ymin = Math.min.apply(null, pointsforminmax);
+	ymax = Math.max.apply(null, pointsforminmax);
 	
 	var minmaxstep = axisminmaxstep(ymin,ymax);
 	var minytick=minmaxstep[0];
@@ -4946,15 +4951,15 @@ function newtimeseriessforecasts(){
 	
 	// start thinking about graphing or split into table display.
 	
-	var xmin = Math.min.apply(null, pointsforxminmax);
-	var xmax = Math.max.apply(null, pointsforxminmax);
+	xmin = Math.min.apply(null, pointsforxminmax);
+	xmax = Math.max.apply(null, pointsforxminmax);
 	var minmaxstep = axisminmaxstep(xmin,xmax);
 	var minxtick=minmaxstep[0];
 	var maxxtick=minmaxstep[1];
 	var xstep=minmaxstep[2];
 	
-	var ymin = Math.min.apply(null, pointsforminmax);
-	var ymax = Math.max.apply(null, pointsforminmax);
+	ymin = Math.min.apply(null, pointsforminmax);
+	ymax = Math.max.apply(null, pointsforminmax);
 	var minmaxstep = axisminmaxstep(ymin,ymax);
 	var minytick=minmaxstep[0];
 	var maxytick=minmaxstep[1];

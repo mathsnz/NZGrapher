@@ -308,3 +308,17 @@ function drawminiareagraphs(ctx,ydata,xdata,bleft,bright,btop,bbottom,c,r){
 	ctx.fillStyle = '#000';
 	$('#graphmap').append("<area shape='rect' coords='"+bleft+","+btop+","+bright+","+bbottom+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('type').value='bar and area graph';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"'>");
 }
+
+function lockaxis(){
+	if(xmin == null){xmin = 'auto';}
+	if(xmax == null){xmax = 'auto';}
+	if(ymin == null){ymin = 'auto';}
+	if(ymax == null){ymax = 'auto';}
+
+	$('#boxplotmin').val(xmin);
+	$('#boxplotmax').val(xmax);
+	$('#scatplotminx').val(xmin);
+	$('#scatplotmaxx').val(xmax);
+	$('#scatplotminy').val(ymin);
+	$('#scatplotmaxy').val(ymax);
+}
