@@ -76,6 +76,9 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2019-01-13</b><br>
+	- Added "Update Graph" button to "More Options" and changed it so the more options didn't overlap the graph.<br>
+	<br>
 	<b>2018-12-18</b><br>
 	- New feature - Sampling Variability... <a href='https://drive.google.com/file/d/1oox1SKylU7RdJU82ER5Imiw6dtju_qh2/view' target='_blank'>see a video here</a>.<br>
 	<br>

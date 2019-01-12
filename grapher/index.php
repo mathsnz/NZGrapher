@@ -911,7 +911,7 @@ if(isset($_GET['dev'])){
 	</span>
 </div>
 <div id=cover style="width:100%;height:100%;position:fixed;top:0px;left:0px;background-color:rgba(255,255,255,0.5);z-index:20;display:none;" onclick="$('#cover').hide();$('#options').hide();"></div>
-<div id=options style="width:50%;height:50%;position:fixed;top:50%;left:50%;border:1px solid #ccc;z-index:21;display:none;margin-left:-25%;margin-top:-10%;">
+<div id=options style="width:35%;height:50%;position:fixed;top:20%;left:2.5%;border:1px solid #ccc;z-index:21;display:none;">
 	<div style="background-color:rgba(0, 100, 200, 0.85096);width:100%;text-align:center;height:25px;position:absolute;top:0px;left:0px;border:none;color:#fff;">
 		More Options
 		<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#cover').hide();$('#options').hide();">&times;</div>
@@ -931,7 +931,8 @@ if(isset($_GET['dev'])){
 			<tr><td>Max Y:<td><input id=scatplotmaxy value=auto>
 		</table>
 		<br><br>
-		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="$('#options input').val('auto');">Reset</span>
+		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="$('#options input').val('auto');updategraph();">Reset</span>
+		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="updategraph()">Update Graph</span>
 	</div>
 </div>
 <div id=sites>
