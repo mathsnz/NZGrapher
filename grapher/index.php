@@ -313,7 +313,7 @@ if(substr($dataset,0,6)!="SECURE"){
 		Sample With: <select style='width:120px' onChange="" id=samvaron></select><br><br>
 		<center>
 		<table id=samvartable style='text-size:14px;'>
-			<tr><td> <td><input id="sample-">
+			<tr><td> <td><input id="samvar-">
 		</table><br>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvargo>(Re)Sample</a><br><br><br>
 		Often it is useful to <b>fix the axis</b> when looking at scatter graphs and or dot plots.<br><br>

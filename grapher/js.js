@@ -527,6 +527,7 @@ $(function(){
 	$ ("#samplego").click(function(){
 		$("#samplediv").hide();
 		window.setTimeout(function(){
+		console.log($('[id^="sample-"]').length);
 		if($('[id^="sample-"]').length==1){
 			$("#updating").css({"display": "block"});
 			var  samplesize=$('[id^="sample-"]')[0].value;
