@@ -1043,7 +1043,7 @@ function graphchange(obj){
 		document.getElementById('sizediv').style.display='block';
 		document.getElementById('pointsizename').innerHTML='Interval Width:';
 	};
-	if(obj.value=='bootstrap'){document.getElementById('btypeshow').style.display='inline';};
+	if(obj.value=='bootstrap'){document.getElementById('btypeshow').style.display='block';};
 	if(obj.value=='scatter' || obj.value=='dotplot' || obj.value=='paired experiment' || obj.value=='residuals'){document.getElementById('transdiv').style.display='block';};
 	if(obj.value=='scatter' || obj.value=='dotplot' || obj.value=='histogramf'){document.getElementById('zvar').style.display='inline';};
 	if(obj.value=='scatter' || obj.value=='dotplot' || obj.value=='paired experiment'){document.getElementById('color').style.display='inline';document.getElementById('colorname').style.display='inline';};
