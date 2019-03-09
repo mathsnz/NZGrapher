@@ -4416,7 +4416,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			lasty = y;
 			x = add(x,step);
 		}
-		ctx.fillText($('#yaxis').val()+" = "+a+" * log("+$('#xaxis').val()+") + "+b,left, equationtop);
+		ctx.fillText($('#yaxis').val()+" = "+a+" * ln("+$('#xaxis').val()+") + "+b,left, equationtop);
 		equationtop = add(equationtop,15);
 	}
 	
