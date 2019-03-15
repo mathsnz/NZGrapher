@@ -551,26 +551,51 @@ echo "\n</table></body></html>";
 		echo " style='display:none'";
 	}
 ?>>
-	<div id=welcomecontent style='text-align:center;'>
-		<div style='position:absolute;top:5px;right:5px;border:none;cursor:pointer;'>&#10006;</div>
+	<div id=welcomecontent style='text-align:center;' onclick='event.stopImmediatePropagation();'>
+		<div style='position:absolute;top:5px;right:5px;border:none;cursor:pointer;' onclick='$("#welcome").click()'>&#10006;</div>
 		<br>
 		<span style='display:block;width:100%;text-align:center'><img src='logob.png' style='max-height:100px;'></span>
-		<table style='width:100%;'>
+		<table style='width:100%;margin-bottom:5px;'>
 			<tr>
-				<td style='width:50%;border-right:1px solid #ccc;padding:10px;vertical-align:top;'>
+				<td style='width:50%;border-right:1px solid #ccc;padding:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
 					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>New here?</b></span><br>
 					If you're not sure where to start... watching <a target='_blank' href='//students.mathsnz.com/nzgrapher/nzgrapher_a_1.html'>this video</a> is a good idea.<br>
 					<br>
 					If you're a <b>teacher</b> you might find the resources on <a target='_blank' href='//www.mathsnz.com'>MathsNZ</a> helpful.<br>
 					<br>
 					If you're a <b>student</b> you might find the resources on <a target='_blank' href='//students.mathsnz.com'>MathsNZ Students</a> helpful.
-				<td style='width:50%;padding:10px;vertical-align:top;'>
+				<td style='width:50%;padding:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
 					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Been here before?</b></span><br>
-					I'm just a normal maths teacher, this is all done in my spare time, and I don't get anything out of it apart from seeing it being used... NZGrapher is provided <b>free of charge</b>... but if you want to <b><a href='http://www.mathsnz.com/donate.html' target='_blank'>donate</a></b> to help cover costs that'd be great, like us on <a href='https://www.facebook.com/mathsnz' target='_blank'>facebook</a>.<br>
-					<br>
-					Something not working or have an idea to make NZGrapher better... please <a href='//www.mathsnz.com/contact.html' target='_blank'>let me know</a>.<br>
+					NZGrapher is provided <b>free of charge</b>. I'm a maths teacher and this is all done in my spare time. If you want to donate to help cover costs that'd be great.<br>
+<small><center>
+<form action='https://www.paypal.com/cgi-bin/webscr' method='post' target='_blank' rel='noopener' style='display:inline-block;text-align:center;margin-right:30px;'>
+<br>
+One Off Donation or<br>
+Custom Monthly Amount<br><br>
+<input type='hidden' name='cmd' value='_s-xclick'>
+<input type='hidden' name='hosted_button_id' value='VZ2MNV3YGV5QL'>
+<input type='image' src='https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif' border='0' name='submit' alt='PayPal - The safer, easier way to pay online!' style='border:none;'>
+<img alt='' border='0' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1'>
+</form>
+<form action='https://www.paypal.com/cgi-bin/webscr' method='post' target='_blank' style='display:inline-block;text-align:center;'>
+Monthly Donation<br>
+<input type='hidden' name='cmd' value='_s-xclick'>
+<input type='hidden' name='hosted_button_id' value='8GLP5UV6V4RWS'>
+<input type='hidden' name='on0' value=''><select name='os0' style='margin-bottom:10px;'>
+	<option value='$5 Per Month'>$5 Per Month</option>
+	<option value='$10 Per Month'>$10 Per Month</option>
+	<option value='$20 Per Month'>$20 Per Month</option>
+</select><br>
+<input type='hidden' name='currency_code' value='NZD'>
+<input type='image' src='https://www.paypalobjects.com/en_US/i/btn/btn_subscribe_LG.gif' border='0' name='submit' alt='PayPal - The safer, easier way to pay online!' style='border:none;'>
+<img alt='' border='0' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1'>
+</form>
+</center></small>
+For other ways to <a href='http://www.mathsnz.com/donate.html' target='_blank'>donate see here</a>.
 			</tr>
-		</table><br>
+		</table>
+		Something not working or have an idea to make NZGrapher better... please <a href='//www.mathsnz.com/contact.html' target='_blank'>let me know</a>.<br>
+		<br>
 		<?php
 			if(strpos($_SERVER['SERVER_NAME'],'jake4maths.com')>0){
 				echo "The version of NZGrapher you are using is hosted on my server... if you want to host it on your own server you can <a href='//www.mathsnz.com/localgrapher.html' target='_blank'> find out more here</a>.<br>";

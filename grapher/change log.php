@@ -76,6 +76,9 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2019-03-15</b><br>
+	- Made it so negatives in equations show up as " - " rather than " +- ".<br>
+	<br>
 	<b>2019-01-13</b><br>
 	- Added "Update Graph" button to "More Options" and changed it so the more options didn't overlap the graph.<br>
 	<br>

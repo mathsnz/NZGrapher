@@ -4303,7 +4303,12 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			lasty = y;
 			x = add(x,step);
 		}
-		ctx.fillText($('#yaxis').val()+" = "+m+" * "+$('#xaxis').val()+" + "+c,left, equationtop);
+		if(parseFloat(c)<0){
+			c = " - " + -1*c;
+		} else {
+			c = " + " + c;
+		}
+		ctx.fillText($('#yaxis').val()+" = "+m+" * "+$('#xaxis').val()+c,left, equationtop);
 		equationtop = add(equationtop,15);
 		ctx.fillText("r = "+r,left, equationtop);
 		equationtop = add(equationtop,15);
@@ -4333,7 +4338,17 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			lasty = y;
 			x = add(x,step);
 		}
-		ctx.fillText($('#yaxis').val()+" = "+a+" * "+$('#xaxis').val()+"^2 + "+b+" * "+$('#xaxis').val()+" + "+c,left, equationtop);
+		if(parseFloat(b)<0){
+			b = " - " + -1*b;
+		} else {
+			b = " + " + b;
+		}
+		if(parseFloat(c)<0){
+			c = " - " + -1*c;
+		} else {
+			c = " + " + c;
+		}
+		ctx.fillText($('#yaxis').val()+" = "+a+" * "+$('#xaxis').val()+"^2"+b+" * "+$('#xaxis').val()+c,left, equationtop);
 		equationtop = add(equationtop,15);
 	}
 	
@@ -4362,7 +4377,22 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			lasty = y;
 			x = add(x,step);
 		}
-		ctx.fillText($('#yaxis').val()+" = "+a+" * "+$('#xaxis').val()+"^3 + "+b+" * "+$('#xaxis').val()+"^2 + "+c+" * "+$('#xaxis').val()+" + "+d,left, equationtop);
+		if(parseFloat(b)<0){
+			b = " - " + -1*b;
+		} else {
+			b = " + " + b;
+		}
+		if(parseFloat(c)<0){
+			c = " - " + -1*c;
+		} else {
+			c = " + " + c;
+		}
+		if(parseFloat(d)<0){
+			d = " - " + -1*d;
+		} else {
+			d = " + " + d;
+		}
+		ctx.fillText($('#yaxis').val()+" = "+a+" * "+$('#xaxis').val()+"^3"+b+" * "+$('#xaxis').val()+"^2"+c+" * "+$('#xaxis').val()+d,left, equationtop);
 		equationtop = add(equationtop,15);
 	}
 	
@@ -4416,7 +4446,13 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			lasty = y;
 			x = add(x,step);
 		}
-		ctx.fillText($('#yaxis').val()+" = "+a+" * ln("+$('#xaxis').val()+") + "+b,left, equationtop);
+		console.log(b);
+		if(parseFloat(b)<0){
+			b = " - " + -1*b;
+		} else {
+			b = " + " + b;
+		}
+		ctx.fillText($('#yaxis').val()+" = "+a+" * ln("+$('#xaxis').val()+")"+b,left, equationtop);
 		equationtop = add(equationtop,15);
 	}
 	
