@@ -406,7 +406,6 @@ if(isset($csv_data)){
 			$r=1;
 			foreach ($line as $cell) {
 				$cell=str_replace(",", "-", htmlspecialchars(trim($cell)));
-				if($cell==''){$cell="-";}
 				if($i==0){
 					array_push($vars,$cell);
 					$data["$r"]=array();
@@ -437,7 +436,6 @@ if(isset($csv_data)){
 			$r=1;
 			foreach ($line as $cell) {
 				$cell=str_replace(",", "-", htmlspecialchars(trim($cell)));
-				if($cell==''){$cell="-";}
 				if($i==0){
 					array_push($vars,$cell);
 					$data["$r"]=array();

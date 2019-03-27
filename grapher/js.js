@@ -933,7 +933,6 @@ $(function(){
 				}
 				for (c = 0; c < cells.length; c++) {
 					var cell = escapeHtml(cells[c].trim()).replace(',', '-');
-					if(cell==''){cell="-";}
 					newtable += "<td><div>" + cell + "<br></div></td>"
 				}
 			}
@@ -946,7 +945,7 @@ $(function(){
 	});
 	$( "#importlink" ).click(function() {
 		var link = document.getElementById("linkarea").value;
-		document.location = document.location.origin + document.location.pathname + '?url=' + link;
+		document.location = document.location.origin + document.location.pathname + '?url=' + encodeURIComponent(link);
 	});
 
 });
