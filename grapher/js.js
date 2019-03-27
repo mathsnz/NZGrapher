@@ -5685,7 +5685,11 @@ function sortorder(as, bs)
     if(as=== bs) return 0;
     a= as.toLowerCase().match(rx);
     b= bs.toLowerCase().match(rx);
-    L= a.length;
+	if(a != null){
+		L= a.length;
+	} else {
+		L=0;
+	}
     while(i<L){
         if(!b[i]) return 1;
         a1= a[i],
