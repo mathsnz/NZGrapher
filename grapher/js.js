@@ -5685,12 +5685,13 @@ function sortorder(as, bs)
     if(as=== bs) return 0;
     a= as.toLowerCase().match(rx);
     b= bs.toLowerCase().match(rx);
-	if(a != null){
-		L= a.length;
-	} else {
+	if(a == null){
 		L=0;
+	} else {
+		L = a.length;
 	}
     while(i<L){
+		if(b == null) return 1;
         if(!b[i]) return 1;
         a1= a[i],
         b1= b[i++];
