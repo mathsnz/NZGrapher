@@ -482,8 +482,8 @@ echo "\n</table></body></html>";
 	<option value='newbootstrapcimedian'>Bootstrap Confidence Interval - Median</option>
 	<option value='newbootstrapcimean'>Bootstrap Confidence Interval - Mean</option>
 	<option disabled></option>
-	<option value='re-randomisation - median'>Re-Randomisation (Re-Sampling) - Median</option>
-	<option value='re-randomisation - mean'>Re-Randomisation (Re-Sampling) - Mean</option>
+	<option value='re-randomisation - median'>Re-Randomisation - Median</option>
+	<option value='re-randomisation - mean'>Re-Randomisation - Mean</option>
 	<option disabled></option>
 	<option value='paired experiment'>Paired Experiment Dot Plot (and Arrows Graph)</option>
 	<option disabled></option>
@@ -697,10 +697,10 @@ For other ways to <a href='http://www.mathsnz.com/donate.html' target='_blank'>d
 				</select>
 			</span>
 			<span id=longtermtrendshow><label>
-				<input type="checkbox" onclick="if(this.checked==true){$('#seasonal')[0].checked=true;}else{$('#seasonal')[0].checked=false;};updategraph();" id="longtermtrend" name="longtermtrend" value="yes"> Long Term Trend</label><br>
+				<input type="checkbox" onclick="if(this.checked==true){$('#seasonal')[0].checked=true;}else{$('#seasonal')[0].checked=false;};updategraph();" id="longtermtrend" name="longtermtrend" value="yes"> Long Term Trend (STL)</label><br>
 			</span>
 			<span id=seasonalshow><label>
-				<input type="checkbox" onclick="if(this.checked==true){$('#longtermtrend')[0].checked=true;};updategraph();" id="seasonal" name="seasonal" value="yes"> Seasonal</label><br>
+				<input type="checkbox" onclick="if(this.checked==true){$('#longtermtrend')[0].checked=true;};updategraph();" id="seasonal" name="seasonal" value="yes"> Seasonal (STL)</label><br>
 			</span>
 			<span id=startfinishshow><label>
 				<input type="checkbox" onclick="updategraph();" id="startfinish" name="startfinish" value="yes"> Start / End Points</label><br>
