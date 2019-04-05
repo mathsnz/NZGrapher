@@ -76,6 +76,10 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2019-04-05</b><br>
+	- Change to title of Re-randomisation graphs to remove incorrect part of title.<br>
+	- Added "(STL)" after the Long Term Trend and Seasonal tickboxes on time series to clarify the method being used to draw these.<br>
+	<br>
 	<b>2019-03-15</b><br>
 	- Made it so negatives in equations show up as " - " rather than " +- ".<br>
 	<br>
