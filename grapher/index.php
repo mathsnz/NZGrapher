@@ -120,7 +120,7 @@ if (screen.availWidth < 760)
 <div id=pastetext style='z-index:16;position:fixed;height:100%;width:100%;top:0px;left:0px;background:rgba(255,255,255,0.5);display:none;'>
 <div style='position:absolute;top:50%;left:50%;width:400px;height:300px;z-index:12;text-align:center;padding:5px;margin-left:-205px;margin-top:-155px;'>
 <div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>Paste your table here from Excel, Word or Google Sheets</div><br><small><i>Note: Pasting a table from Google Docs doesn't work properly.</i></small><br>
-<textarea style='width:400px;height:190px;resize:none;' id=textarea></textarea><br>
+<textarea style='width:400px;height:190px;resize:none;' id=textarea data-gramm_editor="false"></textarea><br>
 <br>
 <a href='#' class=button onclick='document.getElementById("pastetext").style.display="none"' id=import>Import</a>
 <a href='#' class=button onclick='document.getElementById("pastetext").style.display="none"'>Close</a>
@@ -130,7 +130,7 @@ if (screen.availWidth < 760)
 <div style='position:absolute;top:50%;left:50%;width:400px;height:300px;z-index:12;text-align:center;padding:5px;margin-left:-205px;margin-top:-155px;'>
 <div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>Paste your link here</div><br>
 <small><i>Note: the link needs to be accessible on the web for this to work, and must be to a CSV file.</i></small><br>
-<textarea style='width:400px;height:190px;resize:none;' id=linkarea></textarea><br>
+<textarea style='width:400px;height:190px;resize:none;' id=linkarea data-gramm_editor="false"></textarea><br>
 <br>
 <a href='#' class=button onclick='document.getElementById("pastelink").style.display="none"' id=importlink>Import</a>
 <a href='#' class=button onclick='document.getElementById("pastelink").style.display="none"'>Close</a>
