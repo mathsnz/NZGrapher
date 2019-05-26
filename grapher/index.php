@@ -566,7 +566,7 @@ echo "\n</table></body></html>";
 					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Cost</b></span><br>
 					NZGrapher is free for non-commercial <b>individual</b> use, you can however <a target='_blank' href='https://www.mathsnz.com/donate'>make a donation</a>.<br>
 					<br>
-					<b>Schools</b> are required to subscribe at a minimum of $0.50 per student using NZGrapher. <b>Commerial users</b> are also required to pay. Please visit the <a target='_blank' href='https://swww.mathsnz.com/nzgrapher-invoice'>invoice creator</a> for details.<br>
+					<b>Schools</b> are required to subscribe at a minimum of $0.50 per student using NZGrapher. <b>Commerial users</b> are also required to pay. Please visit the <a target='_blank' href='https://www.mathsnz.com/nzgrapher-invoice'>invoice creator</a> for details.<br>
 					<br>
 					This is optional for 2019, but will be compulsory for 2020.<br>
 			</tr>
