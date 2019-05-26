@@ -399,7 +399,7 @@ input[type=text]{
 	top:50%;
 	left:50%;
 	width:853px;
-	height:470px;
+	height:auto;
 	margin-left:-427px;
 	margin-top:-235px;
 	z-index:102;
