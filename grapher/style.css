@@ -71,7 +71,7 @@ a {
 
 #left {
 	top:60px;
-	bottom:170px;
+	bottom:140px;
 	right:60%;
 	left:0;
 	overflow:auto;
@@ -126,7 +126,7 @@ table {
 #variable {
 	height:140px;
 	right:60%;
-	bottom:30px;
+	bottom:0px;
 	left:0;
 	z-index:3;
 }
@@ -135,7 +135,7 @@ table {
 	left:40%;
 	right:0;
 	top:60px;
-	bottom:170px;
+	bottom:140px;
 	border-left:none;
 	text-align:center;
 	border:none;
@@ -152,7 +152,7 @@ table {
 #controls {
 	height:140px;
 	left:40%;
-	bottom:30px;
+	bottom:0px;
 	right:0;
 	border-left:none;
 }
@@ -177,7 +177,7 @@ table {
 	left:40%;
 	right:0;
 	top:60px;
-	bottom:170px;
+	bottom:140px;
 	border-left:none;
 	text-align:center;
 	z-index:5;
@@ -405,6 +405,7 @@ input[type=text]{
 	z-index:102;
 	border: 1px solid #ccc;
 	overflow: hidden;
+	padding:10px;
 }
 #welcomeframe{
 	position: absolute;

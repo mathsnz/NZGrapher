@@ -76,6 +76,12 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2019-05-26</b><br>
+	- Updated welcome message and about page.<br>
+	- Added fee structure for 2020.<br>
+	- Update to back end that does the modelling for the scatter graphs.<br>
+	- Update a number of links.<br>
+	<br>
 	<b>2019-04-05</b><br>
 	- Change to title of Re-randomisation graphs to remove incorrect part of title.<br>
 	- Added "(STL)" after the Long Term Trend and Seasonal tickboxes on time series to clarify the method being used to draw these.<br>

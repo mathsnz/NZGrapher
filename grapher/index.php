@@ -2,6 +2,7 @@
 <html v=<?php echo $v; ?>>
 <head>
 	<script src="./jquery-1.11.1.min.js"></script>
+	<script src="./regression.min.js"></script>
 	<title>NZGrapher</title>
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,700|Roboto+Condensed' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="style.css?v=<?php
@@ -14,7 +15,7 @@
 	<script src="./jsnew.js?v=<?php
 		echo $v;
 	?>"></script>
-	<meta name="description" content="NZGrapher is a free web based graphing tool. NZ Grapher was designed for New Zealand Schools by a New Zealand Teacher.">
+	<meta name="description" content="NZGrapher is a web based graphing tool. NZ Grapher was designed for New Zealand Schools by a New Zealand Teacher.">
 	<link rel="canonical" href="https://grapher.jake4maths.com/" />
 	<link rel="apple-touch-icon" sizes="57x57" href="./icon/apple-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="./icon/apple-icon-60x60.png">
@@ -246,7 +247,9 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 
 <div id=helppopup class="callout popup">
 <ul>
-	<li onclick="window.open('//students.mathsnz.com/nzgrapher/nzgrapher_a_1.html','_blank')">Video Tutorials</li>
+	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/video-tutorials','_blank')">Video Tutorials</li>
+	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/graph-information','_blank')">Graph Information</li>
+	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/dataset-information','_blank')">Dataset Information</li>
 	<li onclick="document.getElementById('welcome').style.display='block'">Show Welcome</li>
 	<li onclick="document.getElementById('tour').style.display='block'">Show Overlay</li>
 </ul>
@@ -466,7 +469,6 @@ echo "\n</table></body></html>";
 </select><td>Graph Type: <td>
 <select style='width:120px' id=type onChange="graphchange(this);">
 	<option value='newabout'>About</option>
-	<option value='graphs'>Graphs Information</option>
 	<option disabled></option>
 	<option value='newpairsplot'>Pairs Plot</option>
 	<option disabled></option>
@@ -543,66 +545,46 @@ echo "\n</table></body></html>";
 </form>
 </div>
 
-<div id=welcome onclick="this.style.display='none';document.cookie='welcome=yes; expires=<?php
-	echo date(DateTime::RSS, strtotime('2 hours')); echo "'\"";
+<div id=welcome <?php
 	if(isset($_COOKIE['welcome'])){
 		echo " style='display:none'";
 	}
 ?>>
-	<div id=welcomecontent style='text-align:center;' onclick='event.stopImmediatePropagation();'>
-		<div style='position:absolute;top:5px;right:5px;border:none;cursor:pointer;' onclick='$("#welcome").click()'>&#10006;</div>
+	<div id=welcomecontent style='text-align:center;'>
 		<br>
-		<span style='display:block;width:100%;text-align:center'><img src='logob.png' style='max-height:100px;'></span>
+		<span style='display:block;width:100%;text-align:center'><img src='logob.png' style='max-height:70px;'></span>
 		<table style='width:100%;margin-bottom:5px;'>
 			<tr>
-				<td style='width:50%;border-right:1px solid #ccc;padding:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
-					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>New here?</b></span><br>
-					If you're not sure where to start... watching <a target='_blank' href='//students.mathsnz.com/nzgrapher/nzgrapher_a_1.html'>this video</a> is a good idea.<br>
+				<td style='width:50%;border-right:1px solid #ccc;padding-right:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
+					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Need Help?</b></span><br>
+					If you're not sure where to start watching <a target='_blank' href='//www.mathsnz.com/nzgrapher-info/video-tutorials'>these videos</a> is a good idea.<br>
 					<br>
-					If you're a <b>teacher</b> you might find the resources on <a target='_blank' href='//www.mathsnz.com'>MathsNZ</a> helpful.<br>
+					There is all the infomation on the graphs and datasets and tutorials on how to use NZGrapher over on <a target='_blank' href='https://www.mathsnz.com/nzgrapher-info'>MathsNZ</a>.<br>
 					<br>
-					If you're a <b>student</b> you might find the resources on <a target='_blank' href='//students.mathsnz.com'>MathsNZ Students</a> helpful.
-				<td style='width:50%;padding:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
-					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Been here before?</b></span><br>
-					NZGrapher is provided <b>free of charge</b>. I'm a maths teacher and this is all done in my spare time. If you want to donate to help cover costs that'd be great.<br>
-<small><center>
-<form action='https://www.paypal.com/cgi-bin/webscr' method='post' target='_blank' rel='noopener' style='display:inline-block;text-align:center;margin-right:30px;'>
-<br>
-One Off Donation or<br>
-Custom Monthly Amount<br><br>
-<input type='hidden' name='cmd' value='_s-xclick'>
-<input type='hidden' name='hosted_button_id' value='VZ2MNV3YGV5QL'>
-<input type='image' src='https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif' border='0' name='submit' alt='PayPal - The safer, easier way to pay online!' style='border:none;'>
-<img alt='' border='0' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1'>
-</form>
-<form action='https://www.paypal.com/cgi-bin/webscr' method='post' target='_blank' style='display:inline-block;text-align:center;'>
-Monthly Donation<br>
-<input type='hidden' name='cmd' value='_s-xclick'>
-<input type='hidden' name='hosted_button_id' value='8GLP5UV6V4RWS'>
-<input type='hidden' name='on0' value=''><select name='os0' style='margin-bottom:10px;'>
-	<option value='$5 Per Month'>$5 Per Month</option>
-	<option value='$10 Per Month'>$10 Per Month</option>
-	<option value='$20 Per Month'>$20 Per Month</option>
-</select><br>
-<input type='hidden' name='currency_code' value='NZD'>
-<input type='image' src='https://www.paypalobjects.com/en_US/i/btn/btn_subscribe_LG.gif' border='0' name='submit' alt='PayPal - The safer, easier way to pay online!' style='border:none;'>
-<img alt='' border='0' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1'>
-</form>
-</center></small>
-For other ways to <a href='http://www.mathsnz.com/donate.html' target='_blank'>donate see here</a>.
+					Something not working or have an idea to make NZGrapher better... please <a target='_blank' href='//www.mathsnz.com/contact'>let me know</a>.<br>
+				<td style='width:50%;padding-left:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
+					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Cost</b></span><br>
+					NZGrapher is free for non-commercial <b>individual</b> use, you can however <a target='_blank' href='https://www.mathsnz.com/donate'>make a donation</a>.<br>
+					<br>
+					<b>Schools</b> are required to subscribe at a minimum of $0.50 per student using NZGrapher. <b>Commerial users</b> are also required to pay. Please visit the <a target='_blank' href='https://swww.mathsnz.com/nzgrapher-invoice'>invoice creator</a> for details.<br>
+					<br>
+					This is optional for 2019, but will be compulsory for 2020.<br>
 			</tr>
 		</table>
-		Something not working or have an idea to make NZGrapher better... please <a href='//www.mathsnz.com/contact.html' target='_blank'>let me know</a>.<br>
 		<br>
 		<?php
 			if(strpos($_SERVER['SERVER_NAME'],'jake4maths.com')>0){
-				echo "The version of NZGrapher you are using is hosted on my server... if you want to host it on your own server you can <a href='//www.mathsnz.com/localgrapher.html' target='_blank'> find out more here</a>.<br>";
+				echo "The version of NZGrapher you are using is hosted on my server.<br>";
 			} else {
 				echo "The version of NZGrapher you are using is not hosted on my server... if it's not working properly first make sure it is up to date, then check with your IT person... if they can't work out what is wrong let me know.<br>";
 			};
 
 		?>
-		<small><br>NZGrapher uses cookies... if you're not happy with this don't use this website.</small>
+		<br>By pressing the accept button below you are acknowledging that NZGrapher uses cookies, and if you acting on behalf of a school, you are agreeing to the costs associated... if you're not happy with this don't use this website.<br>
+		<button class=button style='font-size:15px;margin-top:10px;' onclick="$('#welcome').hide();document.cookie='welcome=yes; expires=<?php
+			echo date(DateTime::RSS, strtotime('2 hours'));
+		?>'">Agree</button>
+		
 	</div>
 </div>
 <div id=graphdiv>
@@ -957,14 +939,6 @@ if(isset($_GET['dev'])){
 		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="$('#options input').val('auto');updategraph();">Reset</span>
 		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="updategraph()">Update Graph</span>
 	</div>
-</div>
-<div id=sites>
-<a href='https://grapher.jake4maths.com/' style='color:#000;'>NZGrapher</a>
-<a href='https://www.mathsnz.com/'>MathsNZ</a>
-<a href='https://students.mathsnz.com/'>MathsNZ Students</a>
-<a href='https://www.jake4maths.com/generator/'>MathsNZ Question Generator</a>
-<a href='https://secure.mathsnz.com/'>MathsNZ Secure</a>
-<a href='https://www.jpw.nz/'>All Projects</a>
 </div>
 <map name=graphmap id=graphmap></map>
 </body>

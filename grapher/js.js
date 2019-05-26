@@ -1977,7 +1977,7 @@ function minnooutliers(values,lq,uq){
 function newabout(){
   var width = $('#width').val()-22;
   var height = $('#height').val()-22;
-  content = "DISPL<div style='width:"+width+"px;height:"+height+"px;overflow-y:scroll;padding:10px;text-align:left;'><center>\n\t<h1>About <img src='logob.png' style='position:relative;top:22px;height:65px;'><\/h1>\n\t\n\t\t\n\t<script async src=\"\/\/pagead2.googlesyndication.com\/pagead\/js\/adsbygoogle.js\"><\/script>\n\t<!-- NZGrapher -->\n\t<ins class=\"adsbygoogle\"\n\t     style=\"display:block\"\n\t     data-ad-client=\"ca-pub-5760539585908771\"\n\t     data-ad-slot=\"7109793646\"\n\t     data-ad-format=\"auto\"><\/ins>\n\t<script>\n\t(adsbygoogle = window.adsbygoogle || []).push({});\n\t<\/script>\n<\/center><br><br>\tNZGrapher has been developed by Jake Wills, a maths teacher in New Zealand specifically for supporting the teaching of the NCEA Statistics Standards. The idea behind NZGrapher was to be able to run on <b>any device<\/b>, without an install. NZGrapher was developed to run on anything with a browser, computers, iPads, ChromeBooks, Microsoft Surface, Android, even Phones. NZGrapher is provided free of charge... but <a href='http:\/\/www.mathsnz.com\/donate.html' target='_blank'>donations<\/a> are gladly accepted.<br>\n\t<br>\n\t<b>Help<\/b><br>\n\tYou can access <b><a target='_blank' href=\"\/\/students.mathsnz.com\/nzgrapher\">video tutorials<\/a><\/b> to help you getting started on <a target='_blank' href=\"http:\/\/students.mathsnz.com\/nzgrapher\">MathsNZ Students<\/a>. They are organised in two ways, firstly by the type of graph you are trying to draw, and secondly by the NCEA standard that they relate to. There is a help button in the middle of the bottom which will give you an overlay explaining what each of the sections does. The data section on the left also allows you to edit the data directly just by clicking on the part you want to edit and typing the changes in.<br>\n\t<br>\n\t<b>Graphs<\/b><br>\n\tFor information on what each graph type does, change the graph type (currently set to About) to 'Graphs Information'.<br>\n\t<br>\n\t<b>Dataset Information<\/b><br>\n\tInformation on all of the datasets, what each of the columns are and where the dataset is from is available from <a target='_blank' href=\"http:\/\/students.mathsnz.com\/nzgrapher\/nzgrapher_c.html\">MathsNZ Students<\/a>.<br>\n\t<br>\n\t<b>Saving \/ Copying Graphs<\/b><br>\n\tTo save or copy the graph right click on it or tap and hold if you are using a Tablet and the options should show up for copying and saving.<br>\n\t<br>\n\t<b>Updates<\/b><br>\n\tA full list if changes is always available by changing the graph type to 'change log'. You can also sign up to the newsletter by <a href='http:\/\/eepurl.com\/4JD3v' target='_blank'>clicking here<\/a>.<br>\n\t<br>\n\t<b>Getting Data Into NZGrapher<\/b><br>\n\tNZGrapher has a number of built in datasets. If you want to use your own:<ul><li>You can upload / open files from your computer up to 200kb using Data -> Open Files.</li><li>You can paste a table using Data -> Paste Table. This only works from google sheets and excel. It doesn't work very well from a table in a Word or Google doc.</li><li>You can also paste a link to a csv. The CSV needs to be accessible on the internet for this to work. You can publish Google Sheets to a CSV from Google Docs.</li></ul>The paste table and paste link options do not have file size limits. If you have a dataset you want to share with lots of students see the section below 'for teachers'.<br><br><b>For Teachers<\/b><br>\n\tNZ Grapher also supports custom folders for assessments or your own datasets, allowing students with iPads to access assessment material, as they do not support uploading of files. If you are a teacher and would like me to set up a custom folder for you, please let me know. You can contact me at <a href='http:\/\/www.mathsnz.com\/contact.html' target='_blank'>MathsNZ<\/a>. Once the folder is set up you can manage the files inside it via a password protected page.<br>\n\t<br>\n\t<b>More Info<\/b><br>\n\tI created NZGrapher as a labour of love... if you find it useful please consider dropping me a line to say thanks, and if you have a bit of spare cash I wouldn't complain if you gave me a small donation. You can donate either via <b>PayPal<\/b> (using a credit \/ debit card or your PayPal account) or via a <b>bank transfer<\/b> (<a href='http:\/\/www.mathsnz.com\/contact.html' target='_blank'>contact me<\/a> for the bank account number). I can provide you with a <b>receipt<\/b> if needed.<br>\n\t<br>\n\tPlease don't feel any pressure to donate as you can use NZGrapher <b>for free<\/b>, but donations are appreciated.<br>\n    <br>\n\t<center>\n\t<form action=\"https:\/\/www.paypal.com\/cgi-bin\/webscr\" method=\"post\" target=\"_blank\">\n\t\t<input type=\"hidden\" name=\"cmd\" value=\"_s-xclick\">\n\t\t<input type=\"hidden\" name=\"hosted_button_id\" value=\"VZ2MNV3YGV5QL\">\n\t\t<input type=\"image\" src=\"btn_donateCC_LG.gif\" style='border:none !important' border=\"0\" name=\"submit\" alt=\"PayPal - The safer, easier way to pay online!\">\n\t<\/form>\n\t<\/center>\n</div>"
+  content = "DISPL<div style='width:"+width+"px;height:"+height+"px;overflow-y:scroll;padding:10px;text-align:left;'><center>\n\t<h1>About <img src='logob.png' style='position:relative;top:22px;height:65px;'><\/h1>\n\t\n\t\t\n\t<script async src=\"\/\/pagead2.googlesyndication.com\/pagead\/js\/adsbygoogle.js\"><\/script>\n\t<!-- NZGrapher -->\n\t<ins class=\"adsbygoogle\"\n\t     style=\"display:block\"\n\t     data-ad-client=\"ca-pub-5760539585908771\"\n\t     data-ad-slot=\"7109793646\"\n\t     data-ad-format=\"auto\"><\/ins>\n\t<script>\n\t(adsbygoogle = window.adsbygoogle || []).push({});\n\t<\/script>\n<\/center><br><br>\tNZGrapher has been developed by Jake Wills, a maths teacher in New Zealand specifically for supporting the teaching of the statistics in New Zealand. The idea behind NZGrapher was to create a web based statistical package that can run on <b>any device<\/b>, without an install.<br>\n\t<br>\n\t<b>Help<\/b><br>\n\tYou can access <b><a target='_blank' href=\"\/\/www.mathsnz.com\/nzgrapher-info\/video-tutorials\">video tutorials<\/a><\/b> to help you getting started on <a target='_blank' href=\"https:\/\/www.mathsnz.com\/nzgrapher-info\/video-tutorials\">MathsNZ<\/a>. They are organised in two ways, firstly by the type of feature you are trying to use, and secondly by the NCEA standard that they relate to. There is a help button in the top menu with more help content. The data section on the left also allows you to edit the data directly just by clicking on the part you want to edit and typing the changes in.<br>\n\t<br>\n\t<b>Saving \/ Copying Graphs<\/b><br>\n\tTo save or copy the graph right click on it or tap and hold if you are using a Tablet and the options should show up for copying and saving.<br>\n\t<br>\n\t<b>Getting Data Into NZGrapher<\/b><br>\n\tNZGrapher has a number of built in datasets. If you want to use your own:<ul><li>You can upload / open files from your computer up to 200kb using Data -> Open Files.</li><li>You can paste a table using Data -> Paste Table. This only works from google sheets and excel. It doesn't work very well from a table in a Word or Google doc.</li><li>You can also paste a link to a csv. The CSV needs to be accessible on the internet for this to work. You can publish Google Sheets to a CSV from Google Docs.</li></ul>The paste table and paste link options do not have file size limits. If you have a dataset you want to share with lots of students see the section below 'for teachers'.<br><br><b>For Teachers<\/b><br>\n\tNZ Grapher also supports custom folders for assessments or your own datasets, allowing students to easily access the datasets. If you are a teacher and would like me to set up a custom folder for you, please let me know. You can contact me at <a href='https:\/\/www.mathsnz.com\/contact' target='_blank'>MathsNZ<\/a>. Once the folder is set up you can manage the files inside it via a password protected page.<br>\n\t<br>\n\t<b>Costs<\/b><br>NZGrapher is free for non-commercial individual use, you can however <a href='https:\/\/www.mathsnz.com\/donate'>make a donation</a>.<br><br>Schools are required to subscribe at a minimum of $0.50 per student using NZGrapher. Commerial users are also required to pay. Please visit the <a href='https:\/\/www.mathsnz.com\/nzgrapher-invoice'>invoice creator</a> for details.<br><br>This is optional for 2019, but will be compulsory for 2020.\n\t</div>"
   return content
 }
 
@@ -4240,12 +4240,14 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 	if($('#labels').is(":checked")){var labels="yes";} else {var labels = "no";}
 	var rad = $('#size').val()/2;
 	num = 0;
+	pointstofit = [];
 	xcurvefit="";
 	ycurvefit="";
 	for (var index in indexes){
 		var index = indexes[index];
 		var xpoint = xpoints[index];
 		var ypoint = ypoints[index];
+		pointstofit.push([parseFloat(xpoint),parseFloat(ypoint)]);
 		xcurvefit+=xpoint+",";
 		ycurvefit+=ypoint+",";
 		var xpixel = convertvaltopixel(xpoint,minxtick,maxxtick,left,right);
@@ -4276,17 +4278,23 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		ctx.lineWidth = 3;
 	}
 	
-	$.ajaxSetup({async:false});
-	
 	if($('#regression').is(":checked")){
 		ctx.fillStyle='#f00';
 		ctx.strokeStyle='#f00';
-		$.post('curvefitter.php',{xvals:xcurvefit,yvals:ycurvefit,type:'regression'}).done(function(data){
-			data=JSON.parse(data);
-			c = parseFloat(data.c).toPrecision(5);
-			m = parseFloat(data.m).toPrecision(5);
-			r = parseFloat(data.r).toPrecision(5);
-		})
+		
+		res = regression.linear(pointstofit,{
+		  precision: 7,
+		});
+		console.log(res);
+		
+		c = res.equation[1].toPrecision(5);
+		m = res.equation[0].toPrecision(5);
+		if(m<0){
+			r = -Math.sqrt(res.r2).toPrecision(5);
+		} else {
+			r = Math.sqrt(res.r2).toPrecision(5);
+		}
+		
 		x = minxtick;
 		lasty=0;
 		step = (maxxtick - minxtick)/100;
@@ -4316,12 +4324,17 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 	if($('#quadratic').is(":checked")){
 		ctx.fillStyle='#00f';
 		ctx.strokeStyle='#00f';
-		$.post('curvefitter.php',{xvals:xcurvefit,yvals:ycurvefit,type:'quadratic'}).done(function(data){
-			data=JSON.parse(data);
-			a = parseFloat(data.c).toPrecision(5);
-			b = parseFloat(data.b).toPrecision(5);
-			c = parseFloat(data.a).toPrecision(5);
-		})
+		
+		res = regression.polynomial(pointstofit,{
+		  order: 2,
+		  precision: 7,
+		});
+		console.log(res);
+		
+		a = res.equation[0].toPrecision(5);
+		b = res.equation[1].toPrecision(5);
+		c = res.equation[2].toPrecision(5);
+		
 		x = minxtick;
 		lasty=0;
 		step = (maxxtick - minxtick)/100;
@@ -4354,14 +4367,18 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 	if($('#cubic').is(":checked")){
 		ctx.fillStyle='#0f0';
 		ctx.strokeStyle='#0f0';
-		$.post('curvefitter.php',{xvals:xcurvefit,yvals:ycurvefit,type:'cubic'}).done(function(data){
-			data=JSON.parse(data);
-			console.log(data);
-			a = parseFloat(data.d).toPrecision(5);
-			b = parseFloat(data.c).toPrecision(5);
-			c = parseFloat(data.b).toPrecision(5);
-			d = parseFloat(data.a).toPrecision(5);
-		})
+		
+		res = regression.polynomial(pointstofit,{
+		  order: 3,
+		  precision: 10,
+		});
+		console.log(res);
+		
+		a = res.equation[0];
+		b = res.equation[1];
+		c = res.equation[2];
+		d = res.equation[3];
+		
 		x = minxtick;
 		lasty=0;
 		step = (maxxtick - minxtick)/100;
@@ -4399,11 +4416,15 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 	if($('#exp').is(":checked")){
 		ctx.fillStyle='#952BFF';
 		ctx.strokeStyle='#952BFF';
-		$.post('curvefitter.php',{xvals:xcurvefit,yvals:ycurvefit,type:'exp'}).done(function(data){
-			data=JSON.parse(data);
-			a = parseFloat(data.a).toPrecision(5);
-			b = parseFloat(data.b).toPrecision(5);
-		})
+		
+		res = regression.exponential(pointstofit,{
+		  precision: 7,
+		});
+		console.log(res);
+		
+		a = res.equation[0].toPrecision(5);
+		b = res.equation[1].toPrecision(5);
+		
 		x = minxtick;
 		lasty=0;
 		step = (maxxtick - minxtick)/100;
@@ -4426,11 +4447,15 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 	if($('#log').is(":checked")){
 		ctx.fillStyle='#FF972E';
 		ctx.strokeStyle='#FF972E';
-		$.post('curvefitter.php',{xvals:xcurvefit,yvals:ycurvefit,type:'log'}).done(function(data){
-			data=JSON.parse(data);
-			a = parseFloat(data.a).toPrecision(5);
-			b = parseFloat(data.b).toPrecision(5);
-		})
+		
+		res = regression.logarithmic(pointstofit,{
+		  precision: 7,
+		});
+		console.log(res);
+		
+		a = res.equation[1].toPrecision(5);
+		b = res.equation[0].toPrecision(5);
+		
 		x = minxtick;
 		lasty=0;
 		step = (maxxtick - minxtick)/100;
@@ -4459,11 +4484,15 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 	if($('#pow').is(":checked")){
 		ctx.fillStyle='#3ED2D2';
 		ctx.strokeStyle='#3ED2D2';
-		$.post('curvefitter.php',{xvals:xcurvefit,yvals:ycurvefit,type:'pow'}).done(function(data){
-			data=JSON.parse(data);
-			a = parseFloat(data.a).toPrecision(5);
-			b = parseFloat(data.b).toPrecision(5);
-		})
+		
+		res = regression.power(pointstofit,{
+		  precision: 7,
+		});
+		console.log(res);
+		
+		a = res.equation[0].toPrecision(5);
+		b = res.equation[1].toPrecision(5);
+		
 		x = minxtick;
 		lasty=0;
 		step = (maxxtick - minxtick)/100;
@@ -5239,27 +5268,24 @@ function hwinit(ypoints,seasons){
 		i++;
 	}
 	
-	$.ajaxSetup({async:false});
-	
 	if(mm.length>1){
 		// fit a regression line to it
 		
 		xcurvefit = "";
 		ycurvefit = "";
+		pointstofit = [];
 		for (index in mm){
 			xcurvefit+=index+",";
 			ycurvefit+=mm[index]+",";
+			pointstofit.push([parseFloat(index),parseFloat(mm[index])]);
 		}
 		
-		$.post('curvefitter.php',{xvals:xcurvefit,yvals:ycurvefit,type:'regression'}).done(function(data){
-			data=JSON.parse(data);
-			c = parseFloat(data.c).toPrecision(5);
-			m = parseFloat(data.m).toPrecision(5);
-			r = parseFloat(data.r).toPrecision(5);
-		})
+		res = regression.linear(pointstofit,{
+		  precision: 7,
+		});
 		
-		ap=c; // x-intercept is starting value
-		bp=m; // gradient is the initial trend value
+		ap=res.equation[1]; // x-intercept is starting value
+		bp=res.equation[0]; // gradient is the initial trend value
 
 		//get inital seasonal effects.
 		i=0;
@@ -5281,20 +5307,19 @@ function hwinit(ypoints,seasons){
 		i=0;
 		xcurvefit = "";
 		ycurvefit = "";
+		pointstofit = [];
 		while(i<3){
 			xcurvefit+=index+",";
 			ycurvefit+=mm[index]+",";
+			pointstofit.push([parseFloat(index),parseFloat(mm[index])]);
 		}
 		
-		$.post('curvefitter.php',{xvals:xcurvefit,yvals:ycurvefit,type:'regression'}).done(function(data){
-			data=JSON.parse(data);
-			c = parseFloat(data.c).toPrecision(5);
-			m = parseFloat(data.m).toPrecision(5);
-			r = parseFloat(data.r).toPrecision(5);
-		})
+		res = regression.linear(pointstofit,{
+		  precision: 7,
+		});
 		
-		ap=c; // x-intercept is starting value
-		bp=m; // gradient is the initial trend value
+		ap=res.equation[1]; // x-intercept is starting value
+		bp=res.equation[0]; // gradient is the initial trend value
 
 		a=[];
 		b=[];
