@@ -553,7 +553,7 @@ echo "\n</table></body></html>";
 	<div id=welcomecontent style='text-align:center;'>
 		<br>
 		<span style='display:block;width:100%;text-align:center'><img src='logob.png' style='max-height:70px;'></span>
-		<table style='width:100%;margin-bottom:5px;'>
+		<table style='width:100%;margin-bottom:5px;max-width: 800px;margin: 0 auto;'>
 			<tr>
 				<td style='width:50%;border-right:1px solid #ccc;padding-right:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
 					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Need Help?</b></span><br>
@@ -572,6 +572,7 @@ echo "\n</table></body></html>";
 			</tr>
 		</table>
 		<br>
+		<div style='max-width: 800px;margin: 0 auto;display: inline-block;border: none; position: relative;'>
 		<?php
 			if(strpos($_SERVER['SERVER_NAME'],'jake4maths.com')>0){
 				echo "The version of NZGrapher you are using is hosted on my server.<br>";
@@ -584,6 +585,7 @@ echo "\n</table></body></html>";
 		<button class=button style='font-size:15px;margin-top:10px;' onclick="$('#welcome').hide();document.cookie='welcome=yes; expires=<?php
 			echo date(DateTime::RSS, strtotime('2 hours'));
 		?>'">Agree</button>
+		</div>
 		
 	</div>
 </div>
