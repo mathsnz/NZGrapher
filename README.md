@@ -1,5 +1,5 @@
 # NZGrapher
-NZGrapher is a free web based graphing tool. NZ Grapher was designed for New Zealand Schools by a New Zealand Teacher
+NZGrapher is a web based graphing tool. NZ Grapher was designed for New Zealand Schools by a New Zealand Teacher
 
 This is the files that are used to publish NZGrapher
 You can check it out live at [https://grapher.jake4maths.com/](https://grapher.jake4maths.com/)
