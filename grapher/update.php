@@ -39,14 +39,6 @@ set_time_limit(0);
 
 $latest = floatval(file_get_contents('http://raw.githubusercontent.com/mathsnz/NZGrapher/master/grapherversion.php'));
 
-if(file_exists('./version.php')){
-	include './version.php';
-	echo "Current Version: $v<br>";
-} else {
-	echo "Not Currently Installed<br>";
-	$v=0;
-}
-
 echo "Latest Version: $latest<br><br>";
 
 if(isset($_POST['password']) || isset($_POST['yup']) || isset($_GET['password'])){
@@ -66,10 +58,17 @@ if(isset($_POST['password']) || isset($_POST['yup']) || isset($_GET['password'])
 			echo 'Something went wrong updating NZGrapher... please try again later.<br><br>';
 		}
 		unlink("Tmpfile.zip");
-		include 'updatesecurity.php';
 	} else {
 		echo "Sorry, wrong password, try again.<br><br>";
 	}
+}
+
+if(file_exists('./version.php')){
+	include './version.php';
+	echo "Current Version: $v<br>";
+} else {
+	echo "Not Currently Installed<br>";
+	$v=0;
 }
 
 if(!extension_loaded('zip')){

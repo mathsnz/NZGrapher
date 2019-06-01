@@ -76,434 +76,438 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
-	<b>2019-05-26</b><br>
-	- Updated welcome message and about page.<br>
-	- Added fee structure for 2020.<br>
-	- Update to back end that does the modelling for the scatter graphs.<br>
-	- Update a number of links.<br>
-	<br>
-	<b>2019-04-05</b><br>
-	- Change to title of Re-randomisation graphs to remove incorrect part of title.<br>
-	- Added "(STL)" after the Long Term Trend and Seasonal tickboxes on time series to clarify the method being used to draw these.<br>
-	<br>
-	<b>2019-03-15</b><br>
-	- Made it so negatives in equations show up as " - " rather than " +- ".<br>
-	<br>
-	<b>2019-01-13</b><br>
-	- Added "Update Graph" button to "More Options" and changed it so the more options didn't overlap the graph.<br>
-	<br>
-	<b>2018-12-18</b><br>
-	- New feature - Sampling Variability... <a href='https://drive.google.com/file/d/1oox1SKylU7RdJU82ER5Imiw6dtju_qh2/view' target='_blank'>see a video here</a>.<br>
-	<br>
-	<b>2018-11-17</b><br>
-	- Bug fix for freezing when resetting dataset after adding new columns.<br>
-	<br>
-	<b>2018-11-17</b><br>
-	- Add option to hide the id of points removed.<br>
-	- New Create Variable Option (from Condition) - useful for condensing categories or for creating categorical from numerical.<br>
-	<br>
-	<b>2018-10-09</b><br>
-	- Recode of Pairs Plot module.<br>
-	<br>
-	<b>2018-06-01</b><br>
-	- Major Visual Overhaul.<br>
-	- Addition of Delete Specific Column.<br>
-	- Various Bug Fixes.<br>
-	<br>
-	<b>2018-05-05</b><br>
-	- Bug fixes for time series modules with custom seasons.<br>
-	<br>
-	<b>2018-04-29</b><br>
-	- Bug fixes for time series encode.<br>
-	<br>
-	<b>2018-04-25</b><br>
-	- Upgrade of 'Time Series' graph.<br>
-	- Upgrade of 'Time Series Seasonal Effects' graph.<br>
-	- Upgrade of 'Time Series Forecasts' graph.<br>
-	- New Option under 'Sample and More' -> 'Convert Time' to convert dates or times into seconds, minutes, hours or days (great for bivariate data).<br>
-	- New Option under 'Sample and More' -> 'Encode Time' to encode dates / times into the correct format for the time series module. It averages / sums the numerical values and finds the most common non-numerical values if there is more than one time in each interval.<br>
-	<br>
-	<b>2018-02-03</b><br>
-	- Improvement to Update Graph button.<br>
-	<br>
-	<b>2018-01-21</b><br>
-	- Styling Changes.<br>
-	- Option to paste link to URL (note: must be accessible on the web for this to work).<br>
-	- Fix for correlation coefficient not showing on scatter graph.<br>
-	<br>
-	<b>2018-01-09</b><br>
-	- Re-write of Scatter Plot module into Javascript.<br>
-	- Can now manually set min and max for x and y axis on scatter graphs using "More Options".<br>
-	<br>
-	<b>2017-11-25</b><br>
-	- Changes to dot plots to make the points not round before graphing to be more statistically accurate.<br>
-	<br>
-	<b>2017-08-06</b><br>
-	- Various Bug Fixes.<br>
-	<br>
-	<b>2017-07-21</b><br>
-	- Fixed a bug in FireFox preventing the pasting of tables.<br>
-	<br>
-	<b>2017-07-19</b><br>
-	- Added relative frequency option to bar graph.<br>
-	<br>
-	<b>2017-07-16</b><br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2017-07-01</b><br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2017-06-13</b><br>
-	- Bug Fixes.<br>
-	- Changes to Dotplot and Scatter Graph for visually impared students.<br>
-	- New graph type of Histogram Frequency<br>
-	<br>
-	<b>2017-06-02</b><br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2017-05-26</b><br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2017-05-23</b><br>
-	- Big increase to the limit on the number of different fields you can sample on.<br>
-	<br>
-	<b>2017-05-12</b><br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2017-05-11</b><br>
-	- Bug Fixes.<br>
-	- Feedback Module.<br>
-	- Grid Lines.<br>
-	<br>
-	<b>2017-05-07</b><br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2017-05-01</b><br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2017-04-20</b><br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2017-03-23</b><br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2017-02-11</b><br>
-	- Bug Fixes.<br>
-	- Fixes to Time Series Module.<br>
-	<br>
-	<b>2017-02-24</b><br>
-	- Bug Fixes.<br>
-	- Abililty to open file by url (adding ?url=http://whatever.com to the end of the link to grapher).<br>
-	<br>
-	<b>2016-06-18</b><br>
-	- Bug Fixes.<br>
-	- Even Huger speed increase to all sampling.<br>
-	<br>
-	<b>2016-06-15</b><br>
-	- Bug Fixes.<br>
-	- Huge speed increase to stratified sampling.<br>
-	- Ability to remove seasonal graph on time series when fitting long term trend.<br>
-	<br>
-	<b>2016-05-24</b><br>
-	- Bug Fixes.<br>
-	- Default time series re-composition is the new version.<br>
-	<br>
-	<b>2016-06-02</b><br>
-	- Security Fixes.<br>
-	<br>
-	<b>2016-05-24</b><br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2016-04-26</b><br>
-	- Default Bootstrapping Graphs are Now the New Versions.<br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2016-04-22</b><br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2016-04-20</b><br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2016-04-19</b><br>
-	- Bug Fixes.<br>
-	- Updated Logo.<br>
-	<br>
-	<b>2016-04-16</b><br>
-	- Bug Fixes.<br>
-	- New Logo.<br>
-	- New Welcome Screen.<br>
-	<br>
-	<b>2016-04-09</b><br>
-	- Bug Fixes.<br>
-	- Fix for csv files created using terrible language settings that mean that comma separated values are separated by semicolons... these files should now work.<br>
-	- 3 new test graphs, bootstrap median, bootstrap mean and time series.<br>
-	<br>
-	<b>2016-03-30</b><br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2016-03-23</b><br>
-	- Bug Fixes.<br>
-	- Filter Datasets<br>
-	- Create Linear Function of a Variable<br>
-	<br>
-	<b>2016-03-10</b><br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2016-03-06</b><br>
-	- Bug Fixes.<br>
-	- Fixed positioning of C-I labels on dotplots.<br>
-	<br>
-	<b>2016-02-29</b><br>
-	- Bug Fixes.<br>
-	- Fixed positioning of titles on table of data (left hand side).<br>
-	<br>
-	<b>2016-02-25</b><br>
-	- Bug Fixes.<br>
-	- Added ability to set min and max for the axis on Dot Plots (and Box and Whisker) with the more options button.<br>
-	<br>
-	<b>2016-02-17</b><br>
-	- Bug Fixes.<br>
-	- Added ability to graph hourly data.<br>
-	<br>
-	<b>2016-02-11</b><br>
-	- Bug Fixes.<br>
-	- Updated Dotplot Module<br>
-	<br>
-	<b>2015-12-07</b><br>
-	- Addded ability to add box plots without whiskers.<br>
-	- Addded ability to add box plots that stop at 1.5x less than LQ and 1.5x above the UQ.<br>
-	<br>
-	<b>2015-12-04</b><br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2015-11-20</b><br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2015-11-13</b><br>
-	- Fix to code in histogram module to fix numbers ending up in the wrong bucket.<br>
-	- Fix point size on paired experiment dotplots.<br>
-	<br>
-	<b>2015-10-18</b><br>
-	- Fix to code in time series module.<br>
-	<br>
-	<b>2015-10-18</b><br>
-	- Big update to how the colors work in dotplots and scatter graphs.<br>
-	<br>
-	<b>2015-10-15</b><br>
-	- You now have the choice between additive and multiplicative models in the Time Series section.<br>
-	- Hiding the left and bottom areas can now be done by clicking on the tripple dot menu in the top right corner.<br>
-	<br>
-	<b>2015-09-22</b><br>
-	- You can now sort the data by any variables (under 'Sample and More' -> 'Sort').<br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2015-09-17</b><br>
-	- Bootstrapping of single variables is now supported for means, medians, IQR and standard deviation.<br>
-	<br>
-	<b>2015-09-01</b><br>
-	- Added ability to create a new calculated column (under "Sample and More".<br>
-	- Make the dots on re-randomisation and bootstraps easier to see.<br>
-	- Blank / non-numerical points in re-randomisation and bootstraps are no longer plotted.<br>
-	- Changed the data menu to be able to more easily find functions.<br>
-	<br>
-	<b>2015-08-19</b><br>
-	- Make the dots on Dot Plots / Scatter Plots / Residuals Plot easier to see.<br>
-	<br>
-	<b>2015-08-18</b><br>
-	- Changed colour of pie charts to be more bold.<br>
-	- Can now set width of bars in histogram.<br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2015-07-15</b><br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2015-07-12</b><br>
-	- Added ability to make the box and whisker graphs at the top of the graph rather than overlapping the dot plot.<br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2015-07-11</b><br>
-	- Added pie charts.<br>
-	- Added histograms.<br>
-	- Saving changes on graph now keeps the current selection.<br>
-	- General updates.<br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2015-07-09</b><br>
-	- Update time series module to use STL for decomposition and Holt-Winters for predictions.<br>
-	- Bug Fixes.<br>
-	<br>
-	<b>2015-07-08</b><br>
-	- Colour Coding of Paired Experiment Graphs.<br>
-	- Drop-down box for setting of standard size graphs.<br>
-	<br>
-	<b>2015-06-05</b><br>
-	- Bug fixes.<br>
-	<br>
-	<b>2015-06-04</b><br>
-	- Added ability to paste a table in using the "Paste Table" button at the top.<br>
-	- Increased size of Informal CI limits in dot plots and paired experiments.<br>
-	- Bug fixes.<br>
-	<br>
-	<b>2015-06-03</b><br>
-	- Bug fixes.<br>
-	<br>
-	<b>2015-05-14</b><br>
-	- Added slider to adjust transparency of points.<br>
-	- Reordered the check boxes for the paired experiment to put the arrows at the top.<br>
-	<br>
-	<b>2015-05-09</b><br>
-	- Rename of re-randomisation graph (removing 'bootstrap' as was originally mislabelled).<br>
-	- Added buttons to show and hide the left and bottom panels, particularly for when graphing on devices with smaller screens.<br>
-	<br>
-	<b>2015-04-30</b><br>
-	- Bug fix in scatter plots with missing data.<br>
-	- New method for updating.<br>
-	<br>
-	<b>2015-04-23</b><br>
-	- Added option to include a y=x line on scatter plots.<br>
-	<br>
-	<b>2015-04-13</b><br>
-	- Time Series module can now graph yearly data.<br>
-	- Bug fixes.<br>
-	<br>
-	<b>2015-04-02</b><br>
-	- Style Update.<br>
-	- Bug fixes.<br>
-	<br>
-	<b>2015-03-27</b><br>
-	- Changes to the time series module.<br>
-	- Lots and lots of bug fixes.<br>
-	<br>
-	<b>2015-03-06</b><br>
-	- If a data point is not numeric in dotplots, scatter plots and residuals it now doesn't get graph the data points, but list their id in the top right of the graph.<br>
-	- Lots of bug fixes.<br>
-	<br>
-	<b>2015-03-06</b><br>
-	- Lots of bug fixes.<br>
-	<br>
-	<b>2015-03-04</b><br>
-	- Added 'jitter' option on Scatter Graphs.<br>
-	<br>
-	<b>2015-03-03</b><br>
-	- Miscellaneous Bug Fixes.<br>
-	- Added different model types to the scatter and residual graphs.<br>
-	- Major changes to the way time series data is handled for better predictions and faster performance.<br>
-	<br>
-	<b>2015-02-18</b><br>
-	- Fixed an error when uploading files from IE 11 on Windows 8.1.<br>
-	- Added daily dataset for work-week data (5 day cycle).<br>
-	<br>
-	<b>2014-12-05</b><br>
-	- Added in a slider to change the point sizes in dot plots, scatter plots, residuals, and all the bootstrap graphs.<br>
-	- Made the section where the graph options are set scrollable.<br>
-	<br>
-	<b>2014-12-05</b><br>
-	- Datasets that start with SECURE (all in capitals) are not able to be downloaded using the download button.<br>
-	<br>
-	<b>2014-12-05</b><br>
-	- Fixed an error on stratified sampling were one category was contained in another, eg: male and female.<br>
-	<br>
-	<b>2014-11-28</b><br>
-	- Added in the ability to display the end points of the informal confidence intervals.<br>
-	- Fixed Spelling of 'residual' in the time series graph.<br>
-	- Added a new 'time series' graph that only displays the raw time series data.<br>
-	<br>
-	<b>2014-11-27</b><br>
-	- Changed regression lines to being in terms of variable names rather than in y and x.<br>
-	<br>
-	<b>2014-11-25</b><br>
-	- Fixed an error on uploading CSV files from Windows 7.<br>
-	<br>
-	<b>2014-10-29</b><br>
-	- Fixed an error on reordering variables.<br>
-	- Fixed an error with how NZGrapher handles commas in uploaded files.<br>
-	- Area graphs font has been changed to make it easier to see labels.<br>
-	<br>
-	<b>2014-10-25</b><br>
-	- Significantly improved the sampling module to allow it to use stratified sampling as well as simple random sampling.<br>
-	- Added ability to reorder categorical variables.<br>
-	<br>
-	<b>2014-10-24</b><br>
-	- Disabled the ability to enter commas or line breaks into the data as this causes issues with the graphing.<br>
-	- Added links to <a target='_blank' href="http://students.mathsnz.com/nzgrapher">MathsNZ Students</a> with video tutorials and dataset information.<br>
-	<br>
-	<b>2014-10-06</b><br>
-	- Graphs on the pairs plot are now click-able so when you click on the graph it loads it up full size.<br>
-	- Paired experiment graphing now available including arrows graphs.<br>
-	- Bug fix with downloading of data.<br>
-	- Various other bug fixes.<br>
-	<br>
-	<b>2014-10-04</b><br>
-	- Added bar and area graph.<br>
-	- Various bug fixes for when the range was zero.<br>
-	<br>
-	<b>2014-10-03</b><br>
-	- Added pairs plot.<br>
-	- Sorted out when the colours label showed up.<br>
-	- Fixed an error on dotplots when calculating LQ and UQ when they only had one point in the dataset.<br>
-	- Fixed an issue with the colouring of continuous variables.<br>
-	<br>
-	<b>2014-09-29</b><br>
-	- Added ability to colour points in scatter graphs and dot plots.<br>
-	- Changed font used for easier readability.<br>
-	<br>
-	<b>2014-09-28</b><br>
-	- Added ability to subset dotplots.<br>
-	- Bolded summary statistics to make easier to read when printing.<br>
-	<br>
-	<b>2014-09-23</b><br>
-	- Added ability to download the current dataset after edits.<br>
-	<br>
-	<b>2014-09-17</b><br>
-	- Fixed an on time series seasonal effects not displaying zero correctly.<br>
-	<br>
-	<b>2014-09-17</b><br>
-	- Fixed an error with the bootstrap re-randomisation reversing the order of the bootstrap depending on the naming of groups.<br>
-	- Added labels to the bootstrap axis so it is clear which way round the calculation is being done.<br>
-	<br>
-	<b>2014-09-08</b><br>
-	- Fixed an error with Firefox causing the new data rows not to be editable.<br>
-	- Fixed an error in the calculation of quartiles to use the same method we use in New Zealand, rather than the method used by Excel.<br>
-	<br>
-	<b>2014-09-01</b><br>
-	- Added more informative (pop-up) messages if file uploads fail. Maximum file size is 100kb and must be in CSV format.<br>
-	<br>
-	<b>2014-08-29</b><br>
-	- Added in informal confidence intervals for dotplots.<br>
-	<br>
-	<b>2014-08-28</b><br>
-	- Scatter plots no longer automatically add in the trend line, this must be added in by clicking the 'Regression Line' button.<br>
-	- Dot plots no longer automatically show the summary statistics or box and whiskers, this must be added in by clicking the 'Summaries' or 'Box Plots' buttons.<br>
-	- Changed the way the labels for this button appear as well to make it more clear what each one does.<br>
-	This has been done in an attempt to get students to write about what they see rather than what is calculated as a first step.<br>
-	<br>
-	<b>2014-08-25</b><br>
-	- Updated fonts to avoid overlapping of texts.<br>
-	<br>
-	<b>2014-08-18</b><br>
-	- Clicking anywhere will now hide the overlay.<br>
-	<br>
-	<b>2014-08-12</b><br>
-	- Fixed algorithm for bootstrap re-randomisation.<br>
-	<br>
-	<b>2014-08-08</b><br>
-	- Changed to a 0.2 second timeout before reloading graph when resizing to reduce serve load.<br>
-	- Removed auto-update of graph when axis or graph title was changed and added the update graph button.<br>
-	<br>
-	<b>2014-07-30</b><br>
-	- Fixed issue with screen rotation on iPad causing graphs to not display correctly.<br>
-	- Readjusted the positioning of summary statistics for dotplots.<br>
-	<br>
-	<b>2014-07-29</b><br>
-	- Changed the axis so for large numbers they are smaller and should all fit.<br>
-	- Changed the images so you can right click to copy and paste into word / elsewhere or press and hold to save on iPad.<br>
-	- Adding scrolling if needed to the holt winters forecasts.<br>
-	- Updated the position of the summary statistics for the dotplots.<br>
-	- Added Change Log<br>
-	<br>
+	<b>2019-06-02</b><ul>
+		<li>Updated to statistical tracking to ask students which school they are from.</li>
+		<li>Added hover boxes on scatter graphs, residuals, dot plots, and bootstrap confidence intervals so when you hover over a point it gives you details on the point and highlights it in the data table.</li>
+		<li>Rebuild of residuals graph into javascript, including by default not showing weighted average line, this is now an option in the graph options area.</li>
+	</ul>
+	<b>2019-05-26</b><ul>
+		<li>Updated welcome message and about page.</li>
+		<li>Added fee structure for 2020.</li>
+		<li>Update to back end that does the modelling for the scatter graphs.</li>
+		<li>Update a number of links.</li>
+	</ul>
+	<b>2019-04-05</b><ul>
+		<li>Change to title of Re-randomisation graphs to remove incorrect part of title.</li>
+		<li>Added "(STL)" after the Long Term Trend and Seasonal tickboxes on time series to clarify the method being used to draw these.</li>
+	</ul>
+	<b>2019-03-15</b><ul>
+		<li>Made it so negatives in equations show up as " - " rather than " +- ".</li>
+	</ul>
+	<b>2019-01-13</b><ul>
+		<li>Added "Update Graph" button to "More Options" and changed it so the more options didn't overlap the graph.</li>
+	</ul>
+	<b>2018-12-18</b><ul>
+		<li>New feature - Sampling Variability... <a href='https://drive.google.com/file/d/1oox1SKylU7RdJU82ER5Imiw6dtju_qh2/view' target='_blank'>see a video here</a>.</li>
+	</ul>
+	<b>2018-11-17</b><ul>
+		<li>Bug fix for freezing when resetting dataset after adding new columns.</li>
+	</ul>
+	<b>2018-11-17</b><ul>
+		<li>Add option to hide the id of points removed.</li>
+		<li>New Create Variable Option (from Condition) - useful for condensing categories or for creating categorical from numerical.</li>
+	</ul>
+	<b>2018-10-09</b><ul>
+		<li>Recode of Pairs Plot module.</li>
+	</ul>
+	<b>2018-06-01</b><ul>
+		<li>Major Visual Overhaul.</li>
+		<li>Addition of Delete Specific Column.</li>
+		<li>Various Bug Fixes.</li>
+	</ul>
+	<b>2018-05-05</b><ul>
+		<li>Bug fixes for time series modules with custom seasons.</li>
+	</ul>
+	<b>2018-04-29</b><ul>
+		<li>Bug fixes for time series encode.</li>
+	</ul>
+	<b>2018-04-25</b><ul>
+		<li>Upgrade of 'Time Series' graph.</li>
+		<li>Upgrade of 'Time Series Seasonal Effects' graph.</li>
+		<li>Upgrade of 'Time Series Forecasts' graph.</li>
+		<li>New Option under 'Sample and More' -> 'Convert Time' to convert dates or times into seconds, minutes, hours or days (great for bivariate data).</li>
+		<li>New Option under 'Sample and More' -> 'Encode Time' to encode dates / times into the correct format for the time series module. It averages / sums the numerical values and finds the most common non-numerical values if there is more than one time in each interval.</li>
+	</ul>
+	<b>2018-02-03</b><ul>
+		<li>Improvement to Update Graph button.</li>
+	</ul>
+	<b>2018-01-21</b><ul>
+		<li>Styling Changes.</li>
+		<li>Option to paste link to URL (note: must be accessible on the web for this to work).</li>
+		<li>Fix for correlation coefficient not showing on scatter graph.</li>
+	</ul>
+	<b>2018-01-09</b><ul>
+		<li>Re-write of Scatter Plot module into Javascript.</li>
+		<li>Can now manually set min and max for x and y axis on scatter graphs using "More Options".</li>
+	</ul>
+	<b>2017-11-25</b><ul>
+		<li>Changes to dot plots to make the points not round before graphing to be more statistically accurate.</li>
+	</ul>
+	<b>2017-08-06</b><ul>
+		<li>Various Bug Fixes.</li>
+	</ul>
+	<b>2017-07-21</b><ul>
+		<li>Fixed a bug in FireFox preventing the pasting of tables.</li>
+	</ul>
+	<b>2017-07-19</b><ul>
+		<li>Added relative frequency option to bar graph.</li>
+	</ul>
+	<b>2017-07-16</b><ul>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2017-07-01</b><ul>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2017-06-13</b><ul>
+		<li>Bug Fixes.</li>
+		<li>Changes to Dotplot and Scatter Graph for visually impared students.</li>
+		<li>New graph type of Histogram Frequency</li>
+	</ul>
+	<b>2017-06-02</b><ul>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2017-05-26</b><ul>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2017-05-23</b><ul>
+		<li>Big increase to the limit on the number of different fields you can sample on.</li>
+	</ul>
+	<b>2017-05-12</b><ul>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2017-05-11</b><ul>
+		<li>Bug Fixes.</li>
+		<li>Feedback Module.</li>
+		<li>Grid Lines.</li>
+	</ul>
+	<b>2017-05-07</b><ul>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2017-05-01</b><ul>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2017-04-20</b><ul>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2017-03-23</b><ul>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2017-02-11</b><ul>
+		<li>Bug Fixes.</li>
+		<li>Fixes to Time Series Module.</li>
+	</ul>
+	<b>2017-02-24</b><ul>
+		<li>Bug Fixes.</li>
+		<li>Abililty to open file by url (adding ?url=http://whatever.com to the end of the link to grapher).</li>
+	</ul>
+	<b>2016-06-18</b><ul>
+		<li>Bug Fixes.</li>
+		<li>Even Huger speed increase to all sampling.</li>
+	</ul>
+	<b>2016-06-15</b><ul>
+		<li>Bug Fixes.</li>
+		<li>Huge speed increase to stratified sampling.</li>
+		<li>Ability to remove seasonal graph on time series when fitting long term trend.</li>
+	</ul>
+	<b>2016-05-24</b><ul>
+		<li>Bug Fixes.</li>
+		<li>Default time series re-composition is the new version.</li>
+	</ul>
+	<b>2016-06-02</b><ul>
+		<li>Security Fixes.</li>
+	</ul>
+	<b>2016-05-24</b><ul>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2016-04-26</b><ul>
+		<li>Default Bootstrapping Graphs are Now the New Versions.</li>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2016-04-22</b><ul>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2016-04-20</b><ul>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2016-04-19</b><ul>
+		<li>Bug Fixes.</li>
+		<li>Updated Logo.</li>
+	</ul>
+	<b>2016-04-16</b><ul>
+		<li>Bug Fixes.</li>
+		<li>New Logo.</li>
+		<li>New Welcome Screen.</li>
+	</ul>
+	<b>2016-04-09</b><ul>
+		<li>Bug Fixes.</li>
+		<li>Fix for csv files created using terrible language settings that mean that comma separated values are separated by semicolons... these files should now work.</li>
+		<li>3 new test graphs, bootstrap median, bootstrap mean and time series.</li>
+	</ul>
+	<b>2016-03-30</b><ul>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2016-03-23</b><ul>
+		<li>Bug Fixes.</li>
+		<li>Filter Datasets</li>
+		<li>Create Linear Function of a Variable</li>
+	</ul>
+	<b>2016-03-10</b><ul>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2016-03-06</b><ul>
+		<li>Bug Fixes.</li>
+		<li>Fixed positioning of C-I labels on dotplots.</li>
+	</ul>
+	<b>2016-02-29</b><ul>
+		<li>Bug Fixes.</li>
+		<li>Fixed positioning of titles on table of data (left hand side).</li>
+	</ul>
+	<b>2016-02-25</b><ul>
+		<li>Bug Fixes.</li>
+		<li>Added ability to set min and max for the axis on Dot Plots (and Box and Whisker) with the more options button.</li>
+	</ul>
+	<b>2016-02-17</b><ul>
+		<li>Bug Fixes.</li>
+		<li>Added ability to graph hourly data.</li>
+	</ul>
+	<b>2016-02-11</b><ul>
+		<li>Bug Fixes.</li>
+		<li>Updated Dotplot Module</li>
+	</ul>
+	<b>2015-12-07</b><ul>
+		<li>Addded ability to add box plots without whiskers.</li>
+		<li>Addded ability to add box plots that stop at 1.5x less than LQ and 1.5x above the UQ.</li>
+	</ul>
+	<b>2015-12-04</b><ul>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2015-11-20</b><ul>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2015-11-13</b><ul>
+		<li>Fix to code in histogram module to fix numbers ending up in the wrong bucket.</li>
+		<li>Fix point size on paired experiment dotplots.</li>
+	</ul>
+	<b>2015-10-18</b><ul>
+		<li>Fix to code in time series module.</li>
+	</ul>
+	<b>2015-10-18</b><ul>
+		<li>Big update to how the colors work in dotplots and scatter graphs.</li>
+	</ul>
+	<b>2015-10-15</b><ul>
+		<li>You now have the choice between additive and multiplicative models in the Time Series section.</li>
+		<li>Hiding the left and bottom areas can now be done by clicking on the tripple dot menu in the top right corner.</li>
+	</ul>
+	<b>2015-09-22</b><ul>
+		<li>You can now sort the data by any variables (under 'Sample and More' -> 'Sort').</li>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2015-09-17</b><ul>
+		<li>Bootstrapping of single variables is now supported for means, medians, IQR and standard deviation.</li>
+	</ul>
+	<b>2015-09-01</b><ul>
+		<li>Added ability to create a new calculated column (under "Sample and More".</li>
+		<li>Make the dots on re-randomisation and bootstraps easier to see.</li>
+		<li>Blank / non-numerical points in re-randomisation and bootstraps are no longer plotted.</li>
+		<li>Changed the data menu to be able to more easily find functions.</li>
+	</ul>
+	<b>2015-08-19</b><ul>
+		<li>Make the dots on Dot Plots / Scatter Plots / Residuals Plot easier to see.</li>
+	</ul>
+	<b>2015-08-18</b><ul>
+		<li>Changed colour of pie charts to be more bold.</li>
+		<li>Can now set width of bars in histogram.</li>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2015-07-15</b><ul>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2015-07-12</b><ul>
+		<li>Added ability to make the box and whisker graphs at the top of the graph rather than overlapping the dot plot.</li>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2015-07-11</b><ul>
+		<li>Added pie charts.</li>
+		<li>Added histograms.</li>
+		<li>Saving changes on graph now keeps the current selection.</li>
+		<li>General updates.</li>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2015-07-09</b><ul>
+		<li>Update time series module to use STL for decomposition and Holt-Winters for predictions.</li>
+		<li>Bug Fixes.</li>
+	</ul>
+	<b>2015-07-08</b><ul>
+		<li>Colour Coding of Paired Experiment Graphs.</li>
+		<li>Drop-down box for setting of standard size graphs.</li>
+	</ul>
+	<b>2015-06-05</b><ul>
+		<li>Bug fixes.</li>
+	</ul>
+	<b>2015-06-04</b><ul>
+		<li>Added ability to paste a table in using the "Paste Table" button at the top.</li>
+		<li>Increased size of Informal CI limits in dot plots and paired experiments.</li>
+		<li>Bug fixes.</li>
+	</ul>
+	<b>2015-06-03</b><ul>
+		<li>Bug fixes.</li>
+	</ul>
+	<b>2015-05-14</b><ul>
+		<li>Added slider to adjust transparency of points.</li>
+		<li>Reordered the check boxes for the paired experiment to put the arrows at the top.</li>
+	</ul>
+	<b>2015-05-09</b><ul>
+		<li>Rename of re-randomisation graph (removing 'bootstrap' as was originally mislabelled).</li>
+		<li>Added buttons to show and hide the left and bottom panels, particularly for when graphing on devices with smaller screens.</li>
+	</ul>
+	<b>2015-04-30</b><ul>
+		<li>Bug fix in scatter plots with missing data.</li>
+		<li>New method for updating.</li>
+	</ul>
+	<b>2015-04-23</b><ul>
+		<li>Added option to include a y=x line on scatter plots.</li>
+	</ul>
+	<b>2015-04-13</b><ul>
+		<li>Time Series module can now graph yearly data.</li>
+		<li>Bug fixes.</li>
+	</ul>
+	<b>2015-04-02</b><ul>
+		<li>Style Update.</li>
+		<li>Bug fixes.</li>
+	</ul>
+	<b>2015-03-27</b><ul>
+		<li>Changes to the time series module.</li>
+		<li>Lots and lots of bug fixes.</li>
+	</ul>
+	<b>2015-03-06</b><ul>
+		<li>If a data point is not numeric in dotplots, scatter plots and residuals it now doesn't get graph the data points, but list their id in the top right of the graph.</li>
+		<li>Lots of bug fixes.</li>
+	</ul>
+	<b>2015-03-06</b><ul>
+		<li>Lots of bug fixes.</li>
+	</ul>
+	<b>2015-03-04</b><ul>
+		<li>Added 'jitter' option on Scatter Graphs.</li>
+	</ul>
+	<b>2015-03-03</b><ul>
+		<li>Miscellaneous Bug Fixes.</li>
+		<li>Added different model types to the scatter and residual graphs.</li>
+		<li>Major changes to the way time series data is handled for better predictions and faster performance.</li>
+	</ul>
+	<b>2015-02-18</b><ul>
+		<li>Fixed an error when uploading files from IE 11 on Windows 8.1.</li>
+		<li>Added daily dataset for work-week data (5 day cycle).</li>
+	</ul>
+	<b>2014-12-05</b><ul>
+		<li>Added in a slider to change the point sizes in dot plots, scatter plots, residuals, and all the bootstrap graphs.</li>
+		<li>Made the section where the graph options are set scrollable.</li>
+	</ul>
+	<b>2014-12-05</b><ul>
+		<li>Datasets that start with SECURE (all in capitals) are not able to be downloaded using the download button.</li>
+	</ul>
+	<b>2014-12-05</b><ul>
+		<li>Fixed an error on stratified sampling were one category was contained in another, eg: male and female.</li>
+	</ul>
+	<b>2014-11-28</b><ul>
+		<li>Added in the ability to display the end points of the informal confidence intervals.</li>
+		<li>Fixed Spelling of 'residual' in the time series graph.</li>
+		<li>Added a new 'time series' graph that only displays the raw time series data.</li>
+	</ul>
+	<b>2014-11-27</b><ul>
+		<li>Changed regression lines to being in terms of variable names rather than in y and x.</li>
+	</ul>
+	<b>2014-11-25</b><ul>
+		<li>Fixed an error on uploading CSV files from Windows 7.</li>
+	</ul>
+	<b>2014-10-29</b><ul>
+		<li>Fixed an error on reordering variables.</li>
+		<li>Fixed an error with how NZGrapher handles commas in uploaded files.</li>
+		<li>Area graphs font has been changed to make it easier to see labels.</li>
+	</ul>
+	<b>2014-10-25</b><ul>
+		<li>Significantly improved the sampling module to allow it to use stratified sampling as well as simple random sampling.</li>
+		<li>Added ability to reorder categorical variables.</li>
+	</ul>
+	<b>2014-10-24</b><ul>
+		<li>Disabled the ability to enter commas or line breaks into the data as this causes issues with the graphing.</li>
+		<li>Added links to <a target='_blank' href="http://students.mathsnz.com/nzgrapher">MathsNZ Students</a> with video tutorials and dataset information.</li>
+	</ul>
+	<b>2014-10-06</b><ul>
+		<li>Graphs on the pairs plot are now click-able so when you click on the graph it loads it up full size.</li>
+		<li>Paired experiment graphing now available including arrows graphs.</li>
+		<li>Bug fix with downloading of data.</li>
+		<li>Various other bug fixes.</li>
+	</ul>
+	<b>2014-10-04</b><ul>
+		<li>Added bar and area graph.</li>
+		<li>Various bug fixes for when the range was zero.</li>
+	</ul>
+	<b>2014-10-03</b><ul>
+		<li>Added pairs plot.</li>
+		<li>Sorted out when the colours label showed up.</li>
+		<li>Fixed an error on dotplots when calculating LQ and UQ when they only had one point in the dataset.</li>
+		<li>Fixed an issue with the colouring of continuous variables.</li>
+	</ul>
+	<b>2014-09-29</b><ul>
+		<li>Added ability to colour points in scatter graphs and dot plots.</li>
+		<li>Changed font used for easier readability.</li>
+	</ul>
+	<b>2014-09-28</b><ul>
+		<li>Added ability to subset dotplots.</li>
+		<li>Bolded summary statistics to make easier to read when printing.</li>
+	</ul>
+	<b>2014-09-23</b><ul>
+		<li>Added ability to download the current dataset after edits.</li>
+	</ul>
+	<b>2014-09-17</b><ul>
+		<li>Fixed an on time series seasonal effects not displaying zero correctly.</li>
+	</ul>
+	<b>2014-09-17</b><ul>
+		<li>Fixed an error with the bootstrap re-randomisation reversing the order of the bootstrap depending on the naming of groups.</li>
+		<li>Added labels to the bootstrap axis so it is clear which way round the calculation is being done.</li>
+	</ul>
+	<b>2014-09-08</b><ul>
+		<li>Fixed an error with Firefox causing the new data rows not to be editable.</li>
+		<li>Fixed an error in the calculation of quartiles to use the same method we use in New Zealand, rather than the method used by Excel.</li>
+	</ul>
+	<b>2014-09-01</b><ul>
+		<li>Added more informative (pop-up) messages if file uploads fail. Maximum file size is 100kb and must be in CSV format.</li>
+	</ul>
+	<b>2014-08-29</b><ul>
+		<li>Added in informal confidence intervals for dotplots.</li>
+	</ul>
+	<b>2014-08-28</b><ul>
+		<li>Scatter plots no longer automatically add in the trend line, this must be added in by clicking the 'Regression Line' button.</li>
+		<li>Dot plots no longer automatically show the summary statistics or box and whiskers, this must be added in by clicking the 'Summaries' or 'Box Plots' buttons.</li>
+		<li>Changed the way the labels for this button appear as well to make it more clear what each one does.</li>
+	This has been done in an attempt to get students to write about what they see rather than what is calculated as a first step.</li>
+	</ul>
+	<b>2014-08-25</b><ul>
+		<li>Updated fonts to avoid overlapping of texts.</li>
+	</ul>
+	<b>2014-08-18</b><ul>
+		<li>Clicking anywhere will now hide the overlay.</li>
+	</ul>
+	<b>2014-08-12</b><ul>
+		<li>Fixed algorithm for bootstrap re-randomisation.</li>
+	</ul>
+	<b>2014-08-08</b><ul>
+		<li>Changed to a 0.2 second timeout before reloading graph when resizing to reduce serve load.</li>
+		<li>Removed auto-update of graph when axis or graph title was changed and added the update graph button.</li>
+	</ul>
+	<b>2014-07-30</b><ul>
+		<li>Fixed issue with screen rotation on iPad causing graphs to not display correctly.</li>
+		<li>Readjusted the positioning of summary statistics for dotplots.</li>
+	</ul>
+	<b>2014-07-29</b><ul>
+		<li>Changed the axis so for large numbers they are smaller and should all fit.</li>
+		<li>Changed the images so you can right click to copy and paste into word / elsewhere or press and hold to save on iPad.</li>
+		<li>Adding scrolling if needed to the holt winters forecasts.</li>
+		<li>Updated the position of the summary statistics for the dotplots.</li>
+		<li>Added Change Log</li>
+	</ul>
 	<b>2014-07-28</b><br>
-	Changes prior to this date were not logged<br>
-    <br>
+	Changes prior to this date were not logged
 	</div>
 
 	</div>

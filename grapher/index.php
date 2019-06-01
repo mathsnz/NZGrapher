@@ -478,7 +478,7 @@ echo "\n</table></body></html>";
 	<option value='histogramf'>Histogram - Summary Data</option>
 	<option value='pie chart'>Pie Chart</option>
 	<option value='newscatter'>Scatter Graph</option>
-	<option value='residuals'>Residuals Plot</option>
+	<option value='newresiduals'>Residuals Plot</option>
 	<option disabled></option>
 	<option value='bootstrap'>Bootstrap Single Variable</option>
 	<option value='newbootstrapcimedian'>Bootstrap Confidence Interval - Median</option>
@@ -581,10 +581,10 @@ echo "\n</table></body></html>";
 			};
 
 		?>
-		<br>By pressing the accept button below you are acknowledging that NZGrapher uses cookies, and if you acting on behalf of a school, you are agreeing to the costs associated... if you're not happy with this don't use this website.<br>
+		<br>By pressing the button below you are acknowledging that NZGrapher uses cookies, and if you acting on behalf of a school, you are agreeing to the costs associated... if you're not happy with this don't use this website.<br>
 		<button class=button style='font-size:15px;margin-top:10px;' onclick="$('#welcome').hide();document.cookie='welcome=yes; expires=<?php
-			echo date(DateTime::RSS, strtotime('2 hours'));
-		?>'">Agree</button>
+			echo date(DateTime::RSS, strtotime('24 hours'));
+		?>'">Start Using NZGrapher</button>
 		</div>
 		
 	</div>
@@ -656,6 +656,9 @@ echo "\n</table></body></html>";
 			</span>
 			<span id=differentaxisshow><label>
 				<input type="checkbox" onclick="updategraph();" id="differentaxis" name="differentaxis" value="yes"> Different Axis</label><br>
+			</span>
+			<span id=weightedaverageshow><label>
+				<input type="checkbox" onclick="updategraph();" id="weightedaverage" name="weightedaverage" value="no"> Weighted Average</label><br>
 			</span>
 			<span id=residualsforcexshow><label>
 				<input type="checkbox" onclick="updategraph();" id="residualsforcex" name="residualsforcex" value="yes"> Change X Axis</label><br>
@@ -941,6 +944,10 @@ if(isset($_GET['dev'])){
 		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="$('#options input').val('auto');updategraph();">Reset</span>
 		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="updategraph()">Update Graph</span>
 	</div>
+</div>
+<div id=tooltip style='display:none;text-align:left;font-size:12px;transform:translateY(-50%);position:fixed;top:100px;left:100px;z-index:99999;border:0px solid #000;background-color:#000;color:#fff;padding:5px;padding-top:3px;padding-bottom:3px;'>
+  <div id=tooltiparrow style='background:none;z-index:99999;position:absolute;top:50%;margin-top:-8px;left:-8px;width: 0;height: 0;border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-right:8px solid #000;'></div>
+  <span style='padding:0px;margin:0px;text-align:left'>Tip</span>
 </div>
 <map name=graphmap id=graphmap></map>
 </body>

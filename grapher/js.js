@@ -3,6 +3,22 @@ var xmax;
 var ymin;
 var ymax;
 
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
 $(document).on('paste', function(e) {
     e.preventDefault();
     var text = '';
@@ -1007,6 +1023,7 @@ function graphchange(obj){
 	document.getElementById('thicklinesshow').style.display='none';
 	document.getElementById('relativefrequencyshow').style.display='none';
 	document.getElementById('residualsforcexshow').style.display='none';
+	document.getElementById('weightedaverageshow').style.display='none';
 	document.getElementById('stackdotsshow').style.display='none';
 	document.getElementById('stackdots').checked = false;
 	$('#removedpointsshow').hide();
@@ -1096,8 +1113,18 @@ function updategraph(){
 		updategraphgo();
 	});
 }
+
+$.expr[':'].textEquals = $.expr.createPseudo(function(arg) {
+    return function( elem ) {
+        return $(elem).text().match("^" + arg + "$");
+    };
+});
+
 function updategraphgo(){
-  $.get('https://tracking.jake4maths.com/graphimage.php?g='+$('#type').val()+'&r='+Math.random().toString(36).substr(2));
+	$('#graphmap').html("");
+	$('.highlight').removeClass('highlight');
+    $('#tooltip').css('display','none');
+	$.get('https://tracking.jake4maths.com/graphimage.php?g='+$('#type').val()+'&r='+Math.random().toString(36).substr(2));
 	if(!$('#xvar').length){
 		alert('NZGrapher is not loaded properly... please load again with a valid dataset.');
 		window.location = './';
@@ -1255,6 +1282,38 @@ function updategraphgo(){
 	}
 	document.getElementById('datain').value=thedatain;
 	desaturate();
+	$('area').mousemove(function(e) {
+		$('.highlight').removeClass('highlight');
+		$('#tooltip').show();
+		if(e.pageX>document.body.scrollWidth/2){
+			$('#tooltip').css('left','auto');
+			$('#tooltip').css('right',document.body.scrollWidth-e.pageX+15);
+			$('#tooltiparrow').css('left','auto');
+			$('#tooltiparrow').css('right','-8px');
+			$('#tooltiparrow').css('border-left','8px solid #000');
+			$('#tooltiparrow').css('border-right','none');
+		} else {
+			$('#tooltip').css('right','auto');
+			$('#tooltip').css('left',e.pageX+15);
+			$('#tooltiparrow').css('right','auto');
+			$('#tooltiparrow').css('left','-8px');
+			$('#tooltiparrow').css('border-right','8px solid #000');
+			$('#tooltiparrow').css('border-left','none');
+		}
+		$('#tooltip').css('top',e.pageY);
+		$('#tooltiparrow').css('margin-top','-8px');
+		$('#tooltip span').html($(this).attr('desc'));
+		if($('#type').val()!='newpairsplot'){
+			id = $(this).attr('alt');
+			$('#left').scrollTop(0);
+			$('#left').scrollTop($('#data').find("th:textEquals('"+id+"')").position().top-100);
+			$('#data').find("th:textEquals('"+id+"')").closest('tr').addClass('highlight');
+		}
+	}).mouseout(function(){
+		$('.highlight').removeClass('highlight');
+		$('#tooltip').hide();
+	});
+
 }
 
 function desaturate(){
@@ -1769,6 +1828,10 @@ function axisminmaxstep(min,max){
 }
 
 function makecolors(alpha,ctx){
+	ctx.lineWidth = 2*scalefactor;
+	if($('#thicklines').is(":checked")){
+		ctx.lineWidth = 5*scalefactor;
+	}
 	var colors = [];
 	if($('#color').val() && $('#color').val()!=""){
 		var colorpoints = $('#color').val().split(",");
@@ -1803,24 +1866,24 @@ function makecolors(alpha,ctx){
 				colors[index]='rgba(80,80,80,'+alpha+')';
 			}
 		}
-		var left=50;
-		var rad = $('#size').val()/2;
+		var left=40*scalefactor;
+		var rad = $('#size').val()/2*scalefactor;
 		ctx.fillStyle = 'rgba(0,0,0,1)';
-		ctx.font = "12px Roboto";
+		ctx.font = 12*scalefactor+"px Roboto";
 		ctx.textAlign="left";
 		var txt = 'Coloured by '+$('#colorlabel').val()+': '+min;
-		ctx.fillText(txt,left,48);
-		left = left + ctx.measureText(txt).width + 5 + rad;
+		ctx.fillText(txt,left,38*scalefactor);
+		left = left + ctx.measureText(txt).width + 5*scalefactor + rad;
 		var colz=0;
 		while(colz<=1){
 			ctx.beginPath();
 			ctx.strokeStyle = ColorHSLaToRGBa(colz*end,s,l,alpha);
-			ctx.arc(left,48-rad,rad,0,2*Math.PI);
+			ctx.arc(left,38*scalefactor-rad,rad,0,2*Math.PI);
 			ctx.stroke();
 			left = left + rad*2 + 2;
 			colz=colz+0.1;
 		}
-		ctx.fillText(max,left,48);
+		ctx.fillText(max,left,38*scalefactor);
 	} else {
 		var colorindexs = []; // An new empty array
 		for (var i in colorpoints) {
@@ -1841,22 +1904,22 @@ function makecolors(alpha,ctx){
 			var point = colorindexs.indexOf(colorpoints[index]);
 			colors[index]=thecolors[point];
 		}
-		var left=50;
-		var rad = $('#size').val()/2;
+		var left=40*scalefactor;
+		var rad = $('#size').val()/2*scalefactor;
 		ctx.fillStyle = 'rgba(0,0,0,1)';
-		ctx.font = "12px Roboto";
+		ctx.font = 12*scalefactor+"px Roboto";
 		ctx.textAlign="left";
 		var txt = 'Coloured by '+$('#colorlabel').val()+': ';
-		ctx.fillText(txt,left,48);
-		left = left + ctx.measureText(txt).width + 5 + rad;
+		ctx.fillText(txt,left,38*scalefactor);
+		left = left + ctx.measureText(txt).width + 5*scalefactor + rad;
 		for (var index in colorindexs){
 			var name = colorindexs[index];
 			ctx.beginPath();
 			ctx.strokeStyle = thecolors[index];
-			ctx.arc(left,48-rad,rad,0,2*Math.PI);
+			ctx.arc(left,38*scalefactor-rad,rad,0,2*Math.PI);
 			ctx.stroke();
-			ctx.fillText(name,left+rad+2,48);
-			left = left + ctx.measureText(name).width + 10 + rad*2;
+			ctx.fillText(name,left+rad+2*scalefactor,38*scalefactor);
+			left = left + ctx.measureText(name).width + 10*scalefactor + rad*2;
 		}
 	}
 	return colors;
@@ -1977,8 +2040,8 @@ function minnooutliers(values,lq,uq){
 function newabout(){
   var width = $('#width').val()-22;
   var height = $('#height').val()-22;
-  content = "DISPL<div style='width:"+width+"px;height:"+height+"px;overflow-y:scroll;padding:10px;text-align:left;'><center>\n\t<h1>About <img src='logob.png' style='position:relative;top:22px;height:65px;'><\/h1>\n\t\n\t\t\n\t<script async src=\"\/\/pagead2.googlesyndication.com\/pagead\/js\/adsbygoogle.js\"><\/script>\n\t<!-- NZGrapher -->\n\t<ins class=\"adsbygoogle\"\n\t     style=\"display:block\"\n\t     data-ad-client=\"ca-pub-5760539585908771\"\n\t     data-ad-slot=\"7109793646\"\n\t     data-ad-format=\"auto\"><\/ins>\n\t<script>\n\t(adsbygoogle = window.adsbygoogle || []).push({});\n\t<\/script>\n<\/center><br><br>\tNZGrapher has been developed by Jake Wills, a maths teacher in New Zealand specifically for supporting the teaching of the statistics in New Zealand. The idea behind NZGrapher was to create a web based statistical package that can run on <b>any device<\/b>, without an install.<br>\n\t<br>\n\t<b>Help<\/b><br>\n\tYou can access <b><a target='_blank' href=\"\/\/www.mathsnz.com\/nzgrapher-info\/video-tutorials\">video tutorials<\/a><\/b> to help you getting started on <a target='_blank' href=\"https:\/\/www.mathsnz.com\/nzgrapher-info\/video-tutorials\">MathsNZ<\/a>. They are organised in two ways, firstly by the type of feature you are trying to use, and secondly by the NCEA standard that they relate to. There is a help button in the top menu with more help content. The data section on the left also allows you to edit the data directly just by clicking on the part you want to edit and typing the changes in.<br>\n\t<br>\n\t<b>Saving \/ Copying Graphs<\/b><br>\n\tTo save or copy the graph right click on it or tap and hold if you are using a Tablet and the options should show up for copying and saving.<br>\n\t<br>\n\t<b>Getting Data Into NZGrapher<\/b><br>\n\tNZGrapher has a number of built in datasets. If you want to use your own:<ul><li>You can upload / open files from your computer up to 200kb using Data -> Open Files.</li><li>You can paste a table using Data -> Paste Table. This only works from google sheets and excel. It doesn't work very well from a table in a Word or Google doc.</li><li>You can also paste a link to a csv. The CSV needs to be accessible on the internet for this to work. You can publish Google Sheets to a CSV from Google Docs.</li></ul>The paste table and paste link options do not have file size limits. If you have a dataset you want to share with lots of students see the section below 'for teachers'.<br><br><b>For Teachers<\/b><br>\n\tNZ Grapher also supports custom folders for assessments or your own datasets, allowing students to easily access the datasets. If you are a teacher and would like me to set up a custom folder for you, please let me know. You can contact me at <a href='https:\/\/www.mathsnz.com\/contact' target='_blank'>MathsNZ<\/a>. Once the folder is set up you can manage the files inside it via a password protected page.<br>\n\t<br>\n\t<b>Costs<\/b><br>NZGrapher is free for non-commercial individual use, you can however <a href='https:\/\/www.mathsnz.com\/donate'>make a donation</a>.<br><br>Schools are required to subscribe at a minimum of $0.50 per student using NZGrapher. Commerial users are also required to pay. Please visit the <a href='https:\/\/www.mathsnz.com\/nzgrapher-invoice'>invoice creator</a> for details.<br><br>This is optional for 2019, but will be compulsory for 2020.\n\t</div>"
-  return content
+  content = "DISPL<div style='width:"+width+"px;height:"+height+"px;overflow-y:scroll;padding:10px;text-align:left;'><center>\n\t<h1>About <img src='logob.png' style='position:relative;top:22px;height:65px;'><\/h1>\n\t\n\t\t\n\t<script async src=\"\/\/pagead2.googlesyndication.com\/pagead\/js\/adsbygoogle.js\"><\/script>\n\t<!-- NZGrapher -->\n\t<ins class=\"adsbygoogle\"\n\t     style=\"display:block\"\n\t     data-ad-client=\"ca-pub-5760539585908771\"\n\t     data-ad-slot=\"7109793646\"\n\t     data-ad-format=\"auto\"><\/ins>\n\t<script>\n\t(adsbygoogle = window.adsbygoogle || []).push({});\n\t<\/script>\n<\/center><br><br>\tNZGrapher has been developed by Jake Wills, a maths teacher in New Zealand specifically for supporting the teaching of the statistics in New Zealand. The idea behind NZGrapher was to create a web based statistical package that can run on <b>any device<\/b>, without an install.<br><span id=whichschoolholder></span>\n\t<br>\n\t<b>Help<\/b><br>\n\tYou can access <b><a target='_blank' href=\"\/\/www.mathsnz.com\/nzgrapher-info\/video-tutorials\">video tutorials<\/a><\/b> to help you getting started on <a target='_blank' href=\"https:\/\/www.mathsnz.com\/nzgrapher-info\/video-tutorials\">MathsNZ<\/a>. They are organised in two ways, firstly by the type of feature you are trying to use, and secondly by the NCEA standard that they relate to. There is a help button in the top menu with more help content. The data section on the left also allows you to edit the data directly just by clicking on the part you want to edit and typing the changes in.<br>\n\t<br>\n\t<b>Saving \/ Copying Graphs<\/b><br>\n\tTo save or copy the graph right click on it or tap and hold if you are using a Tablet and the options should show up for copying and saving.<br>\n\t<br>\n\t<b>Getting Data Into NZGrapher<\/b><br>\n\tNZGrapher has a number of built in datasets. If you want to use your own:<ul><li>You can upload / open files from your computer up to 200kb using Data -> Open Files.</li><li>You can paste a table using Data -> Paste Table. This only works from google sheets and excel. It doesn't work very well from a table in a Word or Google doc.</li><li>You can also paste a link to a csv. The CSV needs to be accessible on the internet for this to work. You can publish Google Sheets to a CSV from Google Docs.</li></ul>The paste table and paste link options do not have file size limits. If you have a dataset you want to share with lots of students see the section below 'for teachers'.<br><br><b>For Teachers<\/b><br>\n\tNZ Grapher also supports custom folders for assessments or your own datasets, allowing students to easily access the datasets. If you are a teacher and would like me to set up a custom folder for you, please let me know. You can contact me at <a href='https:\/\/www.mathsnz.com\/contact' target='_blank'>MathsNZ<\/a>. Once the folder is set up you can manage the files inside it via a password protected page.<br>\n\t<br>\n\t<b>Costs<\/b><br>NZGrapher is free for non-commercial individual use, you can however <a href='https:\/\/www.mathsnz.com\/donate'>make a donation</a>.<br><br>Schools are required to subscribe at a minimum of $0.50 per student using NZGrapher. Commerial users are also required to pay. Please visit the <a href='https:\/\/www.mathsnz.com\/nzgrapher-invoice'>invoice creator</a> for details.<br><br>This is optional for 2019, but will be compulsory for 2020.\n\t</div><script>if(getCookie('whichschool')!='yes'){$.get('https://tracking.jake4maths.com/whichschool.php').done(function(data){$('#whichschoolholder').html(data);})}</script>";
+  return content;
 }
 
 function newdotplot(){
@@ -1991,6 +2054,7 @@ function newdotplot(){
 	$('#boxnowhiskershow').show();
 	$('#boxnooutliershow').show();
 	$('#boxplotshow').show();
+	$('#thicklinesshow').show();
 	$('#intervalshow').show();
 	$('#sizediv').show();
 	$('#meandotshow').show();
@@ -2209,7 +2273,7 @@ function plotysplit(ctx,left,right,oypixel,minxtick,maxxtick,xstep,maxheight,poi
 				group = allygroups[index];
 				points = ydifferentgroups[group];
 				if(points){
-					plotdotplot(ctx,points,xpoints,minxtick,maxxtick,oypixel,left,right,thismaxheight,colors,2);
+					plotdotplot(ctx,points,xpoints,minxtick,maxxtick,oypixel,left,right,thismaxheight,colors,2,1);
 				}
 				ctx.fillStyle = '#000000';
 				fontsize = 15*scalefactor;
@@ -2222,14 +2286,17 @@ function plotysplit(ctx,left,right,oypixel,minxtick,maxxtick,xstep,maxheight,poi
 			return ydifferentgroups;
 		}
 	} else {
-		plotdotplot(ctx,points,xpoints,minxtick,maxxtick,oypixel,left,right,maxheight,colors,2);
+		plotdotplot(ctx,points,xpoints,minxtick,maxxtick,oypixel,left,right,maxheight,colors,2,1);
 	}
 	return 'good';
 }
 
-function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,maxheight,colors,sort){
+function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,maxheight,colors,sort,hovers){
 
 	ctx.lineWidth = 2*scalefactor;
+	if($('#thicklines').is(":checked")){
+		ctx.lineWidth = 5*scalefactor;
+	}
 	var rad = $('#size').val()/2*scalefactor;
 	var thisvalues = [];
 	var xpixels = [];
@@ -2244,7 +2311,7 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		} else {
 			xpixel = Math.floor(rawxpixel/(rad*3))*rad*3;
 		}
-		xpixels.push([index,xpixel,rawxpixel]);
+		xpixels.push([index,xpixel,rawxpixel,value]);
 	}
 	var minval = Math.min.apply(null, thisvalues);
 	var lq = lowerquartile(thisvalues);
@@ -2283,6 +2350,7 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		key = value[0];
 		xpixel = value [1];
 		rawxpixel = value [2];
+		val = value[3];
 		if($('#stackdots').is(':checked')){
 			rawxpixel = xpixel;
 		}
@@ -2296,6 +2364,9 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		ctx.strokeStyle = colors[key];
 		ctx.arc(rawxpixel,ypixel,rad,0,2*Math.PI);
 		ctx.stroke();
+		if(hovers==1){
+			$('#graphmap').append('<area shape="circle" coords="'+(rawxpixel/scalefactor)+','+(ypixel/scalefactor)+','+(rad/scalefactor)+'" alt="'+parseInt(add(key,1))+'" desc="Point ID: '+parseInt(add(key,1))+'<br>'+$('#xaxis').val()+': '+val+'">');
+		}
 		//text
 		if(labels == "yes"){
 			ctx.fillStyle = 'rgba(0,0,255,1)';
@@ -2523,6 +2594,7 @@ function newbootstrapcimean(){
 function bootstrap(mm){
 	$('#xvar').show();
 	$('#yvar').show();
+	$('#thicklinesshow').show();
 	$('#labelshow').show();
 	$('#transdiv').show();
 	$('#sizediv').show();
@@ -2637,7 +2709,7 @@ function bootstrap(mm){
 	colors = makeblankcolors(xpoints.length,alpha);
 
 	for (var index in allydifferentgroups){
-		plotdotplot(ctx,allydifferentgroups[index],xpoints,minxtick,maxxtick,oypixel,left,right,maxheight,colors,2);
+		plotdotplot(ctx,allydifferentgroups[index],xpoints,minxtick,maxxtick,oypixel,left,right,maxheight,colors,2,1);
 		ctx.fillStyle = '#000000';
 		fontsize = 15*scalefactor;
 		ctx.font = "bold "+fontsize+"px Roboto";
@@ -2797,7 +2869,7 @@ function bootstrap(mm){
 
 	if($('#labels').is(":checked")){var waslabels="yes";} else {var waslabels = "no";}
 	$('#labels')[0].checked=false;
-	plotdotplot(ctx,bspoints,bootstrapdifs,minxtick,maxxtick,oypixel,left,right,maxheight,colors,1);
+	plotdotplot(ctx,bspoints,bootstrapdifs,minxtick,maxxtick,oypixel,left,right,maxheight,colors,1,0);
 	if(waslabels=="yes"){$('#labels')[0].checked=true;}
 
 	bootstrapdifs.sort(function(a, b){return a-b});
@@ -4092,16 +4164,16 @@ function newscatter(){
 	
 	//x-axis title
 	ctx.fillStyle = '#000000';
-	ctx.font = "bold 15px Roboto";
+	ctx.font = "bold "+15*scalefactor+"px Roboto";
 	ctx.textAlign="center";
-	ctx.fillText($('#xaxis').val(),width/2,height-10);
+	ctx.fillText($('#xaxis').val(),width/2,height-10*scalefactor);
 	
 	//y-axis title
-	x=20;
+	x=20*scalefactor;
 	y=height/2;
 	ctx.save();
 	ctx.fillStyle = '#000000';
-	ctx.font = "bold 15px Roboto";
+	ctx.font = "bold "+15*scalefactor+"px Roboto";
 	ctx.translate(x, y);
 	ctx.rotate(-Math.PI/2);
 	ctx.textAlign = "center";
@@ -4147,21 +4219,21 @@ function newscatter(){
 
 	if(pointsremoved.length!=0 && $('#removedpoints').is(":checked")){
 		ctx.fillStyle = '#000000';
-		ctx.font = "13px Roboto";
+		ctx.font = 13*scalefactor+"px Roboto";
 		ctx.textAlign="right";
-		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-50,50);
+		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-40*scalefactor,40*scalefactor);
 	}
 
 	if(points.length==0){
 		return 'Error: You must select a numeric variable for variable 1';
 	}
 
-	var oypixel=height-60;
-	var maxheight=height-120;
-	var left=90;
-	var right=width-60;
-	var gtop=90;
-	var bottom=height-60;
+	var oypixel=height-60*scalefactor;
+	var maxheight=height-120*scalefactor;
+	var left=90*scalefactor;
+	var right=width-60*scalefactor;
+	var gtop=90*scalefactor;
+	var bottom=height-60*scalefactor;
 
 	xmin = Math.min.apply(null, pointsforminmax);
 	xmax = Math.max.apply(null, pointsforminmax);
@@ -4196,8 +4268,8 @@ function newscatter(){
 		if(typeof zdifferentgroups === 'object'){
 			zgroups = Object.keys(zdifferentgroups);
 			zgroups.sort(sortorder);
-			thisleft=60;
-			eachwidth=(width-40)/zgroups.length;
+			thisleft=60*scalefactor;
+			eachwidth=(width-40*scalefactor)/zgroups.length;
 			for (index in zgroups){
 				group = zgroups[index];
 				points = zdifferentgroups[group];
@@ -4205,11 +4277,11 @@ function newscatter(){
 				thisright = add(thisleft,eachwidth);
 
 				ctx.fillStyle = '#000000';
-				ctx.font = "bold 15px Roboto";
+				ctx.font = "bold "+15*scalefactor+"px Roboto";
 				ctx.textAlign="center";
-				ctx.fillText(group,add(thisleft,thisright-50)/2,oypixel-maxheight);
+				ctx.fillText(group,add(thisleft,thisright-50*scalefactor)/2,oypixel-maxheight);
 				
-				plotscatter(ctx,points,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,add(thisleft,30),thisright-50,colors);
+				plotscatter(ctx,points,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,add(thisleft,30*scalefactor),thisright-50*scalefactor,colors);
 
 				thisleft = add(thisleft,eachwidth);
 			}
@@ -4231,14 +4303,14 @@ function newscatter(){
 }
 
 function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,left,right,colors){
-	horaxis(ctx,left,right,add(bottom,10),minxtick,maxxtick,xstep);
-	vertaxis (ctx,gtop,bottom,left-10,minytick,maxytick,ystep);
-	ctx.lineWidth = 2;
+	horaxis(ctx,left,right,add(bottom,10*scalefactor),minxtick,maxxtick,xstep);
+	vertaxis (ctx,gtop,bottom,left-10*scalefactor,minytick,maxytick,ystep);
+	ctx.lineWidth = 2*scalefactor;
 	if($('#thicklines').is(":checked")){
-		ctx.lineWidth = 5;
+		ctx.lineWidth = 5*scalefactor;
 	}
 	if($('#labels').is(":checked")){var labels="yes";} else {var labels = "no";}
-	var rad = $('#size').val()/2;
+	var rad = $('#size').val()/2*scalefactor;
 	num = 0;
 	pointstofit = [];
 	xcurvefit="";
@@ -4252,19 +4324,20 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		ycurvefit+=ypoint+",";
 		var xpixel = convertvaltopixel(xpoint,minxtick,maxxtick,left,right);
 		var ypixel = convertvaltopixel(ypoint,minytick,maxytick,bottom,gtop);
-		if($('#jitter').is(":checked")){
-			xpixel = add(xpixel,randint(-3,3));
-			ypixel = add(ypixel,randint(-3,3));
+		if($('#jitter').is(":checked") && $('#jittershow').is(':visible')){
+			xpixel = add(xpixel,randint(-3*scalefactor,3*scalefactor));
+			ypixel = add(ypixel,randint(-3*scalefactor,3*scalefactor));
 		}
 		ctx.beginPath();
 		ctx.strokeStyle = colors[index];
 		ctx.arc(xpixel,ypixel,rad,0,2*Math.PI);
 		ctx.stroke();
+		$('#graphmap').append('<area shape="circle" coords="'+(xpixel/scalefactor)+','+(ypixel/scalefactor)+','+rad+'" alt="'+parseInt(add(index,1))+'" desc="Point ID: '+parseInt(add(index,1))+'<br>'+$('#xaxis').val()+': '+xpoint+'<br>'+$('#yaxis').val()+': '+ypoint+'">');
 		if(labels == "yes"){
 			ctx.fillStyle = 'rgba(0,0,255,1)';
-			ctx.font = "10px Roboto";
+			ctx.font = 10*scalefactor+"px Roboto";
 			ctx.textAlign="left";
-			ctx.fillText(parseInt(add(index,1)),add(add(xpixel,rad),2),add(ypixel,4));
+			ctx.fillText(parseInt(add(index,1)),add(add(xpixel,rad*scalefactor),2*scalefactor),add(ypixel,4*scalefactor));
 		}
 		num++;
 	}
@@ -4272,13 +4345,13 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 	equationtop = gtop;
 	ctx.textAlign="left";
 	ctx.fillStyle = '#000';
-	ctx.font = "13px Roboto";
-	ctx.lineWidth = 1;
+	ctx.font = 13*scalefactor+"px Roboto";
+	ctx.lineWidth = 1*scalefactor;
 	if($('#thicklines').is(":checked")){
-		ctx.lineWidth = 3;
+		ctx.lineWidth = 3*scalefactor;
 	}
 	
-	if($('#regression').is(":checked")){
+	if($('#regression').is(":checked") && $('#regshow').is(':visible')){
 		ctx.fillStyle='#f00';
 		ctx.strokeStyle='#f00';
 		
@@ -4316,12 +4389,12 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			c = " + " + c;
 		}
 		ctx.fillText($('#yaxis').val()+" = "+m+" * "+$('#xaxis').val()+c,left, equationtop);
-		equationtop = add(equationtop,15);
+		equationtop = add(equationtop,15*scalefactor);
 		ctx.fillText("r = "+r,left, equationtop);
-		equationtop = add(equationtop,15);
+		equationtop = add(equationtop,15*scalefactor);
 	}
 	
-	if($('#quadratic').is(":checked")){
+	if($('#quadratic').is(":checked") && $('#quadraticshow').is(':visible')){
 		ctx.fillStyle='#00f';
 		ctx.strokeStyle='#00f';
 		
@@ -4361,10 +4434,10 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			c = " + " + c;
 		}
 		ctx.fillText($('#yaxis').val()+" = "+a+" * "+$('#xaxis').val()+"^2"+b+" * "+$('#xaxis').val()+c,left, equationtop);
-		equationtop = add(equationtop,15);
+		equationtop = add(equationtop,15*scalefactor);
 	}
 	
-	if($('#cubic').is(":checked")){
+	if($('#cubic').is(":checked") && $('#cubicshow').is(':visible')){
 		ctx.fillStyle='#0f0';
 		ctx.strokeStyle='#0f0';
 		
@@ -4410,10 +4483,10 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			d = " + " + d;
 		}
 		ctx.fillText($('#yaxis').val()+" = "+a+" * "+$('#xaxis').val()+"^3"+b+" * "+$('#xaxis').val()+"^2"+c+" * "+$('#xaxis').val()+d,left, equationtop);
-		equationtop = add(equationtop,15);
+		equationtop = add(equationtop,15*scalefactor);
 	}
 	
-	if($('#exp').is(":checked")){
+	if($('#exp').is(":checked") && $('#expshow').is(':visible')){
 		ctx.fillStyle='#952BFF';
 		ctx.strokeStyle='#952BFF';
 		
@@ -4441,10 +4514,10 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			x = add(x,step);
 		}
 		ctx.fillText($('#yaxis').val()+" = "+a+" * exp("+b+" * "+$('#xaxis').val()+")",left, equationtop);
-		equationtop = add(equationtop,15);
+		equationtop = add(equationtop,15*scalefactor);
 	}
 	
-	if($('#log').is(":checked")){
+	if($('#log').is(":checked") && $('#logshow').is(':visible')){
 		ctx.fillStyle='#FF972E';
 		ctx.strokeStyle='#FF972E';
 		
@@ -4478,10 +4551,10 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			b = " + " + b;
 		}
 		ctx.fillText($('#yaxis').val()+" = "+a+" * ln("+$('#xaxis').val()+")"+b,left, equationtop);
-		equationtop = add(equationtop,15);
+		equationtop = add(equationtop,15*scalefactor);
 	}
 	
-	if($('#pow').is(":checked")){
+	if($('#pow').is(":checked") && $('#powshow').is(':visible')){
 		ctx.fillStyle='#3ED2D2';
 		ctx.strokeStyle='#3ED2D2';
 		
@@ -4509,10 +4582,10 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			x = add(x,step);
 		}
 		ctx.fillText($('#yaxis').val()+" = "+a+" * "+$('#xaxis').val()+" ^ "+b,left, equationtop);
-		equationtop = add(equationtop,15);
+		equationtop = add(equationtop,15*scalefactor);
 	}
 	
-	if($('#yx').is(":checked")){
+	if($('#yx').is(":checked") && $('#yxshow').is(':visible')){
 		ctx.fillStyle = '#000';
 		ctx.strokeStyle='#000';
 		ctx.setLineDash([5, 5]);
@@ -4528,12 +4601,61 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			line(ctx,mnx,mny,mxx,mxy);
 		}
 		ctx.fillText("- - - y = x",left, equationtop);
-		equationtop = add(equationtop,15);
+		equationtop = add(equationtop,15*scalefactor);
 		ctx.setLineDash([]);
 	}
 	
-	if($('#regression, #cubic, #quadratic, #yx', '#exp', '#pow', '#log').is(":checked")){
+	if($('#regression, #cubic, #quadratic, #yx, #exp, #pow, #log').is(":checked") && $('#regshow, #cubicshow, #quadraticshow, #yxshow, #expshow, #powshow, #logshow').is(':visible')){
 		ctx.fillText("n = "+num,left, equationtop);
+	}
+	
+	if($('#type').val()=='newresiduals'){
+		ctx.fillStyle = '#000';
+		ctx.strokeStyle = '#000';
+		ctx.setLineDash([5, 5]);
+		var zero = convertvaltopixel(0,minytick,maxytick,bottom,gtop);
+		line(ctx,left,zero,right,zero);
+		ctx.setLineDash([]);
+	}
+	
+	if($('#weightedaverage').is(":checked") && $('#weightedaverageshow').is(':visible')){
+		ctx.fillStyle = '#00f';
+		ctx.strokeStyle = '#00f';
+		xmin = Math.min.apply(null, xpoints);
+		xmax = Math.max.apply(null, xpoints);
+		xpoint = xmin;
+		range = xmax-xmin;
+		step = range/200;
+		curve = [];
+		while(xpoint<xmax){
+			total=0;
+			totalweight=0;
+			for (var index in indexes){
+				var index = indexes[index];
+				var pointx = xpoints[index];
+				var pointy = ypoints[index];
+				weight = Math.pow((1-Math.abs(xpoint-pointx)/range),10);
+				total+=pointy*weight;
+				totalweight+=weight;
+			}
+			xpoint+=step;
+			curve.push([xpoint,total/totalweight])
+		}
+		console.log(curve);
+		lasty=0;
+		lastxpixel=0;
+		for (var point in curve){
+			x = curve[point][0];
+			y = curve[point][1];
+			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
+			ypixel = convertvaltopixel(y,minytick,maxytick,bottom,gtop);
+			if(x>minxtick && y>=minytick && y<=maxytick && lasty>=minytick && lasty<=maxytick & lastxpixel>0){
+				line(ctx,lastxpixel,lastypixel,xpixel,ypixel);
+			}
+			lastxpixel=xpixel;
+			lastypixel=ypixel;
+			lasty = y;
+		}
 	}
 
 }
@@ -5728,4 +5850,327 @@ function sortorder(as, bs)
         }
     }
     return b[i]? -1:0;
+}
+function newpairsplot(){
+	
+	$("#invertshow").show();
+	
+	var canvas = document.getElementById('myCanvas');
+	var ctx = canvas.getContext('2d');
+	
+	//set size
+	var width = $('#width').val();
+	var height = $('#height').val();
+
+	ctx.canvas.width = width;
+	ctx.canvas.height = height;
+
+	ctx.fillStyle = "#ffffff";
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+	
+	data = $('#datain').val().split('@#$')
+	data.pop();
+	
+	$(data).each(function(index,value){
+		data[index]=value.split(',');
+		data[index].pop();
+	});
+	
+	//set font
+	ctx.fillStyle = '#000000';
+	fontsize=14*scalefactor;
+	ctx.textAlign="center";
+	ctx.font = fontsize+"px Roboto";
+	
+	ctx.strokeStyle = '#000000';
+	ctx.lineWidth = 1*scalefactor;
+	
+	rows = data.length;
+	hstep = (width-10*scalefactor)/rows;
+	vstep = (height-30*scalefactor)/rows;
+	t = 5*scalefactor;
+	
+	r=0;
+	while(r<rows){
+		c=0;
+		left = 5*scalefactor;
+		center = hstep/2;
+		while(c<rows){
+			bleft = left+5*scalefactor
+			bright = left+hstep-5*scalefactor
+			btop = t+5*scalefactor
+			bbottom = t+vstep-5*scalefactor
+			line(ctx,bleft,btop,bright,btop);
+			line(ctx,bleft,btop,bleft,bbottom);
+			line(ctx,bright,btop,bright,bbottom);
+			line(ctx,bleft,bbottom,bright,bbottom);
+			if(r==c){
+				ctx.fillText($('#xvar option:eq('+(r+1)+')').text(),center,t+20*scalefactor);
+				if($.isNumeric(data[r][0])){
+					drawminihistogram(ctx,data[r],bleft,bright,btop,bbottom,r,$('#xvar option:eq('+(r+1)+')').text());
+				} else {
+					drawminibarchart(ctx,data[r],bleft,bright,btop,bbottom,r,$('#xvar option:eq('+(r+1)+')').text());
+				}
+			} else {
+				title = $('#xvar option:eq('+(c+1)+')').text()+' vs '+$('#xvar option:eq('+(r+1)+')').text()
+				if($.isNumeric(data[r][0])){
+					if($.isNumeric(data[c][0])){
+						drawminiscatter(ctx,data[c],data[r],bleft,bright,btop,bbottom,c,r,title);
+					} else {
+						drawminivboxes(ctx,data[c],data[r],bleft,bright,btop,bbottom,c,r,title);
+					}
+				} else {
+					if($.isNumeric(data[c][0])){
+						drawminihboxes(ctx,data[c],data[r],bleft,bright,btop,bbottom,c,r,title);
+					} else {
+						drawminiareagraphs(ctx,data[c],data[r],bleft,bright,btop,bbottom,c,r,title);
+					}
+				}
+			}
+			left += hstep;
+			center += hstep;
+			c++;
+		}
+		t += vstep;
+		r++;
+	}
+	
+	labelgraph(ctx,width,height);
+	
+	if($('#invert').is(":checked")){
+		invert(ctx)
+	}
+
+	var dataURL = canvas.toDataURL();
+	return dataURL;
+}
+
+function drawminihistogram(ctx,data,bleft,bright,btop,bbottom,r,title){
+	min = Math.min.apply(null, data);
+	max = Math.max.apply(null, data);
+	range=max-min;
+	point1=range/5+min;
+	point2=range/5*2+min;
+	point3=range/5*3+min;
+	point4=range/5*4+min;
+	
+	bwidth = bright-bleft;
+	bheight = bbottom-btop-30*scalefactor;
+		
+	sec1=0;
+	sec2=0;
+	sec3=0;
+	sec4=0;
+	sec5=0;
+	
+	$(data).each(function(index,value){
+		if(value<point1){sec1++;}
+		else if (value<point2){sec2++;}
+		else if (value<point3){sec3++;}
+		else if (value<point4){sec4++;}
+		else {sec5++;}
+	});
+	
+	max = Math.max(sec1,sec2,sec3,sec4,sec5);
+	
+	ctx.fillStyle = '#267BD0';
+	ctx.rect(bleft, bbottom, bwidth/5, -bheight*sec1/max);ctx.fill();ctx.stroke();
+	ctx.rect(bleft+bwidth/5*1, bbottom, bwidth/5, -bheight*sec2/max);ctx.fill();ctx.stroke();
+	ctx.rect(bleft+bwidth/5*2, bbottom, bwidth/5, -bheight*sec3/max);ctx.fill();ctx.stroke();
+	ctx.rect(bleft+bwidth/5*3, bbottom, bwidth/5, -bheight*sec4/max);ctx.fill();ctx.stroke();
+	ctx.rect(bleft+bwidth/5*4, bbottom, bwidth/5, -bheight*sec5/max);ctx.fill();ctx.stroke();
+	ctx.fillStyle = '#000';
+	
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex=0;document.getElementById('type').value='histogram';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+}
+
+function drawminibarchart(ctx,data,bleft,bright,btop,bbottom,r,title){
+	var counts = {};
+	$.each(data, function( index, value ) {
+		if(counts[value]){
+			counts[value]=add(counts[value],1);
+		} else {
+			counts[value]=1;
+		}
+	});
+	var maxpoints = 0;
+	num = 0;
+	$.each( counts, function( index, value ){
+	  if(value>maxpoints){
+		  maxpoints=value;
+	  }
+	  num++;
+	});
+	bwidth = bright-bleft-5*scalefactor;
+	bheight = bbottom-btop-30*scalefactor;
+	bleft += 5*scalefactor;
+	i=0;
+	ctx.fillStyle = '#267BD0';
+	$.each(counts, function(index,value){
+		ctx.rect(bleft+bwidth/num*i, bbottom, bwidth/num-5*scalefactor, -bheight*value/maxpoints);ctx.fill();ctx.stroke();
+		i++;
+	});
+	ctx.fillStyle = '#000';
+	
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex=0;document.getElementById('type').value='bar and area graph';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+}
+
+function drawminiscatter(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r,title){
+	minx = Math.min.apply(null,xdata);
+	maxx = Math.max.apply(null,xdata);
+	miny = Math.min.apply(null,ydata);
+	maxy = Math.max.apply(null,ydata);
+	ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+	$.each(xdata,function(index,value){
+		var xpoint = value;
+		var ypoint = ydata[index];
+		var xpixel = convertvaltopixel(xpoint,minx,maxx,bleft+10*scalefactor,bright-10*scalefactor);
+		var ypixel = convertvaltopixel(ypoint,miny,maxy,bbottom-10*scalefactor,btop+10*scalefactor);
+		ctx.beginPath();
+		ctx.arc(xpixel,ypixel,2*scalefactor,0,2*Math.PI);
+		ctx.stroke();
+	})
+	ctx.strokeStyle = '#000';
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('type').value='newscatter';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+}
+
+function drawminivboxes(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r,title){
+	miny = Math.min.apply(null,ydata);
+	maxy = Math.max.apply(null,ydata);
+	thisdata={};
+	count=0;
+	$.each(xdata,function(index,value){
+		var xpoint = value;
+		var ypoint = ydata[index];
+		if(thisdata[xpoint]){
+			thisdata[xpoint].push(ypoint);
+		} else {
+			count++;
+			thisdata[xpoint]=[];
+			thisdata[xpoint].push(ypoint);
+		}
+	})
+	i=0;
+	w = (bright-bleft)/count;
+	$.each(thisdata,function(index,thisvalues){
+		var minval = Math.min.apply(null, thisvalues);
+		var lq = lowerquartile(thisvalues);
+		var med = median(thisvalues);
+		var uq = upperquartile(thisvalues);
+		var maxval = Math.max.apply(null, thisvalues);
+		minval = convertvaltopixel(minval,miny,maxy,bbottom-10*scalefactor,btop+10*scalefactor);
+		lq = convertvaltopixel(lq,miny,maxy,bbottom-10*scalefactor,btop+10*scalefactor);
+		med = convertvaltopixel(med,miny,maxy,bbottom-10*scalefactor,btop+10*scalefactor);
+		uq = convertvaltopixel(uq,miny,maxy,bbottom-10*scalefactor,btop+10*scalefactor);
+		maxval = convertvaltopixel(maxval,miny,maxy,bbottom-10*scalefactor,btop+10*scalefactor);
+		cen = bleft+i*w+w/2;
+		line(ctx,cen,minval,cen,lq);
+		line(ctx,cen-w/4,lq,cen+w/4,lq);
+		line(ctx,cen-w/4,uq,cen-w/4,lq);
+		line(ctx,cen-w/4,med,cen+w/4,med);
+		line(ctx,cen+w/4,uq,cen+w/4,lq);
+		line(ctx,cen-w/4,uq,cen+w/4,uq);
+		line(ctx,cen,maxval,cen,uq);
+		i++;
+	})
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex="+c+"+1;document.getElementById('type').value='newdotplot';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+}
+
+function drawminihboxes(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r,title){
+	minx = Math.min.apply(null,xdata);
+	maxx = Math.max.apply(null,xdata);
+	thisdata={};
+	count=0;
+	$.each(ydata,function(index,value){
+		var xpoint = value;
+		var ypoint = xdata[index];
+		if(thisdata[xpoint]){
+			thisdata[xpoint].push(ypoint);
+		} else {
+			count++;
+			thisdata[xpoint]=[];
+			thisdata[xpoint].push(ypoint);
+		}
+	})
+	i=0;
+	w = (bbottom-btop)/count;
+	$.each(thisdata,function(index,thisvalues){
+		var minval = Math.min.apply(null, thisvalues);
+		var lq = lowerquartile(thisvalues);
+		var med = median(thisvalues);
+		var uq = upperquartile(thisvalues);
+		var maxval = Math.max.apply(null, thisvalues);
+		minval = convertvaltopixel(minval,minx,maxx,bleft+10*scalefactor,bright-10*scalefactor);
+		lq = convertvaltopixel(lq,minx,maxx,bleft+10*scalefactor,bright-10*scalefactor);
+		med = convertvaltopixel(med,minx,maxx,bleft+10*scalefactor,bright-10*scalefactor);
+		uq = convertvaltopixel(uq,minx,maxx,bleft+10*scalefactor,bright-10*scalefactor);
+		maxval = convertvaltopixel(maxval,minx,maxx,bleft+10*scalefactor,bright-10*scalefactor);
+		cen = btop+i*w+w/2;
+		line(ctx,minval,cen,lq,cen);
+		line(ctx,lq,cen-w/4,lq,cen+w/4);
+		line(ctx,uq,cen-w/4,lq,cen-w/4);
+		line(ctx,med,cen-w/4,med,cen+w/4);
+		line(ctx,uq,cen+w/4,lq,cen+w/4);
+		line(ctx,uq,cen-w/4,uq,cen+w/4);
+		line(ctx,uq,cen,maxval,cen);
+		i++;
+	})
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('type').value='newdotplot';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+}
+
+function drawminiareagraphs(ctx,ydata,xdata,bleft,bright,btop,bbottom,c,r,title){
+	bwidth = bright-bleft;
+	bheight = bbottom-btop;
+	thisdata={};
+	ycats={};
+	count=xdata.length;
+	$.each(ydata,function(index,value){
+		var xpoint = value;
+		var ypoint = xdata[index];
+		if(!thisdata[xpoint]){
+			thisdata[xpoint]={};
+		}
+		if(!thisdata[xpoint][ypoint]){
+			thisdata[xpoint][ypoint]=0;
+		}
+		if(!ycats[ypoint]){
+			ycats[ypoint]=0;
+		}
+		thisdata[xpoint][ypoint]=add(thisdata[xpoint][ypoint],1);
+	})
+	l=0;
+	ctx.fillStyle = 'rgba(0,0,0,0.12)';	
+	$.each(thisdata,function(index,thisvalues){
+		h=0;
+		total = 0;
+		$.each(thisvalues,function(index,value){
+			total+=value;
+		});
+		$.each(ycats,function(index,value){
+			if(thisvalues[index]){
+				ctx.beginPath();
+				ctx.rect(bleft+l, bbottom+h, bwidth*total/count, -bheight*thisvalues[index]/total);
+				ctx.fill();
+				ctx.stroke();
+			}
+			h = h-bheight*thisvalues[index]/total;
+		});
+		l=add(l,bwidth*total/count);
+	});
+	ctx.fillStyle = '#000';
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('type').value='bar and area graph';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+}
+
+function lockaxis(){
+	if(xmin == null){xmin = 'auto';}
+	if(xmax == null){xmax = 'auto';}
+	if(ymin == null){ymin = 'auto';}
+	if(ymax == null){ymax = 'auto';}
+
+	$('#boxplotmin').val(xmin);
+	$('#boxplotmax').val(xmax);
+	$('#scatplotminx').val(xmin);
+	$('#scatplotmaxx').val(xmax);
+	$('#scatplotminy').val(ymin);
+	$('#scatplotmaxy').val(ymax);
 }

@@ -282,7 +282,7 @@ input[type=checkbox]:checked::before {
 	border:none;
 }
 
-#sum, #stackdotsshow, #reg, #for, #meandotshow, #startfinishshow, #gridlinesshow, #differentaxisshow, #for, #invertshow, #removedpointsshow, #relativefrequencyshow, #thicklinesshow, #boxplotshow, #regshow, #intervalshow, #labelshow, #colorname, #arrowsshow , #quadraticshow, #cubicshow, #expshow, #logshow, #powshow,#regtypeshow, #jittershow, #yxshow, #highboxplotshow, #btypeshow, #addmultshow, #longtermtrendshow, #boxnowhiskershow, #boxnooutliershow, #seasonalshow{
+#sum, #stackdotsshow, #reg, #for, #meandotshow, #startfinishshow, #gridlinesshow, #differentaxisshow, #for, #invertshow, #removedpointsshow, #relativefrequencyshow, #thicklinesshow, #boxplotshow, #regshow, #intervalshow, #labelshow, #colorname, #arrowsshow , #quadraticshow, #cubicshow, #expshow, #logshow, #powshow,#regtypeshow, #jittershow, #yxshow, #highboxplotshow, #btypeshow, #addmultshow, #longtermtrendshow, #boxnowhiskershow, #boxnooutliershow, #seasonalshow, #weightedaverageshow, #residualsforcexshow{
 	display:none;
 }
 #regtypeshow, #btypeshow, #addmultshow{
@@ -349,6 +349,7 @@ input[type=text]{
 	width:125px;
 	height:140px;
 	overflow-y:scroll;
+	overflow-x: hidden;
 	font-family:'Roboto Condensed', sans-serif;
 }
 .popup{
@@ -406,6 +407,9 @@ input[type=text]{
 	border: 1px solid #ccc;
 	overflow-y: auto;
 	padding:10px;
+}
+.highlight {
+	background-color:#9cf;
 }
 #welcomeframe{
 	position: absolute;

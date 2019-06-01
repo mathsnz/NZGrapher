@@ -27,7 +27,7 @@ if($highres=='yes'){
 }
 
 //display
-echo "<img $extrastyle src='./imagetemp/$randomString.png'usemap='#graphmap'>";
+echo "<img $extrastyle src='./imagetemp/$randomString.png' usemap='#graphmap'>";
 
 // Free up memory
 $path = './imagetemp/';

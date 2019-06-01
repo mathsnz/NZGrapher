@@ -1,7 +1,16 @@
-function newpairsplot(){
-	
-	$("#invertshow").show();
-	$("#graphmap").empty();
+function newresiduals(){
+
+	$('#xvar').show();
+	$('#yvar').show();
+	$('#labelshow').show();
+	$('#greyscaleshow').show();
+	$('#sizediv').show();
+	$('#removedpointsshow').show();
+	$('#pointsizename').html('Point Size:');
+	$('#transdiv').show();
+	$('#residualsforcexshow').show();
+	$('#regtypeshow').show();
+	$('#weightedaverageshow').show();
 	
 	var canvas = document.getElementById('myCanvas');
 	var ctx = canvas.getContext('2d');
@@ -15,72 +24,242 @@ function newpairsplot(){
 
 	ctx.fillStyle = "#ffffff";
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
-	
-	data = $('#datain').val().split('@#$')
-	data.pop();
-	
-	$(data).each(function(index,value){
-		data[index]=value.split(',');
-		data[index].pop();
-	});
-	
-	//set font
+
+	//graph title
 	ctx.fillStyle = '#000000';
-	fontsize=14*scalefactor;
+	fontsize=20*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
 	ctx.textAlign="center";
-	ctx.font = fontsize+"px Roboto";
+	ctx.fillText($('#title').val(),width/2,30*scalefactor);
 	
-	ctx.strokeStyle = '#000000';
-	ctx.lineWidth = 1*scalefactor;
-	
-	rows = data.length;
-	hstep = (width-10*scalefactor)/rows;
-	vstep = (height-30*scalefactor)/rows;
-	t = 5*scalefactor;
-	
-	r=0;
-	while(r<rows){
-		c=0;
-		left = 5*scalefactor;
-		center = hstep/2;
-		while(c<rows){
-			bleft = left+5*scalefactor
-			bright = left+hstep-5*scalefactor
-			btop = t+5*scalefactor
-			bbottom = t+vstep-5*scalefactor
-			line(ctx,bleft,btop,bright,btop);
-			line(ctx,bleft,btop,bleft,bbottom);
-			line(ctx,bright,btop,bright,bbottom);
-			line(ctx,bleft,bbottom,bright,bbottom);
-			if(r==c){
-				ctx.fillText($('#xvar option:eq('+(r+1)+')').text(),center,t+20*scalefactor);
-				if($.isNumeric(data[r][0])){
-					drawminihistogram(ctx,data[r],bleft,bright,btop,bbottom,r);
-				} else {
-					drawminibarchart(ctx,data[r],bleft,bright,btop,bbottom,r);
-				}
-			} else {
-				if($.isNumeric(data[r][0])){
-					if($.isNumeric(data[c][0])){
-						drawminiscatter(ctx,data[c],data[r],bleft,bright,btop,bbottom,c,r);
-					} else {
-						drawminivboxes(ctx,data[c],data[r],bleft,bright,btop,bbottom,c,r);
-					}
-				} else {
-					if($.isNumeric(data[c][0])){
-						drawminihboxes(ctx,data[c],data[r],bleft,bright,btop,bbottom,c,r);
-					} else {
-						drawminiareagraphs(ctx,data[c],data[r],bleft,bright,btop,bbottom,c,r);
-					}
-				}
-			}
-			left += hstep;
-			center += hstep;
-			c++;
-		}
-		t += vstep;
-		r++;
+	if($('#residualsforcex').is(":checked")){
+		xtitle="Explanatory";
+		residualsforcex="yes";
+	} else {
+		xtitle="Fitted";
+		residualsforcex="no";
 	}
+	
+	$('#xaxis').val(xtitle);
+	$('#yaxis').val("Residual");
+	
+	//x-axis title
+	ctx.fillStyle = '#000000';
+	ctx.font = "bold "+15*scalefactor+"px Roboto";
+	ctx.textAlign="center";
+	ctx.fillText(xtitle,width/2,height-10*scalefactor);
+	
+	//y-axis title
+	x=20*scalefactor;
+	y=height/2;
+	ctx.save();
+	ctx.fillStyle = '#000000';
+	ctx.font = "bold "+15*scalefactor+"px Roboto";
+	ctx.translate(x, y);
+	ctx.rotate(-Math.PI/2);
+	ctx.textAlign = "center";
+	ctx.fillText("Residual", 0, 0);
+	ctx.restore();
+	
+	//get points
+	var xpoints = $('#xvar').val().split(",");
+	xpoints.pop();
+	var ypoints = $('#yvar').val().split(",");
+	ypoints.pop();
+
+	//check for numeric value
+	var points=[];
+	var pointsremoved=[];
+	var pointsforminmax=[];
+	var pointsforminmaxy=[];
+	countx=0;
+	county=0;
+	for (var index in xpoints){
+		if($.isNumeric(xpoints[index])){countx++;}
+		if($.isNumeric(ypoints[index])){county++;}
+		if($.isNumeric(xpoints[index]) && $.isNumeric(ypoints[index])){
+			points.push(index);
+			pointsforminmax.push(xpoints[index]);
+			pointsforminmaxy.push(ypoints[index]);
+		} else {
+			pointsremoved.push(add(index,1));
+		}
+	}
+
+	if(countx==0){
+		return 'Error: You must select a numeric variable for variable 1';
+	}
+
+	if(county==0){
+		return 'Error: You must select a numeric variable for variable 2';
+	}
+
+	if(pointsremoved.length!=0 && $('#removedpoints').is(":checked")){
+		ctx.fillStyle = '#000000';
+		ctx.font = 13*scalefactor+"px Roboto";
+		ctx.textAlign="right";
+		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-40*scalefactor,40*scalefactor);
+	}
+
+	if(points.length==0){
+		return 'Error: You must select a numeric variable for variable 1';
+	}
+	
+	pointstofit = [];
+	for (var index in points){
+		var index = points[index];
+		var xpoint = xpoints[index];
+		var ypoint = ypoints[index];
+		pointstofit.push([parseFloat(xpoint),parseFloat(ypoint)]);
+	}
+	
+	regtype = $('#regtype').val();
+	console.log(regtype);
+	
+	fitted = [];
+	
+	if(regtype=="Linear"){
+		
+		res = regression.linear(pointstofit,{
+		  precision: 7,
+		});
+		console.log(res);
+		
+		c = res.equation[1].toPrecision(5);
+		m = res.equation[0].toPrecision(5);
+		
+		for (var index in points){
+			var index = points[index];
+			var xpoint = xpoints[index];
+			fitted[index] = add(m*xpoint,c).toPrecision(5);
+		}
+	} else if (regtype=="Quadratic"){
+		
+		res = regression.polynomial(pointstofit,{
+		  order: 2,
+		  precision: 7,
+		});
+		console.log(res);
+		
+		a = res.equation[0].toPrecision(5);
+		b = res.equation[1].toPrecision(5);
+		c = res.equation[2].toPrecision(5);
+		
+		for (var index in points){
+			var index = points[index];
+			var xpoint = xpoints[index];
+			fitted[index] = add(add(a*xpoint*xpoint,b*xpoint),c).toPrecision(5);
+		}
+		
+	} else if (regtype=="Cubic"){
+		
+		res = regression.polynomial(pointstofit,{
+		  order: 3,
+		  precision: 10,
+		});
+		console.log(res);
+		
+		a = res.equation[0];
+		b = res.equation[1];
+		c = res.equation[2];
+		d = res.equation[3];
+		
+		for (var index in points){
+			var index = points[index];
+			var xpoint = xpoints[index];
+			fitted[index] = add(add(add(a*xpoint*xpoint*xpoint,b*xpoint*xpoint),c*xpoint),d).toPrecision(5);
+		}
+		
+	} else if (regtype=="y=a*exp(b*x)"){
+		
+		res = regression.exponential(pointstofit,{
+		  precision: 7,
+		});
+		console.log(res);
+		
+		a = res.equation[0].toPrecision(5);
+		b = res.equation[1].toPrecision(5);
+		
+		for (var index in points){
+			var index = points[index];
+			var xpoint = xpoints[index];
+			fitted[index] = (a * Math.exp(b*xpoint)).toPrecision(5);
+		}
+		
+	} else if (regtype=="y=a*ln(x)+b"){
+		
+		res = regression.logarithmic(pointstofit,{
+		  precision: 7,
+		});
+		console.log(res);
+		
+		a = res.equation[1].toPrecision(5);
+		b = res.equation[0].toPrecision(5);
+		
+		for (var index in points){
+			var index = points[index];
+			var xpoint = xpoints[index];
+			fitted[index] = add(a * Math.log(xpoint),b).toPrecision(5);
+		}
+		
+	} else if (regtype=="y=a*x^b"){
+		
+		res = regression.power(pointstofit,{
+		  precision: 7,
+		});
+		console.log(res);
+		
+		a = res.equation[0].toPrecision(5);
+		b = res.equation[1].toPrecision(5);
+		
+		for (var index in points){
+			var index = points[index];
+			var xpoint = xpoints[index];
+			fitted[index] = (a * Math.pow(xpoint,b)).toPrecision(5);
+		}
+		
+	}
+	
+	residuals=[];
+	var pointsforminmax=[];
+	var pointsforminmaxy=[];
+		
+	for (var index in points){
+		var index = points[index];
+		var ypoint = ypoints[index];
+		var fit = fitted[index];
+		residuals[index] = (ypoint-fit).toPrecision(5);
+		pointsforminmaxy.push(ypoint-fit);
+		if(residualsforcex=="yes"){
+			fitted[index] = xpoints[index];
+			fit = xpoints[index];
+		}
+		pointsforminmax.push(fit);
+	}
+	
+	var alpha = 1-$('#trans').val()/100;
+	var colors = makecolors(alpha,ctx);
+
+	xmin = Math.min.apply(null, pointsforminmax);
+	xmax = Math.max.apply(null, pointsforminmax);
+	ymin = Math.min.apply(null, pointsforminmaxy);
+	ymax = Math.max.apply(null, pointsforminmaxy);
+	
+	var minmaxstep = axisminmaxstep(xmin,xmax);
+	var minxtick=minmaxstep[0];
+	var maxxtick=minmaxstep[1];
+	var xstep=minmaxstep[2];
+	var minmaxstep = axisminmaxstep(ymin,ymax);
+	var minytick=minmaxstep[0];
+	var maxytick=minmaxstep[1];
+	var ystep=minmaxstep[2];
+
+	var left=90*scalefactor;
+	var right=width-60*scalefactor;
+	var gtop=90*scalefactor;
+	var bottom=height-60*scalefactor;
+	
+	plotscatter(ctx,points,fitted,residuals,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,left,right,colors);
 	
 	labelgraph(ctx,width,height);
 	
@@ -90,235 +269,5 @@ function newpairsplot(){
 
 	var dataURL = canvas.toDataURL();
 	return dataURL;
-}
-
-function drawminihistogram(ctx,data,bleft,bright,btop,bbottom,r){
-	min = Math.min.apply(null, data);
-	max = Math.max.apply(null, data);
-	range=max-min;
-	point1=range/5+min;
-	point2=range/5*2+min;
-	point3=range/5*3+min;
-	point4=range/5*4+min;
 	
-	bwidth = bright-bleft;
-	bheight = bbottom-btop-30*scalefactor;
-		
-	sec1=0;
-	sec2=0;
-	sec3=0;
-	sec4=0;
-	sec5=0;
-	
-	$(data).each(function(index,value){
-		if(value<point1){sec1++;}
-		else if (value<point2){sec2++;}
-		else if (value<point3){sec3++;}
-		else if (value<point4){sec4++;}
-		else {sec5++;}
-	});
-	
-	max = Math.max(sec1,sec2,sec3,sec4,sec5);
-	
-	ctx.fillStyle = '#267BD0';
-	ctx.rect(bleft, bbottom, bwidth/5, -bheight*sec1/max);ctx.fill();ctx.stroke();
-	ctx.rect(bleft+bwidth/5*1, bbottom, bwidth/5, -bheight*sec2/max);ctx.fill();ctx.stroke();
-	ctx.rect(bleft+bwidth/5*2, bbottom, bwidth/5, -bheight*sec3/max);ctx.fill();ctx.stroke();
-	ctx.rect(bleft+bwidth/5*3, bbottom, bwidth/5, -bheight*sec4/max);ctx.fill();ctx.stroke();
-	ctx.rect(bleft+bwidth/5*4, bbottom, bwidth/5, -bheight*sec5/max);ctx.fill();ctx.stroke();
-	ctx.fillStyle = '#000';
-	
-	$('#graphmap').append("<area shape='rect' coords='"+bleft+","+btop+","+bright+","+bbottom+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex=0;document.getElementById('type').value='histogram';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"'>");
-	
-}
-
-function drawminibarchart(ctx,data,bleft,bright,btop,bbottom,r){
-	var counts = {};
-	$.each(data, function( index, value ) {
-		if(counts[value]){
-			counts[value]=add(counts[value],1);
-		} else {
-			counts[value]=1;
-		}
-	});
-	var maxpoints = 0;
-	num = 0;
-	$.each( counts, function( index, value ){
-	  if(value>maxpoints){
-		  maxpoints=value;
-	  }
-	  num++;
-	});
-	bwidth = bright-bleft-5*scalefactor;
-	bheight = bbottom-btop-30*scalefactor;
-	bleft += 5;
-	i=0;
-	ctx.fillStyle = '#267BD0';
-	$.each(counts, function(index,value){
-		ctx.rect(bleft+bwidth/num*i, bbottom, bwidth/num-5, -bheight*value/maxpoints);ctx.fill();ctx.stroke();
-		i++;
-	});
-	ctx.fillStyle = '#000';
-	
-	$('#graphmap').append("<area shape='rect' coords='"+bleft+","+btop+","+bright+","+bbottom+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex=0;document.getElementById('type').value='bar and area graph';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"'>");
-}
-
-function drawminiscatter(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r){
-	minx = Math.min.apply(null,xdata);
-	maxx = Math.max.apply(null,xdata);
-	miny = Math.min.apply(null,ydata);
-	maxy = Math.max.apply(null,ydata);
-	ctx.strokeStyle = 'rgba(0,0,0,0.5)';
-	$.each(xdata,function(index,value){
-		var xpoint = value;
-		var ypoint = ydata[index];
-		var xpixel = convertvaltopixel(xpoint,minx,maxx,bleft+10,bright-10);
-		var ypixel = convertvaltopixel(ypoint,miny,maxy,bbottom-10,btop+10);
-		ctx.beginPath();
-		ctx.arc(xpixel,ypixel,2*scalefactor,0,2*Math.PI);
-		ctx.stroke();
-	})
-	ctx.strokeStyle = '#000';
-	$('#graphmap').append("<area shape='rect' coords='"+bleft+","+btop+","+bright+","+bbottom+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('type').value='newscatter';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"'>");
-}
-
-function drawminivboxes(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r){
-	miny = Math.min.apply(null,ydata);
-	maxy = Math.max.apply(null,ydata);
-	thisdata={};
-	count=0;
-	$.each(xdata,function(index,value){
-		var xpoint = value;
-		var ypoint = ydata[index];
-		if(thisdata[xpoint]){
-			thisdata[xpoint].push(ypoint);
-		} else {
-			count++;
-			thisdata[xpoint]=[];
-			thisdata[xpoint].push(ypoint);
-		}
-	})
-	i=0;
-	w = (bright-bleft)/count;
-	$.each(thisdata,function(index,thisvalues){
-		var minval = Math.min.apply(null, thisvalues);
-		var lq = lowerquartile(thisvalues);
-		var med = median(thisvalues);
-		var uq = upperquartile(thisvalues);
-		var maxval = Math.max.apply(null, thisvalues);
-		minval = convertvaltopixel(minval,miny,maxy,bbottom-10*scalefactor,btop+10*scalefactor);
-		lq = convertvaltopixel(lq,miny,maxy,bbottom-10*scalefactor,btop+10*scalefactor);
-		med = convertvaltopixel(med,miny,maxy,bbottom-10*scalefactor,btop+10*scalefactor);
-		uq = convertvaltopixel(uq,miny,maxy,bbottom-10*scalefactor,btop+10*scalefactor);
-		maxval = convertvaltopixel(maxval,miny,maxy,bbottom-10*scalefactor,btop+10*scalefactor);
-		cen = bleft+i*w+w/2;
-		line(ctx,cen,minval,cen,lq);
-		line(ctx,cen-w/4,lq,cen+w/4,lq);
-		line(ctx,cen-w/4,uq,cen-w/4,lq);
-		line(ctx,cen-w/4,med,cen+w/4,med);
-		line(ctx,cen+w/4,uq,cen+w/4,lq);
-		line(ctx,cen-w/4,uq,cen+w/4,uq);
-		line(ctx,cen,maxval,cen,uq);
-		i++;
-	})
-	$('#graphmap').append("<area shape='rect' coords='"+bleft+","+btop+","+bright+","+bbottom+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex="+c+"+1;document.getElementById('type').value='newdotplot';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"'>");
-}
-
-function drawminihboxes(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r){
-	minx = Math.min.apply(null,xdata);
-	maxx = Math.max.apply(null,xdata);
-	thisdata={};
-	count=0;
-	$.each(ydata,function(index,value){
-		var xpoint = value;
-		var ypoint = xdata[index];
-		if(thisdata[xpoint]){
-			thisdata[xpoint].push(ypoint);
-		} else {
-			count++;
-			thisdata[xpoint]=[];
-			thisdata[xpoint].push(ypoint);
-		}
-	})
-	i=0;
-	w = (bbottom-btop)/count;
-	$.each(thisdata,function(index,thisvalues){
-		var minval = Math.min.apply(null, thisvalues);
-		var lq = lowerquartile(thisvalues);
-		var med = median(thisvalues);
-		var uq = upperquartile(thisvalues);
-		var maxval = Math.max.apply(null, thisvalues);
-		minval = convertvaltopixel(minval,minx,maxx,bleft+10*scalefactor,bright-10*scalefactor);
-		lq = convertvaltopixel(lq,minx,maxx,bleft+10*scalefactor,bright-10*scalefactor);
-		med = convertvaltopixel(med,minx,maxx,bleft+10*scalefactor,bright-10*scalefactor);
-		uq = convertvaltopixel(uq,minx,maxx,bleft+10*scalefactor,bright-10*scalefactor);
-		maxval = convertvaltopixel(maxval,minx,maxx,bleft+10*scalefactor,bright-10*scalefactor);
-		cen = btop+i*w+w/2;
-		line(ctx,minval,cen,lq,cen);
-		line(ctx,lq,cen-w/4,lq,cen+w/4);
-		line(ctx,uq,cen-w/4,lq,cen-w/4);
-		line(ctx,med,cen-w/4,med,cen+w/4);
-		line(ctx,uq,cen+w/4,lq,cen+w/4);
-		line(ctx,uq,cen-w/4,uq,cen+w/4);
-		line(ctx,uq,cen,maxval,cen);
-		i++;
-	})
-	$('#graphmap').append("<area shape='rect' coords='"+bleft+","+btop+","+bright+","+bbottom+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('type').value='newdotplot';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"'>");
-}
-
-function drawminiareagraphs(ctx,ydata,xdata,bleft,bright,btop,bbottom,c,r){
-	bwidth = bright-bleft;
-	bheight = bbottom-btop;
-	thisdata={};
-	ycats={};
-	count=xdata.length;
-	$.each(ydata,function(index,value){
-		var xpoint = value;
-		var ypoint = xdata[index];
-		if(!thisdata[xpoint]){
-			thisdata[xpoint]={};
-		}
-		if(!thisdata[xpoint][ypoint]){
-			thisdata[xpoint][ypoint]=0;
-		}
-		if(!ycats[ypoint]){
-			ycats[ypoint]=0;
-		}
-		thisdata[xpoint][ypoint]=add(thisdata[xpoint][ypoint],1);
-	})
-	l=0;
-	ctx.fillStyle = 'rgba(0,0,0,0.12)';	
-	$.each(thisdata,function(index,thisvalues){
-		h=0;
-		total = 0;
-		$.each(thisvalues,function(index,value){
-			total+=value;
-		});
-		$.each(ycats,function(index,value){
-			if(thisvalues[index]){
-				ctx.beginPath();
-				ctx.rect(bleft+l, bbottom+h, bwidth*total/count, -bheight*thisvalues[index]/total);
-				ctx.fill();
-				ctx.stroke();
-			}
-			h = h-bheight*thisvalues[index]/total;
-		});
-		l=add(l,bwidth*total/count);
-	});
-	ctx.fillStyle = '#000';
-	$('#graphmap').append("<area shape='rect' coords='"+bleft+","+btop+","+bright+","+bbottom+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('type').value='bar and area graph';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"'>");
-}
-
-function lockaxis(){
-	if(xmin == null){xmin = 'auto';}
-	if(xmax == null){xmax = 'auto';}
-	if(ymin == null){ymin = 'auto';}
-	if(ymax == null){ymax = 'auto';}
-
-	$('#boxplotmin').val(xmin);
-	$('#boxplotmax').val(xmax);
-	$('#scatplotminx').val(xmin);
-	$('#scatplotmaxx').val(xmax);
-	$('#scatplotminy').val(ymin);
-	$('#scatplotmaxy').val(ymax);
 }
