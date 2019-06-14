@@ -11,6 +11,7 @@ function newresiduals(){
 	$('#residualsforcexshow').show();
 	$('#regtypeshow').show();
 	$('#weightedaverageshow').show();
+	$('#color')[0].selectedIndex = 0;
 	
 	var canvas = document.getElementById('myCanvas');
 	var ctx = canvas.getContext('2d');
@@ -110,11 +111,12 @@ function newresiduals(){
 		var index = points[index];
 		var xpoint = xpoints[index];
 		var ypoint = ypoints[index];
+		if(xpoint==0){xpoint = xpoint + 0.0000000000001;}
+		if(ypoint==0){ypoint = ypoint + 0.0000000000001;}
 		pointstofit.push([parseFloat(xpoint),parseFloat(ypoint)]);
 	}
 	
 	regtype = $('#regtype').val();
-	console.log(regtype);
 	
 	fitted = [];
 	

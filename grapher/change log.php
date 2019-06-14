@@ -76,6 +76,10 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2019-06-15</b><ul>
+		<li>Bug fix on vertical axis to stop very small numbers showing instead of zero.</li>
+		<li>Bug fix on scatter plots and residuals for non-linear models where points had a zero value.</li>
+	</ul>
 	<b>2019-06-02</b><ul>
 		<li>Updated to statistical tracking to ask students which school they are from.</li>
 		<li>Added hover boxes on scatter graphs, residuals, dot plots, and bootstrap confidence intervals so when you hover over a point it gives you details on the point and highlights it in the data table.</li>

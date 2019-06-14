@@ -1706,6 +1706,8 @@ function horaxis(ctx,x1,x2,y,min,max,step,gridlinetop){
 }
 
 function vertaxis(ctx,y1,y2,x,min,max,step, gridlinetop){
+  min = parseFloat(parseFloat(min.toFixed(10)).toPrecision(8));
+  max = parseFloat(parseFloat(max.toFixed(10)).toPrecision(8));
   ctx.strokeStyle = '#000000';
   if (typeof gridlinetop === 'undefined') { gridlinetop = $('#graphdiv').width()-50; }
 	ctx.fillStyle = '#000000';
@@ -1718,7 +1720,7 @@ function vertaxis(ctx,y1,y2,x,min,max,step, gridlinetop){
   if($('#gridlines').is(':checked')){
     gridlines=true;
   }
-	var cury = parseFloat(min.toPrecision(8));
+	var cury = min;
 	while (cury<=max){
 		var ypixel = convertvaltopixel(cury,min,max,y2,y1);
 		line(ctx,x,ypixel,add(x,-6*scalefactor),ypixel);
@@ -1736,7 +1738,7 @@ function vertaxis(ctx,y1,y2,x,min,max,step, gridlinetop){
 			width = ctx.measureText(cury).width;
 		}
 		ctx.fillText(cury,add(x,-7*scalefactor),add(ypixel,4*scalefactor));
-		cury=parseFloat(add(cury,step).toPrecision(10));
+		cury=parseFloat(parseFloat(add(cury,step).toFixed(10)).toPrecision(8));
 	}
 
 }
@@ -1872,18 +1874,18 @@ function makecolors(alpha,ctx){
 		ctx.font = 12*scalefactor+"px Roboto";
 		ctx.textAlign="left";
 		var txt = 'Coloured by '+$('#colorlabel').val()+': '+min;
-		ctx.fillText(txt,left,38*scalefactor);
+		ctx.fillText(txt,left,48*scalefactor);
 		left = left + ctx.measureText(txt).width + 5*scalefactor + rad;
 		var colz=0;
 		while(colz<=1){
 			ctx.beginPath();
 			ctx.strokeStyle = ColorHSLaToRGBa(colz*end,s,l,alpha);
-			ctx.arc(left,38*scalefactor-rad,rad,0,2*Math.PI);
+			ctx.arc(left,48*scalefactor-rad,rad,0,2*Math.PI);
 			ctx.stroke();
 			left = left + rad*2 + 2;
 			colz=colz+0.1;
 		}
-		ctx.fillText(max,left,38*scalefactor);
+		ctx.fillText(max,left,48*scalefactor);
 	} else {
 		var colorindexs = []; // An new empty array
 		for (var i in colorpoints) {
@@ -1910,15 +1912,15 @@ function makecolors(alpha,ctx){
 		ctx.font = 12*scalefactor+"px Roboto";
 		ctx.textAlign="left";
 		var txt = 'Coloured by '+$('#colorlabel').val()+': ';
-		ctx.fillText(txt,left,38*scalefactor);
+		ctx.fillText(txt,left,48*scalefactor);
 		left = left + ctx.measureText(txt).width + 5*scalefactor + rad;
 		for (var index in colorindexs){
 			var name = colorindexs[index];
 			ctx.beginPath();
 			ctx.strokeStyle = thecolors[index];
-			ctx.arc(left,38*scalefactor-rad,rad,0,2*Math.PI);
+			ctx.arc(left,48*scalefactor-rad,rad,0,2*Math.PI);
 			ctx.stroke();
-			ctx.fillText(name,left+rad+2*scalefactor,38*scalefactor);
+			ctx.fillText(name,left+rad+2*scalefactor,48*scalefactor);
 			left = left + ctx.measureText(name).width + 10*scalefactor + rad*2;
 		}
 	}
@@ -2114,7 +2116,7 @@ function newdotplot(){
 		fontsize = 13*scalefactor;
 		ctx.font = fontsize+"px Roboto";
 		ctx.textAlign="right";
-		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-50,50);
+		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-48*scalefactor,48*scalefactor);
 	}
 
 	var oypixel=height-60*scalefactor;
@@ -2681,7 +2683,7 @@ function bootstrap(mm){
 		fontsize = 13*scalefactor;
 		ctx.font = fontsize+"px Roboto";
 		ctx.textAlign="right";
-		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-50,50);
+		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-48*scalefactor,48*scalefactor);
 	}
 
 	var oypixel=height*0.5-60*scalefactor;
@@ -4221,7 +4223,7 @@ function newscatter(){
 		ctx.fillStyle = '#000000';
 		ctx.font = 13*scalefactor+"px Roboto";
 		ctx.textAlign="right";
-		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-40*scalefactor,40*scalefactor);
+		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-48*scalefactor,48*scalefactor);
 	}
 
 	if(points.length==0){
@@ -4319,6 +4321,8 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		var index = indexes[index];
 		var xpoint = xpoints[index];
 		var ypoint = ypoints[index];
+		if(xpoint==0){xpoint = xpoint + 0.0000000000001;}
+		if(ypoint==0){ypoint = ypoint + 0.0000000000001;}
 		pointstofit.push([parseFloat(xpoint),parseFloat(ypoint)]);
 		xcurvefit+=xpoint+",";
 		ycurvefit+=ypoint+",";
@@ -4621,8 +4625,15 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 	if($('#weightedaverage').is(":checked") && $('#weightedaverageshow').is(':visible')){
 		ctx.fillStyle = '#00f';
 		ctx.strokeStyle = '#00f';
-		xmin = Math.min.apply(null, xpoints);
-		xmax = Math.max.apply(null, xpoints);
+		xpointsforminmax = [];
+		for (var index in indexes){
+			var index = indexes[index];
+			var pointx = xpoints[index];
+			var pointy = ypoints[index];
+			xpointsforminmax.push(pointx);
+		}
+		xmin = Math.min.apply(null, xpointsforminmax);
+		xmax = Math.max.apply(null, xpointsforminmax);
 		xpoint = xmin;
 		range = xmax-xmin;
 		step = range/200;
@@ -4641,7 +4652,6 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			xpoint+=step;
 			curve.push([xpoint,total/totalweight])
 		}
-		console.log(curve);
 		lasty=0;
 		lastxpixel=0;
 		for (var point in curve){
