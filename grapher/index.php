@@ -608,11 +608,11 @@ echo "\n</table></body></html>";
 					<span id=for>Forecast output</span>
 				</label><br>
 			</span>
-			<span id=stackdotsshow><label>
-				<input type="checkbox" onclick="updategraph();" id="stackdots" name="stackdots" value="yes"> Stack Dots</label><br>
-			</span>
 			<span id=boxplotshow><label>
 				<input type="checkbox" onclick="updategraph();" id="boxplot" name="boxplot" value="yes"> Box Plots</label><br>
+			</span>
+			<span id=stripgraphshow><label>
+				<input type="checkbox" onclick="updategraph();" id="stripgraph" name="stripgraphshow" value="yes"> Strip Graph</label><br>
 			</span>
 			<span id=highboxplotshow><label>
 				<input type="checkbox" onclick="updategraph();" id="highboxplot" name="highboxplot" value="yes"> High Box Plot</label><br>
@@ -632,6 +632,9 @@ echo "\n</table></body></html>";
 			</span>
 			<span id=meandotshow><label>
 				<input type="checkbox" onclick="updategraph();" id="meandot" name="meandot" value="yes"> Mean Dot</label><br>
+			</span>
+			<span id=stackdotsshow><label>
+				<input type="checkbox" onclick="updategraph();" id="stackdots" name="stackdots" value="yes"> Stack Dots</label><br>
 			</span>
 			<span id=jittershow><label>
 				<input type="checkbox" onclick="updategraph();" id="jitter" name="jitter" value="yes"> Jitter</label><br>

@@ -1025,6 +1025,7 @@ function graphchange(obj){
 	document.getElementById('residualsforcexshow').style.display='none';
 	document.getElementById('weightedaverageshow').style.display='none';
 	document.getElementById('stackdotsshow').style.display='none';
+	document.getElementById('stripgraphshow').style.display='none';
 	document.getElementById('stackdots').checked = false;
 	$('#removedpointsshow').hide();
 	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='time series forecasts' || obj.value=='old time series forecasts' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart' || obj.value=='bar and area graph' || obj.value=='residuals' || obj.value=='time series' || obj.value=='time series re-composition' || obj.value=='time series seasonal effects'){document.getElementById('xvar').style.display='block';document.getElementById('yvar').style.display='block';};
@@ -2069,7 +2070,8 @@ function newdotplot(){
 	$('#colorname').show();
 	$('#greyscaleshow').show();
 	$('#gridlinesshow').show();
-	$('#removedpointsshow').show();
+		$('#removedpointsshow').show();
+		$('#stripgraphshow').show();
 
 	var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
@@ -2299,6 +2301,10 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 	if($('#thicklines').is(":checked")){
 		ctx.lineWidth = 5*scalefactor;
 	}
+	stripgraph = 0;
+	if($('#stripgraph').is(":checked")){
+		stripgraph = 1;
+	}
 	var rad = $('#size').val()/2*scalefactor;
 	var thisvalues = [];
 	var xpixels = [];
@@ -2361,6 +2367,9 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 			ypixel = ypixel - yheight;
 		} else {
 			ypixel = oypixel-10*scalefactor;
+		}
+		if(stripgraph==1){
+			ypixel = randint(oypixel-10*scalefactor,oypixel-maxheight+10*scalefactor+maxheight*0.5)
 		}
 		lastxpixel = xpixel;
 		ctx.strokeStyle = colors[key];
@@ -2613,6 +2622,7 @@ function bootstrap(mm){
 	$('#regression').prop('checked', false);
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
+	$('#stripgraphshow').show();
 
 	if(mm=='mean'){
 		$('#boxplot').prop('checked', false);

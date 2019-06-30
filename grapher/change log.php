@@ -76,6 +76,10 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2019-06-30</b><ul>
+		<li>New option in dot plots to show as a strip graph, where instead of stacking dots, the vertical position of the dot is randomly allocated.</li>
+		<li>Fix for titles on residuals graphs when switching back to scatter graphs.</li>
+	</ul>
 	<b>2019-06-15</b><ul>
 		<li>Bug fix on vertical axis to stop very small numbers showing instead of zero.</li>
 		<li>Bug fix on scatter plots and residuals for non-linear models where points had a zero value.</li>

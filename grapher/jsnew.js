@@ -41,9 +41,6 @@ function newresiduals(){
 		residualsforcex="no";
 	}
 	
-	$('#xaxis').val(xtitle);
-	$('#yaxis').val("Residual");
-	
 	//x-axis title
 	ctx.fillStyle = '#000000';
 	ctx.font = "bold "+15*scalefactor+"px Roboto";
@@ -201,6 +198,7 @@ function newresiduals(){
 		for (var index in points){
 			var index = points[index];
 			var xpoint = xpoints[index];
+			if(xpoint==0){xpoint = xpoint + 0.0000000000001;}
 			fitted[index] = add(a * Math.log(xpoint),b).toPrecision(5);
 		}
 		
