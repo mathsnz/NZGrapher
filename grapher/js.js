@@ -49,6 +49,11 @@ $(function(){
 
 	// This must be a hyperlink
 	$("#download").on('click', function (event) {
+		try {
+			ga('send', 'event', 'Function', 'Data - download', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		// CSV
 		exportTableToCSV.apply(this, [$('#data'), 'data.csv']);
 
@@ -107,12 +112,30 @@ $(function(){
 	});
 	
 	$('#pastelinkclick').click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Data - pastelinkclick', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		document.getElementById("pastelink").style.display="block";
 		document.getElementById("linkarea").value="";
 		document.getElementById("linkarea").focus();
 	});
 	
+	$('#filebox').click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Data - filebox', '');
+		} catch(err) {
+			console.log(err.message);
+		}
+	});
+	
 	$('#pastetableclick').click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Data - pastetableclick', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		document.getElementById("pastetext").style.display="block";
 		document.getElementById("textarea").value="";
 		document.getElementById("textarea").focus();
@@ -194,6 +217,11 @@ $(function(){
 	});
 
 	$( "#3dots" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', '3dots', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -207,11 +235,21 @@ $(function(){
 	$("#data td div").keypress(function(e){ if(e.which == 44){alert("You entered a comma... you can't to this.");} });
 
 	$( "#addcol" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Column - addcol', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$("#data tr").append("<td><div><br></div></td>");
 		$('#data td div').attr('contenteditable','true');
 		updatebox();
 	});
 	$( "#addrow" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Row - addrow', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		var col=$("#data").find("tr:first td").length;
 		var row=$('#data tr').length;
 		var add="<tr><th>"+(row);
@@ -224,18 +262,33 @@ $(function(){
 		$("#rowshowhide").click();
 	});
 	$( "#delrow" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Row - delrow', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		if($('#data tr').length>1){
 			$('#data tr:last').remove();
 		};
 		updatebox();
 	});
 	$( "#delcol" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Column - delcol', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$('#data tr td:last-child').remove();
 		$('#type').val('newabout');
 		updatebox();
 	});
 
 	$( "#delspecrow" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Row - delspecrow', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		var row;
 		row=prompt("Which row do you want to delete?");
 		$('#data tr:eq('+row+')').remove();
@@ -251,6 +304,11 @@ $(function(){
 	});
 	
 	$( "#deletecolgo" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Column - deletecolgo', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		col=$('#columndel').val();
 		$('#data tr').each(function(){
 			$(this).find('td:eq('+col+')').remove();
@@ -268,6 +326,11 @@ $(function(){
 	});
 	
 	$( "#delspeccol" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Column - delspeccol', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -283,11 +346,21 @@ $(function(){
 	});
 	
 	$( "#highlightdatatable" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Data - highlightdatatable', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$('#filepop').hide();
 		selectText($('#data')[0]);
 	});
 
 	$( "#reorder").click(function(){
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - reorder', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -336,6 +409,11 @@ $(function(){
 	});
 
 	$ ("#orderby").change(function(){
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - orderby', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		var sampleon = $('#orderby option:selected').text();
 		var options = this.value.split(',');
 		options.pop();
@@ -350,6 +428,11 @@ $(function(){
 	});
 
 	$ ("#ordergo").click(function(){
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - ordergo', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$ ("#sampling").hide();
 		window.setTimeout(function(){
 		var orderby = $('#orderby option:selected').text();
@@ -374,6 +457,11 @@ $(function(){
 	});
 
 	$( "#sort" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - sort', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$ ("#sortdiv").show();
 		$ ("#sampling").show();
 		$("#rowbox").hide();
@@ -391,6 +479,11 @@ $(function(){
 	});
 
 	$( "#filter" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - filter', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$ ("#filterdiv").show();
 		$ ("#sampling").show();
 		$("#rowbox").hide();
@@ -408,6 +501,11 @@ $(function(){
 	});
 
 	$ ("#sortgo").click(function(){
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - sortgo', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		var col = $('#sortby').val();
 		sortTable(col);
 		$ ("#sampling").hide();
@@ -415,6 +513,11 @@ $(function(){
 	});
 
 	$( "#samvar" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - samvar', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -464,6 +567,11 @@ $(function(){
 	});
 
 	$( "#sample" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - sample', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -541,6 +649,11 @@ $(function(){
 	});
 
 	$ ("#samplego").click(function(){
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - samplego', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$("#samplediv").hide();
 		window.setTimeout(function(){
 		console.log($('[id^="sample-"]').length);
@@ -610,6 +723,11 @@ $(function(){
 	});
 
 	$ ("#samvargo").click(function(){
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - samvargo', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$('#data').html($('#presampledataholder').html());
 		window.setTimeout(function(){
 		if($('[id^="samvar-"]').length==1){
@@ -674,6 +792,11 @@ $(function(){
 
 
 	$ ("#filtergo").click(function(){
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - filtergo', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		var filtermin = parseFloat($('#filtermin').val());
 		var filtermax = parseFloat($('#filtermax').val());
 		if(isNaN(filtermin) || isNaN(filtermax)){
@@ -710,12 +833,22 @@ $(function(){
 
 
 	$( "#reset" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'reset', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$('#data').html($('#originaldataholder').html());
 		$('#data td div').attr('contenteditable','true');
 		updatebox();
 	});
 
 	$( "#newvarc2" ).click(function(){
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - newvarc2', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -735,6 +868,11 @@ $(function(){
 	});
 
 	$( "#newvarc3" ).click(function(){
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - newvarc3', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -756,6 +894,11 @@ $(function(){
 	});
 
 	$( "#newvar" ).click(function(){
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - newvar', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -776,6 +919,11 @@ $(function(){
 	});
 
 	$( "#creatego" ).click(function(){
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - creatego', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$ ("#newvardiv").hide();
 		var type = encodeURIComponent($('#newvarcom option:selected').text());
 		var var1 = $('#newvar1 option:selected').text();
@@ -812,6 +960,11 @@ $(function(){
 	});
 
 	$( "#createcgo" ).click(function(){
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - createcgo', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$ ("#newvarcdiv").hide();
 		var cx = $('#newvarcx option:selected').text();
 		var md = encodeURIComponent($('#newvarcmd option:selected').text());
@@ -861,6 +1014,11 @@ $(function(){
 	});
 
 	$( "#createc3go" ).click(function(){
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - createc3go', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		$ ("#newvarc3div").hide();
 		var cx = $('#newvarc3var option:selected').text();
 		var index = $("#data td:contains('"+cx.split("'")[0]+"')").filter(function() {
@@ -930,9 +1088,21 @@ $(function(){
 		$ ("#newvarc3div").hide();
 	});
 
-	$( "#update" ).click(updatebox);
+	$( "#update" ).click(function(){
+		try {
+			ga('send', 'event', 'Function', 'update', '');
+		} catch(err) {
+			console.log(err.message);
+		}
+		updatebox()
+	});
 
 	$( "#import" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Data - import', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		var data = document.getElementById("textarea").value;
 		var rows = data.split('\n');
 		var row = 0;
@@ -960,6 +1130,11 @@ $(function(){
 		updatebox();
 	});
 	$( "#importlink" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Data - importlink', '');
+		} catch(err) {
+			console.log(err.message);
+		}
 		var link = document.getElementById("linkarea").value;
 		document.location = document.location.origin + document.location.pathname + '?url=' + encodeURIComponent(link);
 	});
@@ -980,6 +1155,11 @@ function addnewcond(){
 }
 
 function moreoptions(){
+	try {
+		ga('send', 'event', 'Function', 'moreoptions', '');
+	} catch(err) {
+		console.log(err.message);
+	}
 	$("#cover").show();
 	$("#options").show();
 }
@@ -1125,7 +1305,11 @@ function updategraphgo(){
 	$('#graphmap').html("");
 	$('.highlight').removeClass('highlight');
     $('#tooltip').css('display','none');
-	$.get('https://tracking.jake4maths.com/graphimage.php?g='+$('#type').val()+'&r='+Math.random().toString(36).substr(2));
+	try {
+		ga('send', 'event', 'Graph Draw', $('#type').val(), '');
+	} catch(err) {
+		console.log(err.message);
+	}
 	if(!$('#xvar').length){
 		alert('NZGrapher is not loaded properly... please load again with a valid dataset.');
 		window.location = './';
@@ -1452,6 +1636,11 @@ function updatebox(){
 }
 
 function showhideleft(){
+	try {
+		ga('send', 'event', 'Function', 'showhideleft', '');
+	} catch(err) {
+		console.log(err.message);
+	}
 	var button=document.getElementById('showhideleft');
 	var li=document.getElementById('showhideleftli');
 	var buttons=document.getElementById('buttons');
@@ -1478,6 +1667,11 @@ function showhideleft(){
 }
 
 function showhidebottom(){
+	try {
+		ga('send', 'event', 'Function', 'showhidebottom', '');
+	} catch(err) {
+		console.log(err.message);
+	}
 	var button=document.getElementById('showhidebottom');
 	var li=document.getElementById('showhidebottomli');
 	var variable=document.getElementById('variable');

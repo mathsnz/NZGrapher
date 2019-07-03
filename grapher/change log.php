@@ -76,6 +76,9 @@ To Do List
 - Look into adding a file from a URL
 */
 ?>
+	<b>2019-07-03</b><ul>
+		<li>Change method of data collection for graph types used to better cope with higher volumes of traffic to NZGrapher.</li>
+	</ul>
 	<b>2019-06-30</b><ul>
 		<li>New option in dot plots to show as a strip graph, where instead of stacking dots, the vertical position of the dot is randomly allocated.</li>
 		<li>Fix for titles on residuals graphs when switching back to scatter graphs.</li>

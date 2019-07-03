@@ -1,6 +1,17 @@
 <?php include './version.php'; ?>
 <html v=<?php echo $v; ?>>
 <head>
+	<!-- Google Analytics -->
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-19339458-1', 'auto');
+	ga('send', 'pageview');
+	</script>
+	<!-- End Google Analytics -->
 	<script src="./jquery-1.11.1.min.js"></script>
 	<script src="./regression.min.js"></script>
 	<title>NZGrapher</title>
@@ -37,19 +48,6 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta id="vp" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-	<script type="text/javascript">
-
-	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', 'UA-19339458-1']);
-	  _gaq.push(['_trackPageview']);
-
-	  (function() {
-		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	  })();
-
-	</script>
 </head>
 <body>
 <script>
@@ -247,11 +245,11 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 
 <div id=helppopup class="callout popup">
 <ul>
-	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/video-tutorials','_blank')">Video Tutorials</li>
-	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/graph-information','_blank')">Graph Information</li>
-	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/dataset-information','_blank')">Dataset Information</li>
-	<li onclick="document.getElementById('welcome').style.display='block'">Show Welcome</li>
-	<li onclick="document.getElementById('tour').style.display='block'">Show Overlay</li>
+	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/video-tutorials','_blank');try{ga('send', 'event', 'Function', 'Help - Video Tutorials', '');} catch(err) {console.log(err.message);}">Video Tutorials</li>
+	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/graph-information','_blank');try{ga('send', 'event', 'Function', 'Help - Graph Infomation', '');} catch(err) {console.log(err.message);}">Graph Information</li>
+	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/dataset-information','_blank');try{ga('send', 'event', 'Function', 'Help - Dataset Infomation', '');} catch(err) {console.log(err.message);}">Dataset Information</li>
+	<li onclick="document.getElementById('welcome').style.display='block';try{ga('send', 'event', 'Function', 'Help - Show Welcome', '');} catch(err) {console.log(err.message);}">Show Welcome</li>
+	<li onclick="document.getElementById('tour').style.display='block';try{ga('send', 'event', 'Function', 'Help - Show Overlay', '');} catch(err) {console.log(err.message);}">Show Overlay</li>
 </ul>
 </div>
 
@@ -265,7 +263,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 
 <div class="callout popup" id=filepop>
 <ul>
-	<li id=addrow>
+	<li id=uploadfileclick>
 <form method="post" name=fileform id=uploadfile enctype="multipart/form-data">
 	<input type="file" name="file" id="filebox" style='width:80px;height:17px;position:absolute;top:4px;left:6px;z-index:2;opacity:0;cursor:pointer;' onChange="document.getElementById('uploadfile').submit();">
 	<div style='color:#000;border:0px solid #ccc;width:80px;height:17px;border-radius:0px;padding:5px;font-size:14px;text-align:left;position:absolute;top:4px;left:6px;padding:0px;background:none;'>Open File</div>
