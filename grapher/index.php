@@ -172,8 +172,15 @@ $protocol = isSecure() === true ? 'https://' : 'http://';
 $actual_link = urlencode($protocol.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']);
 $time = date('U');
 $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
+$ip = getenv('HTTP_CLIENT_IP')?:
+getenv('HTTP_X_FORWARDED_FOR')?:
+getenv('HTTP_X_FORWARDED')?:
+getenv('HTTP_FORWARDED_FOR')?:
+getenv('HTTP_FORWARDED')?:
+getenv('REMOTE_ADDR');
 if(file_exists('./windowsapp.php')){$actual_link='Windows App v2';}
 echo "<script>
+var ipaddress = '$ip';
 $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&time=$time&r=$randomString');
 </script>";
 ?>

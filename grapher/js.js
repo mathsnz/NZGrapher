@@ -50,7 +50,7 @@ $(function(){
 	// This must be a hyperlink
 	$("#download").on('click', function (event) {
 		try {
-			ga('send', 'event', 'Function', 'Data - download', '');
+			ga('send', 'event', 'Function', 'Data - download', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -113,7 +113,7 @@ $(function(){
 	
 	$('#pastelinkclick').click(function() {
 		try {
-			ga('send', 'event', 'Function', 'Data - pastelinkclick', '');
+			ga('send', 'event', 'Function', 'Data - pastelinkclick', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -124,7 +124,7 @@ $(function(){
 	
 	$('#filebox').click(function() {
 		try {
-			ga('send', 'event', 'Function', 'Data - filebox', '');
+			ga('send', 'event', 'Function', 'Data - filebox', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -132,7 +132,7 @@ $(function(){
 	
 	$('#pastetableclick').click(function() {
 		try {
-			ga('send', 'event', 'Function', 'Data - pastetableclick', '');
+			ga('send', 'event', 'Function', 'Data - pastetableclick', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -218,7 +218,7 @@ $(function(){
 
 	$( "#3dots" ).click(function() {
 		try {
-			ga('send', 'event', 'Function', '3dots', '');
+			ga('send', 'event', 'Function', '3dots', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -236,7 +236,7 @@ $(function(){
 
 	$( "#addcol" ).click(function() {
 		try {
-			ga('send', 'event', 'Function', 'Column - addcol', '');
+			ga('send', 'event', 'Function', 'Column - addcol', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -246,7 +246,7 @@ $(function(){
 	});
 	$( "#addrow" ).click(function() {
 		try {
-			ga('send', 'event', 'Function', 'Row - addrow', '');
+			ga('send', 'event', 'Function', 'Row - addrow', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -263,7 +263,7 @@ $(function(){
 	});
 	$( "#delrow" ).click(function() {
 		try {
-			ga('send', 'event', 'Function', 'Row - delrow', '');
+			ga('send', 'event', 'Function', 'Row - delrow', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -274,7 +274,7 @@ $(function(){
 	});
 	$( "#delcol" ).click(function() {
 		try {
-			ga('send', 'event', 'Function', 'Column - delcol', '');
+			ga('send', 'event', 'Function', 'Column - delcol', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -285,7 +285,7 @@ $(function(){
 
 	$( "#delspecrow" ).click(function() {
 		try {
-			ga('send', 'event', 'Function', 'Row - delspecrow', '');
+			ga('send', 'event', 'Function', 'Row - delspecrow', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -305,7 +305,7 @@ $(function(){
 	
 	$( "#deletecolgo" ).click(function() {
 		try {
-			ga('send', 'event', 'Function', 'Column - deletecolgo', '');
+			ga('send', 'event', 'Function', 'Column - deletecolgo', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -327,7 +327,7 @@ $(function(){
 	
 	$( "#delspeccol" ).click(function() {
 		try {
-			ga('send', 'event', 'Function', 'Column - delspeccol', '');
+			ga('send', 'event', 'Function', 'Column - delspeccol', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -347,7 +347,7 @@ $(function(){
 	
 	$( "#highlightdatatable" ).click(function() {
 		try {
-			ga('send', 'event', 'Function', 'Data - highlightdatatable', '');
+			ga('send', 'event', 'Function', 'Data - highlightdatatable', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -357,7 +357,7 @@ $(function(){
 
 	$( "#reorder").click(function(){
 		try {
-			ga('send', 'event', 'Function', 'Sample and More - reorder', '');
+			ga('send', 'event', 'Function', 'Sample and More - reorder', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -410,7 +410,7 @@ $(function(){
 
 	$ ("#orderby").change(function(){
 		try {
-			ga('send', 'event', 'Function', 'Sample and More - orderby', '');
+			ga('send', 'event', 'Function', 'Sample and More - orderby', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -429,7 +429,7 @@ $(function(){
 
 	$ ("#ordergo").click(function(){
 		try {
-			ga('send', 'event', 'Function', 'Sample and More - ordergo', '');
+			ga('send', 'event', 'Function', 'Sample and More - ordergo', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -458,7 +458,7 @@ $(function(){
 
 	$( "#sort" ).click(function() {
 		try {
-			ga('send', 'event', 'Function', 'Sample and More - sort', '');
+			ga('send', 'event', 'Function', 'Sample and More - sort', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -480,7 +480,7 @@ $(function(){
 
 	$( "#filter" ).click(function() {
 		try {
-			ga('send', 'event', 'Function', 'Sample and More - filter', '');
+			ga('send', 'event', 'Function', 'Sample and More - filter', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -502,7 +502,7 @@ $(function(){
 
 	$ ("#sortgo").click(function(){
 		try {
-			ga('send', 'event', 'Function', 'Sample and More - sortgo', '');
+			ga('send', 'event', 'Function', 'Sample and More - sortgo', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -514,7 +514,7 @@ $(function(){
 
 	$( "#samvar" ).click(function() {
 		try {
-			ga('send', 'event', 'Function', 'Sample and More - samvar', '');
+			ga('send', 'event', 'Function', 'Sample and More - samvar', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -568,7 +568,7 @@ $(function(){
 
 	$( "#sample" ).click(function() {
 		try {
-			ga('send', 'event', 'Function', 'Sample and More - sample', '');
+			ga('send', 'event', 'Function', 'Sample and More - sample', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -650,7 +650,7 @@ $(function(){
 
 	$ ("#samplego").click(function(){
 		try {
-			ga('send', 'event', 'Function', 'Sample and More - samplego', '');
+			ga('send', 'event', 'Function', 'Sample and More - samplego', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -724,7 +724,7 @@ $(function(){
 
 	$ ("#samvargo").click(function(){
 		try {
-			ga('send', 'event', 'Function', 'Sample and More - samvargo', '');
+			ga('send', 'event', 'Function', 'Sample and More - samvargo', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -793,7 +793,7 @@ $(function(){
 
 	$ ("#filtergo").click(function(){
 		try {
-			ga('send', 'event', 'Function', 'Sample and More - filtergo', '');
+			ga('send', 'event', 'Function', 'Sample and More - filtergo', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -834,7 +834,7 @@ $(function(){
 
 	$( "#reset" ).click(function() {
 		try {
-			ga('send', 'event', 'Function', 'reset', '');
+			ga('send', 'event', 'Function', 'reset', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -845,7 +845,7 @@ $(function(){
 
 	$( "#newvarc2" ).click(function(){
 		try {
-			ga('send', 'event', 'Function', 'Sample and More - newvarc2', '');
+			ga('send', 'event', 'Function', 'Sample and More - newvarc2', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -869,7 +869,7 @@ $(function(){
 
 	$( "#newvarc3" ).click(function(){
 		try {
-			ga('send', 'event', 'Function', 'Sample and More - newvarc3', '');
+			ga('send', 'event', 'Function', 'Sample and More - newvarc3', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -895,7 +895,7 @@ $(function(){
 
 	$( "#newvar" ).click(function(){
 		try {
-			ga('send', 'event', 'Function', 'Sample and More - newvar', '');
+			ga('send', 'event', 'Function', 'Sample and More - newvar', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -920,7 +920,7 @@ $(function(){
 
 	$( "#creatego" ).click(function(){
 		try {
-			ga('send', 'event', 'Function', 'Sample and More - creatego', '');
+			ga('send', 'event', 'Function', 'Sample and More - creatego', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -961,7 +961,7 @@ $(function(){
 
 	$( "#createcgo" ).click(function(){
 		try {
-			ga('send', 'event', 'Function', 'Sample and More - createcgo', '');
+			ga('send', 'event', 'Function', 'Sample and More - createcgo', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -1015,7 +1015,7 @@ $(function(){
 
 	$( "#createc3go" ).click(function(){
 		try {
-			ga('send', 'event', 'Function', 'Sample and More - createc3go', '');
+			ga('send', 'event', 'Function', 'Sample and More - createc3go', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -1090,7 +1090,7 @@ $(function(){
 
 	$( "#update" ).click(function(){
 		try {
-			ga('send', 'event', 'Function', 'update', '');
+			ga('send', 'event', 'Function', 'update', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -1099,7 +1099,7 @@ $(function(){
 
 	$( "#import" ).click(function() {
 		try {
-			ga('send', 'event', 'Function', 'Data - import', '');
+			ga('send', 'event', 'Function', 'Data - import', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -1131,7 +1131,7 @@ $(function(){
 	});
 	$( "#importlink" ).click(function() {
 		try {
-			ga('send', 'event', 'Function', 'Data - importlink', '');
+			ga('send', 'event', 'Function', 'Data - importlink', ipaddress);
 		} catch(err) {
 			console.log(err.message);
 		}
@@ -1156,7 +1156,7 @@ function addnewcond(){
 
 function moreoptions(){
 	try {
-		ga('send', 'event', 'Function', 'moreoptions', '');
+		ga('send', 'event', 'Function', 'moreoptions', ipaddress);
 	} catch(err) {
 		console.log(err.message);
 	}
@@ -1305,10 +1305,18 @@ function updategraphgo(){
 	$('#graphmap').html("");
 	$('.highlight').removeClass('highlight');
     $('#tooltip').css('display','none');
-	try {
-		ga('send', 'event', 'Graph Draw', $('#type').val(), '');
-	} catch(err) {
-		console.log(err.message);
+	if($('#type').val()=='newabout'){
+		try {
+			ga('send', 'event', 'Load', 'About', ipaddress);
+		} catch(err) {
+			console.log(err.message);
+		}
+	} else {
+		try {
+			ga('send', 'event', 'Graph Draw', $('#type').val(), ipaddress);
+		} catch(err) {
+			console.log(err.message);
+		}
 	}
 	if(!$('#xvar').length){
 		alert('NZGrapher is not loaded properly... please load again with a valid dataset.');
@@ -1488,7 +1496,7 @@ function updategraphgo(){
 		$('#tooltip').css('top',e.pageY);
 		$('#tooltiparrow').css('margin-top','-8px');
 		$('#tooltip span').html($(this).attr('desc'));
-		if($('#type').val()!='newpairsplot'){
+		if($('#type').val()!='newpairsplot' && $(this).is('[alt]')){
 			id = $(this).attr('alt');
 			$('#left').scrollTop(0);
 			$('#left').scrollTop($('#data').find("th:textEquals('"+id+"')").position().top-100);
@@ -1637,7 +1645,7 @@ function updatebox(){
 
 function showhideleft(){
 	try {
-		ga('send', 'event', 'Function', 'showhideleft', '');
+		ga('send', 'event', 'Function', 'showhideleft', ipaddress);
 	} catch(err) {
 		console.log(err.message);
 	}
@@ -1668,7 +1676,7 @@ function showhideleft(){
 
 function showhidebottom(){
 	try {
-		ga('send', 'event', 'Function', 'showhidebottom', '');
+		ga('send', 'event', 'Function', 'showhidebottom', ipaddress);
 	} catch(err) {
 		console.log(err.message);
 	}
@@ -2237,7 +2245,7 @@ function minnooutliers(values,lq,uq){
 function newabout(){
   var width = $('#width').val()-22;
   var height = $('#height').val()-22;
-  content = "DISPL<div style='width:"+width+"px;height:"+height+"px;overflow-y:scroll;padding:10px;text-align:left;'><center>\n\t<h1>About <img src='logob.png' style='position:relative;top:22px;height:65px;'><\/h1>\n\t\n\t\t\n\t<script async src=\"\/\/pagead2.googlesyndication.com\/pagead\/js\/adsbygoogle.js\"><\/script>\n\t<!-- NZGrapher -->\n\t<ins class=\"adsbygoogle\"\n\t     style=\"display:block\"\n\t     data-ad-client=\"ca-pub-5760539585908771\"\n\t     data-ad-slot=\"7109793646\"\n\t     data-ad-format=\"auto\"><\/ins>\n\t<script>\n\t(adsbygoogle = window.adsbygoogle || []).push({});\n\t<\/script>\n<\/center><br><br>\tNZGrapher has been developed by Jake Wills, a maths teacher in New Zealand specifically for supporting the teaching of the statistics in New Zealand. The idea behind NZGrapher was to create a web based statistical package that can run on <b>any device<\/b>, without an install.<br><span id=whichschoolholder></span>\n\t<br>\n\t<b>Help<\/b><br>\n\tYou can access <b><a target='_blank' href=\"\/\/www.mathsnz.com\/nzgrapher-info\/video-tutorials\">video tutorials<\/a><\/b> to help you getting started on <a target='_blank' href=\"https:\/\/www.mathsnz.com\/nzgrapher-info\/video-tutorials\">MathsNZ<\/a>. They are organised in two ways, firstly by the type of feature you are trying to use, and secondly by the NCEA standard that they relate to. There is a help button in the top menu with more help content. The data section on the left also allows you to edit the data directly just by clicking on the part you want to edit and typing the changes in.<br>\n\t<br>\n\t<b>Saving \/ Copying Graphs<\/b><br>\n\tTo save or copy the graph right click on it or tap and hold if you are using a Tablet and the options should show up for copying and saving.<br>\n\t<br>\n\t<b>Getting Data Into NZGrapher<\/b><br>\n\tNZGrapher has a number of built in datasets. If you want to use your own:<ul><li>You can upload / open files from your computer up to 200kb using Data -> Open Files.</li><li>You can paste a table using Data -> Paste Table. This only works from google sheets and excel. It doesn't work very well from a table in a Word or Google doc.</li><li>You can also paste a link to a csv. The CSV needs to be accessible on the internet for this to work. You can publish Google Sheets to a CSV from Google Docs.</li></ul>The paste table and paste link options do not have file size limits. If you have a dataset you want to share with lots of students see the section below 'for teachers'.<br><br><b>For Teachers<\/b><br>\n\tNZ Grapher also supports custom folders for assessments or your own datasets, allowing students to easily access the datasets. If you are a teacher and would like me to set up a custom folder for you, please let me know. You can contact me at <a href='https:\/\/www.mathsnz.com\/contact' target='_blank'>MathsNZ<\/a>. Once the folder is set up you can manage the files inside it via a password protected page.<br>\n\t<br>\n\t<b>Costs<\/b><br>NZGrapher is free for non-commercial individual use, you can however <a href='https:\/\/www.mathsnz.com\/donate'>make a donation</a>.<br><br>Schools are required to subscribe at a minimum of $0.50 per student using NZGrapher. Commerial users are also required to pay. Please visit the <a href='https:\/\/www.mathsnz.com\/nzgrapher-invoice'>invoice creator</a> for details.<br><br>This is optional for 2019, but will be compulsory for 2020.\n\t</div><script>if(getCookie('whichschool')!='yes'){$.get('https://tracking.jake4maths.com/whichschool.php').done(function(data){$('#whichschoolholder').html(data);})}</script>";
+  content = "DISPL<div style='width:"+width+"px;height:"+height+"px;overflow-y:scroll;padding:10px;text-align:left;'><center>\n\t<h1>About <img src='logob.png' style='position:relative;top:22px;height:65px;'><\/h1>\n\t\n\t\t\n\t<script async src=\"\/\/pagead2.googlesyndication.com\/pagead\/js\/adsbygoogle.js\"><\/script>\n\t<!-- NZGrapher -->\n\t<ins class=\"adsbygoogle\"\n\t     style=\"display:block\"\n\t     data-ad-client=\"ca-pub-5760539585908771\"\n\t     data-ad-slot=\"7109793646\"\n\t     data-ad-format=\"auto\"><\/ins>\n\t<script>\n\t(adsbygoogle = window.adsbygoogle || []).push({});\n\t<\/script>\n<\/center><br><br>\tNZGrapher has been developed by Jake Wills, a maths teacher in New Zealand specifically for supporting the teaching of the statistics in New Zealand. The idea behind NZGrapher was to create a web based statistical package that can run on <b>any device<\/b>, without an install.<br><span id=whichschoolholder></span>\n\t<br>\n\t<b>Help<\/b><br>\n\tYou can access <b><a target='_blank' href=\"\/\/www.mathsnz.com\/nzgrapher-info\/video-tutorials\">video tutorials<\/a><\/b> to help you getting started on <a target='_blank' href=\"https:\/\/www.mathsnz.com\/nzgrapher-info\/video-tutorials\">MathsNZ<\/a>. They are organised in two ways, firstly by the type of feature you are trying to use, and secondly by the NCEA standard that they relate to. There is a help button in the top menu with more help content. The data section on the left also allows you to edit the data directly just by clicking on the part you want to edit and typing the changes in.<br>\n\t<br>\n\t<b>Saving \/ Copying Graphs<\/b><br>\n\tTo save or copy the graph right click on it or tap and hold if you are using a Tablet and the options should show up for copying and saving.<br>\n\t<br>\n\t<b>Getting Data Into NZGrapher<\/b><br>\n\tNZGrapher has a number of built in datasets. If you want to use your own:<ul><li>You can upload / open files from your computer up to 200kb using Data -> Open Files.</li><li>You can paste a table using Data -> Paste Table. This only works from google sheets and excel. It doesn't work very well from a table in a Word or Google doc.</li><li>You can also paste a link to a csv. The CSV needs to be accessible on the internet for this to work. You can publish Google Sheets to a CSV from Google Docs.</li></ul>The paste table and paste link options do not have file size limits. If you have a dataset you want to share with lots of students see the section below 'for teachers'.<br><br><b>For Teachers<\/b><br>\n\tNZ Grapher also supports custom folders for assessments or your own datasets, allowing students to easily access the datasets. If you are a teacher and would like me to set up a custom folder for you, please let me know. You can contact me at <a href='https:\/\/www.mathsnz.com\/contact' target='_blank'>MathsNZ<\/a>. Once the folder is set up you can manage the files inside it via a password protected page.<br>\n\t<br>\n\t<b>Costs<\/b><br>NZGrapher is free for non-commercial individual use, you can however <a href='https:\/\/www.mathsnz.com\/donate'>make a donation</a>.<br><br>Schools are required to subscribe at a minimum of $0.50 per student using NZGrapher. Commerial users are also required to pay. Please visit the <a href='https:\/\/www.mathsnz.com\/nzgrapher-invoice'>invoice creator</a> for details.<br><br>This is optional for 2019, but will be compulsory for 2020.\n\t</div><script>if(getCookie('whichschool')!='yes'){$.get('https://tracking.jake4maths.com/ipstoask.json').done(function(data){if($.inArray('210.55.72.211',data)>-1){$.get('https://tracking.jake4maths.com/whichschool.php').done(function(data){$('#whichschoolholder').html(data);})}})}</script>";
   return content;
 }
 
@@ -3161,6 +3169,7 @@ function newtimeseries(){
 
 	if($('#longtermtrend').is(":checked")){var longtermtrend="yes";} else {var longtermtrend = "no";}
 	if($('#seasonal').is(":checked")){var seasonal="yes";} else {var seasonal = "no";}
+	if($('#addmult option:selected').text()=="Multiplicative"){var multiplicative="yes";} else {var multiplicative = "no";}
 
 	//graph title
 	ctx.fillStyle = '#000000';
@@ -3294,7 +3303,7 @@ function newtimeseries(){
 	if($('#differentaxis').is(":checked")){var differentaxis="yes";} else {var differentaxis = "no";}
 	if($('#startfinish').is(":checked")){var startfinish="yes";} else {var startfinish = "no";}
 
-	if(longtermtrend=='yes'){
+	if(longtermtrend=='yes' || multiplicative=="yes"){
 		stlresponse=stl(tsxpoints,ypoints,seasons);
 		trend = stlresponse[0];
 		fitted = stlresponse[1];
@@ -3332,7 +3341,6 @@ function newtimeseries(){
 	var maxytick=minmaxstep[1];
 	var ystep=minmaxstep[2];
 
-	if($('#addmult option:selected').text()=="Multiplicative"){var multiplicative="yes";} else {var multiplicative = "no";}
 	vertaxis(ctx,gtop,gbottom,left-10*scalefactor,minytick,maxytick,ystep,right+10*scalefactor);
 	if(seasonal=="yes"){
 		seasonright=width/0.7*0.3+right;
@@ -3351,12 +3359,10 @@ function newtimeseries(){
 			}
 			if(zpoints.length>0 && differentaxis!="yes"){
 				stlresponse=stl(tsxpoints,zpoints,seasons);
-				trend = stlresponse[0];
-				fitted = stlresponse[1];
-				s = stlresponse[2];
-				r = stlresponse[3];
-				for (var index in fitted){
-					pointsforminmax.push(fitted[index]/trend[index]);
+				trendz = stlresponse[0];
+				fittedz = stlresponse[1];
+				for (var index in fittedz){
+					pointsforminmax.push(fittedz[index]/trendz[index]);
 				}
 			}
 			var smin = Math.min.apply(null, pointsforminmax);
@@ -3419,11 +3425,13 @@ function newtimeseries(){
 		}
 		xpixel=convertvaltopixel(tsxpoints[index],minxtick,maxxtick,left,right);
 		ypixel=convertvaltopixel(ypoints[index],maxytick,minytick,gtop,gbottom);
+		$('#graphmap').append('<area shape="circle" coords="'+(xpixel/scalefactor)+','+(ypixel/scalefactor)+','+3+'" alt="'+parseInt(add(index,1))+'" desc="Point ID: '+parseInt(add(index,1))+'<br>'+xpoints[index]+'<br>'+$("#yvar option:selected").text()+': '+parseFloat(ypoints[index]).toPrecision(5)+'">');
 		if(index != 0){
 			line(ctx,xpixel,ypixel,lastxpixel,lastypixel);
 		}
 		if(longtermtrend=='yes'){
 			trendpixel=convertvaltopixel(trend[index],maxytick,minytick,gtop,gbottom);
+			$('#graphmap').append('<area shape="circle" coords="'+(xpixel/scalefactor)+','+(trendpixel/scalefactor)+','+3+'" alt="'+parseInt(add(index,1))+'" desc="Point ID: '+parseInt(add(index,1))+'<br>'+xpoints[index]+'<br>'+$("#yvar option:selected").text()+' Trend: '+trend[index].toPrecision(5)+'">');
 			ytrendpts.push(xpixel,trendpixel);
 			if(startfinish=="yes" && (index==0 || index==tsxpoints.length-1)){
 				ctx.textAlign="left";
@@ -3448,12 +3456,15 @@ function newtimeseries(){
 			if(seasonal=='yes'){
 				if(multiplicative=="yes"){
 					seasonypixel=convertvaltopixel(smult[index],maxstick,minstick,gtop,gbottom);
+					seasonalvalue=smult[index];
 				} else {
 					seasonypixel=convertvaltopixel(s[index],maxytick-shiftforseasonal,minytick-shiftforseasonal,gtop,gbottom);
+					seasonalvalue=s[index];
 				}
 				point=parseFloat(tsxpoints[index]);
 				season=Math.round((point-Math.floor(point))*seasons+1);
 				seasonxpixel=convertvaltopixel(season,1,seasons,seasonleft,seasonright);
+				$('#graphmap').append('<area shape="circle" coords="'+(seasonxpixel/scalefactor)+','+(seasonypixel/scalefactor)+','+3+'" desc="Season: '+season+'<br>'+$("#yvar option:selected").text()+' Seasonal Value: '+seasonalvalue.toPrecision(5)+'">');
 				if(season!=1 && index!=0){
 					if(parseFloat(index)<=parseFloat(seasons)){
 						line(ctx,seasonxpixel,seasonypixel,lastseasonxpixel,lastseasonypixel);
@@ -3482,7 +3493,7 @@ function newtimeseries(){
 	}
 
 	if(zpoints.length>0){
-		if(longtermtrend=='yes'){
+		if(longtermtrend=='yes' || multiplicative=="yes"){
 			stlresponse=stl(tsxpoints,zpoints,seasons);
 			trend = stlresponse[0];
 			fitted = stlresponse[1];
@@ -3529,12 +3540,14 @@ function newtimeseries(){
 			if(index != 0){
 				line(ctx,xpixel,ypixel,lastxpixel,lastypixel);
 			}
+			$('#graphmap').append('<area shape="circle" coords="'+(xpixel/scalefactor)+','+(ypixel/scalefactor)+','+3+'" alt="'+parseInt(add(index,1))+'" desc="Point ID: '+parseInt(add(index,1))+'<br>'+xpoints[index]+'<br>'+$("#zvar option:selected").text()+': '+parseFloat(zpoints[index]).toPrecision(5)+'">');
 			if(longtermtrend=='yes'){
 				if(differentaxis=="yes"){
 					trendpixel=convertvaltopixel(trend[index],maxztick,minztick,gtop,gbottom);
 				} else {
 					trendpixel=convertvaltopixel(trend[index],maxytick,minytick,gtop,gbottom);
 				}
+				$('#graphmap').append('<area shape="circle" coords="'+(xpixel/scalefactor)+','+(trendpixel/scalefactor)+','+3+'" alt="'+parseInt(add(index,1))+'" desc="Point ID: '+parseInt(add(index,1))+'<br>'+xpoints[index]+'<br>'+$("#zvar option:selected").text()+' Trend: '+trend[index].toPrecision(5)+'">');
 				ztrendpts.push(xpixel,trendpixel);
 				ctx.lineWidth = 1*scalefactor;
 				if(startfinish=="yes" && (index==0 || index==tsxpoints.length-1)){
@@ -3556,7 +3569,9 @@ function newtimeseries(){
 				if(seasonal=='yes'){
 					if(multiplicative=="yes"){
 						seasonypixel=convertvaltopixel(smult[index],maxstick,minstick,gtop,gbottom);
+						seasonalvalue=smult[index];
 					} else {
+						seasonalvalue=s[index];
 						if(differentaxis=="yes"){
 							seasonypixel=convertvaltopixel(s[index],maxztick-zshiftforseasonal,minztick-zshiftforseasonal,gtop,gbottom);
 						} else {
@@ -3567,6 +3582,7 @@ function newtimeseries(){
 					point=parseFloat(tsxpoints[index]);
 					season=Math.round((point-Math.floor(point))*seasons+1);
 					seasonxpixel=convertvaltopixel(season,1,seasons,seasonleft,seasonright);
+					$('#graphmap').append('<area shape="circle" coords="'+(seasonxpixel/scalefactor)+','+(seasonypixel/scalefactor)+','+3+'" desc="Season: '+season+'<br>'+$("#zvar option:selected").text()+' Seasonal Value: '+seasonalvalue.toPrecision(5)+'">');
 					if(season!=1 && index!=0){
 						
 						if(parseFloat(index)<=parseFloat(seasons)){
@@ -3795,6 +3811,7 @@ function newtimeseriesrecomp(){
 	for (index in tsxpoints){
 		xpixel=convertvaltopixel(tsxpoints[index],minxtick,maxxtick,left,right);
 		ypixel=convertvaltopixel(fitted[index],maxytick,minytick,gtop,gbottom);
+		$('#graphmap').append('<area shape="circle" coords="'+(xpixel/scalefactor)+','+(ypixel/scalefactor)+','+3+'" alt="'+parseInt(add(index,1))+'" desc="Point ID: '+parseInt(add(index,1))+'<br>'+xpoints[index]+'<br>'+$("#yvar option:selected").text()+' Fitted Value: '+fitted[index].toPrecision(5)+'">');
 		if(index != 0){
 			line(ctx,xpixel,ypixel,lastxpixel,lastypixel);
 		}
@@ -3808,8 +3825,10 @@ function newtimeseriesrecomp(){
 	for (index in tsxpoints){
 		xpixel=convertvaltopixel(tsxpoints[index],minxtick,maxxtick,left,right);
 		ypixel=convertvaltopixel(ypoints[index],maxytick,minytick,gtop,gbottom);
+		$('#graphmap').append('<area shape="circle" coords="'+(xpixel/scalefactor)+','+(ypixel/scalefactor)+','+3+'" alt="'+parseInt(add(index,1))+'" desc="Point ID: '+parseInt(add(index,1))+'<br>'+xpoints[index]+'<br>'+$("#yvar option:selected").text()+': '+parseFloat(ypoints[index]).toPrecision(5)+'">');
 		trendpixel=convertvaltopixel(trend[index],maxytick,minytick,gtop,gbottom);
 		trendpts.push(xpixel,trendpixel);
+		$('#graphmap').append('<area shape="circle" coords="'+(xpixel/scalefactor)+','+(trendpixel/scalefactor)+','+3+'" alt="'+parseInt(add(index,1))+'" desc="Point ID: '+parseInt(add(index,1))+'<br>'+xpoints[index]+'<br>'+$("#yvar option:selected").text()+' Trend: '+trend[index].toPrecision(5)+'">');
 		if(startfinish=="yes" && (index==0 || index==tsxpoints.length-1)){
 			ctx.textAlign="left";
 			if(index==0){
@@ -3887,6 +3906,7 @@ function newtimeseriesrecomp(){
 	for (index in tsxpoints){
 		xpixel=convertvaltopixel(tsxpoints[index],minxtick,maxxtick,left,right);
 		ypixel=convertvaltopixel(s[index],maxstick,minstick,gtop,gbottom);
+		$('#graphmap').append('<area shape="circle" coords="'+(xpixel/scalefactor)+','+(ypixel/scalefactor)+','+3+'" alt="'+parseInt(add(index,1))+'" desc="Point ID: '+parseInt(add(index,1))+'<br>'+xpoints[index]+'<br>'+$("#yvar option:selected").text()+' Seasonal Value: '+s[index].toPrecision(5)+'">');
 		if(index != 0){
 			line(ctx,xpixel,ypixel,lastxpixel,lastypixel);
 		}
@@ -3931,6 +3951,7 @@ function newtimeseriesrecomp(){
 	for (index in tsxpoints){
 		xpixel=convertvaltopixel(tsxpoints[index],minxtick,maxxtick,left,right);
 		ypixel=convertvaltopixel(r[index],maxrtick,minrtick,gtop,gbottom);
+		$('#graphmap').append('<area shape="circle" coords="'+(xpixel/scalefactor)+','+(ypixel/scalefactor)+','+3+'" alt="'+parseInt(add(index,1))+'" desc="Point ID: '+parseInt(add(index,1))+'<br>'+xpoints[index]+'<br>'+$("#yvar option:selected").text()+' Redidual Value: '+r[index].toPrecision(5)+'">');
 		if(index != 0){
 			line(ctx,xpixel,ypixel,lastxpixel,lastypixel);
 		}
@@ -3983,10 +4004,10 @@ function stl(xpoints,ypoints,seasons){
 	T=il[0];
 	S=il[1];
 
-	fitted=[];
-	r=[];
-	trend=[];
-	s=[];
+	var fitted=[];
+	var r=[];
+	var trend=[];
+	var s=[];
 	if (multiplicative=="yes"){
 		for(index in ypoints){
 			ypoints[index]=Math.exp(ypoints[index]);
@@ -5103,6 +5124,7 @@ function newtimeseriesseasonaleffects(){
 		season=Math.round((point-year)*seasons+1);
 		xpixel=convertvaltopixel(season,1,seasons,left,right);
 		ypixel=convertvaltopixel(ypoints[index],maxytick,minytick,gtop,gbottom);
+		$('#graphmap').append('<area shape="circle" coords="'+(xpixel/scalefactor)+','+(ypixel/scalefactor)+','+3+'" alt="'+parseInt(add(index,1))+'" desc="Point ID: '+parseInt(add(index,1))+'<br>'+xpoints[index]+'<br>'+$("#yvar option:selected").text()+': '+parseFloat(ypoints[index]).toPrecision(5)+'">');
 		if(season != 1 && index!=0){
 			line(ctx,xpixel,ypixel,lastxpixel,lastypixel);
 		} 
@@ -5127,6 +5149,7 @@ function newtimeseriesseasonaleffects(){
 		ctx.beginPath();
 		ctx.arc(seasonxpixel,seasonypixel,2,0,2*Math.PI);
 		ctx.stroke();
+		$('#graphmap').append('<area shape="circle" coords="'+(seasonxpixel/scalefactor)+','+(seasonypixel/scalefactor)+','+5+'" desc="Season: '+season+'<br>'+$("#yvar option:selected").text()+' Seasonal Value: '+s[index].toPrecision(5)+'">');
 		lastseasonxpixel=seasonxpixel;
 		lastseasonypixel=seasonypixel;
 
@@ -5467,6 +5490,7 @@ function newtimeseriessforecasts(){
 			point=parseFloat(tsxpoints[index]);
 			xpixel=convertvaltopixel(point,minxtick,maxxtick,left,right);
 			ypixel=convertvaltopixel(fitted[index],maxytick,minytick,gtop,gbottom);
+			$('#graphmap').append('<area shape="circle" coords="'+(xpixel/scalefactor)+','+(ypixel/scalefactor)+','+3+'" alt="'+parseInt(add(index,1))+'" desc="Point ID: '+parseInt(add(index,1))+'<br>'+xpoints[index]+'<br>'+$("#yvar option:selected").text()+' Historial Prediction: '+fitted[index].toPrecision(5)+'">');
 			if(index != 0){
 				line(ctx,xpixel,ypixel,lastxpixel,lastypixel);
 			}
@@ -5491,6 +5515,7 @@ function newtimeseriessforecasts(){
 			point=parseFloat(tsxpoints[index]);
 			xpixel=convertvaltopixel(point,minxtick,maxxtick,left,right);
 			ypixel=convertvaltopixel(ypoints[index],maxytick,minytick,gtop,gbottom);
+			$('#graphmap').append('<area shape="circle" coords="'+(xpixel/scalefactor)+','+(ypixel/scalefactor)+','+3+'" alt="'+parseInt(add(index,1))+'" desc="Point ID: '+parseInt(add(index,1))+'<br>'+xpoints[index]+'<br>'+$("#yvar option:selected").text()+': '+parseFloat(ypoints[index]).toPrecision(5)+'">');
 			if(index != 0){
 				line(ctx,xpixel,ypixel,lastxpixel,lastypixel);
 			}
@@ -5512,8 +5537,43 @@ function newtimeseriessforecasts(){
 		
 		for(index in forecasts){
 			point=parseFloat(forecasts[index][0]);
+			year = Math.floor(point);
+			month=Math.round((point-year)*seasons)+1;
+
+			if(seasons==1){
+				split=""
+			} else if(seasons==4){
+				split="Q"
+			} else if(seasons==12){
+				split="M"
+			} else if(seasons==7){
+				split="D"
+			} else if(seasons==5){
+				split="W"
+			} else if(seasons==24){
+				split="H"
+			} else {
+				split="C"
+			}
+			if(seasons==1){
+				month="";
+			} else {
+				i=0;
+				pad="";
+				while(i<seasons.length){
+					pad+="0";
+					i++;
+				}
+				month = (pad+month).slice(-seasons.length);
+				month = split+month;
+			}
+			min = parseFloat(forecastsmin[index].toPrecision(5));
+			pred = parseFloat(forecasts[index][1].toPrecision(5));
+			max = parseFloat(forecastsmax[index].toPrecision(5));
+			
 			xpixel=convertvaltopixel(point,minxtick,maxxtick,left,right);
 			ypixel=convertvaltopixel(forecasts[index][1],maxytick,minytick,gtop,gbottom);
+			$('#graphmap').append('<area shape="circle" coords="'+(xpixel/scalefactor)+','+(ypixel/scalefactor)+','+3+'" desc="'+year+month+'<br>'+$("#yvar option:selected").text()+' Forecast: '+pred+' ('+min+' - '+max+')">');
 			line(ctx,xpixel,ypixel,lastxpixel,lastypixel);
 			lastxpixel = xpixel;
 			lastypixel = ypixel;
