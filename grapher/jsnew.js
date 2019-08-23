@@ -1,17 +1,29 @@
-function newresiduals(){
+function newchangelog(){
+	$.get('./change log.php').done(function(data){
+		var width = $('#width').val()-22;
+		var height = $('#height').val()-22;
+		$('#jsgraph').html("<div style='width:"+width+"px;height:"+height+"px;overflow-y:scroll;padding:10px;text-align:left;'>"+data+"</div>");
+	});
+	return "DISPLLoading...";
+}
 
+function newpiechart(){
 	$('#xvar').show();
 	$('#yvar').show();
-	$('#labelshow').show();
+	$('#zvar').show();
+	$('#var1label').html("category 1:<br><small>required</small>");
+	$('#var2label').html("category 2:<br><small>optional</small>");
+	$('#var3label').html("frequency:<br><small>optional</small>");
+	if($('#color').val() != $('#xvar').val()){
+		$('#color').val($('#xvar').val());
+	};
+	
+	$('#colorlabel').val($('#xaxis').val());
+	
+	$('#regshow').show();
+	$('#sum').show();
 	$('#greyscaleshow').show();
-	$('#sizediv').show();
-	$('#removedpointsshow').show();
-	$('#pointsizename').html('Point Size:');
-	$('#transdiv').show();
-	$('#residualsforcexshow').show();
-	$('#regtypeshow').show();
-	$('#weightedaverageshow').show();
-	$('#color')[0].selectedIndex = 0;
+	$('#donutshow').show();
 	
 	var canvas = document.getElementById('myCanvas');
 	var ctx = canvas.getContext('2d');
@@ -23,6 +35,8 @@ function newresiduals(){
 	ctx.canvas.width = width;
 	ctx.canvas.height = height;
 
+	var colors = makecolors(1,ctx);
+	
 	ctx.fillStyle = "#ffffff";
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -33,233 +47,91 @@ function newresiduals(){
 	ctx.textAlign="center";
 	ctx.fillText($('#title').val(),width/2,30*scalefactor);
 	
-	if($('#residualsforcex').is(":checked")){
-		xtitle="Explanatory";
-		residualsforcex="yes";
-	} else {
-		xtitle="Fitted";
-		residualsforcex="no";
-	}
-	
-	//x-axis title
-	ctx.fillStyle = '#000000';
-	ctx.font = "bold "+15*scalefactor+"px Roboto";
-	ctx.textAlign="center";
-	ctx.fillText(xtitle,width/2,height-10*scalefactor);
-	
-	//y-axis title
-	x=20*scalefactor;
-	y=height/2;
-	ctx.save();
-	ctx.fillStyle = '#000000';
-	ctx.font = "bold "+15*scalefactor+"px Roboto";
-	ctx.translate(x, y);
-	ctx.rotate(-Math.PI/2);
-	ctx.textAlign = "center";
-	ctx.fillText("Residual", 0, 0);
-	ctx.restore();
-	
 	//get points
 	var xpoints = $('#xvar').val().split(",");
 	xpoints.pop();
 	var ypoints = $('#yvar').val().split(",");
 	ypoints.pop();
-
-	//check for numeric value
+	var zpoints = $('#zvar').val().split(",");
+	zpoints.pop();
+	
+	if(xpoints.length==0){
+		return 'Error: You must select a variable for "category 1"';
+	}
+	
 	var points=[];
+	var allpoints=[];
 	var pointsremoved=[];
 	var pointsforminmax=[];
-	var pointsforminmaxy=[];
-	countx=0;
-	county=0;
 	for (var index in xpoints){
-		if($.isNumeric(xpoints[index])){countx++;}
-		if($.isNumeric(ypoints[index])){county++;}
-		if($.isNumeric(xpoints[index]) && $.isNumeric(ypoints[index])){
-			points.push(index);
-			pointsforminmax.push(xpoints[index]);
-			pointsforminmaxy.push(ypoints[index]);
+		allpoints.push(index);
+	}
+	allydifferentgroups = [];
+	
+	if(ypoints.length>0){
+		allydifferentgroups = split(allpoints,ypoints,10,2);
+		if(typeof allydifferentgroups === 'object'){
+			allygroups = Object.keys(allydifferentgroups);
+			allygroups.sort(sortorder).reverse();
+			for (index in allydifferentgroups){
+				group = index;
+				depoints=allydifferentgroups[index];
+				for (index in depoints){
+					point=depoints[index];
+					ypoints[point]=group;
+				}
+
+			}
 		} else {
-			pointsremoved.push(add(index,1));
+			return allydifferentgroups;
 		}
+	} else {
+		allygroups=''
+		allydifferentgroups={};
+		allydifferentgroups['']=allpoints;
 	}
-
-	if(countx==0){
-		return 'Error: You must select a numeric variable for variable 1';
+	
+	numgraphs=Object.keys(allydifferentgroups).length;
+	if(numgraphs<=3){
+		numwidth=numgraphs;
+	} else {
+		numwidth=Math.ceil(Math.sqrt(numgraphs));
 	}
-
-	if(county==0){
-		return 'Error: You must select a numeric variable for variable 2';
-	}
-
-	if(pointsremoved.length!=0 && $('#removedpoints').is(":checked")){
+	
+	numheight=Math.ceil(numgraphs/numwidth);
+	
+	graphwidth=(width-50*scalefactor)/numwidth;
+	graphheight=(height-80*scalefactor)/numheight;
+	
+	left=25*scalefactor;
+	datop=50*scalefactor;
+	
+	$.each(allydifferentgroups,function(group,keys){
+		if($('#regression').is(":checked")){
+			group += " (num: " + keys.length + ")";
+		}
+		
+		if(left>width-30*scalefactor){
+			left=25*scalefactor;
+			datop=datop+graphheight;
+		}
+		
+		centerx=graphwidth/2+left;
+		centery=graphheight/2+datop-20*scalefactor;
+		
+		diameter=Math.min(graphheight-50*scalefactor,graphwidth-10*scalefactor);
+		
+		drawpie(ctx,keys,colors,diameter,centerx,centery,xpoints,zpoints,group);
+				
 		ctx.fillStyle = '#000000';
-		ctx.font = 13*scalefactor+"px Roboto";
-		ctx.textAlign="right";
-		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-40*scalefactor,40*scalefactor);
-	}
-
-	if(points.length==0){
-		return 'Error: You must select a numeric variable for variable 1';
-	}
-	
-	pointstofit = [];
-	for (var index in points){
-		var index = points[index];
-		var xpoint = xpoints[index];
-		var ypoint = ypoints[index];
-		if(xpoint==0){xpoint = xpoint + 0.0000000000001;}
-		if(ypoint==0){ypoint = ypoint + 0.0000000000001;}
-		pointstofit.push([parseFloat(xpoint),parseFloat(ypoint)]);
-	}
-	
-	regtype = $('#regtype').val();
-	
-	fitted = [];
-	
-	if(regtype=="Linear"){
+		fontsize=14*scalefactor;
+		ctx.font = "bold "+fontsize+"px Roboto";
+		ctx.textAlign="center";
+		ctx.fillText(group,centerx,centery+diameter/2+30*scalefactor);
 		
-		res = regression.linear(pointstofit,{
-		  precision: 7,
-		});
-		console.log(res);
-		
-		c = res.equation[1].toPrecision(5);
-		m = res.equation[0].toPrecision(5);
-		
-		for (var index in points){
-			var index = points[index];
-			var xpoint = xpoints[index];
-			fitted[index] = add(m*xpoint,c).toPrecision(5);
-		}
-	} else if (regtype=="Quadratic"){
-		
-		res = regression.polynomial(pointstofit,{
-		  order: 2,
-		  precision: 7,
-		});
-		console.log(res);
-		
-		a = res.equation[0].toPrecision(5);
-		b = res.equation[1].toPrecision(5);
-		c = res.equation[2].toPrecision(5);
-		
-		for (var index in points){
-			var index = points[index];
-			var xpoint = xpoints[index];
-			fitted[index] = add(add(a*xpoint*xpoint,b*xpoint),c).toPrecision(5);
-		}
-		
-	} else if (regtype=="Cubic"){
-		
-		res = regression.polynomial(pointstofit,{
-		  order: 3,
-		  precision: 10,
-		});
-		console.log(res);
-		
-		a = res.equation[0];
-		b = res.equation[1];
-		c = res.equation[2];
-		d = res.equation[3];
-		
-		for (var index in points){
-			var index = points[index];
-			var xpoint = xpoints[index];
-			fitted[index] = add(add(add(a*xpoint*xpoint*xpoint,b*xpoint*xpoint),c*xpoint),d).toPrecision(5);
-		}
-		
-	} else if (regtype=="y=a*exp(b*x)"){
-		
-		res = regression.exponential(pointstofit,{
-		  precision: 7,
-		});
-		console.log(res);
-		
-		a = res.equation[0].toPrecision(5);
-		b = res.equation[1].toPrecision(5);
-		
-		for (var index in points){
-			var index = points[index];
-			var xpoint = xpoints[index];
-			fitted[index] = (a * Math.exp(b*xpoint)).toPrecision(5);
-		}
-		
-	} else if (regtype=="y=a*ln(x)+b"){
-		
-		res = regression.logarithmic(pointstofit,{
-		  precision: 7,
-		});
-		console.log(res);
-		
-		a = res.equation[1].toPrecision(5);
-		b = res.equation[0].toPrecision(5);
-		
-		for (var index in points){
-			var index = points[index];
-			var xpoint = xpoints[index];
-			if(xpoint==0){xpoint = xpoint + 0.0000000000001;}
-			fitted[index] = add(a * Math.log(xpoint),b).toPrecision(5);
-		}
-		
-	} else if (regtype=="y=a*x^b"){
-		
-		res = regression.power(pointstofit,{
-		  precision: 7,
-		});
-		console.log(res);
-		
-		a = res.equation[0].toPrecision(5);
-		b = res.equation[1].toPrecision(5);
-		
-		for (var index in points){
-			var index = points[index];
-			var xpoint = xpoints[index];
-			fitted[index] = (a * Math.pow(xpoint,b)).toPrecision(5);
-		}
-		
-	}
-	
-	residuals=[];
-	var pointsforminmax=[];
-	var pointsforminmaxy=[];
-		
-	for (var index in points){
-		var index = points[index];
-		var ypoint = ypoints[index];
-		var fit = fitted[index];
-		residuals[index] = (ypoint-fit).toPrecision(5);
-		pointsforminmaxy.push(ypoint-fit);
-		if(residualsforcex=="yes"){
-			fitted[index] = xpoints[index];
-			fit = xpoints[index];
-		}
-		pointsforminmax.push(fit);
-	}
-	
-	var alpha = 1-$('#trans').val()/100;
-	var colors = makecolors(alpha,ctx);
-
-	xmin = Math.min.apply(null, pointsforminmax);
-	xmax = Math.max.apply(null, pointsforminmax);
-	ymin = Math.min.apply(null, pointsforminmaxy);
-	ymax = Math.max.apply(null, pointsforminmaxy);
-	
-	var minmaxstep = axisminmaxstep(xmin,xmax);
-	var minxtick=minmaxstep[0];
-	var maxxtick=minmaxstep[1];
-	var xstep=minmaxstep[2];
-	var minmaxstep = axisminmaxstep(ymin,ymax);
-	var minytick=minmaxstep[0];
-	var maxytick=minmaxstep[1];
-	var ystep=minmaxstep[2];
-
-	var left=90*scalefactor;
-	var right=width-60*scalefactor;
-	var gtop=90*scalefactor;
-	var bottom=height-60*scalefactor;
-	
-	plotscatter(ctx,points,fitted,residuals,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,left,right,colors);
+		left+=graphwidth;
+			
+	});
 	
 	labelgraph(ctx,width,height);
 	
@@ -269,5 +141,119 @@ function newresiduals(){
 
 	var dataURL = canvas.toDataURL();
 	return dataURL;
+}
+
+function drawpie(ctx,keys,colors,diameter,centerx,centery,xpoints,zpoints,group){
+	if(zpoints.length>0){
+		total = 0;
+		$.each(keys,function(i,key){
+			total = add(total,zpoints[key]);
+		})
+	} else {
+		total = keys.length;
+	}
+	if(total==0){total=1;}
+	angleperitem = 2*Math.PI / total;
+	
+	var counts = {};
+	
+	$.each(keys,function(i,key){
+		value = xpoints[key];
+		if(counts[value]){
+			if(zpoints.length>0){
+				counts[value]['count']=add(counts[value]['count'],zpoints[key]);
+			} else {
+				counts[value]['count']+=1;
+			}
+		} else {
+			counts[value]=[];
+			if(zpoints.length>0){
+				counts[value]['count']=zpoints[key];
+			} else {
+				counts[value]['count']=1;
+			}
+			counts[value]['color']=colors[key];
+			counts[value]['name']=value;
+		}
+	})
+	
+	angle = -Math.PI/2;
+	ctx.strokeStyle = 'rgb(0,0,0)';
+	ctx.lineWidth = 1*scalefactor;
+	
+	const ordered = {};
+	Object.keys(counts).sort().forEach(function(key) {
+	  ordered[key] = counts[key];
+	});
+	
+	$.each(ordered,function(i,data){
+		thisangle = data.count*angleperitem;
+		ctx.fillStyle = data.color;
+		ctx.beginPath();
+		ctx.moveTo(centerx,centery);
+		ctx.arc(centerx,centery,diameter/2,angle,angle+thisangle);
+		ctx.moveTo(centerx,centery);
+		ctx.closePath();
+		ctx.fill();
+		angle += thisangle;
+		
+	});
+	
+	
+	$.each(ordered,function(i,data){
+		thisangle = data.count*angleperitem;
+		ctx.fillStyle = data.color;
+		ctx.beginPath();
+		ctx.moveTo(centerx,centery);
+		ctx.arc(centerx,centery,diameter/2,angle,angle+thisangle);
+		ctx.moveTo(centerx,centery);
+		ctx.closePath();
+		ctx.stroke();
+		
+		half=(angle+angle+thisangle)/2;
+		pix_x=diameter*0.4*Math.cos(half)+centerx;
+		pix_y=diameter*0.4*Math.sin(half)+centery;
+		
+		ctx.fillStyle = '#000000';
+		fontsize=11*scalefactor;
+		ctx.font = "bold "+fontsize+"px Roboto";
+		ctx.textAlign="center";
+		ctx.fillText(data.name,pix_x,pix_y);
+		if($('#regression').is(":checked")){
+			display = "(num: " + data.count + ")";
+			ctx.fillText(display,pix_x,pix_y+fontsize);
+		}
+		
+		points = centerx/scalefactor+","+centery/scalefactor;
+		startangle = angle;
+		i=0;
+		while(i<=10){
+			l=(diameter*0.5*Math.cos(startangle)+centerx)/scalefactor;
+			t=(diameter*0.5*Math.sin(startangle)+centery)/scalefactor;
+			ctx.lineTo(l,t);
+			points+=","+l+","+t;
+			startangle+=thisangle/10;
+			i++;
+		}
+		points += ","+centerx/scalefactor+","+centery/scalefactor;
+		desc=$('#xaxis').val()+": "+data.name + "<br>"+$('#yaxis').val()+": "+group + "<br>num: " + data.count + "<br>" + (data.count/keys.length*100).toFixed(1) + "% of "+group;
+		$('#graphmap').append('<area shape="poly" coords="'+points+'" desc="'+desc+'">');
+		
+		angle += thisangle;
+	});
+	
+	
+	if($('#donut').is(":checked")){
+		ctx.fillStyle = 'rgb(255,255,255)';
+		ctx.beginPath();
+		ctx.arc(centerx,centery,diameter*0.3,0,2*Math.PI);
+		ctx.closePath();
+		ctx.fill();
+		ctx.stroke();
+	}
+		
+	ctx.beginPath();
+	ctx.arc(centerx,centery,diameter/2,0,2*Math.PI);
+	ctx.stroke();
 	
 }

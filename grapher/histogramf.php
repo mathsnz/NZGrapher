@@ -454,6 +454,7 @@ $xpoints=$odata[strval($category)];
 $med=Quartile($xpoints,0.5);
 $mean=format_number_significant_figures(array_sum($xpoints)/count($xpoints),5);
 $num=count($xpoints);
+$sd=format_number_significant_figures(sd($xpoints),5);
 
 foreach ($values as $xbucket => $freq){
 	$x1=($axiswidth-80)*($xbucket-$minxtick)/($maxxtick-$minxtick)+70;
@@ -471,6 +472,7 @@ if($regression=="yes") {
 	imagettftext($plot, 8, 0, 60, $top, $red, $reg, "med:  $med");
 	imagettftext($plot, 8, 0, 60, $top+10, $red, $reg, "mean:  $mean");
 	imagettftext($plot, 8, 0, 60, $top+20, $red, $reg, "num:  $num");
+	imagettftext($plot, 8, 0, 60, $top+30, $red, $reg, "sd:  $sd");
 }
 
 // copy the temp image back to the subset image

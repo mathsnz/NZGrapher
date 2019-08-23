@@ -1,81 +1,21 @@
-<html>
-		<head>
-			<link href='//fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
-			<style>
-				body {
-					font-family: 'Roboto', sans-serif;
-				}
-				table {
-					border-collapse:collapse;
-				}
-				td, th {
-					border:1px solid #000;
-					padding-left:4px;
-					padding-right:4px;
-					width:80px;
-				}
-				*.minmax {
-					color:#bbb;
-				}
-				#content {
-					position:absolute;
-					top:0px;
-					left:0px;
-					<?php
-						echo "width: ";
-						if(isset($_POST['width'])){
-							echo $_POST['width']-20;
-							echo "px;
-							";
-						} else {
-							echo "100%;
-							";
-						}
-						echo "height: ";
-						if(isset($_POST['height'])){
-							echo $_POST['height']-20;
-							echo "px;
-							";
-						} else {
-							echo "100%;
-							";
-						}
-					?>
-					overflow-y:scroll;
-					padding:10px;
-				}
-			</style>
-
-	<script type="text/javascript">
-
-	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', 'UA-19339458-1']);
-	  _gaq.push(['_trackPageview']);
-
-	  (function() {
-		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	  })();
-
-	</script>
-
-		</head>
-	<body>
-	<div id=content>
-	<center>
+<center>
 	<h1><img src='logob.png' style='position:relative;top:22px;height:65px;'> Change Log</h1>
-	</center>
+</center>
 <?php
 /*
 To Do List
 - Custom height/width graphs
-- Colour points in residuals graph
-- Escape titles on graphs.
-*************************
-- Look into adding a file from a URL
 */
 ?>
+	<b>2019-08-23</b><ul>
+		<li>Rebuild of Pie Charts, changing colours used, giving option for Donut graphs, and adding hovers.</li>
+		<li>Rebuild of Change Log.</li>
+		<li>Added ability colour points on residuals graphs.</li>
+		<li>Changed location of 'Reset' to inside the 'Data' menu.</li>
+		<li>Added new 'Teaching Tools' menu.</li>
+		<li>Big revamp to sampling variability teaching tool.</li>
+		<li>Changes to variable labels on dotplot.</li>
+	</ul>
 	<b>2019-07-22</b><ul>
 		<li>Added hover boxes for Time Series Graphs.</li>
 		<li>Changing method of data collection for usage.</li>
@@ -523,8 +463,3 @@ To Do List
 	</ul>
 	<b>2014-07-28</b><br>
 	Changes prior to this date were not logged
-	</div>
-
-	</div>
-	</body>
-</html>

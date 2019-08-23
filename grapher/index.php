@@ -51,12 +51,57 @@
 </head>
 <body>
 <script>
-if (screen.availWidth < 760)
+if (screen.availWidth < 1024)
 {
     var mvp = document.getElementById('vp');
     mvp.setAttribute('content','width=1024');
 }
 </script>
+<div id=welcome <?php
+	if(isset($_COOKIE['welcome'])){
+		echo " style='display:none'";
+	}
+?>>
+	<div id=welcomecontent style='text-align:center;'>
+		<br>
+		<span style='display:block;width:100%;text-align:center'><img src='logob.png' style='max-height:70px;'></span>
+		<table style='width:100%;margin-bottom:5px;max-width: 800px;margin: 0 auto;'>
+			<tr>
+				<td style='width:50%;border-right:1px solid #ccc;padding-right:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
+					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Need Help?</b></span><br>
+					If you're not sure where to start watching <a target='_blank' href='//www.mathsnz.com/nzgrapher-info/video-tutorials'>these videos</a> is a good idea.<br>
+					<br>
+					There is all the infomation on the graphs and datasets and tutorials on how to use NZGrapher over on <a target='_blank' href='https://www.mathsnz.com/nzgrapher-info'>MathsNZ</a>.<br>
+					<br>
+					Something not working or have an idea to make NZGrapher better... please <a target='_blank' href='//www.mathsnz.com/contact'>let me know</a>.<br>
+				<td style='width:50%;padding-left:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
+					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Cost</b></span><br>
+					NZGrapher is free for non-commercial <b>individual</b> use, you can however <a target='_blank' href='https://www.mathsnz.com/donate'>make a donation</a>.<br>
+					<br>
+					<b>Schools</b> are required to subscribe at a minimum of $0.50 per student using NZGrapher. <b>Commerial users</b> are also required to pay. Please visit the <a target='_blank' href='https://www.mathsnz.com/nzgrapher-invoice'>invoice creator</a> for details.<br>
+					<br>
+					This is optional for 2019, but will be compulsory for 2020.<br>
+			</tr>
+		</table>
+		<br>
+		<div style='max-width: 800px;margin: 0 auto;display: inline-block;border: none; position: relative;'>
+		<?php
+			if(strpos($_SERVER['SERVER_NAME'],'jake4maths.com')>0){
+				echo "The version of NZGrapher you are using is hosted on my server.<br>";
+			} else {
+				echo "The version of NZGrapher you are using is not hosted on my server... if it's not working properly first make sure it is up to date, then check with your IT person... if they can't work out what is wrong let me know.<br>";
+			};
+
+		?>
+		<br>By pressing the button below you are acknowledging that NZGrapher uses cookies, and if you acting on behalf of a school, you are agreeing to the costs associated... if you're not happy with this don't use this website.<br>
+		<button class=button style='font-size:15px;margin-top:10px;' onclick="$('#welcome').hide();document.cookie='welcome=yes; expires=<?php
+			echo date(DateTime::RSS, strtotime('24 hours'));
+		?>'">Start Using NZGrapher</button>
+		</div>
+		
+	</div>
+</div>
+
 <div id=tour onclick="document.getElementById('tour').style.display='none';document.cookie='overlay=none';" style='display:none';>
 <table style='position:absolute;width:80%;height:80%;top:10%;left:10%;'>
 	<tr><td style='vertical-align:top;text-align:left;'>
@@ -245,7 +290,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 <div class=abutton id=rowshowhide>Row</div> <div class=spacer></div>
 <div class=abutton id=colshowhide>Column</div> <div class=spacer></div>
 <div class=abutton id=samshowhide>Sample and More</div> <div class=spacer></div>
-<div class=abutton id=reset>Reset</div> <div class=spacer></div>
+<div class=abutton id=teachingtoolsshowhide>Teaching Tools</div> <div class=spacer></div>
 <div class=abutton id=update>Save Changes</div> <div class=spacer></div>
 <div class=abutton id=helper>Help</div>
 </div>
@@ -257,6 +302,12 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/dataset-information','_blank');try{ga('send', 'event', 'Function', 'Help - Dataset Infomation', '');} catch(err) {console.log(err.message);}">Dataset Information</li>
 	<li onclick="document.getElementById('welcome').style.display='block';try{ga('send', 'event', 'Function', 'Help - Show Welcome', '');} catch(err) {console.log(err.message);}">Show Welcome</li>
 	<li onclick="document.getElementById('tour').style.display='block';try{ga('send', 'event', 'Function', 'Help - Show Overlay', '');} catch(err) {console.log(err.message);}">Show Overlay</li>
+</ul>
+</div>
+
+<div class="callout popup" id=teachingtoolsbox>
+<ul>
+	<li id=samvar>Sampling Variability</li>
 </ul>
 </div>
 
@@ -284,6 +335,7 @@ if(substr($dataset,0,6)!="SECURE"){
 	echo "<li><a href='#' id=download style='text-decoration:none;color:#000;'>Download Data</a></li>";
 }
 ?>
+	<li id=reset>Reset</li>
 </ul>
 </div>
 
@@ -298,7 +350,6 @@ if(substr($dataset,0,6)!="SECURE"){
 <div class="callout popup" id=sambox>
 <ul>
 	<li id=sample>Sample</li>
-	<li id=samvar>Sampling Variability</li>
 	<li id=sort>Sort</li>
 	<li id=reorder>Reorder Variable</li>
 	<li id=newvar>Create New Variable (From 2 Variables)</li>
@@ -323,7 +374,12 @@ if(substr($dataset,0,6)!="SECURE"){
 		<table id=samvartable style='text-size:14px;'>
 			<tr><td> <td><input id="samvar-">
 		</table><br>
-		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvargo>(Re)Sample</a><br><br><br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvargo>(Re)Sample</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvaranimateslow>Animate (Slow)</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvaranimatefast>Animate (Fast)</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvarstop>Stop</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' onclick="$('#reset').click();">Reset Data</a>
+		<br><br><br>
 		Often it is useful to <b>fix the axis</b> when looking at scatter graphs and or dot plots.<br><br>
 		<span href='#' style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick='lockaxis()'>Lock Axis Values</span>
 		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="$('#options input').val('auto');">Reset</span>
@@ -468,7 +524,7 @@ echo "\n</table></body></html>";
 <div id=variable>
 <form action="scatter.php" method="post" target="graph" id=form>
 <table style='margin-left:3px;'>
-<tr><td>variable 1: <td style='width:125px'>
+<tr><td><span id=var1label>variable 1:</span><td style='width:125px'>
 <select style='width:120px;display:none;' onChange="document.getElementById('xaxis').value=this.options[this.selectedIndex].text;updategraph();" name=xvals id=xvar>
 	<option value=" "> </option>
 </select><td>Graph Type: <td>
@@ -481,7 +537,7 @@ echo "\n</table></body></html>";
 	<option value='bar and area graph'>Bar Graph (and Area Graph)</option>
 	<option value='histogram'>Histogram</option>
 	<option value='histogramf'>Histogram - Summary Data</option>
-	<option value='pie chart'>Pie Chart</option>
+	<option value='newpiechart'>Pie Chart</option>
 	<option value='newscatter'>Scatter Graph</option>
 	<option value='newresiduals'>Residuals Plot</option>
 	<option disabled></option>
@@ -499,15 +555,15 @@ echo "\n</table></body></html>";
 	<option value='newtimeseriesseasonaleffects'>&nbsp;&nbsp;&nbsp;Seasonal Effects</option>
 	<option value='newtimeseriessforecasts'>&nbsp;&nbsp;&nbsp;Forecasts</option>
 	<option disabled></option>
-	<option value='change log'>Change Log</option>
+	<option value='newchangelog'>Change Log</option>
 	<option value='update'>Update</option>
 </select>
-<tr><td>variable 2: <td>
+<tr><td><span id=var2label>variable 2:</span><td>
 <select style='width:120px;display:none;' onChange="document.getElementById('yaxis').value=this.options[this.selectedIndex].text;updategraph();" name=yvals id=yvar>
 </select>
 <td>Colour by: <td>
 <select style='width:120px;display:none' onChange="document.getElementById('colorlabel').value=this.options[this.selectedIndex].text;updategraph();" name=color id=color>
-<tr><td>variable 3: <td>
+<tr><td><span id=var3label>variable 3:</span><td>
 <select style='width:120px;display:none;' onChange="updategraph();" name=zvals id=zvar>
 </select>
 <td>
@@ -550,50 +606,6 @@ echo "\n</table></body></html>";
 </form>
 </div>
 
-<div id=welcome <?php
-	if(isset($_COOKIE['welcome'])){
-		echo " style='display:none'";
-	}
-?>>
-	<div id=welcomecontent style='text-align:center;'>
-		<br>
-		<span style='display:block;width:100%;text-align:center'><img src='logob.png' style='max-height:70px;'></span>
-		<table style='width:100%;margin-bottom:5px;max-width: 800px;margin: 0 auto;'>
-			<tr>
-				<td style='width:50%;border-right:1px solid #ccc;padding-right:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
-					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Need Help?</b></span><br>
-					If you're not sure where to start watching <a target='_blank' href='//www.mathsnz.com/nzgrapher-info/video-tutorials'>these videos</a> is a good idea.<br>
-					<br>
-					There is all the infomation on the graphs and datasets and tutorials on how to use NZGrapher over on <a target='_blank' href='https://www.mathsnz.com/nzgrapher-info'>MathsNZ</a>.<br>
-					<br>
-					Something not working or have an idea to make NZGrapher better... please <a target='_blank' href='//www.mathsnz.com/contact'>let me know</a>.<br>
-				<td style='width:50%;padding-left:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
-					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Cost</b></span><br>
-					NZGrapher is free for non-commercial <b>individual</b> use, you can however <a target='_blank' href='https://www.mathsnz.com/donate'>make a donation</a>.<br>
-					<br>
-					<b>Schools</b> are required to subscribe at a minimum of $0.50 per student using NZGrapher. <b>Commerial users</b> are also required to pay. Please visit the <a target='_blank' href='https://www.mathsnz.com/nzgrapher-invoice'>invoice creator</a> for details.<br>
-					<br>
-					This is optional for 2019, but will be compulsory for 2020.<br>
-			</tr>
-		</table>
-		<br>
-		<div style='max-width: 800px;margin: 0 auto;display: inline-block;border: none; position: relative;'>
-		<?php
-			if(strpos($_SERVER['SERVER_NAME'],'jake4maths.com')>0){
-				echo "The version of NZGrapher you are using is hosted on my server.<br>";
-			} else {
-				echo "The version of NZGrapher you are using is not hosted on my server... if it's not working properly first make sure it is up to date, then check with your IT person... if they can't work out what is wrong let me know.<br>";
-			};
-
-		?>
-		<br>By pressing the button below you are acknowledging that NZGrapher uses cookies, and if you acting on behalf of a school, you are agreeing to the costs associated... if you're not happy with this don't use this website.<br>
-		<button class=button style='font-size:15px;margin-top:10px;' onclick="$('#welcome').hide();document.cookie='welcome=yes; expires=<?php
-			echo date(DateTime::RSS, strtotime('24 hours'));
-		?>'">Start Using NZGrapher</button>
-		</div>
-		
-	</div>
-</div>
 <div id=graphdiv>
 <div id=jsgraph></div>
 <canvas id="myCanvas" width="600" height="400" style='display:none'></canvas>
@@ -721,6 +733,9 @@ echo "\n</table></body></html>";
 			</span>
 			<span id=removedpointsshow><label>
 				<input type="checkbox" onclick="updategraph();" id="removedpoints" name="removedpoints" value="yes" checked> Show ID of Removed Points</label><br>
+			</span>
+			<span id=donutshow><label>
+				<input type="checkbox" onclick="updategraph();" id="donut" name="donut" value="yes"> Donut</label><br>
 			</span>
 			<span id=grayscaleshow><label>
 				<input type="checkbox" onclick="updategraph();" id="grayscale" name="grayscale" value="yes"> Gray Scale <br>(do not use on Firefox)</label><br>
