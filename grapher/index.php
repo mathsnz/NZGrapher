@@ -27,7 +27,7 @@
 		echo $v;
 	?>"></script>
 	<meta name="description" content="NZGrapher is a web based graphing tool. NZ Grapher was designed for New Zealand Schools by a New Zealand Teacher.">
-	<link rel="canonical" href="https://grapher.jake4maths.com/" />
+	<link rel="canonical" href="https://grapher.nz/" />
 	<link rel="apple-touch-icon" sizes="57x57" href="./icon/apple-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="./icon/apple-icon-60x60.png">
 	<link rel="apple-touch-icon" sizes="72x72" href="./icon/apple-icon-72x72.png">
@@ -62,10 +62,10 @@ if (screen.availWidth < 1024)
 		echo " style='display:none'";
 	}
 ?>>
-	<div id=welcomecontent style='text-align:center;'>
+	<div id=welcomecontent style='text-align:center;font-size:90%;'>
 		<br>
 		<span style='display:block;width:100%;text-align:center'><img src='logob.png' style='max-height:70px;'></span>
-		<table style='width:100%;margin-bottom:5px;max-width: 800px;margin: 0 auto;'>
+		<table style='width:100%;margin-bottom:5px;max-width: 800px;margin: 0 auto;font-size:100%;'>
 			<tr>
 				<td style='width:50%;border-right:1px solid #ccc;padding-right:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
 					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Need Help?</b></span><br>
@@ -85,18 +85,35 @@ if (screen.availWidth < 1024)
 		</table>
 		<br>
 		<div style='max-width: 800px;margin: 0 auto;display: inline-block;border: none; position: relative;'>
+		By pressing the button below you are acknowledging that NZGrapher uses cookies, and if you acting on behalf of a school, you are agreeing to the costs associated... if you're not happy with this don't use this website.<br>
+		<button class=button style='font-size:15px;margin-top:10px;' onclick="$('#welcome').hide();document.cookie='welcome=yes; expires=<?php
+			echo date(DateTime::RSS, strtotime('24 hours'));
+		?>'">Start Using NZGrapher</button><br>
+		<br>
+		<div style='text-align:left;max-width: 800px;margin: 0 auto;display: inline-block;border: none; position: relative;'>
+		<span style="display:block;font-size:150%;"><b>New in this version of NZGrapher (<?php echo $v; ?>)</b></span>
+		<ul id=whatsnew>
+		
+		</ul>
+		Full changes can be seen by changing the graph type to 'Change Log'.<br>
+		<br>
 		<?php
-			if(strpos($_SERVER['SERVER_NAME'],'jake4maths.com')>0){
+			if(strpos($_SERVER['SERVER_NAME'],'jake4maths.com')>0 && strpos($_SERVER['SERVER_NAME'],'grapher.nz')>0){
 				echo "The version of NZGrapher you are using is hosted on my server.<br>";
 			} else {
 				echo "The version of NZGrapher you are using is not hosted on my server... if it's not working properly first make sure it is up to date, then check with your IT person... if they can't work out what is wrong let me know.<br>";
 			};
 
 		?>
-		<br>By pressing the button below you are acknowledging that NZGrapher uses cookies, and if you acting on behalf of a school, you are agreeing to the costs associated... if you're not happy with this don't use this website.<br>
-		<button class=button style='font-size:15px;margin-top:10px;' onclick="$('#welcome').hide();document.cookie='welcome=yes; expires=<?php
-			echo date(DateTime::RSS, strtotime('24 hours'));
-		?>'">Start Using NZGrapher</button>
+		<br>
+		</div>
+		<script>
+		$.get('./change log.php').done(function(data){
+			data = data.substr(0,data.indexOf('</ul>'));
+			data = data.substr(data.indexOf('<ul>')+4);
+			$('#whatsnew').html(data);
+		});
+		</script>
 		</div>
 		
 	</div>
@@ -545,8 +562,8 @@ echo "\n</table></body></html>";
 	<option value='newbootstrapcimedian'>Bootstrap Confidence Interval - Median</option>
 	<option value='newbootstrapcimean'>Bootstrap Confidence Interval - Mean</option>
 	<option disabled></option>
-	<option value='re-randomisation - median'>Re-Randomisation - Median</option>
-	<option value='re-randomisation - mean'>Re-Randomisation - Mean</option>
+	<option value='newrerandmedian'>Re-Randomisation - Median</option>
+	<option value='newrerandmean'>Re-Randomisation - Mean</option>
 	<option disabled></option>
 	<option value='paired experiment'>Paired Experiment Dot Plot (and Arrows Graph)</option>
 	<option disabled></option>

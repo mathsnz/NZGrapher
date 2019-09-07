@@ -63,8 +63,9 @@ $lightgrey = imagecolorallocatealpha($im, 100, 100, 100, 126);
 $red = imagecolorallocate($im, 255, 0, 0);
 $green = imagecolorallocate($im, 0, 255, 0);
 $blue = imagecolorallocate($im, 0, 0, 255);
-$reg = './Roboto-Regular.ttf';
-$bold = './Roboto-Bold.ttf';
+putenv('GDFONTPATH=' . realpath('.'));
+$reg = realpath('./Roboto-Regular.ttf');
+$bold = realpath('./Roboto-Bold.ttf');
 
 //make image white
 imagefill ($im, 0, 0, $white);
