@@ -7,8 +7,11 @@ To Do List
 - Custom height/width graphs
 */
 ?>
-	<b>2019-09-07</b><ul>
+	<b>2019-09-11</b><ul>
 		<li>New <a href='https://youtu.be/Mj8jwAmqCGY' target='_blank'>video guide showing how to use the Sampling Variability teaching tool</a>.</li>
+		<li>Bug fix for extreme differences on re-randomisation modules.</li>
+	</ul>
+	<b>2019-09-07</b><ul>
 		<li>Rebuild of the re-randomisation modules.</li>
 		<li>Change to welcome screen to show new features.</li>
 	</ul>

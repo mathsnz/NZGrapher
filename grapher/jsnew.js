@@ -115,28 +115,7 @@ function rerand(mm){
 	if($.isNumeric($('#boxplotmax').val())){
 		xmax=$('#boxplotmax').val();
 	}
-	var minmaxstep = axisminmaxstep(xmin,xmax);
-	var minxtick=minmaxstep[0];
-	var maxxtick=minmaxstep[1];
-	var xstep=minmaxstep[2];
-
-	horaxis(ctx,left,right,add(oypixel,10*scalefactor),minxtick,maxxtick,xstep);
-
-	var alpha = 1-$('#trans').val()/100;
-
-	colors = makeblankcolors(xpoints.length,alpha);
-
-	for (var index in allydifferentgroups){
-		plotdotplot(ctx,allydifferentgroups[index],xpoints,minxtick,maxxtick,oypixel,left,right,maxheight,colors,2,1);
-		ctx.fillStyle = '#000000';
-		fontsize = 15*scalefactor;
-		ctx.font = "bold "+fontsize+"px Roboto";
-		ctx.textAlign="right";
-		ctx.fillText(index,right+10,oypixel-maxheight/2);
-		oypixel = oypixel-maxheight;
-	}
-
-
+	
 	//graph title
 	ctx.fillStyle = '#000000';
 	fontsize = 20*scalefactor;
@@ -199,6 +178,43 @@ function rerand(mm){
 		reverse=-1;
 	} else {
 		reverse=1;
+	}
+	
+	var minmaxstep = axisminmaxstep(xmin,xmax);
+	var minxtick=minmaxstep[0];
+	var maxxtick=minmaxstep[1];
+	var xstep=minmaxstep[2];
+	
+	// set up axis for bootstrap
+	steps=(maxxtick-minxtick)/xstep;
+	
+	offset=minxtick+xstep*Math.floor(steps/2);
+	offset=-offset;
+	offset=Math.floor(offset/xstep);
+	offset=xstep*offset;
+	bottomminxtick=minxtick+offset;
+	bottommaxxtick=maxxtick+offset;
+	
+	if(bottommaxxtick<diff){
+		console.log(diff);
+		maxxtick += Math.ceil((diff-bottommaxxtick)/xstep+1)*xstep;
+		minxtick -= Math.ceil((diff-bottommaxxtick)/xstep+1)*xstep;
+	}
+
+	horaxis(ctx,left,right,add(oypixel,10*scalefactor),minxtick,maxxtick,xstep);
+
+	var alpha = 1-$('#trans').val()/100;
+
+	colors = makeblankcolors(xpoints.length,alpha);
+
+	for (var index in allydifferentgroups){
+		plotdotplot(ctx,allydifferentgroups[index],xpoints,minxtick,maxxtick,oypixel,left,right,maxheight,colors,2,1);
+		ctx.fillStyle = '#000000';
+		fontsize = 15*scalefactor;
+		ctx.font = "bold "+fontsize+"px Roboto";
+		ctx.textAlign="right";
+		ctx.fillText(index,right+10,oypixel-maxheight/2);
+		oypixel = oypixel-maxheight;
 	}
 
 	if(mm=='median'){
