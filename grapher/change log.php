@@ -8,7 +8,7 @@ To Do List
 */
 ?>
 	<b>2019-10-08</b><ul>
-		<li>New Re-Rndomisation teaching tool.</li>
+		<li>New Re-Randomisation teaching tool.</li>
 		<li>New <a href='https://youtu.be/ttnhFlTUSag' target='_blank'>video guide showing how to use the Re-Randomisation teaching tool</a>.</li>
 		<li>Remove Google advertising from NZGrapher.</li>
 		<li>Update welcome screen to make it more intuitive to dismiss.</li>
