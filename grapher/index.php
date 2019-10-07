@@ -57,12 +57,12 @@ if (screen.availWidth < 1024)
     mvp.setAttribute('content','width=1024');
 }
 </script>
-<div id=welcome <?php
+<div id=welcome onclick="$('#hidewelcome').click()" <?php
 	if(isset($_COOKIE['welcome'])){
 		echo " style='display:none'";
 	}
 ?>>
-	<div id=welcomecontent style='text-align:center;font-size:90%;'>
+	<div id=welcomecontent onclick="event.stopPropagation()" style='text-align:center;font-size:90%;'>
 		<br>
 		<span style='display:block;width:100%;text-align:center'><img src='logob.png' style='max-height:70px;'></span>
 		<table style='width:100%;margin-bottom:5px;max-width: 800px;margin: 0 auto;font-size:100%;'>
@@ -86,7 +86,7 @@ if (screen.availWidth < 1024)
 		<br>
 		<div style='max-width: 800px;margin: 0 auto;display: inline-block;border: none; position: relative;'>
 		By pressing the button below you are acknowledging that NZGrapher uses cookies, and if you acting on behalf of a school, you are agreeing to the costs associated... if you're not happy with this don't use this website.<br>
-		<button class=button style='font-size:15px;margin-top:10px;' onclick="$('#welcome').hide();document.cookie='welcome=yes; expires=<?php
+		<button class=button style='font-size:15px;margin-top:10px;' id=hidewelcome onclick="$('#welcome').hide();document.cookie='welcome=yes; expires=<?php
 			echo date(DateTime::RSS, strtotime('24 hours'));
 		?>'">Start Using NZGrapher</button><br>
 		<br>
@@ -325,6 +325,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 <div class="callout popup" id=teachingtoolsbox>
 <ul>
 	<li id=samvar>Sampling Variability</li>
+	<li id=rerand>Re-Randomisation</li>
 </ul>
 </div>
 
@@ -380,28 +381,61 @@ if(substr($dataset,0,6)!="SECURE"){
 </div>
 
 <div id=left>
-<div id="samvardiv" style="display:none;z-index:19;position:absolute;top:30px;left:30px;right:30px;bottom:30px;text-align:center;padding-top:30px;">
+<div id="samvardiv" style="display:none;z-index:11;position:absolute;top:30px;left:30px;right:30px;bottom:30px;text-align:center;padding:10px;overflow-y: auto;">
 	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>Sampling Variability</div>
 	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#data').html($('#presampledataholder').html());$('#data td div').attr('contenteditable','true');updatebox();$('#samvardiv').hide();">&times;</div><br>
 	<span id=samvarcontents style="font-size:14px">
-		This section lets you re-sample the same data while looking at a graph to see what happens when you take repeated samples. This is really useful for looking at sampling variability.<br>
+		This section lets you re-sample the same data while looking at a graph to see what happens when you take repeated samples.<br>
+		This is really useful for teaching sampling variability.<br>
+		You can see a <a href='https://www.mathsnz.com/nzgrapher-info/teaching-tools' target='_blank'>video tutorial on how to use this here</a>.<br>
 				<br>
 		Sample With: <select style='width:120px' onChange="" id=samvaron></select><br><br>
 		<center>
 		<table id=samvartable style='text-size:14px;'>
 			<tr><td> <td><input id="samvar-">
 		</table><br>
-		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvargo>(Re)Sample</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;line-height:60px;' id=samvargo>(Re)Sample</a>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvaranimateslow>Animate (Slow)</a>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvaranimatefast>Animate (Fast)</a>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvarstop>Stop</a>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' onclick="$('#reset').click();">Reset Data</a>
-		<br><br><br>
+		<br><br>
 		Often it is useful to <b>fix the axis</b> when looking at scatter graphs and or dot plots.<br><br>
 		<span href='#' style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick='lockaxis()'>Lock Axis Values</span>
 		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="$('#options input').val('auto');">Reset</span>
 		<span href='#' style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick='moreoptions()'>More Options</span><br>
 		</center>
+	</span>
+</div>
+<div id="rerandteachdiv" style="display:none;z-index:11;position:absolute;top:30px;left:30px;right:30px;bottom:30px;text-align:center;padding:10px;overflow-y: auto;">
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=rerandteachtitle>Re-Randomisation Teaching Tool</div>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#rerandteachdiv').hide();$('#type').val('newabout');">&times;</div><br>
+	<span id=rerandteachcontents style="font-size:14px">
+		This section lets you manually step through a re-randomisation.<br>
+		This is really useful for teaching re-randomisation.<br>
+		You can see a <a href='https://www.mathsnz.com/nzgrapher-info/teaching-tools' target='_blank'>video tutorial on how to use this here</a>.<br>
+		<br>
+		Re-randomisation works by taking the sample, and randomly assigning each of the data points to one of the groups in the same proportion as the sample. 
+		It then works out the median or mean for each group and plots the difference between them on the graph below.
+		It does this 1000 times and then works out the proportion that are equal or greater than the sample difference.<br>
+		<br>
+		<b>Do ONE re-randomisation and plot on graph:</b><br>
+		<br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=rereandteachoneslow>Slow</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=rereandteachonefast>Fast</a>
+		<br><br>
+		<b>Step through remaining <span id=rerandteachremaining>1000</span> re-randomisations:</b><br>
+		<br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=rereandteachrestslow>Slow</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=rereandteachrestmedium>Medium</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=rereandteachrestfast>Fast</a>
+		<br><br>
+		<b>Other Controls:</b><br>
+		<br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=rerandteachpause>Pause</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=rerandteachreset>Reset</a>
+		<br><br>
+		
 	</span>
 </div>
 <?php
@@ -564,6 +598,7 @@ echo "\n</table></body></html>";
 	<option disabled></option>
 	<option value='newrerandmedian'>Re-Randomisation - Median</option>
 	<option value='newrerandmean'>Re-Randomisation - Mean</option>
+	<option style='display:none' value='newrerandteach'>Re-Randomisation - Teaching</option>
 	<option disabled></option>
 	<option value='paired experiment'>Paired Experiment Dot Plot (and Arrows Graph)</option>
 	<option disabled></option>
