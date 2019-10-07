@@ -98,7 +98,7 @@ if (screen.availWidth < 1024)
 		Full changes can be seen by changing the graph type to 'Change Log'.<br>
 		<br>
 		<?php
-			if(strpos($_SERVER['SERVER_NAME'],'jake4maths.com')>0 || strpos($_SERVER['SERVER_NAME'],'grapher.nz')>0){
+			if(strpos($_SERVER['SERVER_NAME'],'jake4maths.com')>-1 || strpos($_SERVER['SERVER_NAME'],'grapher.nz')>-1){
 				echo "The version of NZGrapher you are using is hosted on my server.<br>";
 			} else {
 				echo "The version of NZGrapher you are using is not hosted on my server... if it's not working properly first make sure it is up to date, then check with your IT person... if they can't work out what is wrong let me know.<br>";
