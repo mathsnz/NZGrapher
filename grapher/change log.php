@@ -9,6 +9,8 @@ To Do List
 Bar Graph - Summary Data:
 - Make it group the variables that are the same
 - Stack graphs when color by
+- Relative frequency
+Then adapt for normal bar graph
 */
 ?>
 	<b>2019-11-06</b><ul>

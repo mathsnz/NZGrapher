@@ -76,7 +76,7 @@ function newbargraphf(){
 	var left=20*scalefactor;
 	var right=width-60*scalefactor;
 
-	ymin = Math.min.apply(null, pointsforminmax);
+	ymin = 0;
 	ymax = Math.max.apply(null, pointsforminmax);
 	var minmaxstep = axisminmaxstep(ymin,ymax);
 	var minytick=minmaxstep[0];
