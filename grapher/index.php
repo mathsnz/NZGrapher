@@ -586,6 +586,7 @@ echo "\n</table></body></html>";
 	<option disabled></option>
 	<option value='newdotplot'>Dot Plot (and Box and Whisker)</option>
 	<option value='bar and area graph'>Bar Graph (and Area Graph)</option>
+	<option value='newbargraphf'>Bar Graph - Summary Data</option>
 	<option value='histogram'>Histogram</option>
 	<option value='histogramf'>Histogram - Summary Data</option>
 	<option value='newpiechart'>Pie Chart</option>

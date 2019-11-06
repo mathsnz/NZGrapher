@@ -5,8 +5,15 @@
 /*
 To Do List
 - Custom height/width graphs
+
+Bar Graph - Summary Data:
+- Make it group the variables that are the same
+- Stack graphs when color by
 */
 ?>
+	<b>2019-11-06</b><ul>
+		<li>Added 'Bar Graph - Summary Data' graph type - more features coming to this soon.</li>
+	</ul>
 	<b>2019-10-08</b><ul>
 		<li>New Re-Randomisation teaching tool.</li>
 		<li>New <a href='https://youtu.be/ttnhFlTUSag' target='_blank'>video guide showing how to use the Re-Randomisation teaching tool</a>.</li>
