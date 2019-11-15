@@ -6,6 +6,8 @@ function newbargraphf(){
 	$('#yvar').show();
 	$('#zvar').show();
 	$('#color').show();
+	$('#colorname').show();
+	$('#transdiv').show();
 	$('#greyscaleshow').show();
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
@@ -33,6 +35,8 @@ function newbargraphf(){
 	ypoints.pop();
 	var zpoints = $('#zvar').val().split(",");
 	zpoints.pop();
+	var colorpoints = $('#color').val().split(",");
+	colorpoints.pop();
 
 	//check x points for number of groups
 	if(xpoints.length==0){
@@ -43,12 +47,10 @@ function newbargraphf(){
 	var points=[];
 	var allpoints=[];
 	var pointsremoved=[];
-	var pointsforminmax=[];
 	for (var index in ypoints){
 		if($.isNumeric(ypoints[index])){
 			points.push(index);
 			allpoints.push(index);
-			pointsforminmax.push(ypoints[index]);
 		} else {
 			pointsremoved.push(add(index,1));
 		}
@@ -62,6 +64,7 @@ function newbargraphf(){
 	if(typeof xdifferentgroups !== 'object'){
 		return xdifferentgroups;
 	}
+	xgroups = Object.keys(xdifferentgroups).sort(sortorder);
 
 	if(pointsremoved.length!=0 && $('#removedpoints').is(":checked")){
 		ctx.fillStyle = '#000000';
@@ -77,7 +80,55 @@ function newbargraphf(){
 	var right=width-60*scalefactor;
 
 	ymin = 0;
-	ymax = Math.max.apply(null, pointsforminmax);
+	ymax = 0;
+	
+	sumpoints = {};
+	
+	if(zpoints.length>0){
+		zdifferentgroups = split(points,zpoints,4,'"Split"');
+		if(typeof zdifferentgroups === 'object'){
+			zgroups = Object.keys(zdifferentgroups);
+			zgroups.sort(sortorder);
+			for (z in zgroups){
+				zgroup = zgroups[z];
+				zgrouppoints = zdifferentgroups[zgroup];
+				for(x in xgroups){
+					xgroup = xgroups[x];
+					for (i in xdifferentgroups[xgroup]){
+						index = xdifferentgroups[xgroup][i];
+						if($.inArray(index,zgrouppoints)>-1){
+							cat = xgroup+'-~-'+zgroup;
+							val = ypoints[index];
+							if(sumpoints[cat] === undefined){
+								sumpoints[cat]=0;
+							}
+							sumpoints[cat]-=(-val);
+						}	
+					}
+				}
+			}
+		} else {
+			return zdifferentgroups;
+		}
+	} else {
+		for(g in xgroups){
+			for (i in xdifferentgroups[xgroups[g]]){
+				index = xdifferentgroups[xgroups[g]][i];
+				cat = xgroups[g];
+				val = ypoints[index];
+				if(sumpoints[cat] === undefined){
+					sumpoints[cat]=0;
+				}
+				sumpoints[cat]-=(-val);
+			}
+		}
+	}
+	for(index in sumpoints){
+		if(sumpoints[index]>ymax){
+			ymax = sumpoints[index];
+		}
+	}
+	
 	var minmaxstep = axisminmaxstep(ymin,ymax);
 	var minytick=minmaxstep[0];
 	var maxytick=minmaxstep[1];
@@ -88,35 +139,29 @@ function newbargraphf(){
 	
 
 	if(zpoints.length>0){
-		zdifferentgroups = split(points,zpoints,4,'"Split"');
-		if(typeof zdifferentgroups === 'object'){
-			zgroups = Object.keys(zdifferentgroups);
-			zgroups.sort(sortorder);
-			thistop=60*scalefactor;
-			eachheight=maxheight/zgroups.length;
-			for (index in zgroups){
-				group = zgroups[index];
-				points = zdifferentgroups[group];
+		zgroups = Object.keys(zdifferentgroups);
+		zgroups.sort(sortorder);
+		thistop=60*scalefactor;
+		eachheight=maxheight/zgroups.length;
+		for (index in zgroups){
+			group = zgroups[index];
+			points = zdifferentgroups[group];
 
-				thisbottom = add(thistop,eachheight);
+			thisbottom = add(thistop,eachheight);
 
-				ctx.fillStyle = '#000000';
-				fontsize = 15*scalefactor;
-				ctx.font = "bold "+fontsize+"px Roboto";
-				ctx.textAlign="left";
-				ctx.fillText(group,left,thistop-15*scalefactor);
-				
-				var error = plotbargraph(ctx,left,right,thistop,minytick,maxytick,ystep,eachheight,points,xpoints,ypoints,colors);
-				if(error != 'good'){return error;}
-				
-				thistop = add(thistop,eachheight);
-
-			}
-		} else {
-			return zdifferentgroups;
+			ctx.fillStyle = '#000000';
+			fontsize = 15*scalefactor;
+			ctx.font = "bold "+fontsize+"px Roboto";
+			ctx.textAlign="left";
+			ctx.fillText(group,left,thistop-15*scalefactor);
+			
+			var error = plotbargraph(ctx,left,right,thistop,minytick,maxytick,ystep,eachheight,points,xdifferentgroups,ypoints,colors,xgroups,colorpoints);
+			if(error != 'good'){return error;}
+			
+			thistop = add(thistop,eachheight);
 		}
 	} else {
-		var error = plotbargraph(ctx,left,right,oypixel,minytick,maxytick,ystep,maxheight,points,xpoints,ypoints,colors);
+		var error = plotbargraph(ctx,left,right,oypixel,minytick,maxytick,ystep,maxheight,points,xdifferentgroups,ypoints,colors,xgroups,colorpoints);
 		if(error != 'good'){return error;}
 	}
 
@@ -143,7 +188,14 @@ function newbargraphf(){
 	return dataURL;
 }
 
-function plotbargraph(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,points,groups,frequencys,colors){
+function onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+}
+
+function plotbargraph(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,points,groups,frequencys,colors,xgroups,colorpoints){
+	
+	uniquecolors = colorpoints.filter( onlyUnique ).sort(sortorder);
+	if(uniquecolors.length==0){uniquecolors=[''];}
 	
 	maxheight = maxheight - 60*scalefactor;
 	
@@ -161,7 +213,7 @@ function plotbargraph(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,poin
 		ctx.translate(x, y);
 		ctx.rotate(-Math.PI/2);
 		ctx.textAlign = "center";
-		ctx.fillText('Frequency', 0, 0);
+		ctx.fillText($('#yaxis').val(), 0, 0);
 		ctx.restore();
 	}
 	
@@ -169,7 +221,7 @@ function plotbargraph(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,poin
 	
 	line(ctx,add(left,50*scalefactor),gbottom,right,gbottom);
 	
-	stepsize = (right - add(left,50*scalefactor))/groups.length;
+	stepsize = (right - add(left,50*scalefactor))/xgroups.length;
 	
 	thisleft = add(left,50*scalefactor);
 	
@@ -178,27 +230,50 @@ function plotbargraph(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,poin
 	ctx.font = fontsize+"px Roboto";
 	ctx.textAlign="center";
 	
-	for (var index in groups){
+	for (var index in xgroups){
+		group = xgroups[index];
 		thisright = add(thisleft,stepsize);
 		line(ctx,thisright,gbottom,thisright,add(gbottom,10));
 		thiscenter = add(thisleft,thisright)/2;
 		ctx.fillStyle = '#000000';
-		ctx.fillText(groups[index],thiscenter,add(gbottom,15));
-		if($.inArray(index,points)>-1){
-			boxtop = convertvaltopixel(frequencys[index],minytick,maxytick,gbottom,gtop);
-			boxleft = add(thisleft,stepsize*0.1);
-			ctx.fillStyle = colors[index];
-			ctx.fillRect(boxleft,gbottom,stepsize*0.8,boxtop-gbottom);
-			ctx.lineWidth = 1*scalefactor;
-			ctx.strokeStyle = 'rgba(0,0,0,1)';
-			ctx.rect(boxleft,gbottom,stepsize*0.8,boxtop-gbottom);
-			ctx.stroke();
-			ctx.fillStyle = '#000000';
-			if($('#regression').is(":checked")){
-				ctx.fillText(frequencys[index],thiscenter,boxtop-5*scalefactor);
+		ctx.fillText(group,thiscenter,add(gbottom,15));
+		total = 0;
+		boxbottom = gbottom;
+		boxtop = boxbottom;
+		colordesc = "";
+		for(c in uniquecolors){
+			thistotal = 0;
+			colorname = uniquecolors[c];
+			for(p in groups[group]){
+				i = groups[group][p];
+				if(colorname == colorpoints[i] || uniquecolors.length==1){
+					if($.inArray(i,points)>-1){
+						thistotal -= -frequencys[i];
+						if(colorpoints.length>0){
+							colordesc = '<b>'+$('#colorlabel').val()+'</b>: '+colorpoints[i]+'<br>';
+						}
+						color = colors[i];
+					}
+				}
 			}
-			title = '<b>'+groups[index]+'</b><br>n: '+frequencys[index];
-			$('#graphmap').append("<area shape='rect' coords='"+(boxleft/scalefactor)+","+(boxtop/scalefactor)+","+(add(boxleft,stepsize*0.8)/scalefactor)+","+(gbottom/scalefactor)+"' desc='"+title+"'>");
+			if(thistotal>0){
+				total += thistotal;
+				boxtop = convertvaltopixel(total,minytick,maxytick,boxbottom,gtop);
+				boxleft = add(thisleft,stepsize*0.1);
+				ctx.fillStyle = color;
+				ctx.fillRect(boxleft,boxbottom,stepsize*0.8,boxtop-boxbottom);
+				ctx.lineWidth = 1*scalefactor;
+				ctx.strokeStyle = 'rgba(0,0,0,1)';
+				ctx.rect(boxleft,boxbottom,stepsize*0.8,boxtop-boxbottom);
+				ctx.stroke();
+				ctx.fillStyle = '#000000';
+				title = '<b>'+$('#xaxis').val()+'</b>: '+xgroups[index]+'</b><br>'+colordesc+'<b>n</b>: '+thistotal;
+				$('#graphmap').append("<area shape='rect' coords='"+(boxleft/scalefactor)+","+(boxtop/scalefactor)+","+(add(boxleft,stepsize*0.8)/scalefactor)+","+(boxbottom/scalefactor)+"' desc='"+title+"'>");
+			}
+			boxbottom = boxtop;
+		}
+		if($('#regression').is(":checked")){
+			ctx.fillText(total,thiscenter,boxtop-5*scalefactor);
 		}
 		thisleft = thisright;
 	}

@@ -7,12 +7,13 @@ To Do List
 - Custom height/width graphs
 
 Bar Graph - Summary Data:
-- Make it group the variables that are the same
-- Stack graphs when color by
 - Relative frequency
 Then adapt for normal bar graph
 */
 ?>
+	<b>NEXT</b><ul>
+		<li>Updates to 'Bar Graph - Summary Data' graph type... now groups variables that are the same into the same bar, and stacks the graph when color by.</li>
+	</ul>
 	<b>2019-11-06</b><ul>
 		<li>Added 'Bar Graph - Summary Data' graph type - more features coming to this soon.</li>
 	</ul>
