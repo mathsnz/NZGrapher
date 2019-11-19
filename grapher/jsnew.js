@@ -60,7 +60,7 @@ function newbargraphf(){
 		return 'Error: You must select a numeric variable for "Frequency"';
 	}
 	
-	xdifferentgroups = split(points,xpoints,4,'"Category"');
+	xdifferentgroups = split(points,xpoints,10,'"Category"');
 	if(typeof xdifferentgroups !== 'object'){
 		return xdifferentgroups;
 	}
