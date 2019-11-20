@@ -1337,6 +1337,7 @@ function graphchange(obj){
 	document.getElementById('invertshow').style.display='none';
 	document.getElementById('thicklinesshow').style.display='none';
 	document.getElementById('relativefrequencyshow').style.display='none';
+	document.getElementById('percent100show').style.display='none';
 	document.getElementById('residualsforcexshow').style.display='none';
 	document.getElementById('weightedaverageshow').style.display='none';
 	document.getElementById('stackdotsshow').style.display='none';
@@ -2069,11 +2070,12 @@ function horaxis(ctx,x1,x2,y,min,max,step,gridlinetop){
 	}
 }
 
-function vertaxis(ctx,y1,y2,x,min,max,step, gridlinetop){
+function vertaxis(ctx,y1,y2,x,min,max,step,gridlinetop,append){
   min = parseFloat(parseFloat(min.toFixed(10)).toPrecision(8));
   max = parseFloat(parseFloat(max.toFixed(10)).toPrecision(8));
   ctx.strokeStyle = '#000000';
   if (typeof gridlinetop === 'undefined') { gridlinetop = $('#graphdiv').width()-50; }
+  if (typeof append === 'undefined') { append = ''; }
 	ctx.fillStyle = '#000000';
 	ctx.lineWidth = 1*scalefactor;
 	line(ctx,x,add(y1,-10*scalefactor),x,add(y2,10*scalefactor));
@@ -2101,7 +2103,7 @@ function vertaxis(ctx,y1,y2,x,min,max,step, gridlinetop){
 			ctx.font = fsize+"px Roboto";
 			width = ctx.measureText(cury).width;
 		}
-		ctx.fillText(cury,add(x,-7*scalefactor),add(ypixel,4*scalefactor));
+		ctx.fillText(cury+append,add(x,-7*scalefactor),add(ypixel,4*scalefactor));
 		cury=parseFloat(parseFloat(add(cury,step).toFixed(10)).toPrecision(8));
 	}
 

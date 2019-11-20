@@ -11,6 +11,8 @@ function newbargraphf(){
 	$('#greyscaleshow').show();
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
+	$('#percent100show').show();
+	$('#relativefrequencyshow').show();
 	$('#var1label').html("Category:<br><small>required</small>");
 	$('#var2label').html("Frequency:<br><small>required</small>");
 	$('#var3label').html("Split:<br><small>optional</small>");
@@ -73,6 +75,17 @@ function newbargraphf(){
 		ctx.textAlign="right";
 		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-48*scalefactor,48*scalefactor);
 	}
+	
+	relativefrequency = false;
+	if($('#relativefrequency').is(":checked")){
+		relativefrequency = true;
+		$("#percent100"). prop("checked", false);
+	}
+	
+	percent100 = false;
+	if($('#percent100').is(":checked")){
+		percent100 = true;
+	}
 
 	var oypixel=60*scalefactor;
 	var maxheight=height-60*scalefactor;
@@ -81,6 +94,7 @@ function newbargraphf(){
 
 	ymin = 0;
 	ymax = 0;
+	total = 0;
 	
 	sumpoints = {};
 	
@@ -123,10 +137,20 @@ function newbargraphf(){
 			}
 		}
 	}
+	
 	for(index in sumpoints){
+		total += sumpoints[index];
 		if(sumpoints[index]>ymax){
 			ymax = sumpoints[index];
 		}
+	}
+	
+	if(relativefrequency){
+		ymax = ymax / total;
+	}
+	
+	if(percent100){
+		ymax = 100;
 	}
 	
 	var minmaxstep = axisminmaxstep(ymin,ymax);
@@ -155,13 +179,13 @@ function newbargraphf(){
 			ctx.textAlign="left";
 			ctx.fillText(group,left,thistop-15*scalefactor);
 			
-			var error = plotbargraph(ctx,left,right,thistop,minytick,maxytick,ystep,eachheight,points,xdifferentgroups,ypoints,colors,xgroups,colorpoints);
+			var error = plotbargraph(ctx,left,right,thistop,minytick,maxytick,ystep,eachheight,points,xdifferentgroups,ypoints,colors,xgroups,colorpoints,relativefrequency,total,percent100,sumpoints,group);
 			if(error != 'good'){return error;}
 			
 			thistop = add(thistop,eachheight);
 		}
 	} else {
-		var error = plotbargraph(ctx,left,right,oypixel,minytick,maxytick,ystep,maxheight,points,xdifferentgroups,ypoints,colors,xgroups,colorpoints);
+		var error = plotbargraph(ctx,left,right,oypixel,minytick,maxytick,ystep,maxheight,points,xdifferentgroups,ypoints,colors,xgroups,colorpoints,relativefrequency,total,percent100,sumpoints,'~nogroup~');
 		if(error != 'good'){return error;}
 	}
 
@@ -192,7 +216,7 @@ function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
-function plotbargraph(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,points,groups,frequencys,colors,xgroups,colorpoints){
+function plotbargraph(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,points,groups,frequencys,colors,xgroups,colorpoints,relativefrequency,total,percent100,sumpoints,zgroup){
 	
 	uniquecolors = colorpoints.filter( onlyUnique ).sort(sortorder);
 	if(uniquecolors.length==0){uniquecolors=[''];}
@@ -217,7 +241,10 @@ function plotbargraph(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,poin
 		ctx.restore();
 	}
 	
-	vertaxis(ctx,gtop,gbottom,add(left,50*scalefactor),minytick,maxytick,ystep,right);
+	append = '';
+	if(percent100){append = '%';}
+	
+	vertaxis(ctx,gtop,gbottom,add(left,50*scalefactor),minytick,maxytick,ystep,right,append);
 	
 	line(ctx,add(left,50*scalefactor),gbottom,right,gbottom);
 	
@@ -237,7 +264,7 @@ function plotbargraph(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,poin
 		thiscenter = add(thisleft,thisright)/2;
 		ctx.fillStyle = '#000000';
 		ctx.fillText(group,thiscenter,add(gbottom,15));
-		total = 0;
+		gtotal = 0;
 		boxbottom = gbottom;
 		boxtop = boxbottom;
 		colordesc = "";
@@ -256,9 +283,22 @@ function plotbargraph(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,poin
 					}
 				}
 			}
+			displaytotal = thistotal;
+			if(relativefrequency){
+				displaytotal = displaytotal/total;
+			}
+			if(percent100){
+				if(zgroup!='~nogroup~'){
+					selectgroup = group + '-~-' + zgroup;
+				} else {
+					selectgroup = group;
+				}
+				displaytotal = displaytotal/sumpoints[selectgroup]*100;
+			}
 			if(thistotal>0){
-				total += thistotal;
-				boxtop = convertvaltopixel(total,minytick,maxytick,boxbottom,gtop);
+				gtotal += displaytotal;
+				boxtop = convertvaltopixel(gtotal,minytick,maxytick,gbottom,gtop);
+				console.log({gtotal,minytick,maxytick,boxbottom,boxtop});
 				boxleft = add(thisleft,stepsize*0.1);
 				ctx.fillStyle = color;
 				ctx.fillRect(boxleft,boxbottom,stepsize*0.8,boxtop-boxbottom);
@@ -267,13 +307,23 @@ function plotbargraph(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,poin
 				ctx.rect(boxleft,boxbottom,stepsize*0.8,boxtop-boxbottom);
 				ctx.stroke();
 				ctx.fillStyle = '#000000';
-				title = '<b>'+$('#xaxis').val()+'</b>: '+xgroups[index]+'</b><br>'+colordesc+'<b>n</b>: '+thistotal;
+				if(relativefrequency){
+					displaytotal = displaytotal.toPrecision(5);
+				}
+				if(percent100){
+					displaytotal = displaytotal.toFixed(1)+"%";
+				}
+				if(thistotal == displaytotal){
+					title = '<b>'+$('#xaxis').val()+'</b>: '+xgroups[index]+'</b><br>'+colordesc+'<b>n</b>: '+ thistotal;
+				} else {
+					title = '<b>'+$('#xaxis').val()+'</b>: '+xgroups[index]+'</b><br>'+colordesc+'<b>n</b>: '+ thistotal + " (" + displaytotal + ")";
+				}
 				$('#graphmap').append("<area shape='rect' coords='"+(boxleft/scalefactor)+","+(boxtop/scalefactor)+","+(add(boxleft,stepsize*0.8)/scalefactor)+","+(boxbottom/scalefactor)+"' desc='"+title+"'>");
+				if($('#regression').is(":checked")){
+					ctx.fillText(displaytotal,thiscenter,(boxtop+boxbottom)/2+4.5*scalefactor);
+				}
 			}
 			boxbottom = boxtop;
-		}
-		if($('#regression').is(":checked")){
-			ctx.fillText(total,thiscenter,boxtop-5*scalefactor);
 		}
 		thisleft = thisright;
 	}

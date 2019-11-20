@@ -781,6 +781,9 @@ echo "\n</table></body></html>";
 			<span id=thicklinesshow><label>
 				<input type="checkbox" onclick="updategraph();" id="thicklines" name="thicklines" value="yes"> Thick Lines</label><br>
 			</span>
+			<span id=percent100show><label>
+				<input type="checkbox" onclick="updategraph();" id="percent100" name="percent100" value="yes"> 100% Bar Graph</label><br>
+			</span>
 			<span id=relativefrequencyshow><label>
 				<input type="checkbox" onclick="updategraph();" id="relativefrequency" name="relativefrequency" value="yes"> Relative Freq.</label><br>
 			</span>

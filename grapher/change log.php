@@ -7,12 +7,19 @@ To Do List
 - Custom height/width graphs
 
 Bar Graph - Summary Data:
-- Relative frequency
-Then adapt for normal bar graph
+- Adapt for normal bar graph
 */
 ?>
 	<b>NEXT</b><ul>
-		<li>Updates to 'Bar Graph - Summary Data' graph type... now groups variables that are the same into the same bar, and stacks the graph when color by.</li>
+		<li>Updates to 'Bar Graph - Summary Data' graph type... 
+			<ul>
+				<li>now groups variables that are the same into the same bar</li>
+				<li>stacks the graph when color by.</li>
+				<li>option for relative frequency display.</li>
+				<li>option for 100% bar graph display.</li>
+				<li>when summaries is ticked numbers or percentages show in each group rather than at the top of all groups.</li>
+			<ul>
+		</li>
 	</ul>
 	<b>2019-11-06</b><ul>
 		<li>Added 'Bar Graph - Summary Data' graph type - more features coming to this soon.</li>
