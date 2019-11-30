@@ -5,10 +5,8 @@
 /*
 To Do List
 - Custom height/width graphs
-
-Bar Graph - Summary Data:
-- Adapt for normal bar graph
 */
+
 ?>
 	<b>NEXT</b><ul>
 		<li>Updates to 'Bar Graph - Summary Data' graph type... 
