@@ -8,7 +8,7 @@ To Do List
 */
 
 ?>
-	<b>NEXT</b><ul>
+	<b>2019-12-01</b><ul>
 		<li>Updates to 'Bar Graph - Summary Data' graph type... 
 			<ul>
 				<li>now groups variables that are the same into the same bar</li>
