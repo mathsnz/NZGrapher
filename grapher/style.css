@@ -282,7 +282,7 @@ input[type=checkbox]:checked::before {
 	border:none;
 }
 
-#sum, #percent100show, #stackdotsshow, #donutshow, #reg, #for, #meandotshow, #startfinishshow, #gridlinesshow, #differentaxisshow, #for, #invertshow, #removedpointsshow, #relativefrequencyshow, #thicklinesshow, #boxplotshow, #regshow, #intervalshow, #labelshow, #colorname, #arrowsshow , #quadraticshow, #cubicshow, #expshow, #logshow, #powshow,#regtypeshow, #jittershow, #yxshow, #highboxplotshow, #btypeshow, #addmultshow, #longtermtrendshow, #boxnowhiskershow, #boxnooutliershow, #seasonalshow, #weightedaverageshow, #residualsforcexshow{
+#sum, #percent100show, #stackdotsshow, #donutshow, #reg, #for, #meandotshow, #startfinishshow, #gridlinesshow, #differentaxisshow, #for, #invertshow, #removedpointsshow, #relativewidthshow, #relativefrequencyshow, #thicklinesshow, #boxplotshow, #regshow, #intervalshow, #labelshow, #colorname, #arrowsshow , #quadraticshow, #cubicshow, #expshow, #logshow, #powshow,#regtypeshow, #jittershow, #yxshow, #highboxplotshow, #btypeshow, #addmultshow, #longtermtrendshow, #boxnowhiskershow, #boxnooutliershow, #seasonalshow, #weightedaverageshow, #residualsforcexshow{
 	display:none;
 }
 #regtypeshow, #btypeshow, #addmultshow{

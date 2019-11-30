@@ -1,10 +1,17 @@
 function newbargraphf(){
+	return newbargraphfnf('f');
+}
+
+function newbargraph(){
+	return newbargraphfnf('nf');
+}
+
+function newbargraphfnf(fnf){
 	$('#invertshow').show();
 	$('#regshow').show();
 	$('#sum').show();
 	$('#xvar').show();
 	$('#yvar').show();
-	$('#zvar').show();
 	$('#color').show();
 	$('#colorname').show();
 	$('#transdiv').show();
@@ -13,9 +20,17 @@ function newbargraphf(){
 	$('#removedpointsshow').show();
 	$('#percent100show').show();
 	$('#relativefrequencyshow').show();
+	$('#relativewidthshow').show();
 	$('#var1label').html("Category:<br><small>required</small>");
-	$('#var2label').html("Frequency:<br><small>required</small>");
-	$('#var3label').html("Split:<br><small>optional</small>");
+	
+	if(fnf=='f'){
+		$('#var2label').html("Frequency:<br><small>required</small>");
+		$('#var3label').html("Split:<br><small>optional</small>");	
+		$('#zvar').show();
+	} else {
+		$('#var2label').html("Split:<br><small>optional</small>");	
+		$('#var3label').html("");	
+	}
 
 	var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
@@ -33,34 +48,54 @@ function newbargraphf(){
 	//get points
 	var xpoints = $('#xvar').val().split(",");
 	xpoints.pop();
-	var ypoints = $('#yvar').val().split(",");
-	ypoints.pop();
-	var zpoints = $('#zvar').val().split(",");
-	zpoints.pop();
-	var colorpoints = $('#color').val().split(",");
-	colorpoints.pop();
 
 	//check x points for number of groups
 	if(xpoints.length==0){
 		return 'Error: You must select a variable for "Category"';
 	}
+	
+	if(fnf=='f'){
+		var ypoints = $('#yvar').val().split(",");
+		ypoints.pop();
+		var zpoints = $('#zvar').val().split(",");
+		zpoints.pop();
+		
+		//check for numeric value
+		var points=[];
+		var allpoints=[];
+		var pointsremoved=[];
+		for (var index in ypoints){
+			if($.isNumeric(ypoints[index])){
+				points.push(index);
+				allpoints.push(index);
+			} else {
+				pointsremoved.push(add(index,1));
+			}
+		}
 
-	//check for numeric value
-	var points=[];
-	var allpoints=[];
-	var pointsremoved=[];
-	for (var index in ypoints){
-		if($.isNumeric(ypoints[index])){
+		if(points.length==0){
+			return 'Error: You must select a numeric variable for "Frequency"';
+		}
+		
+	} else {
+		var zpoints = $('#yvar').val().split(",");
+		zpoints.pop();
+		
+		//add all points as 1
+		var points=[];
+		var allpoints=[];
+		var pointsremoved=[];
+		var ypoints=[];
+		for (var index in xpoints){
 			points.push(index);
 			allpoints.push(index);
-		} else {
-			pointsremoved.push(add(index,1));
+			ypoints.push(1);
 		}
+		
 	}
-
-	if(points.length==0){
-		return 'Error: You must select a numeric variable for "Frequency"';
-	}
+	
+	var colorpoints = $('#color').val().split(",");
+	colorpoints.pop();
 	
 	xdifferentgroups = split(points,xpoints,10,'"Category"');
 	if(typeof xdifferentgroups !== 'object'){
@@ -82,6 +117,12 @@ function newbargraphf(){
 		$("#percent100"). prop("checked", false);
 	}
 	
+	relativewidth = false;
+	if($('#relativewidth').is(":checked")){
+		relativewidth = true;
+		$("#percent100"). prop("checked", true);
+	}
+	
 	percent100 = false;
 	if($('#percent100').is(":checked")){
 		percent100 = true;
@@ -97,6 +138,8 @@ function newbargraphf(){
 	total = 0;
 	
 	sumpoints = {};
+	
+	console.log({xpoints,ypoints,zpoints})
 	
 	if(zpoints.length>0){
 		zdifferentgroups = split(points,zpoints,4,'"Split"');
@@ -179,13 +222,13 @@ function newbargraphf(){
 			ctx.textAlign="left";
 			ctx.fillText(group,left,thistop-15*scalefactor);
 			
-			var error = plotbargraph(ctx,left,right,thistop,minytick,maxytick,ystep,eachheight,points,xdifferentgroups,ypoints,colors,xgroups,colorpoints,relativefrequency,total,percent100,sumpoints,group);
+			var error = plotbargraph(ctx,left,right,thistop,minytick,maxytick,ystep,eachheight,points,xdifferentgroups,ypoints,colors,xgroups,colorpoints,relativefrequency,total,percent100,sumpoints,group,relativewidth);
 			if(error != 'good'){return error;}
 			
 			thistop = add(thistop,eachheight);
 		}
 	} else {
-		var error = plotbargraph(ctx,left,right,oypixel,minytick,maxytick,ystep,maxheight,points,xdifferentgroups,ypoints,colors,xgroups,colorpoints,relativefrequency,total,percent100,sumpoints,'~nogroup~');
+		var error = plotbargraph(ctx,left,right,oypixel,minytick,maxytick,ystep,maxheight,points,xdifferentgroups,ypoints,colors,xgroups,colorpoints,relativefrequency,total,percent100,sumpoints,'~nogroup~',relativewidth);
 		if(error != 'good'){return error;}
 	}
 
@@ -216,7 +259,7 @@ function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
-function plotbargraph(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,points,groups,frequencys,colors,xgroups,colorpoints,relativefrequency,total,percent100,sumpoints,zgroup){
+function plotbargraph(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,points,groups,frequencys,colors,xgroups,colorpoints,relativefrequency,total,percent100,sumpoints,zgroup,relativewidth){
 	
 	uniquecolors = colorpoints.filter( onlyUnique ).sort(sortorder);
 	if(uniquecolors.length==0){uniquecolors=[''];}
@@ -258,7 +301,20 @@ function plotbargraph(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,poin
 	ctx.textAlign="center";
 	
 	for (var index in xgroups){
+		addforboxleft = 0.1;
+		rectanglesize = 0.8;
 		group = xgroups[index];
+		if(relativewidth){
+			if(zgroup!='~nogroup~'){
+				selectgroup = group + '-~-' + zgroup;
+			} else {
+				selectgroup = group;
+			}
+			stepsize = (right - add(left,50*scalefactor))*sumpoints[selectgroup]/total;
+			thisright = add(thisleft,stepsize);
+			addforboxleft = 0;
+			rectanglesize = 1;
+		}
 		thisright = add(thisleft,stepsize);
 		line(ctx,thisright,gbottom,thisright,add(gbottom,10));
 		thiscenter = add(thisleft,thisright)/2;
@@ -295,16 +351,16 @@ function plotbargraph(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,poin
 				}
 				displaytotal = displaytotal/sumpoints[selectgroup]*100;
 			}
+			
 			if(thistotal>0){
 				gtotal += displaytotal;
 				boxtop = convertvaltopixel(gtotal,minytick,maxytick,gbottom,gtop);
-				console.log({gtotal,minytick,maxytick,boxbottom,boxtop});
-				boxleft = add(thisleft,stepsize*0.1);
+				boxleft = add(thisleft,stepsize*addforboxleft);
 				ctx.fillStyle = color;
-				ctx.fillRect(boxleft,boxbottom,stepsize*0.8,boxtop-boxbottom);
+				ctx.fillRect(boxleft,boxbottom,stepsize*rectanglesize,boxtop-boxbottom);
 				ctx.lineWidth = 1*scalefactor;
 				ctx.strokeStyle = 'rgba(0,0,0,1)';
-				ctx.rect(boxleft,boxbottom,stepsize*0.8,boxtop-boxbottom);
+				ctx.rect(boxleft,boxbottom,stepsize*rectanglesize,boxtop-boxbottom);
 				ctx.stroke();
 				ctx.fillStyle = '#000000';
 				if(relativefrequency){
@@ -318,7 +374,7 @@ function plotbargraph(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,poin
 				} else {
 					title = '<b>'+$('#xaxis').val()+'</b>: '+xgroups[index]+'</b><br>'+colordesc+'<b>n</b>: '+ thistotal + " (" + displaytotal + ")";
 				}
-				$('#graphmap').append("<area shape='rect' coords='"+(boxleft/scalefactor)+","+(boxtop/scalefactor)+","+(add(boxleft,stepsize*0.8)/scalefactor)+","+(boxbottom/scalefactor)+"' desc='"+title+"'>");
+				$('#graphmap').append("<area shape='rect' coords='"+(boxleft/scalefactor)+","+(boxtop/scalefactor)+","+(add(boxleft,stepsize*rectanglesize)/scalefactor)+","+(boxbottom/scalefactor)+"' desc='"+title+"'>");
 				if($('#regression').is(":checked")){
 					ctx.fillText(displaytotal,thiscenter,(boxtop+boxbottom)/2+4.5*scalefactor);
 				}

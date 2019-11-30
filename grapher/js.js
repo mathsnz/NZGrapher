@@ -1337,6 +1337,7 @@ function graphchange(obj){
 	document.getElementById('invertshow').style.display='none';
 	document.getElementById('thicklinesshow').style.display='none';
 	document.getElementById('relativefrequencyshow').style.display='none';
+	document.getElementById('relativewidthshow').style.display='none';
 	document.getElementById('percent100show').style.display='none';
 	document.getElementById('residualsforcexshow').style.display='none';
 	document.getElementById('weightedaverageshow').style.display='none';

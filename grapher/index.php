@@ -78,7 +78,7 @@ if (screen.availWidth < 1024)
 					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Cost</b></span><br>
 					NZGrapher is free for non-commercial <b>individual</b> use, you can however <a target='_blank' href='https://www.mathsnz.com/donate'>make a donation</a>.<br>
 					<br>
-					<b>Schools</b> are required to subscribe at a minimum of $0.50 per student using NZGrapher. <b>Commerial users</b> are also required to pay. Please visit the <a target='_blank' href='https://www.mathsnz.com/nzgrapher-invoice'>invoice creator</a> for details.<br>
+					<b>Schools</b> are required to subscribe at a minimum of $0.50 per student using NZGrapher. <b>Commercial users</b> are also required to pay. Please visit the <a target='_blank' href='https://www.mathsnz.com/nzgrapher-invoice'>invoice creator</a> for details.<br>
 					<br>
 					This is optional for 2019, but will be compulsory for 2020.<br>
 			</tr>
@@ -86,9 +86,10 @@ if (screen.availWidth < 1024)
 		<br>
 		<div style='max-width: 800px;margin: 0 auto;display: inline-block;border: none; position: relative;'>
 		By pressing the button below you are acknowledging that NZGrapher uses cookies, and if you acting on behalf of a school, you are agreeing to the costs associated... if you're not happy with this don't use this website.<br>
-		<button class=button style='font-size:15px;margin-top:10px;' id=hidewelcome onclick="$('#welcome').hide();document.cookie='welcome=yes; expires=<?php
+		<button class=button style='margin-top:10px;margin-top: 10px;padding: 20px;border-radius: 15px;font-size: 18px;font-weight: bold;' id=hidewelcome onclick="$('#welcome').hide();document.cookie='welcome=yes; expires=<?php
 			echo date(DateTime::RSS, strtotime('24 hours'));
-		?>'">Start Using NZGrapher</button><br>
+		?>'">Start Using NZGrapher</button>
+		<a href="http://eepurl.com/4JD3v" target='_blank'><button class=button style='margin-top:10px;margin-top: 10px;padding: 20px;border-radius: 15px;font-size: 18px;font-weight: bold;background-color:#C86400'>Newsletter Sign Up</button></a><br>
 		<br>
 		<div style='text-align:left;max-width: 800px;margin: 0 auto;display: inline-block;border: none; position: relative;'>
 		<span style="display:block;font-size:150%;"><b>New in this version of NZGrapher (<?php echo $v; ?>)</b></span>
@@ -586,6 +587,7 @@ echo "\n</table></body></html>";
 	<option disabled></option>
 	<option value='newdotplot'>Dot Plot (and Box and Whisker)</option>
 	<option value='bar and area graph'>Bar Graph (and Area Graph)</option>
+	<option value='newbargraph'>Bar Graph</option>
 	<option value='newbargraphf'>Bar Graph - Summary Data</option>
 	<option value='histogram'>Histogram</option>
 	<option value='histogramf'>Histogram - Summary Data</option>
@@ -786,6 +788,9 @@ echo "\n</table></body></html>";
 			</span>
 			<span id=relativefrequencyshow><label>
 				<input type="checkbox" onclick="updategraph();" id="relativefrequency" name="relativefrequency" value="yes"> Relative Freq.</label><br>
+			</span>
+			<span id=relativewidthshow><label>
+				<input type="checkbox" onclick="updategraph();" id="relativewidth" name="relativewidth" value="yes"> Relative Width</label><br>
 			</span>
 			<span id=removedpointsshow><label>
 				<input type="checkbox" onclick="updategraph();" id="removedpoints" name="removedpoints" value="yes" checked> Show ID of Removed Points</label><br>

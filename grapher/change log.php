@@ -18,8 +18,10 @@ Bar Graph - Summary Data:
 				<li>option for relative frequency display.</li>
 				<li>option for 100% bar graph display.</li>
 				<li>when summaries is ticked numbers or percentages show in each group rather than at the top of all groups.</li>
-			<ul>
+				<li>create 'Area Graphs' by using the 'Relative Width' option.</li>
+			</ul>
 		</li>
+		<li>Rebuild of 'Bar Graph' graph type - now has all the same features as the 'Bar Graph - Summary Data' graph type.</li>
 	</ul>
 	<b>2019-11-06</b><ul>
 		<li>Added 'Bar Graph - Summary Data' graph type - more features coming to this soon.</li>
