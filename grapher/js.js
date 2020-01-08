@@ -4025,6 +4025,7 @@ function stl(xpoints,ypoints,seasons){
 	if($('#addmult option:selected').text()=="Multiplicative"){var multiplicative="yes";} else {var multiplicative = "no";}
 	if (multiplicative=="yes"){
 		for(index in ypoints){
+			if(ypoints[index]==0){ypoints[index]=0.0000001;}
 			ypoints[index]=Math.log(ypoints[index]);
 		}
 	}
@@ -5284,6 +5285,7 @@ function newtimeseriessforecasts(){
 	for(index in ypoints){
 		pointsforminmax.push(ypoints[index]);
 		if(multiplicative=="yes"){
+			if(ypoints[index]==0){ypoints[index]=0.0000001;}
 			ypoints[index]=Math.log(ypoints[index]);
 		}
 	}

@@ -16,6 +16,7 @@ To Do List
 		<li>Rebuild of both Histogram and Histogram - Summary Data... heaps of new features and speed improvements.</li>
 		<li>Rebuild of Paired Experiment Dot Plot (and Arrows Graph).</li>
 		<li>Rebuild of Bootstrap Single Variable Module.</li>
+		<li>Change to how 0 is handled when doing multiplicative time series modelling.</li>
 	</ul>
 	<b>2019-12-01</b><ul>
 		<li>Updates to 'Bar Graph - Summary Data' graph type... 
