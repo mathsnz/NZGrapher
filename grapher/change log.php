@@ -8,7 +8,7 @@ To Do List
 */
 
 ?>
-	<b>NEXT</b><ul>
+	<b>20200108</b><ul>
 		<li>Changes to splash screen for the start of 2020.</li>
 		<li>Re-Group option now under "Sampling and More" - great for grouping lots of variables down into 2 groups.</li>
 		<li>Can now load larger datasets.</li>
