@@ -8997,6 +8997,7 @@ function loaddatafromurl(dataset){
 
 function loaddata(){
 	$('#progressdescription')[0].innerHTML = 'Starting';
+	$('#progresssize')[0].innerHTML = '';
 	console.time("Starting");
 	$('#progressbarholder').show();	
 	console.timeEnd("Starting");
@@ -9004,20 +9005,65 @@ function loaddata(){
 	console.time("Creating Array");
 	setTimeout(function(){
 		data = csv_data;
+		len = Math.floor(data.length/1024);
+		if(len < 200){
+			$('#progresssize')[0].innerHTML = 'Data Size: '+len+'kb';
+		} else if(len < 2000) {
+			$('#progresssize')[0].innerHTML = 'Data Size: '+len+'kb<br>(This is a little bigger, so may take a little while)';
+		} else {
+			$('#progresssize')[0].innerHTML = 'Data Size: '+len+'kb<br>(This is a quite big, so may take a little while)';
+		}
+		console.log(data.length);
 		var countcomma = (data.match(/,/g) || []).length;
 		var countsemi = (data.match(/;/g) || []).length;
 		var counttab = (data.match(/\t/g) || []).length;
 		if(countcomma>countsemi){
 			if(countcomma>counttab){
-				finaldata = $.csv.toArrays(data,{separator:','});
+				try {
+					finaldata = $.csv.toArrays(data,{separator:','});
+				} catch(err) {
+					try {
+						finaldata = $.csv.toArrays(data.replace(/"/g, "'"),{separator:','});
+					} catch(err) {
+						console.error(err.message);
+						alert(err.message+'\nIf you continue experiencing issues with this dataset please email jwills@mathsnz with the dataset so we can work out what is going wrong.');
+					}
+				}
 			} else {
-				finaldata = $.csv.toArrays(data,{separator:'\t'});
+				try {
+					finaldata = $.csv.toArrays(data,{separator:'\t'});
+				} catch(err) {
+					try {
+						finaldata = $.csv.toArrays(data.replace(/"/g, "'"),{separator:'\t'});
+					} catch(err) {
+						console.error(err.message);
+						alert(err.message+'\nIf you continue experiencing issues with this dataset please email jwills@mathsnz with the dataset so we can work out what is going wrong.');
+					}
+				}
 			}
 		} else {
 			if(countsemi>counttab){
-				finaldata = $.csv.toArrays(data,{separator:';'});
+				try {
+					finaldata = $.csv.toArrays(data,{separator:';'});
+				} catch(err) {
+					try {
+						finaldata = $.csv.toArrays(data.replace(/"/g, "'"),{separator:';'});
+					} catch(err) {
+						console.error(err.message);
+						alert(err.message+'\nIf you continue experiencing issues with this dataset please email jwills@mathsnz with the dataset so we can work out what is going wrong.');
+					}
+				}
 			} else {
-				finaldata = $.csv.toArrays(data,{separator:'\t'});
+				try {
+					finaldata = $.csv.toArrays(data,{separator:'\t'});
+				} catch(err) {
+					try {
+						finaldata = $.csv.toArrays(data.replace(/"/g, "'"),{separator:'\t'});
+					} catch(err) {
+						console.error(err.message);
+						alert(err.message+'\nIf you continue experiencing issues with this dataset please email jwills@mathsnz with the dataset so we can work out what is going wrong.');
+					}
+				}
 			}
 		}
 		$('#progressdescription')[0].innerHTML = 'Creating Table';
