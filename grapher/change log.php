@@ -8,6 +8,15 @@ To Do List
 */
 
 ?>
+	<b>NEXT</b><ul>
+		<li>Changes to splash screen for the start of 2020.</li>
+		<li>Re-Group option now under "Sampling and More" - great for grouping lots of variables down into 2 groups.</li>
+		<li>Can now load larger datasets.</li>
+		<li>Improvements to Re-Randomisation teaching tool.</li>
+		<li>Rebuild of both Histogram and Histogram - Summary Data... heaps of new features and speed improvements.</li>
+		<li>Rebuild of Paired Experiment Dot Plot (and Arrows Graph).</li>
+		<li>Rebuild of Bootstrap Single Variable Module.</li>
+	</ul>
 	<b>2019-12-01</b><ul>
 		<li>Updates to 'Bar Graph - Summary Data' graph type... 
 			<ul>

@@ -5,6 +5,11 @@ var ymax;
 var animate = false;
 var animaterunning = false;
 var animatespeed = false;
+var finaldata;
+var r;
+var scalefactor;
+var dataforselector;
+var highestkey;
 
 function getCookie(cname) {
   var name = cname + "=";
@@ -37,8 +42,6 @@ $(document).on('paste', function(e) {
     }
     $('#textarea').val(text);
 });
-
-var scalefactor;
 
 $(function(){
 
@@ -128,25 +131,6 @@ $(function(){
 		document.getElementById("pastelink").style.display="block";
 		document.getElementById("linkarea").value="";
 		document.getElementById("linkarea").focus();
-	});
-	
-	$('#filebox').click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Data - filebox', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
-	});
-	
-	$('#pastetableclick').click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Data - pastetableclick', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
-		document.getElementById("pastetext").style.display="block";
-		document.getElementById("textarea").value="";
-		document.getElementById("textarea").focus();
 	});
 
 	$( "#fileshowhide" ).on('click mouseover',function() {
@@ -397,8 +381,6 @@ $(function(){
 		$ ("#sampling").show();
 		var col=2;
 		var options=[];
-		var datain="";
-		var titles="";
 		options.push('<option value=""></option>');
 		$('#data tr:first td').each( function(){
 			var items=[];
@@ -554,8 +536,6 @@ $(function(){
 		$("#rerandteachdiv").hide();
 		var col=2;
 		var options=[];
-		var datain="";
-		var titles="";
 		options.push('<option value=",,">Simple Random</option>');
 		$('#data tr:first td').each( function(){
 			var items=[];
@@ -610,6 +590,108 @@ $(function(){
 		$("#type").val("newrerandteach");
 		updatebox();
 	});
+	
+	$( "#regroup" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - regroup', ipaddress);
+		} catch(err) {
+			console.log(err.message);
+		}
+		$("#rowbox").hide();
+		$("#colbox").hide();
+		$("#sambox").hide();
+		$ ("#sampling").show();
+		$ ("#regroupdiv").show();
+		var col=2;
+		var options=[];
+		options.push('<option value=",,">-</option>');
+		$('#data tr:first td').each( function(){
+			var items=[];
+			//Iterate all td's in second column
+			$('#data tr td:nth-child('+col+')').each( function(){
+			   //add item to array
+			   items.push( $(this).text() );
+			});
+			var values=[];
+			var a=0;
+			var optionname;
+			//iterate unique array and build array of select options
+			$.each( items, function(i, item){
+				if(a==0){
+					optionname=item.trim();
+				} else {
+					values.push(item.trim());
+				}
+				a=a+1;
+			})
+			var allvals=values;
+			uniquevalues=unique( values );
+			if(uniquevalues.length<500){
+				uniquevalues.sort(sortorder);
+				var value="";
+				$.each(uniquevalues, function( index, val ) {
+					var num=countval(allvals,val);
+					value=value+val+','+num+',';
+				});
+				options.push('<option value="' + value + '">' + optionname + '</option>');
+			}
+			col++;
+		});
+		//finally empty the select and append the items from the array
+		$('#regroupwith').empty().append( options.join() );
+		$('#regrouptable').empty();
+		$('#regrouptable').append('<tr><td> <td><input id="regroup-">');
+	});
+
+	$ ("#regroupwith").change(function(){
+		var regroupwith = $('#regroupwith option:selected').text();
+		var options = this.value.split(',');
+		options.pop();
+		if($.inArray( regroupwith, options )>-1){
+			alert('Title of column matches some of the contents... this will cause issues when sampling. Please change the name of the column');
+		}
+		$('#regrouptable').empty();
+		for(var i=0;i<options.length;i++) {
+			$('#regrouptable').append('<tr><td style="font-size:14px;">'+options[i]+' ('+options[i+1]+')'+'<td><input id="regroup-'+options[i]+'"><td>');
+			i++;
+		}
+	});
+
+	$ ("#regroupgo").click(function(){
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - regroupgo', ipaddress);
+		} catch(err) {
+			console.log(err.message);
+		}
+		$ ("#regroupdiv").hide();
+		var variable = $('#regroupwith option:selected').text();
+		var index = $("#data td:contains('"+variable.split("'")[0]+"')").filter(function() {
+			return $(this).text() === variable;
+		}).index() - 1;
+		var a=0;
+		var num = $('[id^="regroup-"]').length;
+		var regroups = {};
+		for(var i=0;i<num;i++){
+			var  regroupto = $('[id^="regroup-"]')[i].value;
+			var  regroupfrom = $('[id^="regroup-"]')[i].id;
+			regroupfrom = regroupfrom.slice(8);
+			regroups[regroupfrom]=regroupto;
+		}
+		$('#data tr').each(function(){
+			if(a==0){
+				$(this).append("<td><div>" + variable + " (Re-Grouped)<br></div></td>");
+			} else {
+				val="";
+				currentval = $(this).children('td').eq(index).text();
+				val = regroups[currentval];
+				$(this).append("<td><div>" + val + "<br></div></td>");
+			}
+			a++;
+		});
+		$('#data td div').attr('contenteditable','true');
+		updatebox();
+		$ ("#sampling").hide();
+	});
 
 	$( "#sample" ).click(function() {
 		try {
@@ -624,8 +706,6 @@ $(function(){
 		$ ("#samplediv").show();
 		var col=2;
 		var options=[];
-		var datain="";
-		var titles="";
 		options.push('<option value=",,">Simple Random</option>');
 		$('#data tr:first td').each( function(){
 			var items=[];
@@ -845,6 +925,12 @@ $(function(){
 		}
 	}
 
+	$ ("#samvarreset").click(function(){
+		$('#samvarstop').click();
+		$('#data').html($('#presampledataholder').html());
+		updatebox();
+	});
+
 	$ ("#samvaranimateslow").click(function(){
 		console.log('samvaranimateslow');
 		animate = true;
@@ -973,9 +1059,9 @@ $(function(){
 		} catch(err) {
 			console.log(err.message);
 		}
-		$('#data').html($('#originaldataholder').html());
-		$('#data td div').attr('contenteditable','true');
-		updatebox();
+		$('#progressdescription')[0].innerHTML = 'Resetting';
+		$('#progressbarholder').show();
+		loaddata();
 	});
 
 	$( "#newvarc2" ).click(function(){
@@ -991,8 +1077,6 @@ $(function(){
 		$("#newvarcdiv").show();
 		var col=2;
 		var options=[];
-		var datain="";
-		var titles="";
 		options.push('<option></option>');
 		$('#data tr:first td').each( function(){
 			options.push('<option>' + $(this).text() + '</option>');
@@ -1015,8 +1099,6 @@ $(function(){
 		$("#newvarc3div").show();
 		var col=2;
 		var options=[];
-		var datain="";
-		var titles="";
 		options.push('<option></option>');
 		$('#data tr:first td').each( function(){
 			options.push('<option>' + $(this).text() + '</option>');
@@ -1041,8 +1123,6 @@ $(function(){
 		$("#newvardiv").show();
 		var col=2;
 		var options=[];
-		var datain="";
-		var titles="";
 		options.push('<option></option>');
 		$('#data tr:first td').each( function(){
 			options.push('<option>' + $(this).text() + '</option>');
@@ -1211,6 +1291,7 @@ $(function(){
 
 	$ (".close").click(function(){
 		$ ("#sampling").hide();
+		$ ("#regroupdiv").hide();
 		$ ("#filterdiv").hide();
 		$ ("#newvardiv").hide();
 		$ ("#newvarcdiv").hide();
@@ -1232,38 +1313,6 @@ $(function(){
 		updatebox()
 	});
 
-	$( "#import" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Data - import', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
-		var data = document.getElementById("textarea").value;
-		var rows = data.split('\n');
-		var row = 0;
-		var newtable="";
-		var firstrow=0;
-		for (i = 0; i < rows.length; i++) {
-			var cells = rows[i].split('\t');
-			if(i==0){firstrow=cells.length;}
-			if (cells.length >= firstrow){
-				if(i==0){
-					newtable += "<tr class=tabletop><th>id";
-				} else {
-					newtable += "<tr><th>" + i;
-				}
-				for (c = 0; c < cells.length; c++) {
-					var cell = escapeHtml(cells[c].trim()).replace(',', '-');
-					newtable += "<td><div>" + cell + "<br></div></td>"
-				}
-			}
-		}
-		document.getElementById("data").innerHTML = newtable;
-		$('#data td div').attr('contenteditable','true');
-		$('#originaldataholder').html($('#data').html());
-		$('#type').val('newabout');
-		updatebox();
-	});
 	$( "#importlink" ).click(function() {
 		try {
 			ga('send', 'event', 'Function', 'Data - importlink', ipaddress);
@@ -1274,15 +1323,6 @@ $(function(){
 		document.location = document.location.origin + document.location.pathname + '?url=' + encodeURIComponent(link);
 	});
 
-});
-
-$( document ).ready(function() {
-	$('#data td div').attr('contenteditable','true');
-	$('#originaldataholder').html($('#data').html());
-	if($('#variable').length){
-		updatebox();
-	}
-	graphchange(document.getElementById('type'));
 });
 
 function addnewcond(){
@@ -1339,6 +1379,11 @@ function graphchange(obj){
 	document.getElementById('relativefrequencyshow').style.display='none';
 	document.getElementById('relativewidthshow').style.display='none';
 	document.getElementById('percent100show').style.display='none';
+	document.getElementById('normalshow').style.display='none';
+	document.getElementById('poissonshow').style.display='none';
+	document.getElementById('binomialshow').style.display='none';
+	document.getElementById('rectangularshow').style.display='none';
+	document.getElementById('triangularshow').style.display='none';
 	document.getElementById('residualsforcexshow').style.display='none';
 	document.getElementById('weightedaverageshow').style.display='none';
 	document.getElementById('stackdotsshow').style.display='none';
@@ -1346,43 +1391,6 @@ function graphchange(obj){
 	document.getElementById('donutshow').style.display='none';
 	document.getElementById('stackdots').checked = false;
 	$('#removedpointsshow').hide();
-	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='time series forecasts' || obj.value=='old time series forecasts' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart' || obj.value=='bar and area graph' || obj.value=='residuals' || obj.value=='time series' || obj.value=='time series re-composition' || obj.value=='time series seasonal effects'){document.getElementById('xvar').style.display='block';document.getElementById('yvar').style.display='block';};
-	if(obj.value=='bootstrap'){document.getElementById('yvar').style.display='none';document.getElementById('yvar').selectedIndex=0;};
-	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='time series forecasts' || obj.value=='old time series forecasts' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart'){document.getElementById('regshow').style.display='block';};
-	if(obj.value=='dotplot'  || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='scatter' || obj.value=='residuals' || obj.value.substring(0,4)=='time' || obj.value.substring(0,8)=='old time'){document.getElementById('labelshow').style.display='block';};
-	if(obj.value=='dotplot' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r' || obj.value=='paired experiment' || obj.value=='histogram' || obj.value=='histogramf' || obj.value=='pie chart'){document.getElementById('sum').style.display='inline';};
-	if(obj.value=='paired experiment'){document.getElementById('arrowsshow').style.display='block';};
-	if(obj.value=='dotplot'){document.getElementById('highboxplotshow').style.display='block';};
-	if(obj.value=='dotplot'){document.getElementById('boxnowhiskershow').style.display='block';};
-	if(obj.value=='dotplot'){document.getElementById('boxnooutliershow').style.display='block';};
-	if(obj.value=='residuals'){document.getElementById('regtypeshow').style.display='block';};
-	if(obj.value=='scatter'){document.getElementById('jittershow').style.display='block';document.getElementById('reg').style.display='inline';document.getElementById('quadraticshow').style.display='block';document.getElementById('cubicshow').style.display='block';document.getElementById('expshow').style.display='block';document.getElementById('logshow').style.display='block';document.getElementById('powshow').style.display='block';document.getElementById('yxshow').style.display='block';};
-	if(obj.value=='time series forecasts'){document.getElementById('for').style.display='inline';};
-	if(obj.value.substring(0,4)=='time'){document.getElementById('addmultshow').style.display='block';};
-	if(obj.value=='time series'){document.getElementById('longtermtrendshow').style.display='block';};
-  if(obj.value=='histogramf' || obj.value=='histogram' || obj.value=='bar and area graph'){document.getElementById('relativefrequencyshow').style.display='block';}
-  if(obj.value=='residuals'){document.getElementById('residualsforcexshow').style.display='block';}
-  if(obj.value=='scatter'){
-    document.getElementById('invertshow').style.display='block';
-    document.getElementById('thicklinesshow').style.display='block';
-  }
-	if(obj.value=='dotplot' || obj.value=='paired experiment'){
-		document.getElementById('boxplotshow').style.display='block';
-		document.getElementById('intervalshow').style.display='block';
-	};
-	if(obj.value=='scatter' || obj.value=='dotplot' || obj.value=='paired experiment' || obj.value=='residuals' || obj.value.substring(0,4)=='boot' || obj.value.substring(0,4)=='re-r'){
-		document.getElementById('sizediv').style.display='block';
-		document.getElementById('pointsizename').innerHTML='Point Size:';
-	};
-	if(obj.value=='histogram' || obj.value=='histogramf'){
-		document.getElementById('sizediv').style.display='block';
-		document.getElementById('pointsizename').innerHTML='Interval Width:';
-	};
-	if(obj.value=='bootstrap'){document.getElementById('btypeshow').style.display='block';};
-	if(obj.value=='scatter' || obj.value=='dotplot' || obj.value=='paired experiment' || obj.value=='residuals'){document.getElementById('transdiv').style.display='block';};
-	if(obj.value=='scatter' || obj.value=='dotplot' || obj.value=='histogramf'){document.getElementById('zvar').style.display='inline';};
-	if(obj.value=='scatter' || obj.value=='dotplot' || obj.value=='paired experiment'){document.getElementById('color').style.display='inline';document.getElementById('colorname').style.display='inline';};
-
 	updategraph();
 }
 
@@ -1431,9 +1439,8 @@ function updategraph(){
 	if(animate){
 		updategraphgo();
 	} else {
-		$('#loading').show(80,function(){
-			updategraphgo();
-		});
+		$('#loading').show();
+		setTimeout(updategraphgo,80);
 	}
 	
 }
@@ -1469,122 +1476,7 @@ function updategraphgo(){
 		window.location = './';
 		return false;
 	}
-	if(document.getElementById('regression').checked){
-		document.getElementById('regressionform').value='yes';
-	} else {
-		document.getElementById('regressionform').value='no';
-	}
-	if(document.getElementById('boxplot').checked){
-		document.getElementById('boxplotform').value='yes';
-	} else {
-		document.getElementById('boxplotform').value='no';
-	}
-	if(document.getElementById('highboxplot').checked){
-		document.getElementById('highboxplotform').value='yes';
-	} else {
-		document.getElementById('highboxplotform').value='no';
-	}
-	if(document.getElementById('boxnowhisker').checked){
-		document.getElementById('boxnowhiskerform').value='yes';
-	} else {
-		document.getElementById('boxnowhiskerform').value='no';
-	}
-	if(document.getElementById('boxnooutlier').checked){
-		document.getElementById('boxnooutlierform').value='yes';
-	} else {
-		document.getElementById('boxnooutlierform').value='no';
-	}
-	if(document.getElementById('interval').checked){
-		document.getElementById('intervalform').value='yes';
-	} else {
-		document.getElementById('intervalform').value='no';
-	}
-	if(document.getElementById('intervallim').checked){
-		document.getElementById('intervallimform').value='yes';
-	} else {
-		document.getElementById('intervallimform').value='no';
-	}
-	if(document.getElementById('labels').checked){
-		document.getElementById('labelsform').value='yes';
-	} else {
-		document.getElementById('labelsform').value='no';
-	}
-	if(document.getElementById('arrows').checked){
-		document.getElementById('arrowsform').value='yes';
-	} else {
-		document.getElementById('arrowsform').value='no';
-	}
-	if(document.getElementById('quadratic').checked){
-		document.getElementById('quadraticform').value='yes';
-	} else {
-		document.getElementById('quadraticform').value='no';
-	}
-	if(document.getElementById('cubic').checked){
-		document.getElementById('cubicform').value='yes';
-	} else {
-		document.getElementById('cubicform').value='no';
-	}
-	if(document.getElementById('exp').checked){
-		document.getElementById('expform').value='yes';
-	} else {
-		document.getElementById('expform').value='no';
-	}
-	if(document.getElementById('pow').checked){
-		document.getElementById('powform').value='yes';
-	} else {
-		document.getElementById('powform').value='no';
-	}
-	if(document.getElementById('yx').checked){
-		document.getElementById('yxform').value='yes';
-	} else {
-		document.getElementById('yxform').value='no';
-	}
-	if(document.getElementById('log').checked){
-		document.getElementById('logform').value='yes';
-	} else {
-		document.getElementById('logform').value='no';
-	}
-	if(document.getElementById('jitter').checked){
-		document.getElementById('jitterform').value='yes';
-	} else {
-		document.getElementById('jitterform').value='no';
-	}
-	if(document.getElementById('longtermtrend').checked){
-		document.getElementById('longtermtrendform').value='yes';
-	} else {
-		document.getElementById('longtermtrendform').value='no';
-	}
-	if(document.getElementById('invert').checked){
-		document.getElementById('invertform').value='yes';
-	} else {
-		document.getElementById('invertform').value='no';
-	}
-	if(document.getElementById('thicklines').checked){
-		document.getElementById('thicklinesform').value='yes';
-	} else {
-		document.getElementById('thicklinesform').value='no';
-	}
-	if(document.getElementById('relativefrequency').checked){
-		document.getElementById('relativefrequencyform').value='1';
-	} else {
-		document.getElementById('relativefrequencyform').value='no';
-	}
-	if(document.getElementById('residualsforcex').checked){
-		document.getElementById('residualsforcexform').value='yes';
-	} else {
-		document.getElementById('residualsforcexform').value='no';
-	}
-	document.getElementById('titleform').value=document.getElementById('title').value;
-	document.getElementById('xaxisform').value=document.getElementById('xaxis').value;
-	document.getElementById('yaxisform').value=document.getElementById('yaxis').value;
-	document.getElementById('colorform').value=document.getElementById('colorlabel').value;
-	document.getElementById('regtypeform').value=document.getElementById('regtype').value;
-	document.getElementById('btypeform').value=document.getElementById('btype').value;
-	document.getElementById('addmultform').value=document.getElementById('addmult').value;
-	document.getElementById('sizeform').value=document.getElementById('size').value;
-	document.getElementById('transform').value=document.getElementById('trans').value;
-	document.getElementById("form").action=document.getElementById('type').value+'.php';
-  scalefactor=1;
+	scalefactor=1;
 	if(document.getElementById('standardsize').value=='Standard'){
 		document.getElementById('width').value=800;
 		document.getElementById('height').value=600;
@@ -1597,39 +1489,26 @@ function updategraphgo(){
 	} else if (document.getElementById('standardsize').value=='Auto - High Res') {
 		document.getElementById('width').value=document.getElementById('graphdiv').offsetWidth*5;
 		document.getElementById('height').value=document.getElementById('graphdiv').offsetHeight*5;
-    scalefactor=5;
+		scalefactor=5;
 	} else {
     document.getElementById('width').value=document.getElementById('graphdiv').offsetWidth;
   	document.getElementById('height').value=document.getElementById('graphdiv').offsetHeight;
   }
   $('#scalefactor').val(scalefactor);
-	var thedatain = encodeURI(document.getElementById('datain').value);
-	document.getElementById('datain').value=thedatain;
-	if(document.getElementById('type').value!='pairs plot' && document.getElementById('type').value!='newpairsplot'){
-		document.getElementById('datain').value="";
-	}
 	w=$('#type').val();
-	if (w.substr(0,3)=="new"){
-		if(animate){
-			$('#graph').hide();
-			$('#jsgraph').hide();
-			$('#myCanvas').show();
-			$('#loading').hide();
-			dataURL = window[w]();
-		} else {
-			$('#graph').hide();
-			$('#jsgraph').show();
-			$('#myCanvas').hide();
-			dataURL = window[w]();
-			jsgraphtoimage(dataURL);
-		}
-	} else {
-		$('#graph').show();
+	if(animate){
+		$('#graph').hide();
 		$('#jsgraph').hide();
+		$('#myCanvas').show();
+		$('#loading').hide();
+		dataURL = window[w]();
+	} else {
+		$('#graph').hide();
+		$('#jsgraph').show();
 		$('#myCanvas').hide();
-		document.getElementById("form").submit();
+		dataURL = window[w]();
+		jsgraphtoimage(dataURL);
 	}
-	document.getElementById('datain').value=thedatain;
 	desaturate();
 	$('area').mousemove(function(e) {
 		$('.highlight').removeClass('highlight');
@@ -1747,8 +1626,7 @@ function updatebox(){
 	}
 	var col=2;
 	var options=[];
-	var datain="";
-	var titles="";
+	dataforselector={' ':[]};
 	options.push('<option value=" "> </option>');
 	$('#data tr:first td').each( function(){
 		var items=[];
@@ -1760,18 +1638,18 @@ function updatebox(){
 		var value="";
 		var a=0;
 		var optionname;
+		var forselector = [];
 		//iterate unique array and build array of select options
 		$.each( items, function(i, item){
 			if(a==0){
 				optionname=item.trim();
 			} else {
-				value=value+item.trim()+',';
+				forselector.push(item.trim());
 			}
 			a=a+1;
 		})
-		options.push('<option value="' + value + '">' + optionname + '</option>');
-		datain = datain + value + "@#$";
-		titles = titles + optionname + ',';
+		dataforselector[optionname]=forselector;
+		options.push('<option>' + optionname + '</option>');
 		col++;
 	});
 	//finally empty the select and append the items from the array
@@ -1784,19 +1662,19 @@ function updatebox(){
 	if(zselindex==-1){zselindex=0;}
 	if(colselindex==-1){colselindex=0;}
 	
-	$('#xvar').empty().append( options.join() );
-	$('#yvar').empty().append( options.join() );
-	$('#zvar').empty().append( options.join() );
-	$('#color').empty().append( options.join() );
+	optionsforboxes = options.join();
+	
+	$('#xvar').empty().append( optionsforboxes );
+	$('#yvar').empty().append( optionsforboxes );
+	$('#zvar').empty().append( optionsforboxes );
+	$('#color').empty().append( optionsforboxes );
 
 	if(xselindex < document.getElementById("xvar").length && xselindex > -1){document.getElementById("xvar").selectedIndex = xselindex;} else {$("#xvar")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resetx');}
 	if(yselindex < document.getElementById("yvar").length && yselindex > -1){document.getElementById("yvar").selectedIndex = yselindex;} else {$("#yvar")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resety');}
 	if(zselindex < document.getElementById("zvar").length && zselindex > -1){document.getElementById("zvar").selectedIndex = zselindex;} else {$("#zvar")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resetz');}
 	if(colselindex < document.getElementById("color").length && colselindex > -1){document.getElementById("color").selectedIndex = colselindex;} else {$("#color")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resetcol');}
-
-	document.getElementById('datain').value=datain;
-	document.getElementById('titles').value=titles;
-	updategraph();
+	
+	graphchange(document.getElementById('type'));
 }
 
 function showhideleft(){
@@ -2202,15 +2080,13 @@ function makecolors(alpha,ctx){
 		ctx.lineWidth = 5*scalefactor;
 	}
 	var colors = [];
-	if($('#color').val() && $('#color').val()!=""){
-		var colorpoints = $('#color').val().split(",");
-		colorpoints.pop();
+	if($('#color option:selected').text()!="" && $('#color option:selected').text()!=" "){
+		var colorpoints = dataforselector[$('#color option:selected').text()].slice();
 	} else {
 		var colorpoints = [];
 	}
 	if(colorpoints.length<1){
-		var xpoints = $('#xvar').val().split(",");
-		xpoints.pop();
+		var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
 		for (var index in xpoints){
 			color = 'rgba(80,80,80,'+alpha+')';
 			colors.push(color);
@@ -2407,10 +2283,15 @@ function minnooutliers(values,lq,uq){
 }
 
 function newabout(){
-  var width = $('#width').val()-22;
-  var height = $('#height').val()-22;
-  content = "DISPL<div style='width:"+width+"px;height:"+height+"px;overflow-y:scroll;padding:10px;text-align:left;'><center>\n\t<h1>About <img src='logob.png' style='position:relative;top:22px;height:65px;'><\/h1><\/center><br><br>\tNZGrapher has been developed by Jake Wills, a maths teacher in New Zealand specifically for supporting the teaching of the statistics in New Zealand. The idea behind NZGrapher was to create a web based statistical package that can run on <b>any device<\/b>, without an install.<br><span id=whichschoolholder></span>\n\t<br>\n\t<b>Help<\/b><br>\n\tYou can access <b><a target='_blank' href=\"\/\/www.mathsnz.com\/nzgrapher-info\/video-tutorials\">video tutorials<\/a><\/b> to help you getting started on <a target='_blank' href=\"https:\/\/www.mathsnz.com\/nzgrapher-info\/video-tutorials\">MathsNZ<\/a>. They are organised in two ways, firstly by the type of feature you are trying to use, and secondly by the NCEA standard that they relate to. There is a help button in the top menu with more help content. The data section on the left also allows you to edit the data directly just by clicking on the part you want to edit and typing the changes in.<br>\n\t<br>\n\t<b>Saving \/ Copying Graphs<\/b><br>\n\tTo save or copy the graph right click on it or tap and hold if you are using a Tablet and the options should show up for copying and saving.<br>\n\t<br>\n\t<b>Getting Data Into NZGrapher<\/b><br>\n\tNZGrapher has a number of built in datasets. If you want to use your own:<ul><li>You can upload / open files from your computer up to 200kb using Data -> Open Files.</li><li>You can paste a table using Data -> Paste Table. This only works from google sheets and excel. It doesn't work very well from a table in a Word or Google doc.</li><li>You can also paste a link to a csv. The CSV needs to be accessible on the internet for this to work. You can publish Google Sheets to a CSV from Google Docs.</li></ul>The paste table and paste link options do not have file size limits. If you have a dataset you want to share with lots of students see the section below 'for teachers'.<br><br><b>For Teachers<\/b><br>\n\tNZ Grapher also supports custom folders for assessments or your own datasets, allowing students to easily access the datasets. If you are a teacher and would like me to set up a custom folder for you, please let me know. You can contact me at <a href='https:\/\/www.mathsnz.com\/contact' target='_blank'>MathsNZ<\/a>. Once the folder is set up you can manage the files inside it via a password protected page.<br>\n\t<br>\n\t<b>Costs<\/b><br>NZGrapher is free for non-commercial individual use, you can however <a href='https:\/\/www.mathsnz.com\/donate'>make a donation</a>.<br><br>Schools are required to subscribe at a minimum of $0.50 per student using NZGrapher. Commerial users are also required to pay. Please visit the <a href='https:\/\/www.mathsnz.com\/nzgrapher-invoice'>invoice creator</a> for details.<br><br>This is optional for 2019, but will be compulsory for 2020.\n\t</div><script>if(getCookie('whichschool')!='yes'){$.get('https://tracking.jake4maths.com/ipstoask.json').done(function(data){if($.inArray('210.55.72.211',data)>-1){$.get('https://tracking.jake4maths.com/whichschool.php').done(function(data){$('#whichschoolholder').html(data);})}})}</script>";
-  return content;
+	$('#var1label').html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+	$('#var2label').html("");
+	$('#var3label').html("");
+	$.get('./about.php').done(function(data){
+		var width = $('#width').val()-22;
+		var height = $('#height').val()-22;
+		$('#jsgraph').html("<div style='width:"+width+"px;height:"+height+"px;overflow-y:scroll;padding:10px;text-align:left;'>"+data+"</div>");
+	});
+	return "DISPLLoading...";
 }
 
 function newdotplot(){
@@ -2438,9 +2319,9 @@ function newdotplot(){
 	$('#gridlinesshow').show();
 		$('#removedpointsshow').show();
 		$('#stripgraphshow').show();
-	$('#var1label').html("numerical 1:<br><small>required</small>");
-	$('#var2label').html("category 1:<br><small>optional</small>");
-	$('#var3label').html("category 2:<br><small>optional</small>");
+	$('#var1label').html("Numerical 1:<br><small>required</small>");
+	$('#var2label').html("Category 1:<br><small>optional</small>");
+	$('#var3label').html("Category 2:<br><small>optional</small>");
 
 	var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
@@ -2456,12 +2337,9 @@ function newdotplot(){
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 	//get points
-	var xpoints = $('#xvar').val().split(",");
-	xpoints.pop();
-	var ypoints = $('#yvar').val().split(",");
-	ypoints.pop();
-	var zpoints = $('#zvar').val().split(",");
-	zpoints.pop();
+	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
+	var ypoints = (dataforselector[$('#yvar option:selected').text()]).slice();
+	var zpoints = (dataforselector[$('#zvar option:selected').text()]).slice();
 
 	//check for numeric value
 	var points=[];
@@ -2630,7 +2508,7 @@ function labelgraph(ctx,width,height){
 	ctx.textAlign="left";
 	ctx.fillText("Made with NZGrapher",10*scalefactor,height-10*scalefactor);
 	ctx.textAlign="right";
-	ctx.fillText("www.mathsnz.com",width-10*scalefactor,height-10*scalefactor);
+	ctx.fillText("www.grapher.nz",width-10*scalefactor,height-10*scalefactor);
 }
 
 function plotysplit(ctx,left,right,oypixel,minxtick,maxxtick,xstep,maxheight,points,xpoints,ypoints,colors,allygroups){
@@ -2742,15 +2620,17 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 			ypixel = randint(oypixel-10*scalefactor,oypixel-maxheight+10*scalefactor+maxheight*0.5)
 		}
 		lastxpixel = xpixel;
-		if(key>highestkey){
+		if(Number.parseInt(key)>highestkey){
 			lastypixel = ypixel;
-			highestkey = key;
+			highestkey = Number.parseInt(key);
 		}
 		ctx.strokeStyle = colors[key];
 		ctx.arc(rawxpixel,ypixel,rad,0,2*Math.PI);
 		ctx.stroke();
-		if(hovers==1){
-			$('#graphmap').append('<area shape="circle" coords="'+(rawxpixel/scalefactor)+','+(ypixel/scalefactor)+','+(rad/scalefactor)+'" alt="'+parseInt(add(key,1))+'" desc="Point ID: '+parseInt(add(key,1))+'<br>'+$('#xaxis').val()+': '+val+'">');
+		if(hovers==1 || hovers=='Difference'){
+			xaxislabel = $('#xaxis').val();
+			if(hovers=='Difference'){xaxislabel = "Difference";}
+			$('#graphmap').append('<area shape="circle" coords="'+(rawxpixel/scalefactor)+','+(ypixel/scalefactor)+','+(rad/scalefactor)+'" alt="'+parseInt(add(key,1))+'" desc="Point ID: '+parseInt(add(key,1))+'<br>'+xaxislabel+': '+val+'">');
 		}
 		//text
 		if(labels == "yes"){
@@ -3017,10 +2897,8 @@ function bootstrap(mm){
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 	//get points
-	var xpoints = $('#xvar').val().split(",");
-	xpoints.pop();
-	var ypoints = $('#yvar').val().split(",");
-	ypoints.pop();
+	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
+	var ypoints = (dataforselector[$('#yvar option:selected').text()]).slice();
 
 	//check for numeric value
 	var points=[];
@@ -3353,12 +3231,9 @@ function newtimeseries(){
 	}
 
 	//get points
-	var xpoints = $('#xvar').val().split(",");
-	xpoints.pop();
-	var ypoints = $('#yvar').val().split(",");
-	ypoints.pop();
-	var zpoints = $('#zvar').val().split(",");
-	zpoints.pop();
+	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
+	var ypoints = (dataforselector[$('#yvar option:selected').text()]).slice();
+	var zpoints = (dataforselector[$('#zvar option:selected').text()]).slice();
 
 	seasons = checkforts(xpoints);
 
@@ -3840,10 +3715,8 @@ function newtimeseriesrecomp(){
 	ctx.fillText($('#title').val(),width/2,30*scalefactor);
 
 	//get points
-	var xpoints = $('#xvar').val().split(",");
-	xpoints.pop();
-	var ypoints = $('#yvar').val().split(",");
-	ypoints.pop();
+	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
+	var ypoints = (dataforselector[$('#yvar option:selected').text()]).slice();
 
 	seasons = checkforts(xpoints);
 
@@ -4578,12 +4451,9 @@ function newscatter(){
 	ctx.restore();
 	
 	//get points
-	var xpoints = $('#xvar').val().split(",");
-	xpoints.pop();
-	var ypoints = $('#yvar').val().split(",");
-	ypoints.pop();
-	var zpoints = $('#zvar').val().split(",");
-	zpoints.pop();
+	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
+	var ypoints = (dataforselector[$('#yvar option:selected').text()]).slice();
+	var zpoints = (dataforselector[$('#zvar option:selected').text()]).slice();
 
 	//check for numeric value
 	var points=[];
@@ -5149,10 +5019,8 @@ function newtimeseriesseasonaleffects(){
 
 	
 	//get points
-	var xpoints = $('#xvar').val().split(",");
-	xpoints.pop();
-	var ypoints = $('#yvar').val().split(",");
-	ypoints.pop();
+	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
+	var ypoints = (dataforselector[$('#yvar option:selected').text()]).slice();
 	
 	seasons = checkforts(xpoints);
 
@@ -5395,10 +5263,8 @@ function newtimeseriessforecasts(){
 	ctx.restore();
 	
 	//get points
-	var xpoints = $('#xvar').val().split(",");
-	xpoints.pop();
-	var ypoints = $('#yvar').val().split(",");
-	ypoints.pop();
+	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
+	var ypoints = (dataforselector[$('#yvar option:selected').text()]).slice();
 	
 	seasons = checkforts(xpoints);
 
@@ -6299,6 +6165,11 @@ function newpairsplot(){
 	
 	$("#invertshow").show();
 	
+	$('#var1label').html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+	$('#var2label').html("");
+	$('#var3label').html("");
+
+	
 	var canvas = document.getElementById('myCanvas');
 	var ctx = canvas.getContext('2d');
 	
@@ -6312,13 +6183,12 @@ function newpairsplot(){
 	ctx.fillStyle = "#ffffff";
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	
-	data = $('#datain').val().split('@#$')
-	data.pop();
-	
-	$(data).each(function(index,value){
-		data[index]=value.split(',');
-		data[index].pop();
-	});
+	data = [];
+	$.each(dataforselector,function(index,value){
+		if(index != ' '){
+			data.push(value);
+		}
+	})
 	
 	//set font
 	ctx.fillStyle = '#000000';
@@ -6683,10 +6553,8 @@ function newresiduals(){
 	ctx.restore();
 	
 	//get points
-	var xpoints = $('#xvar').val().split(",");
-	xpoints.pop();
-	var ypoints = $('#yvar').val().split(",");
-	ypoints.pop();
+	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
+	var ypoints = (dataforselector[$('#yvar option:selected').text()]).slice();
 
 	//check for numeric value
 	var points=[];
@@ -6896,7 +6764,22 @@ function newresiduals(){
 }
 
 function newchangelog(){
+	$('#var1label').html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+	$('#var2label').html("");
+	$('#var3label').html("");
 	$.get('./change log.php').done(function(data){
+		var width = $('#width').val()-22;
+		var height = $('#height').val()-22;
+		$('#jsgraph').html("<div style='width:"+width+"px;height:"+height+"px;overflow-y:scroll;padding:10px;text-align:left;'>"+data+"</div>");
+	});
+	return "DISPLLoading...";
+}
+
+function newupdate(){
+	$('#var1label').html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+	$('#var2label').html("");
+	$('#var3label').html("");
+	$.get('./update.php').done(function(data){
 		var width = $('#width').val()-22;
 		var height = $('#height').val()-22;
 		$('#jsgraph').html("<div style='width:"+width+"px;height:"+height+"px;overflow-y:scroll;padding:10px;text-align:left;'>"+data+"</div>");
@@ -6908,11 +6791,12 @@ function newpiechart(){
 	$('#xvar').show();
 	$('#yvar').show();
 	$('#zvar').show();
-	$('#var1label').html("category 1:<br><small>required</small>");
-	$('#var2label').html("category 2:<br><small>optional</small>");
-	$('#var3label').html("frequency:<br><small>optional</small>");
-	if($('#color').val() != $('#xvar').val()){
-		$('#color').val($('#xvar').val());
+	$('#var1label').html("Category 1:<br><small>required</small>");
+	$('#var2label').html("Category 2:<br><small>optional</small>");
+	$('#var3label').html("Frequency:<br><small>optional</small>");
+	
+	if(document.getElementById("color").selectedIndex != document.getElementById("xvar").selectedIndex){
+		document.getElementById("color").selectedIndex = document.getElementById("xvar").selectedIndex
 	};
 	
 	$('#colorlabel').val($('#xaxis').val());
@@ -6945,15 +6829,12 @@ function newpiechart(){
 	ctx.fillText($('#title').val(),width/2,30*scalefactor);
 	
 	//get points
-	var xpoints = $('#xvar').val().split(",");
-	xpoints.pop();
-	var ypoints = $('#yvar').val().split(",");
-	ypoints.pop();
-	var zpoints = $('#zvar').val().split(",");
-	zpoints.pop();
+	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
+	var ypoints = (dataforselector[$('#yvar option:selected').text()]).slice();
+	var zpoints = (dataforselector[$('#zvar option:selected').text()]).slice();
 	
 	if(xpoints.length==0){
-		return 'Error: You must select a variable for "category 1"';
+		return 'Error: You must select a variable for "Category 1"';
 	}
 	
 	var points=[];
@@ -7184,8 +7065,9 @@ function rerand(mm){
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
 	$('#stripgraphshow').show();
-	$('#var1label').html("numerical 1:<br><small>required</small>");
-	$('#var2label').html("category 1:<br><small>required</small>");
+	$('#var1label').html("Numerical 1:<br><small>required</small>");
+	$('#var2label').html("Category 1:<br><small>required</small>");
+	$('#var3label').html("");
 
 	if(mm=='mean'){
 		$('#boxplot').prop('checked', false);
@@ -7206,10 +7088,8 @@ function rerand(mm){
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 	//get points
-	var xpoints = $('#xvar').val().split(",");
-	xpoints.pop();
-	var ypoints = $('#yvar').val().split(",");
-	ypoints.pop();
+	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
+	var ypoints = (dataforselector[$('#yvar option:selected').text()]).slice();
 
 	//check for numeric value
 	var points=[];
@@ -7227,7 +7107,7 @@ function rerand(mm){
 	}
 
 	if(points.length==0){
-		return 'Error: You must select a numeric variable for "numerical 1"';
+		return 'Error: You must select a numeric variable for "Numerical 1"';
 	}
 
 	if(ypoints.length>0){
@@ -7248,7 +7128,7 @@ function rerand(mm){
 			return allydifferentgroups;
 		}
 	} else {
-		return 'Error: you must select a variable with only 2 values for "category 1"';
+		return 'Error: you must select a variable with only 2 values for "Category 1"';
 	}
 
 	if(pointsremoved.length!=0 && $('#removedpoints').is(":checked")){
@@ -7556,10 +7436,8 @@ function newrerandteachstep(){
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 	//get points
-	var xpoints = $('#xvar').val().split(",");
-	xpoints.pop();
-	var ypoints = $('#yvar').val().split(",");
-	ypoints.pop();
+	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
+	var ypoints = (dataforselector[$('#yvar option:selected').text()]).slice();
 
 	//check for numeric value
 	var points=[];
@@ -7577,7 +7455,7 @@ function newrerandteachstep(){
 	}
 
 	if(points.length==0){
-		return 'Error: You must select a numeric variable for "numerical 1"';
+		return 'Error: You must select a numeric variable for "Numerical 1"';
 	}
 
 	if(ypoints.length>0){
@@ -7596,7 +7474,7 @@ function newrerandteachstep(){
 			return allydifferentgroups;
 		}
 	} else {
-		return 'Error: you must select a variable with only 2 values for "category 1"';
+		return 'Error: you must select a variable with only 2 values for "Category 1"';
 	}
 
 	if(pointsremoved.length!=0 && $('#removedpoints').is(":checked")){
@@ -8053,8 +7931,1147 @@ function newrerandteach(){
 	$('#regression').prop('checked', false);
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
-	$('#var1label').html("numerical 1:<br><small>required</small>");
-	$('#var2label').html("category 1:<br><small>required</small>");
-	$('#color').val($('#yvar').val());
+	$('#var1label').html("Numerical 1:<br><small>required</small>");
+	$('#var2label').html("Category 1:<br><small>required</small>");
+	document.getElementById("color").selectedIndex != document.getElementById("yvar").selectedIndex;
 	return newrerandteachstep();
+}
+
+function newbargraphf(){
+	return newbargraphfnf('f');
+}
+
+function newbargraph(){
+	return newbargraphfnf('nf');
+}
+
+function newbargraphfnf(fnf){
+	$('#invertshow').show();
+	$('#regshow').show();
+	$('#sum').show();
+	$('#xvar').show();
+	$('#yvar').show();
+	$('#color').show();
+	$('#colorname').show();
+	$('#transdiv').show();
+	$('#greyscaleshow').show();
+	$('#gridlinesshow').show();
+	$('#removedpointsshow').show();
+	$('#percent100show').show();
+	$('#relativefrequencyshow').show();
+	$('#relativewidthshow').show();
+	$('#var1label').html("Category:<br><small>required</small>");
+	
+	if(fnf=='f'){
+		$('#var2label').html("Frequency:<br><small>required</small>");
+		$('#var3label').html("Split:<br><small>optional</small>");	
+		$('#zvar').show();
+	} else {
+		$('#var2label').html("Split:<br><small>optional</small>");	
+		$('#var3label').html("");	
+	}
+
+	var canvas = document.getElementById('myCanvas');
+    var ctx = canvas.getContext('2d');
+
+	//set size
+	var width = $('#width').val();
+	var height = $('#height').val();
+
+	ctx.canvas.width = width;
+	ctx.canvas.height = height;
+
+	ctx.fillStyle = "#ffffff";
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+	//get points
+	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
+
+	//check x points for number of groups
+	if(xpoints.length==0){
+		return 'Error: You must select a variable for "Category"';
+	}
+	
+	if(fnf=='f'){
+		var ypoints = (dataforselector[$('#yvar option:selected').text()]).slice();
+		var zpoints = (dataforselector[$('#zvar option:selected').text()]).slice();
+		
+		//check for numeric value
+		var points=[];
+		var allpoints=[];
+		var pointsremoved=[];
+		for (var index in ypoints){
+			if($.isNumeric(ypoints[index])){
+				points.push(index);
+				allpoints.push(index);
+			} else {
+				pointsremoved.push(add(index,1));
+			}
+		}
+
+		if(points.length==0){
+			return 'Error: You must select a numeric variable for "Frequency"';
+		}
+		
+	} else {
+		var zpoints = (dataforselector[$('#yvar option:selected').text()]).slice();
+		
+		//add all points as 1
+		var points=[];
+		var allpoints=[];
+		var pointsremoved=[];
+		var ypoints=[];
+		for (var index in xpoints){
+			points.push(index);
+			allpoints.push(index);
+			ypoints.push(1);
+		}
+		
+	}
+	
+	var colorpoints = dataforselector[$('#color option:selected').text()].slice();
+	
+	xdifferentgroups = split(points,xpoints,10,'"Category"');
+	if(typeof xdifferentgroups !== 'object'){
+		return xdifferentgroups;
+	}
+	xgroups = Object.keys(xdifferentgroups).sort(sortorder);
+
+	if(pointsremoved.length!=0 && $('#removedpoints').is(":checked")){
+		ctx.fillStyle = '#000000';
+		fontsize = 13*scalefactor;
+		ctx.font = fontsize+"px Roboto";
+		ctx.textAlign="right";
+		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-48*scalefactor,48*scalefactor);
+	}
+	
+	relativefrequency = false;
+	if($('#relativefrequency').is(":checked")){
+		relativefrequency = true;
+		$("#percent100"). prop("checked", false);
+	}
+	
+	relativewidth = false;
+	if($('#relativewidth').is(":checked")){
+		relativewidth = true;
+		$("#percent100"). prop("checked", true);
+	}
+	
+	percent100 = false;
+	if($('#percent100').is(":checked")){
+		percent100 = true;
+	}
+
+	var oypixel=60*scalefactor;
+	var maxheight=height-60*scalefactor;
+	var left=20*scalefactor;
+	var right=width-60*scalefactor;
+
+	ymin = 0;
+	ymax = 0;
+	total = 0;
+	
+	sumpoints = {};
+	
+	if(zpoints.length>0){
+		zdifferentgroups = split(points,zpoints,4,'"Split"');
+		if(typeof zdifferentgroups === 'object'){
+			zgroups = Object.keys(zdifferentgroups);
+			zgroups.sort(sortorder);
+			for (z in zgroups){
+				zgroup = zgroups[z];
+				zgrouppoints = zdifferentgroups[zgroup];
+				for(x in xgroups){
+					xgroup = xgroups[x];
+					for (i in xdifferentgroups[xgroup]){
+						index = xdifferentgroups[xgroup][i];
+						if($.inArray(index,zgrouppoints)>-1){
+							cat = xgroup+'-~-'+zgroup;
+							val = ypoints[index];
+							if(sumpoints[cat] === undefined){
+								sumpoints[cat]=0;
+							}
+							sumpoints[cat]-=(-val);
+						}	
+					}
+				}
+			}
+		} else {
+			return zdifferentgroups;
+		}
+	} else {
+		for(g in xgroups){
+			for (i in xdifferentgroups[xgroups[g]]){
+				index = xdifferentgroups[xgroups[g]][i];
+				cat = xgroups[g];
+				val = ypoints[index];
+				if(sumpoints[cat] === undefined){
+					sumpoints[cat]=0;
+				}
+				sumpoints[cat]-=(-val);
+			}
+		}
+	}
+	
+	for(index in sumpoints){
+		total += sumpoints[index];
+		if(sumpoints[index]>ymax){
+			ymax = sumpoints[index];
+		}
+	}
+	
+	if(relativefrequency){
+		ymax = ymax / total;
+	}
+	
+	if(percent100){
+		ymax = 100;
+	}
+	
+	var minmaxstep = axisminmaxstep(ymin,ymax);
+	var minytick=minmaxstep[0];
+	var maxytick=minmaxstep[1];
+	var ystep=minmaxstep[2];
+
+	var alpha = 1-$('#trans').val()/100;
+	var colors = makecolors(alpha,ctx);
+	
+
+	if(zpoints.length>0){
+		zgroups = Object.keys(zdifferentgroups);
+		zgroups.sort(sortorder);
+		thistop=60*scalefactor;
+		eachheight=maxheight/zgroups.length;
+		for (index in zgroups){
+			group = zgroups[index];
+			points = zdifferentgroups[group];
+
+			thisbottom = add(thistop,eachheight);
+
+			ctx.fillStyle = '#000000';
+			fontsize = 15*scalefactor;
+			ctx.font = "bold "+fontsize+"px Roboto";
+			ctx.textAlign="left";
+			ctx.fillText(group,left,thistop-15*scalefactor);
+			
+			var error = plotbargraph(ctx,left,right,thistop,minytick,maxytick,ystep,eachheight,points,xdifferentgroups,ypoints,colors,xgroups,colorpoints,relativefrequency,total,percent100,sumpoints,group,relativewidth);
+			if(error != 'good'){return error;}
+			
+			thistop = add(thistop,eachheight);
+		}
+	} else {
+		var error = plotbargraph(ctx,left,right,oypixel,minytick,maxytick,ystep,maxheight,points,xdifferentgroups,ypoints,colors,xgroups,colorpoints,relativefrequency,total,percent100,sumpoints,'~nogroup~',relativewidth);
+		if(error != 'good'){return error;}
+	}
+
+	//graph title
+	ctx.fillStyle = '#000000';
+	fontsize = 20*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
+	ctx.textAlign="center";
+	ctx.fillText($('#title').val(),width/2,30*scalefactor);
+
+	//x-axis title
+	ctx.fillStyle = '#000000';
+	fontsize = 15*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
+	ctx.textAlign="center";
+	ctx.fillText($('#xaxis').val(),width/2,height-10*scalefactor);
+
+	labelgraph(ctx,width,height);
+	if($('#invert').is(":checked")){
+		invert(ctx)
+	}
+
+	var dataURL = canvas.toDataURL();
+	return dataURL;
+}
+
+function onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+}
+
+function plotbargraph(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,points,groups,frequencys,colors,xgroups,colorpoints,relativefrequency,total,percent100,sumpoints,zgroup,relativewidth){
+	
+	uniquecolors = colorpoints.filter( onlyUnique ).sort(sortorder);
+	if(uniquecolors.length==0){uniquecolors=[''];}
+	
+	maxheight = maxheight - 60*scalefactor;
+	
+	gbottom = add(gtop,maxheight);
+	
+	//y-axis title
+	if($('#yaxis').val() != "Y Axis Title"){
+		var x, y;
+		x=20*scalefactor;
+		y=gtop + maxheight/2;
+		ctx.save();
+		ctx.fillStyle = '#000000';
+		fontsize = 15*scalefactor;
+		ctx.font = "bold "+fontsize+"px Roboto";
+		ctx.translate(x, y);
+		ctx.rotate(-Math.PI/2);
+		ctx.textAlign = "center";
+		ctx.fillText($('#yaxis').val(), 0, 0);
+		ctx.restore();
+	}
+	
+	append = '';
+	if(percent100){append = '%';}
+	
+	vertaxis(ctx,gtop,gbottom,add(left,50*scalefactor),minytick,maxytick,ystep,right,append);
+	
+	line(ctx,add(left,50*scalefactor),gbottom,right,gbottom);
+	
+	stepsize = (right - add(left,50*scalefactor))/xgroups.length;
+	
+	thisleft = add(left,50*scalefactor);
+	
+	ctx.fillStyle = '#000000';
+	fontsize = 13*scalefactor;
+	ctx.font = fontsize+"px Roboto";
+	ctx.textAlign="center";
+	
+	for (var index in xgroups){
+		addforboxleft = 0.1;
+		rectanglesize = 0.8;
+		group = xgroups[index];
+		if(relativewidth){
+			if(zgroup!='~nogroup~'){
+				selectgroup = group + '-~-' + zgroup;
+			} else {
+				selectgroup = group;
+			}
+			stepsize = (right - add(left,50*scalefactor))*sumpoints[selectgroup]/total;
+			thisright = add(thisleft,stepsize);
+			addforboxleft = 0;
+			rectanglesize = 1;
+		}
+		thisright = add(thisleft,stepsize);
+		line(ctx,thisright,gbottom,thisright,add(gbottom,10));
+		thiscenter = add(thisleft,thisright)/2;
+		ctx.fillStyle = '#000000';
+		ctx.fillText(group,thiscenter,add(gbottom,15));
+		gtotal = 0;
+		boxbottom = gbottom;
+		boxtop = boxbottom;
+		colordesc = "";
+		for(c in uniquecolors){
+			thistotal = 0;
+			colorname = uniquecolors[c];
+			for(p in groups[group]){
+				i = groups[group][p];
+				if(colorname == colorpoints[i] || uniquecolors.length==1){
+					if($.inArray(i,points)>-1){
+						thistotal -= -frequencys[i];
+						if(colorpoints.length>0){
+							colordesc = '<b>'+$('#colorlabel').val()+'</b>: '+colorpoints[i]+'<br>';
+						}
+						color = colors[i];
+					}
+				}
+			}
+			displaytotal = thistotal;
+			if(relativefrequency){
+				displaytotal = displaytotal/total;
+			}
+			if(percent100){
+				if(zgroup!='~nogroup~'){
+					selectgroup = group + '-~-' + zgroup;
+				} else {
+					selectgroup = group;
+				}
+				displaytotal = displaytotal/sumpoints[selectgroup]*100;
+			}
+			
+			if(thistotal>0){
+				gtotal += displaytotal;
+				boxtop = convertvaltopixel(gtotal,minytick,maxytick,gbottom,gtop);
+				boxleft = add(thisleft,stepsize*addforboxleft);
+				ctx.fillStyle = color;
+				ctx.fillRect(boxleft,boxbottom,stepsize*rectanglesize,boxtop-boxbottom);
+				ctx.lineWidth = 1*scalefactor;
+				ctx.strokeStyle = 'rgba(0,0,0,1)';
+				ctx.rect(boxleft,boxbottom,stepsize*rectanglesize,boxtop-boxbottom);
+				ctx.stroke();
+				ctx.fillStyle = '#000000';
+				if(relativefrequency){
+					displaytotal = Number.parseFloat(displaytotal.toPrecision(5));
+				}
+				if(percent100){
+					displaytotal = displaytotal.toFixed(1)+"%";
+				}
+				if(thistotal == displaytotal){
+					title = '<b>'+$('#xaxis').val()+'</b>: '+xgroups[index]+'</b><br>'+colordesc+'<b>n</b>: '+ thistotal;
+				} else {
+					title = '<b>'+$('#xaxis').val()+'</b>: '+xgroups[index]+'</b><br>'+colordesc+'<b>n</b>: '+ thistotal + " (" + displaytotal + ")";
+				}
+				$('#graphmap').append("<area shape='rect' coords='"+(boxleft/scalefactor)+","+(boxtop/scalefactor)+","+(add(boxleft,stepsize*rectanglesize)/scalefactor)+","+(boxbottom/scalefactor)+"' desc='"+title+"'>");
+				if($('#regression').is(":checked")){
+					ctx.fillText(displaytotal,thiscenter,(boxtop+boxbottom)/2+4.5*scalefactor);
+				}
+			}
+			boxbottom = boxtop;
+		}
+		thisleft = thisright;
+	}
+	
+	ctx.lineWidth = 2*scalefactor;
+	if($('#thicklines').is(":checked")){
+		ctx.lineWidth = 5*scalefactor;
+	}
+	return 'good';
+}
+
+function newhistogramf(){
+	return newhistogramfnf('f');
+}
+
+function newhistogram(){
+	return newhistogramfnf('nf');
+}
+
+function newhistogramfnf(fnf){
+	$('#invertshow').show();
+	$('#regshow').show();
+	$('#sum').show();
+	$('#xvar').show();
+	$('#yvar').show();
+	$('#transdiv').show();
+	$('#greyscaleshow').show();
+	$('#gridlinesshow').show();
+	$('#removedpointsshow').show();
+	$('#relativefrequencyshow').show();
+	$('#var1label').html("Numerical:<br><small>required</small>");
+	$('#sizediv').show();
+	$('#pointsizename').html('Intervals:');
+	$('#highboxplotshow').show();
+	$('#normalshow').show();
+	$('#poissonshow').show();
+	$('#binomialshow').show();
+	$('#rectangularshow').show();
+	$('#triangularshow').show();
+	
+	if(fnf=='f'){
+		$('#var2label').html("Frequency:<br><small>required</small>");
+		$('#var3label').html("Split:<br><small>optional</small>");	
+		$('#zvar').show();
+	} else {
+		$('#var2label').html("Split:<br><small>optional</small>");	
+		$('#var3label').html("");	
+	}
+
+	var canvas = document.getElementById('myCanvas');
+    var ctx = canvas.getContext('2d');
+
+	//set size
+	var width = $('#width').val();
+	var height = $('#height').val();
+
+	ctx.canvas.width = width;
+	ctx.canvas.height = height;
+
+	ctx.fillStyle = "#ffffff";
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+	//get points
+	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
+	
+	if(fnf=='f'){
+		// still need to check from here to the end of this if
+		var ypoints = (dataforselector[$('#yvar option:selected').text()]).slice();
+		var zpoints = (dataforselector[$('#zvar option:selected').text()]).slice();
+		
+		//check for numeric value
+		var points=[];
+		var allpoints=[];
+		var pointsremoved=[];
+		var pointsforminmax=[];
+		for (var index in ypoints){
+			if($.isNumeric(ypoints[index]) && $.isNumeric(xpoints[index])){
+				points.push(index);
+				allpoints.push(index);
+				pointsforminmax.push(xpoints[index]);
+			} else {
+				pointsremoved.push(add(index,1));
+			}
+		}
+
+		if(points.length==0){
+			return 'Error: You must select a numeric variable for "Frequency"';
+		}
+		
+	} else {
+		var zpoints = (dataforselector[$('#yvar option:selected').text()]).slice();
+		
+		//add all points as 1
+		var points=[];
+		var allpoints=[];
+		var pointsremoved=[];
+		var ypoints=[];
+		var pointsforminmax=[];
+		for (var index in xpoints){
+			ypoints.push(1);
+			if($.isNumeric(xpoints[index])){
+				points.push(index);
+				allpoints.push(index);
+				pointsforminmax.push(xpoints[index]);
+			} else {
+				pointsremoved.push(add(index,1));
+			}
+		}
+		
+	}
+
+	//check x points for numerical
+	if(points.length==0){
+		return 'Error: You must select a variable for "Numerical"';
+	}
+
+	if(pointsremoved.length!=0 && $('#removedpoints').is(":checked")){
+		ctx.fillStyle = '#000000';
+		fontsize = 13*scalefactor;
+		ctx.font = fontsize+"px Roboto";
+		ctx.textAlign="right";
+		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-48*scalefactor,48*scalefactor);
+	}
+	
+	xdifferentgroups = split(points,xpoints,10,'"Numerical"');
+	if(typeof xdifferentgroups !== 'object'){
+		return xdifferentgroups;
+	}
+	xgroups = Object.keys(xdifferentgroups).sort(sortorder);
+	
+	
+	min=Math.min.apply(null, pointsforminmax);
+	max=Math.max.apply(null, pointsforminmax);
+	
+	if(min==max){
+		min=add(xmin,1);
+		max=add(xmax,1);
+	}
+	
+	intervals=$('#size').val();
+	step = Number.parseFloat(((max-min)/intervals).toPrecision(8));
+	stepfirstsf = Number.parseFloat(step.toPrecision(1)).toExponential().substr(0,1);
+	stepfirsttwosf = Number.parseFloat(step.toPrecision(2)).toExponential().substr(0,3);
+	if(stepfirsttwosf.includes("e")){
+		stepfirsttwosf = stepfirstsf;
+	}
+	
+	if(stepfirsttwosf>=1 && stepfirsttwosf<2.3){step = Number.parseFloat(step.toPrecision(1))}
+	else if(stepfirsttwosf>=2.3 && stepfirsttwosf<3.5){step = (step/stepfirsttwosf).toPrecision(1)*2.5}
+	else if(stepfirsttwosf>=3.5 && stepfirsttwosf<7.5){step = (step/stepfirsttwosf).toPrecision(1)*5}
+	else {step = (step/stepfirsttwosf).toPrecision(1)*10}
+	xstep = Number.parseFloat(step.toPrecision(8));
+	
+	xmin = (min/xstep).toFixed(0)*xstep;
+	if(xmin>min){xmin-=xstep;}
+	xmax = (max/xstep).toFixed(0)*xstep;
+	if(xmax<=max){xmax-=-xstep;}
+	
+	xsteps = ((xmax-xmin)/xstep).toFixed(0);
+	
+	xdifferentgroups={};
+	for (var index in points){
+		index = points[index];
+		value = xpoints[index];
+		leftofvalue = Number.parseFloat((Math.floor(value/xstep)*xstep).toPrecision(8));
+		if(xdifferentgroups[leftofvalue] === undefined){
+			xdifferentgroups[leftofvalue]=[];
+		}
+		xdifferentgroups[leftofvalue].push(index)
+	}
+
+	xgroups = Object.keys(xdifferentgroups).sort(sortorder);
+	
+	relativefrequency = false;
+	if($('#relativefrequency').is(":checked")){
+		relativefrequency = true;
+	}
+
+	var oypixel=60*scalefactor;
+	var maxheight=height-60*scalefactor;
+	var left=20*scalefactor;
+	var right=width-60*scalefactor;
+
+	ymin = 0;
+	ymax = 0;
+	total = 0;
+	
+	sumpoints = {};
+	
+	if(zpoints.length>0){
+		zdifferentgroups = split(points,zpoints,4,'"Split"');
+		if(typeof zdifferentgroups === 'object'){
+			zgroups = Object.keys(zdifferentgroups);
+			zgroups.sort(sortorder);
+			for (z in zgroups){
+				zgroup = zgroups[z];
+				zgrouppoints = zdifferentgroups[zgroup];
+				for(x in xgroups){
+					xgroup = xgroups[x];
+					for (i in xdifferentgroups[xgroup]){
+						index = xdifferentgroups[xgroup][i];
+						if($.inArray(index,zgrouppoints)>-1){
+							cat = xgroup+'-~-'+zgroup;
+							val = ypoints[index];
+							if(sumpoints[cat] === undefined){
+								sumpoints[cat]=0;
+							}
+							sumpoints[cat]-=(-val);
+						}	
+					}
+				}
+			}
+		} else {
+			return zdifferentgroups;
+		}
+	} else {
+		for(g in xgroups){
+			for (i in xdifferentgroups[xgroups[g]]){
+				index = xdifferentgroups[xgroups[g]][i];
+				cat = xgroups[g];
+				val = ypoints[index];
+				if(sumpoints[cat] === undefined){
+					sumpoints[cat]=0;
+				}
+				sumpoints[cat]-=(-val);
+			}
+		}
+	}
+	
+	for(index in sumpoints){
+		total += sumpoints[index];
+		if(sumpoints[index]>ymax){
+			ymax = sumpoints[index];
+		}
+	}
+	
+	if(relativefrequency){
+		ymax = ymax / total;
+	}
+	
+	var minmaxstep = axisminmaxstep(ymin,ymax);
+	var minytick=minmaxstep[0];
+	var maxytick=minmaxstep[1];
+	var ystep=minmaxstep[2];
+
+	var alpha = 1-$('#trans').val()/100;
+	var colors = makeblankcolors(xpoints.length,alpha);
+
+	if(zpoints.length>0){
+		zgroups = Object.keys(zdifferentgroups);
+		zgroups.sort(sortorder);
+		thistop=60*scalefactor;
+		eachheight=maxheight/zgroups.length;
+		for (index in zgroups){
+			group = zgroups[index];
+			points = zdifferentgroups[group];
+
+			thisbottom = add(thistop,eachheight);
+
+			ctx.fillStyle = '#000000';
+			fontsize = 15*scalefactor;
+			ctx.font = "bold "+fontsize+"px Roboto";
+			ctx.textAlign="left";
+			ctx.fillText(group,left,thistop-15*scalefactor);
+			
+			var error = plothistogram(ctx,left,right,thistop,minytick,maxytick,ystep,eachheight,points,xdifferentgroups,ypoints,colors,xgroups,relativefrequency,total,sumpoints,group,xmin,xmax,xstep,xsteps,xpoints);
+			if(error != 'good'){return error;}
+			
+			thistop = add(thistop,eachheight);
+		}
+	} else {
+		var error = plothistogram(ctx,left,right,oypixel,minytick,maxytick,ystep,maxheight,points,xdifferentgroups,ypoints,colors,xgroups,relativefrequency,total,sumpoints,'~nogroup~',xmin,xmax,xstep,xsteps,xpoints);
+		if(error != 'good'){return error;}
+	}
+
+	//graph title
+	ctx.fillStyle = '#000000';
+	fontsize = 20*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
+	ctx.textAlign="center";
+	ctx.fillText($('#title').val(),width/2,30*scalefactor);
+
+	//x-axis title
+	ctx.fillStyle = '#000000';
+	fontsize = 15*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
+	ctx.textAlign="center";
+	ctx.fillText($('#xaxis').val(),width/2,height-10*scalefactor);
+
+	labelgraph(ctx,width,height);
+	if($('#invert').is(":checked")){
+		invert(ctx)
+	}
+
+	var dataURL = canvas.toDataURL();
+	return dataURL;
+}
+
+function plothistogram(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,points,groups,frequencys,colors,xgroups,relativefrequency,total,sumpoints,zgroup,xmin,xmax,xstep,xsteps,xpoints){
+	
+	maxheight = maxheight - 60*scalefactor;
+	
+	if($('#highboxplot').is(":checked")){
+		gtop = gtop + maxheight*0.15;
+		maxheight = maxheight*0.85;
+	}
+	
+	gbottom = add(gtop,maxheight);
+	
+	//y-axis title
+	$('#yaxis').val("Frequency");
+	if(relativefrequency){
+		$('#yaxis').val("Relative Frequency");
+	}
+	if($('#yaxis').val() != "Y Axis Title"){
+		var x, y;
+		x=20*scalefactor;
+		y=gtop + maxheight/2;
+		ctx.save();
+		ctx.fillStyle = '#000000';
+		fontsize = 15*scalefactor;
+		ctx.font = "bold "+fontsize+"px Roboto";
+		ctx.translate(x, y);
+		ctx.rotate(-Math.PI/2);
+		ctx.textAlign = "center";
+		ctx.fillText($('#yaxis').val(), 0, 0);
+		ctx.restore();
+	}
+	
+	append = '';
+	
+	gleft = add(left,60*scalefactor);
+	vertaxis(ctx,gtop,gbottom,add(left,50*scalefactor),minytick,maxytick,ystep,right,append);
+	horaxis(ctx,gleft,right,gbottom,xmin,xmax,xstep,gtop);
+	
+	stepsize = (right - add(left,50*scalefactor))/xsteps;
+	
+	thisleft = add(left,50*scalefactor);
+	
+	ctx.fillStyle = '#000000';
+	fontsize = 13*scalefactor;
+	ctx.font = fontsize+"px Roboto";
+	ctx.textAlign="center";
+	
+	currentx = xmin;
+	thisvalues = [];
+	totalforthishist = 0;
+	tallestmiddle = 0;
+	tallestheight = 0;
+	while (currentx < xmax){
+		boxleft = convertvaltopixel(currentx,xmin,xmax,gleft,right);
+		thistotal = 0;
+		for(p in groups[currentx]){
+			i = groups[currentx][p];
+			if($.inArray(i,points)>-1){
+				thistotal -= -frequencys[i];
+				totalforthishist -= -frequencys[i];
+				color = colors[i];
+				n=0;
+				while(n<frequencys[i]){
+					thisvalues.push(xpoints[i]);
+					n++;
+				}
+			}
+		}
+		displaytotal = thistotal;
+		if(relativefrequency){
+			displaytotal = displaytotal/total;
+		}
+		nextx = currentx -(-xstep);
+		if(displaytotal>tallestheight){
+			tallestheight=displaytotal;
+			tallestmiddle=(currentx+nextx)/2;
+		}
+		boxright = convertvaltopixel(nextx,xmin,xmax,gleft,right);
+		stepsize = boxright - boxleft;
+		boxbottom = gbottom;
+		boxtop = convertvaltopixel(displaytotal,minytick,maxytick,gbottom,gtop);
+		ctx.fillStyle = color;
+		ctx.fillRect(boxleft,boxbottom,stepsize,boxtop-boxbottom);
+		ctx.lineWidth = 1*scalefactor;
+		ctx.strokeStyle = 'rgba(0,0,0,1)';
+		ctx.rect(boxleft,boxbottom,stepsize,boxtop-boxbottom);ctx.stroke();
+		ctx.fillStyle = '#000000';
+		if(relativefrequency){
+			displaytotal = Number.parseFloat(displaytotal.toPrecision(5));
+		}
+		if($('#regression').is(":checked") && displaytotal > 0){
+			ctx.fillText(displaytotal,(boxleft+boxright)/2,(boxtop+boxbottom)/2+4.5*scalefactor);
+		}
+		if(thistotal == displaytotal){
+			title = '<b>'+$('#xaxis').val()+'</b>: '+currentx+' - '+nextx+'<br><b>n</b>: '+ thistotal;
+		} else {
+			title = '<b>'+$('#xaxis').val()+'</b>: '+currentx+' - '+nextx+'<br><b>n</b>: '+ thistotal + " (" + displaytotal + ")";
+		}
+		$('#graphmap').append("<area shape='rect' coords='"+(boxleft/scalefactor)+","+(boxtop/scalefactor)+","+(add(boxleft,stepsize)/scalefactor)+","+(boxbottom/scalefactor)+"' desc='"+title+"'>");
+		currentx -= -xstep;
+	}
+	
+	var minval = Math.min.apply(null, thisvalues);
+	var lq = lowerquartile(thisvalues);
+	var med = median(thisvalues);
+	var mean = calculatemean(thisvalues);
+	var uq = upperquartile(thisvalues);
+	var maxval = Math.max.apply(null, thisvalues);
+	var sd = standarddeviation(thisvalues);
+	var num = thisvalues.length;
+	
+	var mingraph = convertvaltopixel(minval,xmin,xmax,gleft,right);
+	var lqgraph = convertvaltopixel(lq,xmin,xmax,gleft,right);
+	var medgraph = convertvaltopixel(med,xmin,xmax,gleft,right);
+	var uqgraph = convertvaltopixel(uq,xmin,xmax,gleft,right);
+	var maxgraph = convertvaltopixel(maxval,xmin,xmax,gleft,right);
+
+	if($('#regression').is(":checked") || $('#normaldist').is(":checked") || $('#poissondist').is(":checked") || $('#binomialdist').is(":checked") || $('#rectangulardist').is(":checked") || $('#triangulardist').is(":checked")){
+		ctx.fillStyle = 'rgba(255,0,0,1)';
+		fontsize = 11*scalefactor;
+		ctx.font = fontsize+"px Roboto";
+		ctx.textAlign="left";
+		var ypix=gtop+50;
+		ctx.fillText('min: '+minval,gleft,ypix-44*scalefactor);
+		ctx.fillText('lq: '+lq,gleft,ypix-33*scalefactor);
+		ctx.fillText('med: '+med,gleft,ypix-22*scalefactor);
+		ctx.fillText('mean: '+mean,gleft,ypix-11*scalefactor);
+		ctx.fillText('uq: '+uq,gleft,ypix);
+		ctx.fillText('max: '+maxval,gleft,ypix+11*scalefactor);
+		ctx.fillText('sd: '+sd,gleft,ypix+22*scalefactor);
+		ctx.fillText('num: '+num,gleft,ypix+33*scalefactor);
+		equationtop = ypix+33*scalefactor+11*scalefactor;
+	}
+	
+	if($('#normaldist').is(":checked")){
+		ctx.fillStyle='#00f';
+		ctx.strokeStyle='#00f';	
+		ctx.lineWidth = 2*scalefactor;
+		stepfordist = (xmax-xmin)/100;
+		x=xmin;
+		ctx.beginPath();
+		while(x<=xmax){
+			y=xstep*Math.exp(-Math.pow(x-mean,2)/(2*Math.pow(sd,2)))/Math.sqrt(6.28318*Math.pow(sd,2));
+			if(!relativefrequency){
+				y = y*totalforthishist;
+			} else {
+				y = y*totalforthishist/total;
+			}
+			xpixel = convertvaltopixel(x,xmin,xmax,gleft,right);
+			ypixel = convertvaltopixel(y,minytick,maxytick,gbottom,gtop);
+			if(x==xmin){
+				ctx.moveTo(xpixel,ypixel);
+			} else {
+				ctx.lineTo(xpixel,ypixel);
+			}
+			x-=-stepfordist;
+		}
+		ctx.stroke();
+		ctx.fillText("Normal Distribution",gleft,equationtop);
+		equationtop = add(equationtop,11*scalefactor);
+	}
+	
+	if($('#rectangulardist').is(":checked")){
+		ctx.fillStyle='#fa0';
+		ctx.strokeStyle='#fa0';	
+		ctx.lineWidth = 2*scalefactor;
+		y = 1/(maxval-minval)*xstep;
+		if(!relativefrequency){
+			y = y*totalforthishist;
+		} else {
+			y = y*totalforthishist/total;
+		}
+		boxheight = convertvaltopixel(y,minytick,maxytick,gbottom,gtop);
+		line(ctx,gleft,gbottom,mingraph,gbottom);
+		line(ctx,mingraph,gbottom,mingraph,boxheight);
+		line(ctx,mingraph,boxheight,maxgraph,boxheight);
+		line(ctx,maxgraph,gbottom,maxgraph,boxheight);
+		line(ctx,maxgraph,gbottom,right,gbottom);
+		ctx.fillText("Rectangular Distribution",gleft,equationtop);
+		equationtop = add(equationtop,11*scalefactor);
+		
+	}
+	
+	if($('#triangulardist').is(":checked")){
+		ctx.fillStyle='#0a0';
+		ctx.strokeStyle='#0a0';	
+		//c=3*mean-minval-maxval;
+		c=tallestmiddle;
+		if(c<minval){c = minval;}
+		if(c>maxval){c = maxval;}
+		middlepixel = convertvaltopixel(c,xmin,xmax,gleft,right);
+		ctx.lineWidth = 2*scalefactor;
+		y = 2/(maxval-minval)*xstep;
+		if(!relativefrequency){
+			y = y*totalforthishist;
+		} else {
+			y = y*totalforthishist/total;
+		}
+		triangleheight = convertvaltopixel(y,minytick,maxytick,gbottom,gtop);
+		line(ctx,gleft,gbottom,mingraph,gbottom);
+		line(ctx,mingraph,gbottom,middlepixel,triangleheight);
+		line(ctx,maxgraph,gbottom,middlepixel,triangleheight);
+		line(ctx,maxgraph,gbottom,right,gbottom);
+		ctx.fillText("Triangular Distribution",gleft,equationtop);
+		equationtop = add(equationtop,11*scalefactor);
+		
+	}
+	
+	if($('#poissondist').is(":checked")){
+		ctx.fillStyle='#0af';
+		ctx.strokeStyle='#0af';	
+		stepfordist = 1;
+		x=parseFloat(xmin.toFixed(0));
+		if(xmax>100){
+			ctx.fillText("Poisson Distribution - Not Available with x axis numbers over 100",gleft,equationtop);
+			equationtop = add(equationtop,11*scalefactor);
+		} else {
+			while(x<=xmax){
+				var y = xstep*Math.pow(mean,x)*Math.exp(-mean)/factorial(x);
+				if(!relativefrequency){
+					y = y*totalforthishist;
+				} else {
+					y = y*totalforthishist/total;
+				}
+				xpixel = convertvaltopixel(x,xmin,xmax,gleft,right);
+				ypixel = convertvaltopixel(y,minytick,maxytick,gbottom,gtop);
+				ctx.beginPath();
+				ctx.arc(xpixel,ypixel,4*scalefactor,0,2*Math.PI);
+				ctx.fill();
+				x-=-stepfordist;
+			}
+			ctx.fillText("Poisson Distribution",gleft,equationtop);
+			equationtop = add(equationtop,11*scalefactor);
+		}
+	}
+	
+	if($('#binomialdist').is(":checked")){
+		ctx.fillStyle='#f0a';
+		ctx.strokeStyle='#f0a';	
+		stepfordist = 1;
+		x=parseFloat(xmin.toFixed(0));
+		xmaxr=parseFloat(xmax.toFixed(0));
+		if(xmax>100){
+			ctx.fillText("Binomial Distribution - Not Available with x axis numbers over 100",gleft,equationtop);
+			equationtop = add(equationtop,11*scalefactor);
+		} else {
+			p = mean/maxval;
+			while(x<=xmax){
+				var y = xstep*factorial(xmaxr)/(factorial(x)*factorial(xmaxr-x))*Math.pow(p,x)*Math.pow(1-p,xmaxr-x);
+				if(!relativefrequency){
+					y = y*totalforthishist;
+				} else {
+					y = y*totalforthishist/total;
+				}
+				xpixel = convertvaltopixel(x,xmin,xmax,gleft,right);
+				ypixel = convertvaltopixel(y,minytick,maxytick,gbottom,gtop);
+				ctx.beginPath();
+				ctx.arc(xpixel,ypixel,4*scalefactor,0,2*Math.PI);
+				ctx.fill();
+				x-=-stepfordist;
+			}
+			ctx.fillText("Binomial Distribution",gleft,equationtop);
+			equationtop = add(equationtop,11*scalefactor);
+		}
+	}
+	
+	if($('#highboxplot').is(":checked")){
+		maxheight = maxheight/0.85;
+		gtop = gtop - maxheight*0.15;
+		var y = gtop + maxheight*0.05;
+		var h = maxheight*0.05;
+		ctx.strokeStyle = 'rgb(0,0,0)';
+		ctx.lineWidth = 1*scalefactor;
+		line(ctx,mingraph,add(y,-5*scalefactor),mingraph,add(y,5*scalefactor));
+		line(ctx,lqgraph,add(y,-h),lqgraph,add(y,h));
+		line(ctx,medgraph,add(y,-h),medgraph,add(y,h));
+		line(ctx,uqgraph,add(y,-h),uqgraph,add(y,h));
+		line(ctx,maxgraph,add(y,-5*scalefactor),maxgraph,add(y,5*scalefactor));
+		line(ctx,mingraph,y,lqgraph,y);
+		line(ctx,lqgraph,add(y,h),uqgraph,add(y,h));
+		line(ctx,lqgraph,add(y,-h),uqgraph,add(y,-h));
+		line(ctx,uqgraph,y,maxgraph,y);
+	}
+	
+	return 'good';
+}
+
+function factorial(n) {
+  return n ? n * factorial(n - 1) : 1;
+}
+
+$( document ).ready(function() {	
+	$('#directimport')[0].addEventListener('click', async event => {
+	  $('#progressdescription')[0].innerHTML = 'Starting';
+	  console.time("Starting");
+	  $('#progressbarholder').show();
+	  if (!navigator.clipboard) {
+		// Clipboard API not available
+		alert('clipboard not accessible');
+		console.error('clipboard not accessible');
+		return
+	  }
+	  console.timeEnd("Starting");
+	  $('#progressdescription')[0].innerHTML = 'Loading from Clipboard';
+	  console.time("Loading from Clipboard");
+	  try {
+		var data = await navigator.clipboard.readText();
+		try {
+			ga('send', 'event', 'Function', 'Data - directimport', ipaddress);
+		} catch(err) {
+			console.log(err.message);
+		}
+		csv_data = data;
+		console.timeEnd("Loading from Clipboard");
+		$('#progressdescription')[0].innerHTML = 'Creating Table';
+		loaddata();
+	  } catch (err) {
+		console.error('Failed to copy!', err)
+	  }
+	})
+	
+  function handleFileSelect(evt) {
+	try {
+		ga('send', 'event', 'Function', 'Data - filenew', ipaddress);
+	} catch(err) {
+		console.log(err.message);
+	}  
+	  
+	$('#progressdescription')[0].innerHTML = 'Starting';
+	console.time("Starting");
+	$('#progressbarholder').show();
+	var allowedmimes = ['application/vnd.ms-excel','application/ms-excel','application/csv','text/plain','text/csv','text/tsv','text/comma-separated-values','application/excel','application/vnd.msexcel','text/anytext','application/octet-stream','application/txt','application/x-csv'];
+	var files = evt.target.files; // FileList object
+	
+	console.timeEnd("Starting");
+	$('#progressdescription')[0].innerHTML = 'Loading from File';
+	console.time("Loading from File");
+
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+	
+	  console.log(f);
+
+      // Only process correct file types.
+	  console.log($.inArray(f.type,allowedmimes));
+	  console.log(f.type);
+      if ($.inArray(f.type,allowedmimes)==-1) {
+		alert('type not allowed: '+f.type);
+		console.log('type not allowed: '+f.type);
+		$('#progressbarholder').hide();
+        return;
+      }
+
+      var reader = new FileReader();
+
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+        return function(e) {
+			console.timeEnd("Loading from File");
+			csv_data = e.target.result;
+			loaddata();
+        };
+      })(f);
+
+      // Read in the image file as a data URL.
+      reader.readAsText(f);
+    }
+  }
+
+  document.getElementById('filenew').addEventListener('change', handleFileSelect, false);
+})
+
+function loaddatafromurl(dataset){
+	$('#progressdescription')[0].innerHTML = 'Starting';
+	console.time("Starting");
+	$('#progressbarholder').show();	
+	console.timeEnd("Starting");
+	$('#progressdescription')[0].innerHTML = 'Loading File';
+	console.time("Loading from URL");
+	$.get('./getdata.php',{dataset:dataset}).done(function(data){
+		console.timeEnd("Loading from URL");
+		csv_data = data;
+		loaddata();
+	})
+}
+
+function loaddata(){
+	$('#progressdescription')[0].innerHTML = 'Starting';
+	console.time("Starting");
+	$('#progressbarholder').show();	
+	console.timeEnd("Starting");
+	$('#progressdescription')[0].innerHTML = 'Loading File';
+	console.time("Creating Array");
+	setTimeout(function(){
+		data = csv_data;
+		var countcomma = (data.match(/,/g) || []).length;
+		var countsemi = (data.match(/;/g) || []).length;
+		var counttab = (data.match(/\t/g) || []).length;
+		if(countcomma>countsemi){
+			if(countcomma>counttab){
+				finaldata = $.csv.toArrays(data,{separator:','});
+			} else {
+				finaldata = $.csv.toArrays(data,{separator:'\t'});
+			}
+		} else {
+			if(countsemi>counttab){
+				finaldata = $.csv.toArrays(data,{separator:';'});
+			} else {
+				finaldata = $.csv.toArrays(data,{separator:'\t'});
+			}
+		}
+		$('#progressdescription')[0].innerHTML = 'Creating Table';
+		setTimeout(function(){
+			console.timeEnd("Creating Array");
+			console.time("Creating Table");
+			var firstrow=0;
+			r = new Array();
+			var j = -1;
+			for (i = 0; i < finaldata.length; i++) {
+				var cells = finaldata[i];
+				if(i==0){firstrow=cells.length;}
+				if (cells.length >= firstrow){
+					if(i==0){
+						r[++j] ='<tr class=tabletop><th>id';
+					} else {
+						r[++j] ='<tr><th>';
+						r[++j] =i;
+					}
+					for (c = 0; c < cells.length; c++) {
+						r[++j] = '<td><div contenteditable="true">';
+						r[++j] = escapeHtml(cells[c].trim()).replace(',', '-');
+						r[++j] = '<br></div></td>';
+					}
+				}
+			}
+			postcreatetable();
+		},30);
+	},30);
+}
+
+function postcreatetable(){
+	$('#progressdescription')[0].innerHTML = 'Displaying Table';
+	setTimeout(function(){
+		console.timeEnd("Creating Table");
+		console.time("Displaying Table");
+		$('#data')[0].innerHTML = r.join(''); 
+		$('#progressdescription')[0].innerHTML = 'Resetting to "About" graph';
+		setTimeout(function(){
+			console.timeEnd("Displaying Table");
+			console.time('Resetting to "About" graph');
+			$('#type').val('newabout');
+			document.getElementById("xvar").selectedIndex = 0;
+			document.getElementById("yvar").selectedIndex = 0;
+			document.getElementById("zvar").selectedIndex = 0;
+			document.getElementById("color").selectedIndex = 0;
+			$('#progressdescription')[0].innerHTML = 'Updating Boxes';
+			setTimeout(function(){
+				console.timeEnd('Resetting to "About" graph');
+				console.time("Updating Boxes");
+				updatebox();
+				console.timeEnd("Updating Boxes");
+				$('#progressbarholder').hide();
+			},30);
+		},30);
+	},30);
 }

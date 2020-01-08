@@ -13,6 +13,7 @@
 	</script>
 	<!-- End Google Analytics -->
 	<script src="./jquery-1.11.1.min.js"></script>
+	<script src="./jquery.csv.js"></script>
 	<script src="./regression.min.js"></script>
 	<title>NZGrapher</title>
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,700|Roboto+Condensed' rel='stylesheet' type='text/css'>
@@ -69,18 +70,18 @@ if (screen.availWidth < 1024)
 			<tr>
 				<td style='width:50%;border-right:1px solid #ccc;padding-right:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
 					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Need Help?</b></span><br>
-					If you're not sure where to start watching <a target='_blank' href='//www.mathsnz.com/nzgrapher-info/video-tutorials'>these videos</a> is a good idea.<br>
+					Need help <b>getting started</b>? Watching <a target='_blank' href='//www.mathsnz.com/nzgrapher-info/video-tutorials'>these videos</a> is a great place to start.<br>
 					<br>
-					There is all the infomation on the graphs and datasets and tutorials on how to use NZGrapher over on <a target='_blank' href='https://www.mathsnz.com/nzgrapher-info'>MathsNZ</a>.<br>
+					Want to <b>know more</b>? Infomation on the graphs and datasets, as well as video tutorials are over on <a target='_blank' href='https://www.mathsnz.com/nzgrapher-info'>MathsNZ</a>.<br>
 					<br>
-					Something not working or have an idea to make NZGrapher better... please <a target='_blank' href='//www.mathsnz.com/contact'>let me know</a>.<br>
+					Something <b>not working</b> or <b>have an idea</b> to make NZGrapher better... please <a target='_blank' href='//www.mathsnz.com/contact'>let me know</a>.<br>
 				<td style='width:50%;padding-left:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
 					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Cost</b></span><br>
 					NZGrapher is free for non-commercial <b>individual</b> use, you can however <a target='_blank' href='https://www.mathsnz.com/donate'>make a donation</a>.<br>
 					<br>
 					<b>Schools</b> are required to subscribe at a minimum of $0.50 per student using NZGrapher. <b>Commercial users</b> are also required to pay. Please visit the <a target='_blank' href='https://www.mathsnz.com/nzgrapher-invoice'>invoice creator</a> for details.<br>
 					<br>
-					This is optional for 2019, but will be compulsory for 2020.<br>
+					Any questions about this please <a target='_blank' href='//www.mathsnz.com/contact'>get in touch</a>.
 			</tr>
 		</table>
 		<br>
@@ -179,6 +180,14 @@ if (screen.availWidth < 1024)
 </table>
 </div>
 
+<div id=progressbarholder style='z-index:16;position:fixed;height:100%;width:100%;top:0px;left:0px;background:rgba(255,255,255,0.5);display:none;'>
+<div style='position:absolute;top:50%;left:50%;width:400px;height:150px;z-index:12;text-align:center;padding:5px;margin-left:-105px;margin-top:-155px;'>
+<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=progresstitle>Progress</div>
+<br><br><span id=progressdescription></span><br><br>
+<img src='./loading.gif'>
+</div>
+</div>
+
 <div id=pastetext style='z-index:16;position:fixed;height:100%;width:100%;top:0px;left:0px;background:rgba(255,255,255,0.5);display:none;'>
 <div style='position:absolute;top:50%;left:50%;width:400px;height:300px;z-index:12;text-align:center;padding:5px;margin-left:-205px;margin-top:-155px;'>
 <div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>Paste your table here from Excel, Word or Google Sheets</div><br><small><i>Note: Pasting a table from Google Docs doesn't work properly.</i></small><br>
@@ -200,25 +209,11 @@ if (screen.availWidth < 1024)
 </div>
 
 <?php
-	$fileupload="no";
-	$mimes = array('application/vnd.ms-excel','application/ms-excel','application/csv','text/plain','text/csv','text/tsv','text/comma-separated-values','application/excel','application/vnd.msexcel','text/anytext','application/octet-stream','application/txt','application/x-csv');
-	if (isset($_FILES['file'])){
-		if ($_FILES["file"]["error"] > 0) {
-			echo "Error: " . $_FILES["file"]["error"] . "<br>";
-		} else if (!(in_array($_FILES['file']['type'],$mimes))) {
-			echo "<script>alert('Error: file must be a CSV (Type: ".$_FILES["file"]["type"].")\\nNo file uploaded');</script>";
-		} else if ($_FILES["file"]["size"] > 200000) {
-			echo "<script>alert('Error: file too large (Size: ".$_FILES["file"]["size"].")\\nNo file uploaded');</script>";
-		} else {
-			$fileupload="yes";
-		}
-	}
 	if(empty($_GET['folder'])){
 		$_GET['folder']="datasets";
 	}
 	$_GET['folder']=basename($_GET['folder']);
 	if(substr($_GET['folder'],0,1)=="."){$_GET['folder']="datasets";$_GET['dataset']="Babies.csv";}
-
 ?>
 
 </div>
@@ -259,11 +254,6 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 		<input type=hidden name=folder value="<?php echo $_GET['folder'];?>">
 		Data Source: <select name=dataset onChange="document.getElementById('datasource').submit();" style='width:180px;height:27px;padding:0px;'>
 <?php
-
-	if($fileupload=="yes"){
-		$_GET['dataset']=$_FILES["file"]["name"];
-		echo "<option>".$_FILES["file"]["name"]."</option>";
-	}
 
 	$files=glob($_GET['folder'].'/*.csv');
 	$files2=glob($_GET['folder'].'/*.CSV');
@@ -317,6 +307,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 <ul>
 	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/video-tutorials','_blank');try{ga('send', 'event', 'Function', 'Help - Video Tutorials', '');} catch(err) {console.log(err.message);}">Video Tutorials</li>
 	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/graph-information','_blank');try{ga('send', 'event', 'Function', 'Help - Graph Infomation', '');} catch(err) {console.log(err.message);}">Graph Information</li>
+	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/function-information','_blank');try{ga('send', 'event', 'Function', 'Help - Function Infomation', '');} catch(err) {console.log(err.message);}">Function Information</li>
 	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/dataset-information','_blank');try{ga('send', 'event', 'Function', 'Help - Dataset Infomation', '');} catch(err) {console.log(err.message);}">Dataset Information</li>
 	<li onclick="document.getElementById('welcome').style.display='block';try{ga('send', 'event', 'Function', 'Help - Show Welcome', '');} catch(err) {console.log(err.message);}">Show Welcome</li>
 	<li onclick="document.getElementById('tour').style.display='block';try{ga('send', 'event', 'Function', 'Help - Show Overlay', '');} catch(err) {console.log(err.message);}">Show Overlay</li>
@@ -340,14 +331,12 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 
 <div class="callout popup" id=filepop>
 <ul>
-	<li id=uploadfileclick>
-<form method="post" name=fileform id=uploadfile enctype="multipart/form-data">
-	<input type="file" name="file" id="filebox" style='width:80px;height:17px;position:absolute;top:4px;left:6px;z-index:2;opacity:0;cursor:pointer;' onChange="document.getElementById('uploadfile').submit();">
-	<div style='color:#000;border:0px solid #ccc;width:80px;height:17px;border-radius:0px;padding:5px;font-size:14px;text-align:left;position:absolute;top:4px;left:6px;padding:0px;background:none;'>Open File</div>
-</form>
+	<li id=uploadfileclicknew>
+	<input type="file" name="filenew" id="filenew" style='width:80px;height:17px;position:absolute;top:4px;left:6px;z-index:2;opacity:0;cursor:pointer;'/>
+	<div style='color:#000;border:0px solid #ccc;width:80px;height:17px;border-radius:0px;padding:5px;font-size:14px;text-align:left;position:relative;top:0px;left:0px;padding:0px;background:none;'>Open File</div>
 	</li>
-	<li id=pastetableclick>Paste Table</li>
-	<li id=pastelinkclick>Paste Link</li>
+	<li id=directimport>Import from Clipboard</li>
+	<li id=pastelinkclick>Open Link</li>
 	<li id=highlightdatatable>Select Data Table</li>
 <?php
 if(substr($dataset,0,6)!="SECURE"){
@@ -374,6 +363,7 @@ if(substr($dataset,0,6)!="SECURE"){
 	<li id=newvar>Create New Variable (From 2 Variables)</li>
 	<li id=newvarc2>Create New Variable (Linear Function)</li>
 	<li id=newvarc3>Create New Variable (From Condition)</li>
+	<li id=regroup>Create New Variable (Re-Group)</li>
 	<li id=filter>Filter Data</li>
 	<li id=addindex onclick="addindex()">Add Graphable Index Column</li>
 	<li id=addindex onclick="converttimeshow()">Convert Time Column</li>
@@ -399,7 +389,7 @@ if(substr($dataset,0,6)!="SECURE"){
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvaranimateslow>Animate (Slow)</a>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvaranimatefast>Animate (Fast)</a>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvarstop>Stop</a>
-		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' onclick="$('#reset').click();">Reset Data</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvarreset>Reset Data</a>
 		<br><br>
 		Often it is useful to <b>fix the axis</b> when looking at scatter graphs and or dot plots.<br><br>
 		<span href='#' style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick='lockaxis()'>Lock Axis Values</span>
@@ -440,141 +430,37 @@ if(substr($dataset,0,6)!="SECURE"){
 	</span>
 </div>
 <?php
-echo "<table id=data>\n\n";
+echo "<table id=data></table>";
 if(empty($dataset)){
 	echo "No such file";
 	die();
 }
 
-ini_set("auto_detect_line_endings", "1");
-if($fileupload=="yes"){
-	$f = fopen($_FILES["file"]["tmp_name"], "r") or die("can't open file");
-	$file = $_FILES["file"]["tmp_name"];
-} else {
-	if(file_exists($_GET['folder'])){
-		if(substr($dataset,-3)!='csv'){echo "Invalid File";die();}
-		if(!in_array($dataset,$files)){echo "Invalid File";die();}
-		if(file_exists($_GET['folder']."/$dataset")){
-			$f = fopen($_GET['folder']."/$dataset", "r") or die("can't open file");
-			$file = $_GET['folder']."/$dataset";
-		} else {
-			echo "No such file";
-			die();
-		}
-	} else {
-		echo "The directory is empty. Please choose a valid directory. The default is datasets.";
-		die();
-	}
-}
-$i=0;
-$vars=array();
-$data=array();
-
-//Update to check the delimiters
-//The delimiters array to look through
-$delimiters = array(
-    'semicolon' => ";",
-    'tab'       => "\t",
-    'comma'     => ",",
-);
-
+echo '<script>var csv_data;</script>';
 
 if(isset($_POST['csv_data'])){
 	$csv_data=urldecode($_POST['csv_data']);
-}
-
-if(isset($_GET['url'])){
-	$file = $_GET['url'];
-}
-
-//Load the csv file into a string
-
-if(isset($csv_data)){$csv=$csv_data;} else {$csv = file_get_contents($file);}
-if(isset($_GET['url'])){$csv_data=$csv;}
-foreach ($delimiters as $key => $delim) {
-    $res[$key] = substr_count($csv, $delim);
-}
-
-//reverse sort the values, so the [0] element has the most occured delimiter
-arsort($res);
-
-reset($res);
-$first_key = key($res);
-
-$del = $delimiters[$first_key];
-
-if(isset($csv_data)){
-	$csv_data = preg_replace('/\r\n|\n\r|\n|\r/', '\n', $csv_data);
-	$lines = explode("\\n", $csv_data);
-	foreach ($lines as $line) {
-		$line = str_getcsv($line);
-			if($i==0){
-				$i="id";
-				$cols=count($line);
-			}
-			if(count($line)<$cols){
-				break;
-			}
-			echo "<tr";
-			if($i=="id"){echo " class=tabletop";}
-			echo "><th>$i</th>";
-			if($i=="id"){$i=0;}
-			$r=1;
-			foreach ($line as $cell) {
-				$cell=str_replace(",", "-", htmlspecialchars(trim($cell)));
-				if($i==0){
-					array_push($vars,$cell);
-					$data["$r"]=array();
-				} else {
-					if($r<=$cols){
-						array_push($data["$r"],$cell);
-					}
-				}
-				if($r<=$cols){
-					echo "<td><div>" . $cell . "<br></div></td>";
-				}
-				$r++;
-			}
-			echo "</tr>\n";
-			$i++;
-	}
-
+	echo "<script>
+		csv_data = ".json_encode($csv_data).";
+		loaddata();
+	</script>";
 } else {
-	while (($line = fgetcsv($f,0,$del)) !== false) {
-			if($i==0){
-				$i="id";
-				$cols=count($line);
-			}
-			echo "<tr";
-			if($i=="id"){echo " class=tabletop";}
-			echo "><th>$i</th>";
-			if($i=="id"){$i=0;}
-			$r=1;
-			foreach ($line as $cell) {
-				$cell=str_replace(",", "-", htmlspecialchars(trim($cell)));
-				if($i==0){
-					array_push($vars,$cell);
-					$data["$r"]=array();
-				} else {
-					if($r<=$cols){
-						array_push($data["$r"],$cell);
-					}
-				}
-				if($r<=$cols){
-					echo "<td><div>" . $cell . "<br></div></td>";
-				}
-				$r++;
-			}
-			echo "</tr>\n";
-			$i++;
+	if(isset($_GET['url'])){
+		$dataset = $_GET['url'];
+		echo "<script>
+			loaddatafromurl(".json_encode($dataset).");
+		</script>";
+	} else {
+		$dataset = './'.$_GET['folder'].'/'.$dataset;
+		echo "<script>
+			loaddatafromurl(".json_encode($dataset).");
+		</script>";
 	}
 }
-fclose($f);
-echo "\n</table></body></html>";
+
 ?>
 </div>
 <div id=variable>
-<form action="scatter.php" method="post" target="graph" id=form>
 <table style='margin-left:3px;'>
 <tr><td><span id=var1label>variable 1:</span><td style='width:125px'>
 <select style='width:120px;display:none;' onChange="document.getElementById('xaxis').value=this.options[this.selectedIndex].text;updategraph();" name=xvals id=xvar>
@@ -588,13 +474,13 @@ echo "\n</table></body></html>";
 	<option value='newdotplot'>Dot Plot (and Box and Whisker)</option>
 	<option value='newbargraph'>Bar Graph</option>
 	<option value='newbargraphf'>Bar Graph - Summary Data</option>
-	<option value='histogram'>Histogram</option>
-	<option value='histogramf'>Histogram - Summary Data</option>
+	<option value='newhistogram'>Histogram</option>
+	<option value='newhistogramf'>Histogram - Summary Data</option>
 	<option value='newpiechart'>Pie Chart</option>
 	<option value='newscatter'>Scatter Graph</option>
 	<option value='newresiduals'>Residuals Plot</option>
 	<option disabled></option>
-	<option value='bootstrap'>Bootstrap Single Variable</option>
+	<option value='newbootstrap'>Bootstrap Single Variable</option>
 	<option value='newbootstrapcimedian'>Bootstrap Confidence Interval - Median</option>
 	<option value='newbootstrapcimean'>Bootstrap Confidence Interval - Mean</option>
 	<option disabled></option>
@@ -602,7 +488,7 @@ echo "\n</table></body></html>";
 	<option value='newrerandmean'>Re-Randomisation - Mean</option>
 	<option style='display:none' value='newrerandteach'>Re-Randomisation - Teaching</option>
 	<option disabled></option>
-	<option value='paired experiment'>Paired Experiment Dot Plot (and Arrows Graph)</option>
+	<option value='newpairedexperiment'>Paired Experiment Dot Plot (and Arrows Graph)</option>
 	<option disabled></option>
 	<option value='newtimeseries'>Time Series</option>
 	<option value='newtimeseriesrecomp'>&nbsp;&nbsp;&nbsp;Re-Composition</option>
@@ -610,7 +496,7 @@ echo "\n</table></body></html>";
 	<option value='newtimeseriessforecasts'>&nbsp;&nbsp;&nbsp;Forecasts</option>
 	<option disabled></option>
 	<option value='newchangelog'>Change Log</option>
-	<option value='update'>Update</option>
+	<option value='newupdate'>Update</option>
 </select>
 <tr><td><span id=var2label>variable 2:</span><td>
 <select style='width:120px;display:none;' onChange="document.getElementById('yaxis').value=this.options[this.selectedIndex].text;updategraph();" name=yvals id=yvar>
@@ -622,48 +508,13 @@ echo "\n</table></body></html>";
 </select>
 <td>
 </table>
-	<input type="hidden" id=regressionform name=regression value=no>
-	<input type="hidden" id=boxplotform name=boxplot value=no>
-	<input type="hidden" id=highboxplotform name=highboxplot value=no>
-	<input type="hidden" id=intervalform name=interval value=no>
-	<input type="hidden" id=intervallimform name=intervallim value=no>
-	<input type="hidden" id=titleform name=title value=no>
-	<input type="hidden" id=yaxisform name=yaxis value=no>
-	<input type="hidden" id=xaxisform name=xaxis value=no>
-	<input type="hidden" id=colorform name=colorlabel value=no>
-	<input type="hidden" id=labelsform name=labels value=no>
-	<input type="hidden" id=arrowsform name=arrows value=no>
-	<input type="hidden" id=sizeform name=size value=7>
-	<input type="hidden" id=transform name=trans value=70>
 	<input type="hidden" id=width name=width value=500>
 	<input type="hidden" id=height name=height value=500>
-	<input type="hidden" id=datain name=datain value=no>
-	<input type="hidden" id=titles name=titles value=no>
-	<input type="hidden" id=quadraticform name=quadratic value=no>
-	<input type="hidden" id=cubicform name=cubic value=no>
-	<input type="hidden" id=expform name=exp value=no>
-	<input type="hidden" id=logform name=log value=no>
-	<input type="hidden" id=powform name=pow value=no>
-	<input type="hidden" id=yxform name=yx value=no>
-	<input type="hidden" id=regtypeform name=regtype value=Linear>
-	<input type="hidden" id=jitterform name=jitter value=no>
-	<input type="hidden" id=btypeform name=type value=median>
-	<input type="hidden" id=addmultform name=addmult value='Additive'>
-	<input type="hidden" id=longtermtrendform name=longtermtrend value='no'>
-	<input type="hidden" id=boxnowhiskerform name=boxnowhisker value='no'>
-	<input type="hidden" id=boxnooutlierform name=boxnooutlier value='no'>
-	<input type="hidden" id=scalefactor name=scalefactor value='1'>
-	<input type="hidden" id=invertform name=invert value='no'>
-	<input type="hidden" id=thicklinesform name=thicklines value='no'>
-	<input type="hidden" id=relativefrequencyform name=relativefrequency value='0'>
-	<input type="hidden" id=residualsforcexform name=residualsforcex value='no'>
-</form>
 </div>
 
 <div id=graphdiv>
 <div id=jsgraph></div>
 <canvas id="myCanvas" width="600" height="400" style='display:none'></canvas>
-<iframe src="" name=graph id=graph scrolling=no></iframe>
 </div>
 <div id=controls>
 <table style='width:100%;'>
@@ -671,6 +522,15 @@ echo "\n</table></body></html>";
 		<div id=addtograph>
 			<span id=arrowsshow>
 				<label><input type="checkbox" onclick="updategraph();" id="arrows" name="arrows" value="yes"> Arrows</label><br>
+			</span>
+			<span id=btypeshow>
+				Bootstrap:<br>
+				<select onchange="updategraph();" id="btype" name="btype" value="Median" style='width:100px;'>
+					<option>Median</option>
+					<option>Mean</option>
+					<option>IQR</option>
+					<option>Standard Deviation</option>
+				</select>
 			</span>
 			<span id=regshow><label>
 				<input type="checkbox" onclick="updategraph();" id="regression" name="regression" value="yes">
@@ -748,15 +608,6 @@ echo "\n</table></body></html>";
 					<option>y=a*x^b</option>
 				</select>
 			</span>
-			<span id=btypeshow>
-				Bootstrap:<br>
-				<select onchange="updategraph();" id="btype" name="btype" value="Median" style='width:100px;'>
-					<option>Median</option>
-					<option>Mean</option>
-					<option>IQR</option>
-					<option>Standard Deviation</option>
-				</select>
-			</span>
 			<span id=longtermtrendshow><label>
 				<input type="checkbox" onclick="if(this.checked==true){$('#seasonal')[0].checked=true;}else{$('#seasonal')[0].checked=false;};updategraph();" id="longtermtrend" name="longtermtrend" value="yes"> Long Term Trend (STL)</label><br>
 			</span>
@@ -776,12 +627,6 @@ echo "\n</table></body></html>";
 					<option>Multiplicative</option>
 				</select>
 			</span>
-			<span id=invertshow><label>
-				<input type="checkbox" onclick="updategraph();" id="invert" name="invert" value="yes"> Invert Colours</label><br>
-			</span>
-			<span id=thicklinesshow><label>
-				<input type="checkbox" onclick="updategraph();" id="thicklines" name="thicklines" value="yes"> Thick Lines</label><br>
-			</span>
 			<span id=percent100show><label>
 				<input type="checkbox" onclick="updategraph();" id="percent100" name="percent100" value="yes"> 100% Bar Graph</label><br>
 			</span>
@@ -791,11 +636,32 @@ echo "\n</table></body></html>";
 			<span id=relativewidthshow><label>
 				<input type="checkbox" onclick="updategraph();" id="relativewidth" name="relativewidth" value="yes"> Relative Width</label><br>
 			</span>
-			<span id=removedpointsshow><label>
-				<input type="checkbox" onclick="updategraph();" id="removedpoints" name="removedpoints" value="yes" checked> Show ID of Removed Points</label><br>
-			</span>
 			<span id=donutshow><label>
 				<input type="checkbox" onclick="updategraph();" id="donut" name="donut" value="yes"> Donut</label><br>
+			</span>
+			<span id=normalshow><label>
+				<input type="checkbox" onclick="updategraph();" id="normaldist" name="normaldist" value="yes"> Normal Dist.</label><br>
+			</span>
+			<span id=rectangularshow><label>
+				<input type="checkbox" onclick="updategraph();" id="rectangulardist" name="rectangulardist" value="yes"> Rectangular Dist.</label><br>
+			</span>
+			<span id=triangularshow><label>
+				<input type="checkbox" onclick="updategraph();" id="triangulardist" name="triangulardist" value="yes"> Triangular Dist.</label><br>
+			</span>
+			<span id=poissonshow><label>
+				<input type="checkbox" onclick="updategraph();" id="poissondist" name="poissondist" value="yes"> Poisson Dist.</label><br>
+			</span>
+			<span id=binomialshow><label>
+				<input type="checkbox" onclick="updategraph();" id="binomialdist" name="binomialdist" value="yes"> Binomial Dist.</label><br>
+			</span>
+			<span id=invertshow><label>
+				<input type="checkbox" onclick="updategraph();" id="invert" name="invert" value="yes"> Invert Colours</label><br>
+			</span>
+			<span id=thicklinesshow><label>
+				<input type="checkbox" onclick="updategraph();" id="thicklines" name="thicklines" value="yes"> Thick Lines</label><br>
+			</span>
+			<span id=removedpointsshow><label>
+				<input type="checkbox" onclick="updategraph();" id="removedpoints" name="removedpoints" value="yes" checked> Show ID of Removed Points</label><br>
 			</span>
 			<span id=grayscaleshow><label>
 				<input type="checkbox" onclick="updategraph();" id="grayscale" name="grayscale" value="yes"> Gray Scale <br>(do not use on Firefox)</label><br>
@@ -817,7 +683,7 @@ echo "\n</table></body></html>";
 			</select>
 			</span>
 </table>
-<div id=sizediv><span id=pointsizename>Point Size:</span> <input id=size type="range" min=3 max=19 step=2 value=7	onchange="updategraph()"></div>
+<div id=sizediv><span id=pointsizename>Point Size:</span> <input id=size type="range" min=3 max=19 step=1 value=7	onchange="updategraph()"></div>
 <div id=transdiv>Transparency: <input id=trans type="range" min=0 max=100 step=10 value=50 onchange="updategraph()"></div>
 <div id=updater>
 <?php
@@ -830,10 +696,7 @@ if(isset($_GET['dev'])){
 ?>
 <span onclick="moreoptions()">More Options</span> <span onclick="updatebox()">Update Graph</span></div>
 </div>
-<div id=originaldataholder style="display:none;">
-</div>
-<div id=presampledataholder style="display:none;">
-</div>
+<div id=presampledataholder style="display:none;"></div>
 <div id=loading>
 	<br><br><br><br><br><br>Loading...
 </div>
@@ -842,6 +705,19 @@ if(isset($_GET['dev'])){
 </div>
 <div id=sampling>
 	<br><br><br><br><br><br>Sampling...
+</div>
+<div id="regroupdiv" style="z-index:99;max-height:80%;overflow-y:auto;display:none;padding:10px;position:absolute;border:none;box-shadow: 0px 0px 10px rgba(0,0,0,0.5);top:50%;left:50%;-webkit-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);">
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;'>Re-Group</div>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' class=close>&times;</div><br>
+	<span id=samplecontents style="font-size:14px">
+		Re-group With: <select style='width:120px' onChange="" id=regroupwith></select><br><br>
+		<center>
+		<table id=regrouptable style='text-size:14px;'>
+			<tr><td> <td><input id="regroup-">
+		</table><br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=regroupgo>Re-Group</a><br><br>
+		</center>
+	</span>
 </div>
 <div id="samplediv" style="z-index:99;max-height:80%;overflow-y:auto;display:none;padding:10px;position:absolute;border:none;box-shadow: 0px 0px 10px rgba(0,0,0,0.5);top:50%;left:50%;-webkit-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);">
 	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>Sample</div>

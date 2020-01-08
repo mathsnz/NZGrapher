@@ -1,36 +1,3 @@
-<html>
-<head>
-<title>Update NZGrapher</title>
-			<link href='//fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
-			<style>
-				body {
-					font-family: 'Roboto', sans-serif;
-				}
-				table {
-					border-collapse:collapse;
-				}
-				td, th {
-					border:1px solid #000;
-					padding-left:4px;
-					padding-right:4px;
-					width:80px;
-				}
-				*.minmax {
-					color:#bbb;
-				}
-				#content {
-					position:absolute;
-					top:0px;
-					left:0px;
-					width:<?php echo $_POST['width']-20; ?>px;
-					height:<?php echo $_POST['height']-20; ?>px;
-					overflow-y:scroll;
-					padding:10px;
-				}
-</style>
-</head>
-<body>
-	<div id=content>
 	<center>
 	<h1><img src='logob.png' style='position:relative;top:22px;height:65px;'> Update</h1>
 <br>
@@ -39,7 +6,7 @@ set_time_limit(0);
 
 $latest = floatval(file_get_contents('http://raw.githubusercontent.com/mathsnz/NZGrapher/master/grapherversion.php'));
 
-echo "Latest Version: $latest<br><br>";
+echo "Latest Version: $latest<br>";
 
 if(isset($_POST['password']) || isset($_POST['yup']) || isset($_GET['password'])){
 	include 'password.php';
@@ -65,7 +32,7 @@ if(isset($_POST['password']) || isset($_POST['yup']) || isset($_GET['password'])
 
 if(file_exists('./version.php')){
 	include './version.php';
-	echo "Current Version: $v<br>";
+	echo "Current Version: $v<br><br>";
 } else {
 	echo "Not Currently Installed<br>";
 	$v=0;
@@ -99,14 +66,14 @@ if($latest>$v){
 
 	if($write=="yes"){
 		echo "Update:<br>
-		<form method=post>
+		<form method=post action='./update.php'>
 			<input type=hidden name=password value=yup>";
 		if(!file_exists('./windowsapp.php')){
 			echo "
 			Password: <input type=password name=password> ";
 		}
 		echo	"
-			<input type=submit value='Update'>
+			<input type=submit value='Update' class=button>
 		</form>";
 		if(!file_exists('./windowsapp.php')){
 			echo "
@@ -116,5 +83,3 @@ if($latest>$v){
 	}
 
 ?>
-</body>
-</html>
