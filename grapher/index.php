@@ -486,7 +486,8 @@ if(isset($_POST['csv_data'])){
 			loaddatafromurl(".json_encode($dataset).");
 		</script>";
 	} else {
-		$dataset = './'.$_GET['folder'].'/'.$dataset;
+		$link = dirname((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[SCRIPT_NAME]");
+		$dataset = $link.'/'.$_GET['folder'].'/'.$dataset;
 		echo "<script>
 			loaddatafromurl(".json_encode($dataset).");
 		</script>";
