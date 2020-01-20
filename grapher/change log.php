@@ -10,6 +10,7 @@ To Do List
 ?>
 	<b>2020-01-20</b><ul>
 		<li>New Bootstrapping teaching tool.</li>
+		<li>New <a href='https://youtu.be/RSeubxWEFAc' target='_blank'>video guide showing how to use the Bootstrapping teaching tool</a>.</li>
 		<li>Updates to the shading of points in bootstrap modules.</li>
 	</ul>
 	<b>2020-01-08</b><ul>
