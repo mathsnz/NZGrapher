@@ -8,7 +8,11 @@ To Do List
 */
 
 ?>
-	<b>20200108</b><ul>
+	<b>2020-01-20</b><ul>
+		<li>New Bootstrapping teaching tool.</li>
+		<li>Updates to the shading of points in bootstrap modules.</li>
+	</ul>
+	<b>2020-01-08</b><ul>
 		<li>Changes to splash screen for the start of 2020.</li>
 		<li>Re-Group option now under "Sampling and More" - great for grouping lots of variables down into 2 groups.</li>
 		<li>Can now load larger datasets.</li>

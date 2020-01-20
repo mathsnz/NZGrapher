@@ -1,33 +1,20 @@
-function newpairedexperiment(){
-	$('#arrowsshow').show();
-	$('#regshow').show();
-	$('#sum').show();
-	$('#invertshow').show();
-	$('#stackdotsshow').show();
-	$('#labelshow').show();
-	$('#highboxplotshow').show();
-	$('#boxnowhiskershow').show();
-	$('#boxnooutliershow').show();
-	$('#boxplotshow').show();
-	$('#intervalshow').show();
-	$('#sizediv').show();
-	$('#meandotshow').show();
-	$('#pointsizename').html('Point Size:');
-	$('#transdiv').show();
-	$('#xvar').show();
-	$('#yvar').show();
-	$('#color').show();
-	$('#colorname').show();
-	$('#greyscaleshow').show();
-	$('#gridlinesshow').show();
-	$('#removedpointsshow').show();
-	$('#stripgraphshow').show();
-	$('#var1label').html("Numerical 1:<br><small>required</small>");
-	$('#var2label').html("Numerical 2:<br><small>required</small>");
-	$('#var3label').html("");
+function newbsteachstep(){
+	
+	if(typeof timer !== "undefined"){
+		clearTimeout(timer);
+	}
 
 	var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
+	
+	if(currentbsspeed == 'stopped' && currentbsteachstep!='presample'){
+		var dataURL = canvas.toDataURL();
+		return dataURL;
+	}
+	
+	if(currentbsteachstep=='finished'){
+		currentbsspeed = 'stopped';
+	}
 
 	//set size
 	var width = $('#width').val();
@@ -44,38 +31,41 @@ function newpairedexperiment(){
 	var ypoints = (dataforselector[$('#yvar option:selected').text()]).slice();
 
 	//check for numeric value
-	var apoints=[];
-	var pointsremoved=[];
-	for (var index in xpoints){
-		if($.isNumeric(xpoints[index])){
-			apoints.push(index);
-		} else {
-			pointsremoved.push(add(index,1));
-		}
-	}
-
-	if(apoints.length==0){
-		return 'Error: You must select a numeric variable for "Numerical 1"';
-	}
-	
 	var points=[];
 	var allpoints=[];
-	var pointstoplot=[];
+	var pointsremoved=[];
 	var pointsforminmax=[];
-	for (var i in apoints){
-		index = apoints[i];
-		if($.isNumeric(ypoints[index])){
+	for (var index in xpoints){
+		if($.isNumeric(xpoints[index])){
 			points.push(index);
 			allpoints.push(index);
-			pointsforminmax.push(ypoints[index]-xpoints[index]);
-			pointstoplot[index] = ypoints[index]-xpoints[index];
+			pointsforminmax.push(xpoints[index]);
 		} else {
 			pointsremoved.push(add(index,1));
 		}
 	}
 
 	if(points.length==0){
-		return 'Error: You must select a numeric variable for "Numerical 2"';
+		return 'Error: You must select a numeric variable for "Numerical 1"';
+	}
+
+	if(ypoints.length>0){
+		allydifferentgroups = split(allpoints,ypoints,2,2);
+		if(typeof allydifferentgroups === 'object'){
+			for (index in allydifferentgroups){
+				group = index;
+				depoints=allydifferentgroups[index];
+				for (index in depoints){
+					point=depoints[index];
+					ypoints[point]=group;
+				}
+
+			}
+		} else {
+			return allydifferentgroups;
+		}
+	} else {
+		return 'Error: you must select a variable with only 2 values for "Category 1"';
 	}
 
 	if(pointsremoved.length!=0 && $('#removedpoints').is(":checked")){
@@ -85,293 +75,32 @@ function newpairedexperiment(){
 		ctx.textAlign="right";
 		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-48*scalefactor,48*scalefactor);
 	}
-	
-	var oypixel=height-60*scalefactor;
-	var maxheight=height-120*scalefactor;
-	var left=90*scalefactor;
+
+	var oypixel=height*0.3-60*scalefactor;
+	var maxheight=height*0.3-160*scalefactor;
+	var left=60*scalefactor;
 	var right=width-60*scalefactor;
 
-	var alpha = 1-$('#trans').val()/100;
-	var colors = makecolors(alpha,ctx);
-	
-	if($('#arrows').is(":checked")){
-		var finalxpoints=[];
-		var finalypoints=[];
-		var pointsforminmax=[];
-		for (var i in apoints){
-			index = apoints[i];
-			pointsforminmax.push(xpoints[index]);
-			pointsforminmax.push(ypoints[index]);
-			finalxpoints.push(xpoints[index]);
-			finalypoints.push(ypoints[index]);
-		}
-
-		xmin = Math.min.apply(null, pointsforminmax);
-		xmax = Math.max.apply(null, pointsforminmax);
-		if($.isNumeric($('#boxplotmin').val())){
-			xmin=$('#boxplotmin').val();
-		}
-		if($.isNumeric($('#boxplotmax').val())){
-			xmax=$('#boxplotmax').val();
-		}
-		var minmaxstep = axisminmaxstep(xmin,xmax);
-		var minxtick=minmaxstep[0];
-		var maxxtick=minmaxstep[1];
-		var xstep=minmaxstep[2];
-		
-		ctx.strokeStyle = '#000000';
-		horaxis(ctx,left,right,add(oypixel,10*scalefactor),minxtick,maxxtick,xstep);
-		
-		var topypix=oypixel-3*maxheight/4;
-		var bottomypix=oypixel-maxheight/4;
-		
-		var rad = $('#size').val()/2*scalefactor;
-		if($('#labels').is(":checked")){var labels="yes";} else {var labels = "no";}
-			
-		for (var i in points){
-			index = points[i];
-			topxpixel = convertvaltopixel(xpoints[index],minxtick,maxxtick,left,right);
-			bottomxpixel = convertvaltopixel(ypoints[index],minxtick,maxxtick,left,right);
-			ctx.strokeStyle = colors[index];
-			ctx.fillStyle = colors[index];
-			ctx.beginPath();
-			ctx.arc(topxpixel,topypix,rad,0,2*Math.PI);
-			ctx.stroke();
-			ctx.beginPath();
-			ctx.arc(bottomxpixel,bottomypix,rad,0,2*Math.PI);
-			ctx.stroke();
-			drawArrow(ctx,topxpixel,topypix+rad,bottomxpixel,bottomypix-rad,5*scalefactor)
-			if(labels == "yes"){
-				ctx.fillStyle = 'rgba(0,0,255,1)';
-				fontsize = 10*scalefactor;
-				ctx.font = fontsize+"px Roboto";
-				ctx.textAlign="left";
-				ctx.fillText(parseInt(add(index,1)),add(add(topxpixel,rad),2*scalefactor),add(topypix,4*scalefactor));
-				ctx.fillText(parseInt(add(index,1)),add(add(bottomxpixel,rad),2*scalefactor),add(bottomypix,4*scalefactor));
-			}
-			$('#graphmap').append('<area shape="circle" coords="'+(topxpixel/scalefactor)+','+(topypix/scalefactor)+','+(rad/scalefactor)+'" alt="'+parseInt(add(index,1))+'" desc="Point ID: '+parseInt(add(index,1))+'<br>'+$('#xaxis').val()+': '+xpoints[index]+'<br>'+$('#yaxis').val()+': '+ypoints[index]+'">');
-			$('#graphmap').append('<area shape="circle" coords="'+(bottomxpixel/scalefactor)+','+(bottomypix/scalefactor)+','+(rad/scalefactor)+'" alt="'+parseInt(add(index,1))+'" desc="Point ID: '+parseInt(add(index,1))+'<br>'+$('#xaxis').val()+': '+xpoints[index]+'<br>'+$('#yaxis').val()+': '+ypoints[index]+'">');
-		}
-
-		if($('#regression').is(":checked")){			
-			ctx.fillStyle = '#000000';
-			fontsize = 15*scalefactor;
-			ctx.font = "bold "+fontsize+"px Roboto";
-			ctx.textAlign="left";
-			var ypix=oypixel-3*maxheight/4;
-			ctx.fillText($('#xaxis').val(),left-60*scalefactor,ypix-60*scalefactor);
-			var ypix=oypixel-maxheight/4;
-			ctx.fillText($('#yaxis').val(),left-60*scalefactor,ypix-60*scalefactor);
-			
-			ctx.fillStyle = 'rgba(255,0,0,1)';
-			fontsize = 11*scalefactor;
-			ctx.font = fontsize+"px Roboto";
-			ctx.textAlign="left";
-			
-			thisvalues = finalxpoints;
-			var minval = Math.min.apply(null, thisvalues);
-			var lq = lowerquartile(thisvalues);
-			var med = median(thisvalues);
-			var mean = calculatemean(thisvalues);
-			var uq = upperquartile(thisvalues);
-			var maxval = Math.max.apply(null, thisvalues);
-			var minnooutliersval = minnooutliers(thisvalues,lq,uq);
-			var maxnooutliersval = maxnooutliers(thisvalues,lq,uq);
-			var sd = standarddeviation(thisvalues);
-			var num = thisvalues.length;
-			var ypix=oypixel-3*maxheight/4;
-			ctx.fillText('min: '+minval,left-60*scalefactor,ypix-44*scalefactor);
-			ctx.fillText('lq: '+lq,left-60*scalefactor,ypix-33*scalefactor);
-			ctx.fillText('med: '+med,left-60*scalefactor,ypix-22*scalefactor);
-			ctx.fillText('mean: '+mean,left-60*scalefactor,ypix-11*scalefactor);
-			ctx.fillText('uq: '+uq,left-60*scalefactor,ypix);
-			ctx.fillText('max: '+maxval,left-60*scalefactor,ypix+11*scalefactor);
-			ctx.fillText('sd: '+sd,left-60*scalefactor,ypix+22*scalefactor);
-			ctx.fillText('num: '+num,left-60*scalefactor,ypix+33*scalefactor);
-			
-			thisvalues = finalypoints;
-			var minval = Math.min.apply(null, thisvalues);
-			var lq = lowerquartile(thisvalues);
-			var med = median(thisvalues);
-			var mean = calculatemean(thisvalues);
-			var uq = upperquartile(thisvalues);
-			var maxval = Math.max.apply(null, thisvalues);
-			var minnooutliersval = minnooutliers(thisvalues,lq,uq);
-			var maxnooutliersval = maxnooutliers(thisvalues,lq,uq);
-			var sd = standarddeviation(thisvalues);
-			var num = thisvalues.length;
-			var ypix=oypixel-maxheight/4;
-			ctx.fillText('min: '+minval,left-60*scalefactor,ypix-44*scalefactor);
-			ctx.fillText('lq: '+lq,left-60*scalefactor,ypix-33*scalefactor);
-			ctx.fillText('med: '+med,left-60*scalefactor,ypix-22*scalefactor);
-			ctx.fillText('mean: '+mean,left-60*scalefactor,ypix-11*scalefactor);
-			ctx.fillText('uq: '+uq,left-60*scalefactor,ypix);
-			ctx.fillText('max: '+maxval,left-60*scalefactor,ypix+11*scalefactor);
-			ctx.fillText('sd: '+sd,left-60*scalefactor,ypix+22*scalefactor);
-			ctx.fillText('num: '+num,left-60*scalefactor,ypix+33*scalefactor);
-		} else {
-			ctx.fillStyle = '#000000';
-			fontsize = 15*scalefactor;
-			ctx.font = "bold "+fontsize+"px Roboto";
-			ctx.textAlign="left";
-			var ypix=oypixel-3*maxheight/4;
-			ctx.fillText($('#xaxis').val(),left-60*scalefactor,ypix+5*scalefactor);
-			var ypix=oypixel-maxheight/4;
-			ctx.fillText($('#yaxis').val(),left-60*scalefactor,ypix+5*scalefactor);
-		}
-		
-	} else {
-
-		xmin = Math.min.apply(null, pointsforminmax);
-		xmax = Math.max.apply(null, pointsforminmax);
-		if(xmin==xmax){
-			xmin--;
-			xmax++;
-		}
-		if($.isNumeric($('#boxplotmin').val())){
-			xmin=$('#boxplotmin').val();
-		}
-		if($.isNumeric($('#boxplotmax').val())){
-			xmax=$('#boxplotmax').val();
-		}
-		var minmaxstep = axisminmaxstep(xmin,xmax);
-		var minxtick=minmaxstep[0];
-		var maxxtick=minmaxstep[1];
-		var xstep=minmaxstep[2];
-		
-		ctx.strokeStyle = '#000000';
-		horaxis(ctx,left,right,add(oypixel,10*scalefactor),minxtick,maxxtick,xstep);
-		plotdotplot(ctx,points,pointstoplot,minxtick,maxxtick,oypixel,left,right,maxheight,colors,2,'Difference');
-
-		//x-axis title
-		ctx.fillStyle = '#000000';
-		fontsize = 15*scalefactor;
-		ctx.font = "bold "+fontsize+"px Roboto";
-		ctx.textAlign="center";
-		ctx.fillText("Difference ("+$('#yaxis').val()+" - "+$('#xaxis').val()+")",width/2,height-10*scalefactor);
-	
-	}
-	
-	//graph title
+	//Original Data Title
 	ctx.fillStyle = '#000000';
 	fontsize = 20*scalefactor;
 	ctx.font = "bold "+fontsize+"px Roboto";
-	ctx.textAlign="center";
-	ctx.fillText($('#title').val(),width/2,30*scalefactor);
+	ctx.textAlign="left";
+	ctx.fillText('Original Data',30*scalefactor,30*scalefactor);
 
-	labelgraph(ctx,width,height);
-	if($('#invert').is(":checked")){
-		invert(ctx)
-	}
+	//This Randomisation Title
+	ctx.fillStyle = '#000000';
+	fontsize = 20*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
+	ctx.textAlign="left";
+	ctx.fillText('This Bootstrap Sample',30*scalefactor,height*0.3+30*scalefactor);
 
-	var dataURL = canvas.toDataURL();
-	return dataURL;
-}
-
-function drawArrow(ctx, fromx, fromy, tox, toy, radius) {
-	var x_center = tox;
-	var y_center = toy;
-
-	var angle;
-	var x;
-	var y;
-
-	ctx.beginPath();
-
-	angle = Math.atan2(toy - fromy, tox - fromx)
-	x_center = -radius * Math.cos(angle) + x_center;
-	y_center = -radius * Math.sin(angle) + y_center;
-	
-	x = radius * Math.cos(angle) + x_center;
-	y = radius * Math.sin(angle) + y_center;
-
-	ctx.moveTo(x, y);
-
-	angle += (1.0/3.0) * (2 * Math.PI)
-	x = radius * Math.cos(angle) + x_center;
-	y = radius * Math.sin(angle) + y_center;
-
-	ctx.lineTo(x, y);
-
-	angle += (1.0/3.0) * (2 * Math.PI)
-	x = radius *Math.cos(angle) + x_center;
-	y = radius *Math.sin(angle) + y_center;
-
-	ctx.lineTo(x, y);
-	ctx.closePath();
-	ctx.fill();
-	
-	angle = Math.atan2(toy - fromy, tox - fromx)
-	x = -0.5*radius * Math.cos(angle) + x_center;
-	y = -0.5*radius * Math.sin(angle) + y_center;
-	
-	line(ctx,fromx,fromy,x,y);
-}
-
-function newbootstrap(){
-	$('#regshow').show();
-	$('#sum').show();
-	$('#invertshow').show();
-	$('#stackdotsshow').show();
-	$('#labelshow').show();
-	$('#intervalshow').show();
-	$('#sizediv').show();
-	$('#pointsizename').html('Point Size:');
-	$('#transdiv').show();
-	$('#xvar').show();
-	$('#greyscaleshow').show();
-	$('#gridlinesshow').show();
-	$('#removedpointsshow').show();
-	$('#btypeshow').show();
-	$('#var1label').html("Numerical 1:<br><small>required</small>");
-	$('#var2label').html("");
-	$('#var3label').html("");
-
-	var canvas = document.getElementById('myCanvas');
-    var ctx = canvas.getContext('2d');
-
-	//set size
-	var width = $('#width').val();
-	var height = $('#height').val();
-
-	ctx.canvas.width = width;
-	ctx.canvas.height = height;
-
-	ctx.fillStyle = "#ffffff";
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-	//get points
-	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
-	
-	//check for numeric value
-	var points=[];
-	var pointsremoved=[];
-	var pointsforminmax=[];
-	for (var index in xpoints){
-		if($.isNumeric(xpoints[index])){
-			points.push(index);
-			pointsforminmax.push(xpoints[index]);
-		} else {
-			pointsremoved.push(add(index,1));
-		}
-	}
-
-	if(points.length==0){
-		return 'Error: You must select a numeric variable for "Numerical 1"';
-	}
-
-	if(pointsremoved.length!=0 && $('#removedpoints').is(":checked")){
-		ctx.fillStyle = '#000000';
-		fontsize = 13*scalefactor;
-		ctx.font = fontsize+"px Roboto";
-		ctx.textAlign="right";
-		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-48*scalefactor,48*scalefactor);
-	}
-	
-	var oypixel=height/2.5-60*scalefactor;
-	var maxheight=height/2.5-120*scalefactor;
-	var left=90*scalefactor;
-	var right=width-60*scalefactor;
+	//Re-randomisation distribution
+	ctx.fillStyle = '#000000';
+	fontsize = 20*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
+	ctx.textAlign="left";
+	ctx.fillText('Bootstrap Distribution',30*scalefactor,height*0.6+30*scalefactor);
 
 	xmin = Math.min.apply(null, pointsforminmax);
 	xmax = Math.max.apply(null, pointsforminmax);
@@ -381,185 +110,431 @@ function newbootstrap(){
 	if($.isNumeric($('#boxplotmax').val())){
 		xmax=$('#boxplotmax').val();
 	}
+
+	//x-axis title
+	ctx.fillStyle = '#000000';
+	fontsize = 15*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
+	ctx.textAlign="center";
+	ctx.fillText($('#xaxis').val(),width/2,height*0.3-10*scalefactor);
+
+	//y-axis title
+	if($('#yaxis').val() != "Y Axis Title"){
+		var x, y;
+		x=20*scalefactor;
+		y=height*0.15;
+		ctx.save();
+		ctx.fillStyle = '#000000';
+		fontsize = 15*scalefactor;
+		ctx.font = "bold "+fontsize+"px Roboto";
+		ctx.translate(x, y);
+		ctx.rotate(-Math.PI/2);
+		ctx.textAlign = "center";
+		ctx.fillText($('#yaxis').val(), 0, 0);
+		ctx.restore();
+	}
+
+	//x-axis title
+	ctx.fillStyle = '#000000';
+	fontsize = 15*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
+	ctx.textAlign="center";
+	ctx.fillText($('#xaxis').val(),width/2,height*0.6-10*scalefactor);
+
+	//y-axis title
+	if($('#yaxis').val() != "Y Axis Title"){
+		var x, y;
+		x=20*scalefactor;
+		y=height*0.45;
+		ctx.save();
+		ctx.fillStyle = '#000000';
+		fontsize = 15*scalefactor;
+		ctx.font = "bold "+fontsize+"px Roboto";
+		ctx.translate(x, y);
+		ctx.rotate(-Math.PI/2);
+		ctx.textAlign = "center";
+		ctx.fillText($('#yaxis').val(), 0, 0);
+		ctx.restore();
+	}
+
+	var depoints=[];
+
+	for (var index in allydifferentgroups){
+		depoints[index]=[];
+		thesepoints = allydifferentgroups[index];
+		for (var p in thesepoints){
+			zp = xpoints[thesepoints[p]];
+			depoints[index].push(zp);
+		}
+	}
+
+	medians=[];
+	cnames=[];
+
+	var i=0;
+	for (var index in depoints){
+		cnames[i] = index;
+		medians[i] = median(depoints[index]);
+		i++;
+	}
+
+	diff = parseFloat(Number(medians[0]-medians[1]).toPrecision(10));
+
+	if(diff<0){
+		diff=-diff;
+		reverse=-1;
+	} else {
+		reverse=1;
+	}
+	odiff = diff;
+	
 	var minmaxstep = axisminmaxstep(xmin,xmax);
 	var minxtick=minmaxstep[0];
 	var maxxtick=minmaxstep[1];
 	var xstep=minmaxstep[2];
 	
-	var alpha = 1-$('#trans').val()/100;
-	var colors = makeblankcolors(xpoints.length,alpha);
+	// set up axis for bootstrap
+	steps=(maxxtick-minxtick)/xstep;
 	
-	$('#boxplot').prop('checked',false);
-	$('#highboxplot').prop('checked',false);
-	$('#boxnowhisker').prop('checked',false);
-	$('#boxnooutlier').prop('checked',false);
-	$('#meandot').prop('checked',false);
+	offset=minxtick+xstep*Math.floor(steps/2)-odiff;
+	offset=-offset;
+	offset=Math.floor(offset/xstep);
+	offset=xstep*offset;
+	bottomminxtick=minxtick+offset;
+	bottommaxxtick=maxxtick+offset;
 	
-	if($('#btype').val()=='Median' || $('#btype').val()=='IQR'){
-		$('#boxplot').prop('checked',true);
-	} else if($('#btype').val()=='Mean' || $('#btype').val()=='Standard Deviation'){
-		$('#meandot').prop('checked',true);
+	if(bottommaxxtick<diff){
+		maxxtick += Math.ceil((diff-bottommaxxtick)/xstep+1)*xstep;
+		minxtick -= Math.ceil((diff-bottommaxxtick)/xstep+1)*xstep;
 	}
-	
-	ctx.strokeStyle = '#000000';
+
 	horaxis(ctx,left,right,add(oypixel,10*scalefactor),minxtick,maxxtick,xstep);
-	plotdotplot(ctx,points,xpoints,minxtick,maxxtick,oypixel,left,right,maxheight,colors,2,1);
-	
-	if($('#btype').val()=='Median'){
-		ctx.strokeStyle = '#ff0000';
-		ctx.lineWidth = 3*scalefactor;
-		var med = median(pointsforminmax);
-		var medgraph = convertvaltopixel(med,minxtick,maxxtick,left,right);
-		line(ctx,medgraph,oypixel,medgraph,oypixel-maxheight*0.2)
-		dropline = med;
-	} else if ($('#btype').val()=='IQR'){
-		ctx.strokeStyle = '#ff0000';
-		ctx.lineWidth = 3*scalefactor;
-		var lq = lowerquartile(pointsforminmax);
-		var uq = upperquartile(pointsforminmax);
-		var lqgraph = convertvaltopixel(lq,minxtick,maxxtick,left,right);
-		var uqgraph = convertvaltopixel(uq,minxtick,maxxtick,left,right);
-		line(ctx,lqgraph,oypixel-maxheight*0.1,uqgraph,oypixel-maxheight*0.1);
-		dropline = uq - lq;
-		shift=((dropline-(minxtick+maxxtick)/2)/xstep).toFixed(0)*xstep;
-		minxtick = minxtick+shift;
-		maxxtick = maxxtick+shift;
-	} else if($('#btype').val()=='Mean'){
-		var mean = calculatemean(pointsforminmax);
-		dropline = mean;
-	} else if ($('#btype').val()=='Standard Deviation'){
-		ctx.strokeStyle = '#ff0000';
-		ctx.lineWidth = 3*scalefactor;
-		var mean = calculatemean(pointsforminmax);
-		var sd = standarddeviation(pointsforminmax);	
-		var bottomsdgraph = convertvaltopixel(add(mean,sd),minxtick,maxxtick,left,right);
-		var topsdgraph = convertvaltopixel(add(mean,-sd),minxtick,maxxtick,left,right);
-		line(ctx,bottomsdgraph,oypixel-5*scalefactor,topsdgraph,oypixel-5*scalefactor);
-		console.log(bottomsdgraph);
-		dropline = sd;
-		shift=((dropline-(minxtick+maxxtick)/2)/xstep).toFixed(0)*xstep;
-		minxtick = minxtick+shift;
-		maxxtick = maxxtick+shift;
+	horaxis(ctx,left,right,add(oypixel+height*0.3,10*scalefactor),minxtick,maxxtick,xstep);
+
+	var alpha = 1-$('#trans').val()/100;
+
+	colors = makecolors(alpha,ctx);
+
+	for (var index in allydifferentgroups){
+		plotdotplot(ctx,allydifferentgroups[index],xpoints,minxtick,maxxtick,oypixel,left,right,maxheight,colors,2,1);
+		ctx.fillStyle = '#000000';
+		fontsize = 15*scalefactor;
+		ctx.font = "bold "+fontsize+"px Roboto";
+		ctx.textAlign="right";
+		ctx.fillText(index,right+10,oypixel-maxheight/2);
+		oypixel = oypixel-maxheight;
 	}
 	
-	var oypixel=height-90*scalefactor;
-	var maxheight=height*0.6-120*scalefactor;
+	ctx.lineWidth = 2*scalefactor;
+	ctx.strokeStyle = 'rgb(0,0,255)';
+	y = height*0.15+5*scalefactor;
+	if(reverse==1){
+		med1=medians[1];
+		med2=medians[0];
+	} else {
+		med2=medians[1];
+		med1=medians[0];
+	}
+	leftxpixel = convertvaltopixel(med1,minxtick,maxxtick,left,right);
+	rightxpixel = convertvaltopixel(med2,minxtick,maxxtick,left,right);
+	line(ctx,leftxpixel,y,rightxpixel,y);
+	line(ctx,rightxpixel-5*scalefactor,y-5*scalefactor,rightxpixel,y);
+	line(ctx,rightxpixel-5*scalefactor,add(y,5*scalefactor),rightxpixel,y);
 	
-	horaxis(ctx,left,right,add(oypixel,40*scalefactor),minxtick,maxxtick,xstep);
-	
-	bootstrapvals=[];
-	num=points.length;
-	b=0;
-	while(b<1000){
-		thisbootstrap=[];
+	// Create this bootstrap
+	if(currentbsteachstep=='presample'){
+		currentbsteachsamplepoints = [];
+		currentbsteachsample = {};
+		currentbsteachygroups = [];
+		currentbsteachxpoints = [];
+		currentbsteachypoints = [];
+		num = points.length;
 		for (index in points){
 			sel=randint(0,num-1);
 			point=points[sel];
 			xval=xpoints[point];
-			thisbootstrap.push(xval);
+			yval=ypoints[point];
+			currentbsteachxpoints.push(xval);
+			currentbsteachypoints.push(yval);
+			currentbsteachsamplepoints.push(index);
 		}
-		if($('#btype').val()=='Median'){
-			val = median(thisbootstrap);
-		} else if ($('#btype').val()=='IQR'){
-			lq = lowerquartile(thisbootstrap);
-			uq = upperquartile(thisbootstrap);
-			val = uq-lq;
-		} else if($('#btype').val()=='Mean'){
-			val = calculatemean(thisbootstrap);
-		} else if ($('#btype').val()=='Standard Deviation'){
-			val = standarddeviation(thisbootstrap);	
+		currentbsteachopoints = currentbsteachypoints.slice();
+		for (var index in allydifferentgroups){
+			currentbsteachsample[index]=[];
+			currentbsteachygroups.push(index);
 		}
-		val = parseFloat(Number(val).toPrecision(10));
-		bootstrapvals.push(val);
-		b++;
+		currentbsteachygroups.sort();
+		if(currentbsspeed != 'stopped'){
+			currentbsteachstep='sample';
+		}
+		lastkey = -1;
+	}
+	
+	if(currentbsteachstep=='sample' && (currentbsspeed=='restfast' || currentbsspeed=='restmedium' || currentbsspeed=='restslow')){
+		currentbsteachsample = split(allpoints,currentbsteachopoints,2,2);
+		currentbsteachstep = 'plotdifference';
+	}
+	
+	if(currentbsteachstep=='calcdifference' || currentbsteachstep=='plotdifference'){
+		$('#boxplot').prop('checked', true);
+		// plot arrow on middle graph
+		ctx.lineWidth = 2*scalefactor;
+		ctx.strokeStyle = 'rgb(255,0,0)';
+		y = height*0.45+5*scalefactor;
+		group1=[];
+		group2=[];
+		for (point in currentbsteachxpoints){
+			xval=currentbsteachxpoints[point];
+			group=currentbsteachopoints[point];
+			if(cnames[0]==group){
+				group1.push(xval);
+			} else {
+				group2.push(xval);
+			}
+		}
+		if(reverse==1){
+			med1=median(group2);
+			med2=median(group1);
+		} else {
+			med1=median(group1);
+			med2=median(group2);
+		}
+		leftxpixel = convertvaltopixel(med1,minxtick,maxxtick,left,right);
+		rightxpixel = convertvaltopixel(med2,minxtick,maxxtick,left,right);
+		if(leftxpixel<rightxpixel){
+			line(ctx,leftxpixel,y,rightxpixel,y);
+			line(ctx,rightxpixel-5*scalefactor,y-5*scalefactor,rightxpixel,y);
+			line(ctx,rightxpixel-5*scalefactor,add(y,5*scalefactor),rightxpixel,y);
+		} else {
+			line(ctx,leftxpixel,y,rightxpixel,y);
+			line(ctx,rightxpixel+5*scalefactor,y-5*scalefactor,rightxpixel,y);
+			line(ctx,rightxpixel+5*scalefactor,add(y,5*scalefactor),rightxpixel,y);
+		}
+	}
+	
+	
+	if(currentbsteachstep=='plotdifference'){	
+		diff = med2-med1;
+		currentbsteachdiffs.push(diff);
+		$('#bsteachremaining').html($('#bsteachremaining').html()-1);
+	}
+	
+	// Add point to this sample
+	if(currentbsteachstep=='sample'){
+		$('#boxplot').prop('checked', false);
+		thispoint = currentbsteachsamplepoints.shift();
+		thisgroup = currentbsteachypoints.shift();
+		currentbsteachsample[thisgroup].push(thispoint);
+	}
+	
+	// graph this randomisation
+	lastpoint = -1;
+	var oypixel=height*0.6-60*scalefactor;
+	for (var index in currentbsteachsample){
+		plotdotplot(ctx,currentbsteachsample[index],currentbsteachxpoints,minxtick,maxxtick,oypixel,left,right,maxheight,colors,2,1);
+		if(highestkey>lastpoint){
+			lastpoint = highestkey;
+			ypixel = lastypixel;
+			if(ypixel<120){
+				console.log(ypixel)
+				return;
+			}
+		}
+		ctx.fillStyle = '#000000';
+		fontsize = 15*scalefactor;
+		ctx.font = "bold "+fontsize+"px Roboto";
+		ctx.textAlign="right";
+		ctx.fillText(index,right+10,oypixel-maxheight/2);
+		oypixel = oypixel-maxheight;
+	}
+	
+	// draw dropdown line
+	if(currentbsteachstep=='sample'){
+		xpixel = convertvaltopixel(currentbsteachxpoints[thispoint],minxtick,maxxtick,left,right);
+		ctx.lineWidth = 2*scalefactor;
+		ctx.strokeStyle = 'rgb(255,0,0)';
+		//ytop = ypixel-5*scalefactor-height*0.3;
+		console.log(thispoint);
+		console.log(currentbsteachopoints[thispoint]);
+		ytop = height*0.3-85*scalefactor-maxheight/2+currentbsteachygroups.indexOf(currentbsteachopoints[thispoint])*maxheight;
+		ybottom = ypixel-5*scalefactor;
+		line(ctx,xpixel,ytop,xpixel,ybottom);
+		line(ctx,xpixel-5*scalefactor,ybottom-5*scalefactor,xpixel,ybottom);
+		line(ctx,xpixel+5*scalefactor,ybottom-5*scalefactor,xpixel,ybottom);
+		if(currentbsteachsamplepoints.length==0){
+			currentbsteachstep = 'calcdifference';
+		}
 	}
 
-	colors = makebscolors(1000,alpha);
+	if(reverse==1){
+		title="Difference Between Medians (" + cnames[0] + " - " + cnames[1] + ")";
+	} else {
+		title="Difference Between Medians (" + cnames[1] + " - " + cnames[0] + ")";
+	}
 
-	$('#boxplot').prop('checked', false);
-	$('#meandot').prop('checked', false);
+	//bs x-axis title
+	ctx.fillStyle = '#000000';
+	fontsize = 15*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
+	ctx.textAlign="center";
+	ctx.fillText(title,width/2,height-10*scalefactor);
 
+	
+	// set up axis for bootstrap
+	steps=(maxxtick-minxtick)/xstep;
+	
+	offset=minxtick+xstep*Math.floor(steps/2)-odiff;
+	offset=-offset;
+	offset=Math.floor(offset/xstep);
+	offset=xstep*offset;
+	minxtick=minxtick+offset;
+	maxxtick=maxxtick+offset;
+
+	oypixel = height - 75*scalefactor;
+	horaxis(ctx,left,right,add(oypixel,15*scalefactor),minxtick,maxxtick,xstep);
+
+	maxheight=height*0.4-120*scalefactor;
+	
 	bspoints=[];
 	i=0;
-	while(i<1000){
+	while(i<currentbsteachdiffs.length){
 		bspoints.push(i);
 		i++;
 	}
-
+	if(currentbsteachstep=='finished'){
+		diff = odiff;
+		colors = makebscolors(1000,alpha,currentbsteachdiffs);
+	} else {
+		colors = makeblankcolors(currentbsteachdiffs.length,alpha);
+	}
 	$('#boxplot').prop('checked', false);
 	$('#meandot').prop('checked', false);
-
-	if($('#labels').is(":checked")){var waslabels="yes";} else {var waslabels = "no";}
-	if($('#regression').is(":checked")){var wasreg="yes";} else {var wasreg = "no";}
-	if($('#interval').is(":checked")){var wasint="yes";} else {var wasint = "no";}
-	if($('#intervallim').is(":checked")){var wasintlim="yes";} else {var wasintlim = "no";}
-	$('#labels')[0].checked=false;
-	$('#regression')[0].checked=false;
-	$('#interval')[0].checked=false;
-	$('#intervallim')[0].checked=false;
-	plotdotplot(ctx,bspoints,bootstrapvals,minxtick,maxxtick,oypixel,left,right,maxheight,colors,1,0);
-	if(waslabels=="yes"){$('#labels')[0].checked=true;}
-	if(wasreg=="yes"){$('#regression')[0].checked=true;}
-	if(wasint=="yes"){$('#interval')[0].checked=true;}
-	if(wasintlim=="yes"){$('#intervallim')[0].checked=true;}
-
-	bootstrapvals.sort(function(a, b){return a-b});
+	plotdotplot(ctx,bspoints,currentbsteachdiffs,minxtick,maxxtick,oypixel-20*scalefactor,left,right,maxheight,colors,1,0);
+	ypixel = lastypixel;
 	
-	y=oypixel-3*scalefactor;
-	ctx.lineWidth = 2*scalefactor;
-	ctx.strokeStyle = 'rgb(0,0,255)';
-	ctx.fillStyle = '#0000ff';
-	fontsize = 11*scalefactor;
-	ctx.font = "bold "+fontsize+"px Roboto";
-	ctx.textAlign = "center";
-	droppix=convertvaltopixel(dropline,minxtick,maxxtick,left,right);
-	ctx.strokeStyle = 'rgb(255,0,0)';
-	ctx.fillStyle = '#ff0000';
-	line(ctx,droppix,add(y,-maxheight),droppix,y);
-	ctx.fillText(dropline,droppix,add(y,-maxheight-5*scalefactor));
-	ctx.strokeStyle = 'rgb(0,0,255)';
-	ctx.fillStyle = '#0000ff';
-	intervalmin=bootstrapvals[25];
-	intervalminpix=convertvaltopixel(intervalmin,minxtick,maxxtick,left,right);
-	intervalmax=bootstrapvals[974];
-	intervalmaxpix=convertvaltopixel(intervalmax,minxtick,maxxtick,left,right);
-	ctx.textAlign = "right";
-	line(ctx,intervalminpix,add(y,18*scalefactor),intervalminpix,y-20*scalefactor);
-	ctx.fillText(intervalmin,intervalminpix,add(y,30*scalefactor));
-	ctx.textAlign = "left";
-	line(ctx,intervalmaxpix,add(y,18*scalefactor),intervalmaxpix,y-20*scalefactor);
-	ctx.fillText(intervalmax,intervalmaxpix,add(y,30*scalefactor));
-	y=y-15*scalefactor;
-	ctx.lineWidth = 10*scalefactor;
-	line(ctx,intervalminpix,y,intervalmaxpix,y);
+	if(currentbsteachstep=='plotdifference'){
+		// plot arrow on bottom graph
+		ctx.lineWidth = 2*scalefactor;
+		ctx.strokeStyle = 'rgb(255,0,0)';
+		y = ypixel;
+		offset=minxtick+xstep*Math.floor(steps/2)-odiff;
+		offset=-offset;
+		offset=Math.floor(offset/xstep);
+		offset=xstep*offset;
+		diffpix=convertvaltopixel(diff,minxtick+offset,maxxtick+offset,left,right);
+		zeropix=convertvaltopixel(0,minxtick+offset,maxxtick+offset,left,right);
+		if(zeropix<diffpix){
+			line(ctx,zeropix,y,diffpix,y);
+			line(ctx,diffpix-5*scalefactor,y-5*scalefactor,diffpix,y);
+			line(ctx,diffpix-5*scalefactor,add(y,5*scalefactor),diffpix,y);
+		} else {
+			line(ctx,zeropix,y,diffpix,y);
+			line(ctx,diffpix+5*scalefactor,y-5*scalefactor,diffpix,y);
+			line(ctx,diffpix+5*scalefactor,add(y,5*scalefactor),diffpix,y);
+		}
+	}
 	
-	//graph title
-	ctx.fillStyle = '#000000';
-	fontsize = 20*scalefactor;
-	ctx.font = "bold "+fontsize+"px Roboto";
-	ctx.textAlign="center";
-	ctx.fillText($('#title').val(),width/2,30*scalefactor);
-
-	//x-axis title
-	ctx.fillStyle = '#000000';
-	fontsize = 15*scalefactor;
-	ctx.font = "bold "+fontsize+"px Roboto";
-	ctx.textAlign="center";
-	ctx.fillText($('#xaxis').val(),width/2,height/2.5-10*scalefactor);
-
-	//x-axis title
-	ctx.fillStyle = '#000000';
-	fontsize = 15*scalefactor;
-	ctx.font = "bold "+fontsize+"px Roboto";
-	ctx.textAlign="center";
-	ctx.fillText('Bootstrap - '+$('#btype').val(),width/2,height-10*scalefactor);
+	if(currentbsteachstep=='finished'){
+		currentbsteachdiffs.sort(function(a, b){return a-b});
+		y=oypixel-20*scalefactor;
+		ctx.lineWidth = 2*scalefactor;
+		ctx.strokeStyle = 'rgb(0,0,255)';
+		ctx.fillStyle = '#0000ff';
+		fontsize = 11*scalefactor;
+		ctx.font = "bold "+fontsize+"px Roboto";
+		ctx.textAlign = "center";
+		diffpix=convertvaltopixel(diff,minxtick,maxxtick,left,right);
+		zeropix=convertvaltopixel(0,minxtick,maxxtick,left,right);
+		line(ctx,zeropix,y,diffpix,y);
+		line(ctx,diffpix-5*scalefactor,y-5*scalefactor,diffpix,y);
+		line(ctx,diffpix-5*scalefactor,add(y,5*scalefactor),diffpix,y);
+		ctx.fillText(diff,diffpix,add(y,15*scalefactor));
+		intervalmin=currentbsteachdiffs[25];
+		intervalminpix=convertvaltopixel(intervalmin,minxtick,maxxtick,left,right);
+		intervalmax=currentbsteachdiffs[974];
+		intervalmaxpix=convertvaltopixel(intervalmax,minxtick,maxxtick,left,right);
+		ctx.textAlign = "right";
+		line(ctx,intervalminpix,add(y,18*scalefactor),intervalminpix,y-20*scalefactor);
+		ctx.fillText(intervalmin,intervalminpix,add(y,28*scalefactor));
+		ctx.textAlign = "left";
+		line(ctx,intervalmaxpix,add(y,18*scalefactor),intervalmaxpix,y-20*scalefactor);
+		ctx.fillText(intervalmax,intervalmaxpix,add(y,28*scalefactor));
+		y=y-15*scalefactor;
+		ctx.lineWidth = 10*scalefactor;
+		line(ctx,intervalminpix,y,intervalmaxpix,y);
+		animate = false;
+	}
+	
+	if($('#bsteachremaining').html()==0){
+		currentbsteachstep='finished';
+		currentbsteachsample = {};
+	}
+	
+	if(currentbsteachstep=='plotdifference'){
+		currentbsteachstep='presample';
+	}
+	
+	if(currentbsteachstep=='calcdifference'){
+		currentbsteachstep='plotdifference';
+	}
+	
+	if(currentbsspeed=='oneslow'){
+		if(currentbsteachstep=='presample'){
+			animate = false;
+			currentbsspeed = 'stopped';
+		} else {
+			timer = setTimeout(updategraph,1000);
+		}
+	}
+	
+	if(currentbsspeed=='onefast'){
+		if(currentbsteachstep=='presample'){
+			animate = false;
+			currentbsspeed = 'stopped';
+		} else {
+			timer = setTimeout(updategraph,100);
+		}
+	}
+	
+	if(currentbsspeed=='restslow'){
+		timer = setTimeout(updategraph,200);
+	}
+	
+	if(currentbsspeed=='restmedium'){
+		timer = setTimeout(updategraph,50);
+	}
+	
+	if(currentbsspeed=='restfast'){
+		timer = setTimeout(updategraph,0);
+	}
 
 	labelgraph(ctx,width,height);
-	if($('#invert').is(":checked")){
-		invert(ctx)
-	}
 
 	var dataURL = canvas.toDataURL();
 	return dataURL;
-	
+}
+
+function newbsteach(){
+	$('#xvar').show();
+	$('#yvar').show();
+	$('#thicklinesshow').show();
+	$('#transdiv').show();
+	$('#sizediv').show();
+	$('#greyscaleshow').show();
+	$('#stackdotsshow').show();
+	$('#pointsizename').html('Point Size:');
+	$('#boxplot').prop('checked', true);
+	$('#meandot').prop('checked', false);
+	$('#highboxplot').prop('checked', false);
+	$('#boxnowhisker').prop('checked', false);
+	$('#boxnooutlier').prop('checked', false);
+	$('#interval').prop('checked', false);
+	$('#intervallim').prop('checked', false);
+	$('#regression').prop('checked', false);
+	$('#gridlinesshow').show();
+	$('#removedpointsshow').show();
+	$('#var1label').html("Numerical 1:<br><small>required</small>");
+	$('#var2label').html("Category 1:<br><small>required</small>");
+	document.getElementById("color").selectedIndex != document.getElementById("yvar").selectedIndex;
+	return newbsteachstep();
 }
