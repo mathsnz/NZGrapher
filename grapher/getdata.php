@@ -2,7 +2,6 @@
 $url = urldecode($_GET['dataset']);
 $url = str_replace(" ","%20",$url);
 $file_headers = @get_headers($url);
-print_r($file_headers);
 // we want the the last errorcode, reverse array so we start at the end:
 $file_headers = array_reverse($file_headers);
 $code = "";
