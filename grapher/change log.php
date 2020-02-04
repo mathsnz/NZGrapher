@@ -8,6 +8,10 @@ To Do List
 */
 
 ?>
+	<b>2020-02-04</b><ul>
+		<li>Re added paste table for browsers that don't support import from clipboard.</li>
+		<li>New menu option - "Save Current State for Reset" which saves the current state of the data for when you press the reset button. Useful for if you are adding extra columns and then wanting to sample and reset.</li>
+	</ul>
 	<b>2020-01-20</b><ul>
 		<li>New Bootstrapping teaching tool.</li>
 		<li>New <a href='https://youtu.be/RSeubxWEFAc' target='_blank'>video guide showing how to use the Bootstrapping teaching tool</a>.</li>

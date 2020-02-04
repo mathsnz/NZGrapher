@@ -38,12 +38,8 @@ Commerial users are also required to pay. Please visit the <a href='https://www.
 </div>
 <script>
 if(getCookie('whichschool')!='yes'){
-	$.get('https://tracking.jake4maths.com/ipstoask.json').done(function(data){
-		if($.inArray(ipaddress,data)>-1){
-			$.get('https://tracking.jake4maths.com/whichschool.php').done(function(data){
-				$('#whichschoolholder').html(data);
-			})
-		}
+	$.get('https://tracking.jake4maths.com/whichschool.php').done(function(data){
+		$('#whichschoolholder').html(data);
 	})
 }
 

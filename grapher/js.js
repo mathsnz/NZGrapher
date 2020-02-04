@@ -132,6 +132,17 @@ $(function(){
 		document.getElementById("linkarea").value="";
 		document.getElementById("linkarea").focus();
 	});
+	
+	$('#pastetableclick').click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Data - pastetableclick', ipaddress);
+		} catch(err) {
+			console.log(err.message);
+		}
+		document.getElementById("pastetext").style.display="block";
+		document.getElementById("textarea").value="";
+		document.getElementById("textarea").focus();
+	});
 
 	$( "#fileshowhide" ).on('click mouseover',function() {
 		$("#rowbox").hide();
@@ -1400,6 +1411,19 @@ $(function(){
 		var link = document.getElementById("linkarea").value;
 		document.location = document.location.origin + document.location.pathname + '?url=' + encodeURIComponent(link);
 	});
+	
+	$( "#import" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Data - import', ipaddress);
+		} catch(err) {
+			console.log(err.message);
+		}
+		var data = document.getElementById("textarea").value;
+		csv_data = data;
+		console.timeEnd("Loading Pasted Data");
+		$('#progressdescription')[0].innerHTML = 'Creating Table';
+		loaddata();
+	});
 
 });
 
@@ -1753,6 +1777,39 @@ function updatebox(){
 	if(colselindex < document.getElementById("color").length && colselindex > -1){document.getElementById("color").selectedIndex = colselindex;} else {$("#color")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resetcol');}
 	
 	graphchange(document.getElementById('type'));
+}
+
+function updatereset(){
+	var $rows = $('#data').find('tr:has(td)'),
+
+		// Temporary delimiter characters unlikely to be typed by keyboard
+		// This is to avoid accidentally splitting the actual contents
+		tmpColDelim = String.fromCharCode(11), // vertical tab character
+		tmpRowDelim = String.fromCharCode(0), // null character
+
+		// actual delimiter characters for CSV format
+		colDelim = '","',
+		rowDelim = '"\r\n"',
+
+		// Grab text from table into CSV formatted string
+		csv = '"' + $rows.map(function (i, row) {
+			var $row = $(row),
+				$cols = $row.find('td');
+
+			return $cols.map(function (j, col) {
+				var $col = $(col),
+					text = $col.text();
+
+				return text.replace('"', '""'); // escape double quotes
+
+			}).get().join(tmpColDelim);
+
+		}).get().join(tmpRowDelim)
+			.split(tmpRowDelim).join(rowDelim)
+			.split(tmpColDelim).join(colDelim) + '"';
+
+	// Data URI
+	csv_data = csv;
 }
 
 function showhideleft(){

@@ -190,8 +190,8 @@ if (screen.availWidth < 1024)
 
 <div id=pastetext style='z-index:16;position:fixed;height:100%;width:100%;top:0px;left:0px;background:rgba(255,255,255,0.5);display:none;'>
 <div style='position:absolute;top:50%;left:50%;width:400px;height:300px;z-index:12;text-align:center;padding:5px;margin-left:-205px;margin-top:-155px;'>
-<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>Paste your table here from Excel, Word or Google Sheets</div><br><small><i>Note: Pasting a table from Google Docs doesn't work properly.</i></small><br>
-<textarea style='width:400px;height:190px;resize:none;' id=textarea data-gramm_editor="false"></textarea><br>
+<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>Paste your table here from Excel, Word or Google Sheets</div><br><small>Only use this if the import clipboard doesn't work, as is slower and doesn't allow for as much data to be imported.<br>Note: Pasting a table from Google Docs doesn't work properly.</small><br><br>
+<textarea style='width:400px;height:140px;resize:none;' id=textarea data-gramm_editor="false"></textarea><br>
 <br>
 <a href='#' class=button onclick='document.getElementById("pastetext").style.display="none"' id=import>Import</a>
 <a href='#' class=button onclick='document.getElementById("pastetext").style.display="none"'>Close</a>
@@ -338,6 +338,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 	<div style='color:#000;border:0px solid #ccc;width:80px;height:17px;border-radius:0px;padding:5px;font-size:14px;text-align:left;position:relative;top:0px;left:0px;padding:0px;background:none;'>Open File</div>
 	</li>
 	<li id=directimport>Import from Clipboard</li>
+	<li id=pastetableclick>Paste Table (Legacy)</li>
 	<li id=pastelinkclick>Open Link</li>
 	<li id=highlightdatatable>Select Data Table</li>
 <?php
@@ -345,6 +346,7 @@ if(substr($dataset,0,6)!="SECURE"){
 	echo "<li><a href='#' id=download style='text-decoration:none;color:#000;'>Download Data</a></li>";
 }
 ?>
+	<li onclick='updatereset();'>Save Current State for Reset</li>
 	<li id=reset>Reset</li>
 </ul>
 </div>
