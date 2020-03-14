@@ -8,6 +8,10 @@ To Do List
 */
 
 ?>
+	<b>2020-03-15</b><ul>
+		<li>Update to fix file upload on Chromebook.</li>
+		<li>Added in Advanced Tools.</li>
+	</ul>
 	<b>2020-02-04</b><ul>
 		<li>Re added paste table for browsers that don't support import from clipboard.</li>
 		<li>New menu option - "Save Current State for Reset" which saves the current state of the data for when you press the reset button. Useful for if you are adding extra columns and then wanting to sample and reset.</li>

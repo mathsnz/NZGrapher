@@ -372,10 +372,38 @@ if(substr($dataset,0,6)!="SECURE"){
 	<li id=addindex onclick="addindex()">Add Graphable Index Column</li>
 	<li id=addindex onclick="converttimeshow()">Convert Time Column</li>
 	<li id=addindex onclick="encodetimeshow()">Encode Time Column</li>
+	<li id=addindex onclick="advancedtoolsshow()">Advanced Tools</li>
 </ul>
 </div>
 
 <div id=left>
+<div id="advanceddiv" style="display:none;z-index:11;position:absolute;top:30px;left:30px;right:30px;bottom:30px;text-align:left;padding:10px;overflow-y: auto;">
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>Advanced Tools</div>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#advanceddiv').hide();">&times;</div><br>
+	<span id=advanceddivcontents style="font-size:14px">
+		This section allows you to do things that aren't built into the main interface of NZGrapher, but may be useful to some users.<br>
+		<b>Please use this section with caution, as using your eyes as to what you can see in the graph is almost always better than just using the numbers.</b><br>
+		<br>
+		To access the output of these you need to open the developer console. To do this on Chrome press the following key combinations.
+		<ul>
+			<li>Windows and Linux: <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>J</kbd></li>
+			<li>Mac OS: <kbd>Cmd</kbd> + <kbd>Opt</kbd> + <kbd>J</kbd></li>
+		</ul>
+		
+		<b>Scatter Graphs:</b><br>
+		After drawing a scatter graph, the developer console will show all the different models including equations and r<sup>2</sup> values.<br>
+		<br>
+		
+		<b>Time Series:</b><br>
+		After drawing a re-composition graph press the button below to show the relative makeup of the different components.
+		<b>Note:</b> this takes all values, including extreme values to produce these percentages.<br>
+		<br>
+		<center>
+			<span href='#' style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick='tscomponents()'>View Components</span>
+		</center>
+		<br>
+	</span>
+</div>
 <div id="samvardiv" style="display:none;z-index:11;position:absolute;top:30px;left:30px;right:30px;bottom:30px;text-align:center;padding:10px;overflow-y: auto;">
 	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>Sampling Variability</div>
 	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#data').html($('#presampledataholder').html());$('#data td div').attr('contenteditable','true');updatebox();$('#samvardiv').hide();">&times;</div><br>
