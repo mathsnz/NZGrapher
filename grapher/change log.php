@@ -8,6 +8,9 @@ To Do List
 */
 
 ?>
+	<b>2020-04-08</b><ul>
+		<li>Update to fix custom time series model fitting.</li>
+	</ul>
 	<b>2020-03-15</b><ul>
 		<li>Update to fix file upload on Chromebook.</li>
 		<li>Added in Advanced Tools.</li>

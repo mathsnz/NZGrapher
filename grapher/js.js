@@ -2931,10 +2931,10 @@ function checkforts(xpoints){
 	if($.isNumeric(checker[0]) && $.isNumeric(checker[1])){
     s=0;
     for (var j in xpoints){
-      ts = xpoints[j].split('C')[1]
+      ts = parseFloat(xpoints[j].split('C')[1]);
       if(ts>s){s=ts};
     }
-    return s;
+    return s+"";
 	}
 
 	return "Error: You must select a time series variable for variable 1<br> eg: 2001 or 2001M01 or 2001Q1 or 2001D1 or 2001W1 or 2001H01 or 2001C05";
