@@ -2706,13 +2706,13 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 			xpixel = Math.floor(rawxpixel/(rad*3))*rad*3;
 		}
 		xpixels.push([index,xpixel,rawxpixel,value]);
-	}
-	var minval = Math.min.apply(null, thisvalues);
+	}	
+	var minval = parseFloat(Math.min.apply(null, thisvalues).toPrecision(10));
 	var lq = lowerquartile(thisvalues);
 	var med = median(thisvalues);
 	var mean = calculatemean(thisvalues);
 	var uq = upperquartile(thisvalues);
-	var maxval = Math.max.apply(null, thisvalues);
+	var maxval = parseFloat(Math.max.apply(null, thisvalues).toPrecision(10));
 	var minnooutliersval = minnooutliers(thisvalues,lq,uq);
 	var maxnooutliersval = maxnooutliers(thisvalues,lq,uq);
 	var sd = standarddeviation(thisvalues);
@@ -8888,12 +8888,12 @@ function plothistogram(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,poi
 		currentx -= -xstep;
 	}
 	
-	var minval = Math.min.apply(null, thisvalues);
+	var minval = parseFloat(Math.min.apply(null, thisvalues).toPrecision(10));
 	var lq = lowerquartile(thisvalues);
 	var med = median(thisvalues);
 	var mean = calculatemean(thisvalues);
 	var uq = upperquartile(thisvalues);
-	var maxval = Math.max.apply(null, thisvalues);
+	var maxval = parseFloat(Math.max.apply(null, thisvalues).toPrecision(10));
 	var sd = standarddeviation(thisvalues);
 	var num = thisvalues.length;
 	
@@ -9470,12 +9470,12 @@ function newpairedexperiment(){
 			ctx.textAlign="left";
 			
 			thisvalues = finalxpoints;
-			var minval = Math.min.apply(null, thisvalues);
+			var minval = parseFloat(Math.min.apply(null, thisvalues).toPrecision(10));
 			var lq = lowerquartile(thisvalues);
 			var med = median(thisvalues);
 			var mean = calculatemean(thisvalues);
 			var uq = upperquartile(thisvalues);
-			var maxval = Math.max.apply(null, thisvalues);
+			var maxval = parseFloat(Math.max.apply(null, thisvalues).toPrecision(10));
 			var minnooutliersval = minnooutliers(thisvalues,lq,uq);
 			var maxnooutliersval = maxnooutliers(thisvalues,lq,uq);
 			var sd = standarddeviation(thisvalues);
@@ -9491,12 +9491,12 @@ function newpairedexperiment(){
 			ctx.fillText('num: '+num,left-60*scalefactor,ypix+33*scalefactor);
 			
 			thisvalues = finalypoints;
-			var minval = Math.min.apply(null, thisvalues);
+			var minval = parseFloat(Math.min.apply(null, thisvalues).toPrecision(10));
 			var lq = lowerquartile(thisvalues);
 			var med = median(thisvalues);
 			var mean = calculatemean(thisvalues);
 			var uq = upperquartile(thisvalues);
-			var maxval = Math.max.apply(null, thisvalues);
+			var maxval = parseFloat(Math.max.apply(null, thisvalues).toPrecision(10));
 			var minnooutliersval = minnooutliers(thisvalues,lq,uq);
 			var maxnooutliersval = maxnooutliers(thisvalues,lq,uq);
 			var sd = standarddeviation(thisvalues);

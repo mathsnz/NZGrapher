@@ -8,6 +8,9 @@ To Do List
 */
 
 ?>
+	<b>2020-04-22</b><ul>
+		<li>Update to min and max values for some datasets on paired experiment graph.</li>
+	</ul>
 	<b>2020-04-08</b><ul>
 		<li>Update to fix custom time series model fitting.</li>
 	</ul>
