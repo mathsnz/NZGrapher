@@ -16,7 +16,7 @@
 	<script src="./jquery.csv.js"></script>
 	<script src="./regression.min.js"></script>
 	<title>NZGrapher</title>
-	<link href='//fonts.googleapis.com/css?family=Roboto:400,700|Roboto+Condensed' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,700|Roboto+Condensed' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="style.css?v=<?php
 		date_default_timezone_set('Pacific/Auckland');
 		echo $v;
@@ -70,18 +70,18 @@ if (screen.availWidth < 1024)
 			<tr>
 				<td style='width:50%;border-right:1px solid #ccc;padding-right:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
 					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Need Help?</b></span><br>
-					Need help <b>getting started</b>? Watching <a target='_blank' href='//www.mathsnz.com/nzgrapher-info/video-tutorials'>these videos</a> is a great place to start.<br>
+					Need help <b>getting started</b>? Watching <a target='_blank' href='https://www.mathsnz.com/nzgrapher-info/video-tutorials'>these videos</a> is a great place to start.<br>
 					<br>
 					Want to <b>know more</b>? Infomation on the graphs and datasets, as well as video tutorials are over on <a target='_blank' href='https://www.mathsnz.com/nzgrapher-info'>MathsNZ</a>.<br>
 					<br>
-					Something <b>not working</b> or <b>have an idea</b> to make NZGrapher better... please <a target='_blank' href='//www.mathsnz.com/contact'>let me know</a>.<br>
+					Something <b>not working</b> or <b>have an idea</b> to make NZGrapher better... please <a target='_blank' href='https://www.mathsnz.com/contact'>let me know</a>.<br>
 				<td style='width:50%;padding-left:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
 					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Cost</b></span><br>
 					NZGrapher is free for non-commercial <b>individual</b> use, you can however <a target='_blank' href='https://www.mathsnz.com/donate'>make a donation</a>.<br>
 					<br>
 					<b>Schools</b> are required to subscribe at a minimum of $0.50 per student using NZGrapher. <b>Commercial users</b> are also required to pay. Please visit the <a target='_blank' href='https://www.mathsnz.com/nzgrapher-invoice'>invoice creator</a> for details.<br>
 					<br>
-					Any questions about this please <a target='_blank' href='//www.mathsnz.com/contact'>get in touch</a>.
+					Any questions about this please <a target='_blank' href='https://www.mathsnz.com/contact'>get in touch</a>.
 			</tr>
 		</table>
 		<br>
@@ -305,10 +305,10 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 
 <div id=helppopup class="callout popup">
 <ul>
-	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/video-tutorials','_blank');try{ga('send', 'event', 'Function', 'Help - Video Tutorials', '');} catch(err) {console.log(err.message);}">Video Tutorials</li>
-	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/graph-information','_blank');try{ga('send', 'event', 'Function', 'Help - Graph Infomation', '');} catch(err) {console.log(err.message);}">Graph Information</li>
-	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/function-information','_blank');try{ga('send', 'event', 'Function', 'Help - Function Infomation', '');} catch(err) {console.log(err.message);}">Function Information</li>
-	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/dataset-information','_blank');try{ga('send', 'event', 'Function', 'Help - Dataset Infomation', '');} catch(err) {console.log(err.message);}">Dataset Information</li>
+	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/video-tutorials','_blank');try{ga('send', 'event', 'Function', 'Help - Video Tutorials', '');} catch(err) {console.log(err.message);}">Video Tutorials</li>
+	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/graph-information','_blank');try{ga('send', 'event', 'Function', 'Help - Graph Infomation', '');} catch(err) {console.log(err.message);}">Graph Information</li>
+	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/function-information','_blank');try{ga('send', 'event', 'Function', 'Help - Function Infomation', '');} catch(err) {console.log(err.message);}">Function Information</li>
+	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/dataset-information','_blank');try{ga('send', 'event', 'Function', 'Help - Dataset Infomation', '');} catch(err) {console.log(err.message);}">Dataset Information</li>
 	<li onclick="document.getElementById('welcome').style.display='block';try{ga('send', 'event', 'Function', 'Help - Show Welcome', '');} catch(err) {console.log(err.message);}">Show Welcome</li>
 	<li onclick="document.getElementById('tour').style.display='block';try{ga('send', 'event', 'Function', 'Help - Show Overlay', '');} catch(err) {console.log(err.message);}">Show Overlay</li>
 </ul>
@@ -319,7 +319,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 	<li id=bs>Bootstrapping</li>
 	<li id=rerand>Re-Randomisation</li>
 	<li id=samvar>Sampling Variability</li>
-	<li onclick="window.open('//www.mathsnz.com/nzgrapher-info/teaching-tools','_blank');try{ga('send', 'event', 'Function', 'Teaching Tools - Video Tutorials', '');} catch(err) {console.log(err.message);}">Video Tutorials</li>
+	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/teaching-tools','_blank');try{ga('send', 'event', 'Function', 'Teaching Tools - Video Tutorials', '');} catch(err) {console.log(err.message);}">Video Tutorials</li>
 </ul>
 </div>
 

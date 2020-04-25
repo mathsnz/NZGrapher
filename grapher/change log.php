@@ -8,6 +8,9 @@ To Do List
 */
 
 ?>
+	<b>2020-04-25</b><ul>
+		<li>Update to fix links on about page.</li>
+	</ul>
 	<b>2020-04-22</b><ul>
 		<li>Update to min and max values for some datasets on paired experiment graph.</li>
 	</ul>

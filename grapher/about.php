@@ -8,7 +8,7 @@ The idea behind NZGrapher was to create a web based statistical package that can
 <span id=whichschoolholder></span>
 <br>
 <b>Help</b><br>
-You can access <b><a target='_blank' href=\"//www.mathsnz.com/nzgrapher-info/video-tutorials\">video tutorials</a></b> to help you getting started on <a target='_blank' href=\"https://www.mathsnz.com/nzgrapher-info/video-tutorials\">MathsNZ</a>. 
+You can access <b><a target='_blank' href="https://www.mathsnz.com/nzgrapher-info/video-tutorials">video tutorials</a></b> to help you getting started on <a target='_blank' href="https://www.mathsnz.com/nzgrapher-info/video-tutorials">MathsNZ</a>. 
 They are organised in two ways, firstly by the type of feature you are trying to use, and secondly by the NCEA standard that they relate to. 
 There is a help button in the top menu with more help content. 
 The data section on the left also allows you to edit the data directly just by clicking on the part you want to edit and typing the changes in.<br>
