@@ -8,6 +8,10 @@ To Do List
 */
 
 ?>
+	<b>2020-04-28</b><ul>
+		<li>Updated datasets: Visitors and Sea Ice.</li>
+		<li>Change to auto-rotate password on foldertemplate folder.</li>
+	</ul>
 	<b>2020-04-25</b><ul>
 		<li>Update to fix links on about page.</li>
 	</ul>
