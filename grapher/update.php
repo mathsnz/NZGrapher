@@ -21,6 +21,8 @@ if(isset($_POST['password']) || isset($_POST['yup']) || isset($_GET['password'])
 			$zip->extractTo('../');
 			$zip->close();
 			echo 'NZGrapher successfully updated.<br><br>';
+			$randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
+			file_put_contents('./foldertemplate/password.php','<?php $correctpass="'.$randomString.'"; ?>');
 		} else {
 			echo 'Something went wrong updating NZGrapher... please try again later.<br><br>';
 		}
