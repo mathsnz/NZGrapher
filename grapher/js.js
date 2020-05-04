@@ -9194,12 +9194,25 @@ function loaddata(){
 		var countcomma = (data.match(/,/g) || []).length;
 		var countsemi = (data.match(/;/g) || []).length;
 		var counttab = (data.match(/\t/g) || []).length;
-		if(countcomma>countsemi){
+		if(countcomma+countsemi+counttab==0){
+			console.log('Separator: none');
+			if(data.substr(-1) != '\r' && data.substr(-1) != '\n' && data.substr(-1) != '\r\n'){
+				csv_data = csv_data+'\r\n';
+				data = csv_data;
+				console.log('Added extra new line at end');
+			}
+			try {
+				finaldata = $.csv.toArrays(data);
+			} catch(err) {
+				alert(err.message+'\nIf you continue experiencing issues with this dataset please email jwills@mathsnz with the dataset so we can work out what is going wrong.');
+			}
+		} else if(countcomma>countsemi){
 			if(countcomma>counttab){
 				try {
 					finaldata = $.csv.toArrays(data,{separator:','});
 				} catch(err) {
 					try {
+						console.log('Separator: comma');
 						finaldata = $.csv.toArrays(data.replace(/"/g, "'"),{separator:','});
 					} catch(err) {
 						console.error(err.message);
@@ -9208,6 +9221,7 @@ function loaddata(){
 				}
 			} else {
 				try {
+						console.log('Separator: tab (1)');
 					finaldata = $.csv.toArrays(data,{separator:'\t'});
 				} catch(err) {
 					try {
@@ -9221,6 +9235,7 @@ function loaddata(){
 		} else {
 			if(countsemi>counttab){
 				try {
+					console.log('Separator: semicolon');
 					finaldata = $.csv.toArrays(data,{separator:';'});
 				} catch(err) {
 					try {
@@ -9232,6 +9247,7 @@ function loaddata(){
 				}
 			} else {
 				try {
+					console.log('Separator: tab (2)');
 					finaldata = $.csv.toArrays(data,{separator:'\t'});
 				} catch(err) {
 					try {
