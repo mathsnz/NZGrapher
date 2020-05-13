@@ -1491,7 +1491,6 @@ function graphchange(obj){
 	document.getElementById('stackdotsshow').style.display='none';
 	document.getElementById('stripgraphshow').style.display='none';
 	document.getElementById('donutshow').style.display='none';
-	document.getElementById('stackdots').checked = false;
 	$('#removedpointsshow').hide();
 	updategraph();
 }
@@ -3834,7 +3833,7 @@ function newtimeseriesrecomp(){
 	$('#gridlinesshow').show();
 
 	var canvas = document.getElementById('myCanvas');
-  var ctx = canvas.getContext('2d');
+	var ctx = canvas.getContext('2d');
 
 	//set size
 	var width = $('#width').val();
@@ -6330,7 +6329,6 @@ function newpairsplot(){
 	$('#var1label').html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 	$('#var2label').html("");
 	$('#var3label').html("");
-
 	
 	var canvas = document.getElementById('myCanvas');
 	var ctx = canvas.getContext('2d');
@@ -6457,7 +6455,7 @@ function drawminihistogram(ctx,data,bleft,bright,btop,bbottom,r,title){
 	ctx.rect(bleft+bwidth/5*4, bbottom, bwidth/5, -bheight*sec5/max);ctx.fill();ctx.stroke();
 	ctx.fillStyle = '#000';
 	
-	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex=0;document.getElementById('type').value='histogram';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex=0;document.getElementById('type').value='newhistogram';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
 }
 
 function drawminibarchart(ctx,data,bleft,bright,btop,bbottom,r,title){

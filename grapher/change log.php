@@ -8,6 +8,11 @@ To Do List
 */
 
 ?>
+	<b>2020-05-14</b><ul>
+		<li>Improve compatibility with different extensions.</li>
+		<li>Fix dotplot stack option unchecking on update graph.</li>
+		<li>Fix pairs plot not working when clicking on a histogram.</li>
+	</ul>
 	<b>2020-05-04</b><ul>
 		<li>Update to fix issue when importing single column of data.</li>
 	</ul>

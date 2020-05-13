@@ -10,7 +10,7 @@ body{
 	overflow:hidden;
 }
 
-div{
+div.absolute{
 	position:absolute;
 	background-color:#fff;
 	border:1px solid #ddd;
@@ -28,6 +28,7 @@ div{
 }
 
 #top {
+	position:absolute;
 	height:60px;
 	width:100%;
 	top:0;
@@ -70,6 +71,7 @@ a {
 }
 
 #left {
+	position:absolute;
 	top:60px;
 	bottom:140px;
 	right:60%;
@@ -132,6 +134,7 @@ table {
 }
 
 #graphdiv {
+	position:absolute;
 	left:40%;
 	right:0;
 	top:60px;
@@ -246,6 +249,7 @@ input[type=checkbox]:checked::before {
 }
 
 #tour {
+	position:absolute;
 	z-index:100;
 	top:0px;
 	left:0px;
@@ -353,7 +357,7 @@ input[type=text]{
 	font-family:'Roboto Condensed', sans-serif;
 }
 .popup{
-	position:abolute;
+	position:absolute;
 	bottom:45px;
 	right:5px;
 	border:none;
