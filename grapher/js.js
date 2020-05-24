@@ -5614,6 +5614,7 @@ function newtimeseriessforecasts(){
 "					height:"+(height-20)+"px;"+
 "					overflow-y:scroll;"+
 "					padding:10px;"+
+"					background-color:#fff;"+
 "				}"+
 "				#forecastoutput table {"+
 "					border-collapse:collapse;"+
@@ -9084,6 +9085,7 @@ $( document ).ready(function() {
 		// Clipboard API not available
 		alert('clipboard not accessible');
 		console.error('clipboard not accessible');
+		$('#progressbarholder').hide();
 		return
 	  }
 	  console.timeEnd("Starting");
@@ -9101,7 +9103,9 @@ $( document ).ready(function() {
 		$('#progressdescription')[0].innerHTML = 'Creating Table';
 		loaddata();
 	  } catch (err) {
-		console.error('Failed to copy!', err)
+		console.error('Failed to copy!', err);
+		alert('clipboard not accessible');
+		$('#progressbarholder').hide();
 	  }
 	})
 	

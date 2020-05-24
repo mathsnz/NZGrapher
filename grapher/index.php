@@ -181,7 +181,7 @@ if (screen.availWidth < 1024)
 </div>
 
 <div id=progressbarholder style='z-index:16;position:fixed;height:100%;width:100%;top:0px;left:0px;background:rgba(255,255,255,0.5);display:none;'>
-<div style='position:absolute;top:50%;left:50%;width:400px;height:150px;z-index:12;text-align:center;padding:5px;margin-left:-105px;margin-top:-155px;'>
+<div class=absolute style='position:absolute;top:50%;left:50%;width:400px;height:150px;z-index:12;text-align:center;padding:5px;margin-left:-105px;margin-top:-155px;'>
 <div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=progresstitle>Progress</div>
 <br><br><span id=progressdescription></span><br><span id=progresssize></span><br><br>
 <img src='./loading.gif'>

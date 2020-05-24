@@ -8,6 +8,10 @@ To Do List
 */
 
 ?>
+	<b>2020-05-24</b><ul>
+		<li>Fix error message not showing in firefox when unable to access the clipboard.</li>
+		<li>Fix for the word "Error" showing on time series forecast output when there wasn't actually an error.</li>
+	</ul>
 	<b>2020-05-14</b><ul>
 		<li>Improve compatibility with different extensions.</li>
 		<li>Fix dotplot stack option unchecking on update graph.</li>
