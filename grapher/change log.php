@@ -8,6 +8,10 @@ To Do List
 */
 
 ?>
+	<b>NEXT</b><ul>
+		<li>Fix for uploading custom files to school folders where there were duplicate spaces in the name.</li>
+		<li>Fix for some servers not recognising certificates properly.</li>
+	</ul>
 	<b>2020-05-24</b><ul>
 		<li>Fix error message not showing in firefox when unable to access the clipboard.</li>
 		<li>Fix for the word "Error" showing on time series forecast output when there wasn't actually an error.</li>

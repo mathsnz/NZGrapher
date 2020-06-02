@@ -1,7 +1,17 @@
 <?php
+
+//prevent the checking of SSL certificates, as this breaks things on some servers
+stream_context_set_default( [
+    'ssl' => [
+        'verify_peer' => false,
+        'verify_peer_name' => false,
+    ],
+]);
+
 $url = urldecode($_GET['dataset']);
 $url = str_replace(" ","%20",$url);
-$file_headers = @get_headers($url);
+$file_headers = get_headers($url);
+
 // we want the the last errorcode, reverse array so we start at the end:
 $file_headers = array_reverse($file_headers);
 $code = "";
@@ -13,7 +23,7 @@ foreach($file_headers as $hline){
 		break;
 	}
 }
-$code = "200";
+
 if($code!="200"){
 	echo "Error\r\n";
 	echo $url;

@@ -33,7 +33,7 @@ if($loggedin==0){
 		die();
 
 }
-$_FILES["file"]["name"] = basename($_FILES["file"]["name"]);
+$_FILES["file"]["name"] = preg_replace('/\s+/', ' ', basename($_FILES["file"]["name"]));
 $temp = explode(".", $_FILES["file"]["name"]);
 $extension = end($temp);
 if(strtolower($extension)!="csv"){die('Invalid Extension');}
