@@ -8,9 +8,10 @@ To Do List
 */
 
 ?>
-	<b>NEXT</b><ul>
+	<b>2020-06-13</b><ul>
 		<li>Fix for uploading custom files to school folders where there were duplicate spaces in the name.</li>
 		<li>Fix for some servers not recognising certificates properly.</li>
+		<li>Fix for time series when the values before the letter changed from 1 digit to 2 digits.</li>
 	</ul>
 	<b>2020-05-24</b><ul>
 		<li>Fix error message not showing in firefox when unable to access the clipboard.</li>

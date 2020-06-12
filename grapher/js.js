@@ -3488,6 +3488,7 @@ function newtimeseries(){
 
 	if(longtermtrend=='yes' || multiplicative=="yes"){
 		stlresponse=stl(tsxpoints,ypoints,seasons);
+		if(typeof stlresponse == 'string'){return stlresponse;}
 		trend = stlresponse[0];
 		fitted = stlresponse[1];
 		s = stlresponse[2];
@@ -3542,6 +3543,7 @@ function newtimeseries(){
 			}
 			if(zpoints.length>0 && differentaxis!="yes"){
 				stlresponse=stl(tsxpoints,zpoints,seasons);
+				if(typeof stlresponse == 'string'){return stlresponse;}
 				trendz = stlresponse[0];
 				fittedz = stlresponse[1];
 				for (var index in fittedz){
@@ -3678,6 +3680,7 @@ function newtimeseries(){
 	if(zpoints.length>0){
 		if(longtermtrend=='yes' || multiplicative=="yes"){
 			stlresponse=stl(tsxpoints,zpoints,seasons);
+			if(typeof stlresponse == 'string'){return stlresponse;}
 			trend = stlresponse[0];
 			fitted = stlresponse[1];
 			s = stlresponse[2];
@@ -3938,6 +3941,7 @@ function newtimeseriesrecomp(){
 	if($('#startfinish').is(":checked")){var startfinish="yes";} else {var startfinish = "no";}
 
 	stlresponse=stl(tsxpoints,ypoints,seasons);
+	if(typeof stlresponse == 'string'){return stlresponse;}
 	trend = stlresponse[0];
 	fitted = stlresponse[1];
 	s = stlresponse[2];
@@ -4180,9 +4184,11 @@ function stl(xpoints,ypoints,seasons){
 	n_s=7;
 	n_t=nextodd(1.5*seasons/(1-1.5/n_s));
 	il=innerloop(xpoints,raw,T,n_s,n_l,n_t);
+	if(typeof il == 'string'){return il+", Loop 1";}
 	T=il[0];
 	S=il[1];
 	il=innerloop(xpoints,raw,T,n_s,n_l,n_t);
+	if(typeof il == 'string'){return il+", Loop 2";}
 	T=il[0];
 	S=il[1];
 
@@ -4248,13 +4254,14 @@ function innerloop(xpoints,raw,T,n_s,n_l,n_t){
 			maxkey=0;
 			forpoints=[];
 			keys=[];
-			vals=[]
+			vals=[];
 			for (key in values){
 				keys.push(key);
 				vals.push(values[key])
 				forpoints.push(key);
-				if(key<minkey){minkey=key;}
-				if(key>maxkey){maxkey=key;}
+				keyf = parseFloat(key);
+				if(keyf<minkey){minkey=keyf;}
+				if(keyf>maxkey){maxkey=keyf;}
 			}
 			forpoints.push((parseFloat(maxkey)+1).toFixed(4));
 			forpoints.push((minkey-1).toFixed(4));
@@ -5234,6 +5241,7 @@ function newtimeseriesseasonaleffects(){
 	horaxis(ctx,left,right,add(gbottom,10*scalefactor),1,seasons,1);
 	
 	stlresponse=stl(tsxpoints,ypoints,seasons);
+	if(typeof stlresponse == 'string'){return stlresponse;}
 	trend = stlresponse[0];
 	fitted = stlresponse[1];
 	s = stlresponse[2];
@@ -6220,6 +6228,7 @@ function encodetimego(){
 	}
 	var newtable="";
 	i=0;
+	console.log(data);
 	for (index in data) {
 		var cells = data[index];
 		if(i==0){
@@ -6230,6 +6239,12 @@ function encodetimego(){
 		for (c = 0; c < cells.length; c++) {
 			cell = cells[c];
 			if(cell==''){cell="-";}
+			if(c==0 && split=="H" && i!=0){
+				cutup = cell.split(split);
+				first = cutup[0]-firstyear;
+				second = cutup[1];
+				cell = first + "H" + second;
+			}
 			newtable += "<td><div>" + cell + "<br></div></td>"
 		}
 		i++;
