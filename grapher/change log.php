@@ -8,6 +8,11 @@ To Do List
 */
 
 ?>
+	<b>2020-06-29</b><ul>
+		<li>Fix for shuffle function not working properly on Safari.</li>
+		<li>Fix for time series with funny numbers.</li>
+		<li>Fix for typo of 'Redidual' (should be 'Residual').</li>
+	</ul>
 	<b>2020-06-13</b><ul>
 		<li>Fix for uploading custom files to school folders where there were duplicate spaces in the name.</li>
 		<li>Fix for some servers not recognising certificates properly.</li>

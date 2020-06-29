@@ -3879,7 +3879,7 @@ function newtimeseriesrecomp(){
 
 	//2) sort:
 	list.sort(function(a, b) {
-		return ((a.tsxpoint < b.tsxpoint) ? -1 : ((a.tsxpoint == b.tsxpoint) ? 0 : 1));
+		return ((parseFloat(a.tsxpoint) < parseFloat(b.tsxpoint)) ? -1 : ((a.tsxpoint == b.tsxpoint) ? 0 : 1));
 	});
 
 	//3) separate them back out:
@@ -4136,7 +4136,7 @@ function newtimeseriesrecomp(){
 	for (index in tsxpoints){
 		xpixel=convertvaltopixel(tsxpoints[index],minxtick,maxxtick,left,right);
 		ypixel=convertvaltopixel(r[index],maxrtick,minrtick,gtop,gbottom);
-		$('#graphmap').append('<area shape="circle" coords="'+(xpixel/scalefactor)+','+(ypixel/scalefactor)+','+3+'" alt="'+parseInt(add(index,1))+'" desc="Point ID: '+parseInt(add(index,1))+'<br>'+xpoints[index]+'<br>'+$("#yvar option:selected").text()+' Redidual Value: '+r[index].toPrecision(5)+'">');
+		$('#graphmap').append('<area shape="circle" coords="'+(xpixel/scalefactor)+','+(ypixel/scalefactor)+','+3+'" alt="'+parseInt(add(index,1))+'" desc="Point ID: '+parseInt(add(index,1))+'<br>'+xpoints[index]+'<br>'+$("#yvar option:selected").text()+' Residual Value: '+r[index].toPrecision(5)+'">');
 		if(index != 0){
 			line(ctx,xpixel,ypixel,lastxpixel,lastypixel);
 		}
@@ -7557,7 +7557,16 @@ function rerand(mm){
 }
 
 function shuffle(array) {
-  array.sort(() => Math.random() - 0.5);
+  var tmp, current, top = array.length;
+
+  if(top) while(--top) {
+    current = Math.floor(Math.random() * (top + 1));
+    tmp = array[current];
+    array[current] = array[top];
+    array[top] = tmp;
+  }
+
+  return array;
 }
 
 function makererandcolors(alpha,rerandomiseddifs,odifference){
