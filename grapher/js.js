@@ -2191,7 +2191,7 @@ function axisminmaxstep(min,max){
 	if(steps<5) {
 		steps=steps*2;
 	}
-	var step=rangeround/steps;
+	var step=parseFloat((rangeround/steps).toPrecision(15));
 	if(step==0){step=1;}
 	var mintick=(min/step).toFixed(0)*step;
 	if(mintick>min){
@@ -3519,6 +3519,13 @@ function newtimeseries(){
 
 	ymin = Math.min.apply(null, pointsforminmax);
 	ymax = Math.max.apply(null, pointsforminmax);
+	
+	if($.isNumeric($('#timeseriesminy').val())){
+		ymin=$('#timeseriesminy').val();
+	}
+	if($.isNumeric($('#timeseriesmaxy').val())){
+		ymax=$('#timeseriesmaxy').val();
+	}
 
 	var minmaxstep = axisminmaxstep(ymin,ymax);
 	var minytick=minmaxstep[0];
@@ -3971,6 +3978,13 @@ function newtimeseriesrecomp(){
 	var smax = Math.max.apply(null, pointsforsminmax);
 	var rmin = Math.min.apply(null, pointsforrminmax);
 	var rmax = Math.max.apply(null, pointsforrminmax);
+	
+	if($.isNumeric($('#timeseriesminy').val())){
+		ymin=$('#timeseriesminy').val();
+	}
+	if($.isNumeric($('#timeseriesmaxy').val())){
+		ymax=$('#timeseriesmaxy').val();
+	}
 
 	var minmaxstep = axisminmaxstep(ymin,ymax);
 	var minytick=minmaxstep[0];
@@ -5257,6 +5271,13 @@ function newtimeseriesseasonaleffects(){
 	ymin = Math.min.apply(null, pointsforminmax);
 	ymax = Math.max.apply(null, pointsforminmax);
 	
+	if($.isNumeric($('#timeseriesminy').val())){
+		ymin=$('#timeseriesminy').val();
+	}
+	if($.isNumeric($('#timeseriesmaxy').val())){
+		ymax=$('#timeseriesmaxy').val();
+	}
+	
 	var minmaxstep = axisminmaxstep(ymin,ymax);
 	var minytick=minmaxstep[0];
 	var maxytick=minmaxstep[1];
@@ -5590,6 +5611,14 @@ function newtimeseriessforecasts(){
 	
 	ymin = Math.min.apply(null, pointsforminmax);
 	ymax = Math.max.apply(null, pointsforminmax);
+	
+	if($.isNumeric($('#timeseriesminy').val())){
+		ymin=$('#timeseriesminy').val();
+	}
+	if($.isNumeric($('#timeseriesmaxy').val())){
+		ymax=$('#timeseriesmaxy').val();
+	}
+	
 	var minmaxstep = axisminmaxstep(ymin,ymax);
 	var minytick=minmaxstep[0];
 	var maxytick=minmaxstep[1];

@@ -72,7 +72,7 @@ if (screen.availWidth < 1024)
 					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Need Help?</b></span><br>
 					Need help <b>getting started</b>? Watching <a target='_blank' href='https://www.mathsnz.com/nzgrapher-info/video-tutorials'>these videos</a> is a great place to start.<br>
 					<br>
-					Want to <b>know more</b>? Infomation on the graphs and datasets, as well as video tutorials are over on <a target='_blank' href='https://www.mathsnz.com/nzgrapher-info'>MathsNZ</a>.<br>
+					Want to <b>know more</b>? Information on the graphs and datasets, as well as video tutorials are over on <a target='_blank' href='https://www.mathsnz.com/nzgrapher-info'>MathsNZ</a>.<br>
 					<br>
 					Something <b>not working</b> or <b>have an idea</b> to make NZGrapher better... please <a target='_blank' href='https://www.mathsnz.com/contact'>let me know</a>.<br>
 				<td style='width:50%;padding-left:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
@@ -305,9 +305,9 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 <div id=helppopup class="callout popup">
 <ul>
 	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/video-tutorials','_blank');try{ga('send', 'event', 'Function', 'Help - Video Tutorials', '');} catch(err) {console.log(err.message);}">Video Tutorials</li>
-	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/graph-information','_blank');try{ga('send', 'event', 'Function', 'Help - Graph Infomation', '');} catch(err) {console.log(err.message);}">Graph Information</li>
-	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/function-information','_blank');try{ga('send', 'event', 'Function', 'Help - Function Infomation', '');} catch(err) {console.log(err.message);}">Function Information</li>
-	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/dataset-information','_blank');try{ga('send', 'event', 'Function', 'Help - Dataset Infomation', '');} catch(err) {console.log(err.message);}">Dataset Information</li>
+	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/graph-information','_blank');try{ga('send', 'event', 'Function', 'Help - Graph Information', '');} catch(err) {console.log(err.message);}">Graph Information</li>
+	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/function-information','_blank');try{ga('send', 'event', 'Function', 'Help - Function Information', '');} catch(err) {console.log(err.message);}">Function Information</li>
+	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/dataset-information','_blank');try{ga('send', 'event', 'Function', 'Help - Dataset Information', '');} catch(err) {console.log(err.message);}">Dataset Information</li>
 	<li onclick="document.getElementById('welcome').style.display='block';try{ga('send', 'event', 'Function', 'Help - Show Welcome', '');} catch(err) {console.log(err.message);}">Show Welcome</li>
 	<li onclick="document.getElementById('tour').style.display='block';try{ga('send', 'event', 'Function', 'Help - Show Overlay', '');} catch(err) {console.log(err.message);}">Show Overlay</li>
 </ul>
@@ -371,6 +371,7 @@ if(substr($dataset,0,6)!="SECURE"){
 	<li id=addindex onclick="addindex()">Add Graphable Index Column</li>
 	<li id=addindex onclick="converttimeshow()">Convert Time Column</li>
 	<li id=addindex onclick="encodetimeshow()">Encode Time Column</li>
+	<li id=axisoptions onclick="moreoptions()">Axis Options</li>
 	<li id=addindex onclick="advancedtoolsshow()">Advanced Tools</li>
 </ul>
 </div>
@@ -948,7 +949,7 @@ if(isset($_GET['dev'])){
 <div id=cover class=absolute style="width:100%;height:100%;position:fixed;top:0px;left:0px;background-color:rgba(255,255,255,0.5);z-index:20;display:none;" onclick="$('#cover').hide();$('#options').hide();"></div>
 <div id=options class=absolute style="width:35%;height:50%;position:fixed;top:20%;left:2.5%;border:1px solid #ccc;z-index:21;display:none;">
 	<div style="background-color:rgba(0, 100, 200, 0.85096);width:100%;text-align:center;height:25px;position:absolute;top:0px;left:0px;border:none;color:#fff;">
-		More Options
+		More Axis Options
 		<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#cover').hide();$('#options').hide();">&times;</div>
 	</div>
 	<div style='position:absolute;left:0px;top:25px;right:0px;bottom:0px;overflow:auto;padding:5px;font-size:12px;'>
@@ -964,6 +965,11 @@ if(isset($_GET['dev'])){
 			<tr><td>Max X:<td><input id=scatplotmaxx value=auto>
 			<tr><td>Min Y:<td><input id=scatplotminy value=auto>
 			<tr><td>Max Y:<td><input id=scatplotmaxy value=auto>
+			<tr><td>&nbsp;
+			<tr><td colspan=2><b>Time Series Graphs:</b><br>
+			For creating axis limits it pretend the ____ value is ____
+			<tr><td>Min Y:<td><input id=timeseriesminy value=auto>
+			<tr><td>Max Y:<td><input id=timeseriesmaxytimeseriesmaxy value=auto>
 		</table>
 		<br><br>
 		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="$('#options input').val('auto');updategraph();">Reset</span>

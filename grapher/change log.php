@@ -8,6 +8,10 @@ To Do List
 */
 
 ?>
+	<b>2020-07-30</b><ul>
+		<li>Added option to manually set minimum and maximum on time series graphs under "More Options".</li>
+		<li>Fix for 0 sometimes not actually being zero, but a really tiny number.</li>
+	</ul>
 	<b>2020-06-29</b><ul>
 		<li>Fix for shuffle function not working properly on Safari.</li>
 		<li>Fix for time series with funny numbers.</li>
