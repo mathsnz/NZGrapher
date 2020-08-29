@@ -94,9 +94,9 @@ if ($dir_list = opendir($dir))
 {
 while(($filename = readdir($dir_list)) !== false)
 {	
-	if(substr($filename,0,1)!="." && (substr($filename,-3,3)=="csv")) {
+	if(substr($filename,0,1)!="." && (substr($filename,-3,3)=="csv" || substr($filename,-9)=="nzgrapher")) {
 	?>
-		<tr class=highlight><td>&nbsp&nbsp&nbsp<a href="<?php echo $filename; ?>"><?php echo substr($filename,0,-4);
+		<tr class=highlight><td>&nbsp&nbsp&nbsp<a href="<?php echo $filename; ?>"><?php echo $filename;
 		?></a><td><a href="delete.php?fn=<?php echo urlencode($filename); ?>">Delete</a>
 		<?php
 	} else if(substr($filename,0,1)!="." && strpos ($filename,".")==FALSE) {

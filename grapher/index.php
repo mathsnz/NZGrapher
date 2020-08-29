@@ -238,7 +238,7 @@ getenv('REMOTE_ADDR');
 if(file_exists('./windowsapp.php')){$actual_link='Windows App v2';}
 echo "<script>
 var ipaddress = '$ip';
-$.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&time=$time&r=$randomString');
+$.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&time=$time&r=$randomString'+Math.random());
 </script>";
 ?>
 </div>
@@ -256,7 +256,8 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 
 	$files=glob($_GET['folder'].'/*.csv');
 	$files2=glob($_GET['folder'].'/*.CSV');
-	$files=array_merge($files,$files2);
+	$files3=glob($_GET['folder'].'/*.nzgrapher');
+	$files=array_merge($files,$files2,$files3);
 	foreach($files as $key => $file){
 		$files[$key] = substr($file, strlen($_GET['folder'])+1);
 	}
@@ -270,7 +271,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 	}
 	$dataset=basename($dataset);
 	foreach($files as $file){
-		if (strtolower(substr($file,-3))=='csv'){
+		if (strtolower(substr($file,-3))=='csv' || strtolower(substr($file,-10))=='.nzgrapher'){
 			echo "<option";
 			if($file==$dataset){echo " selected";}
 			echo">$file</option>";
@@ -343,6 +344,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 <?php
 if(substr($dataset,0,6)!="SECURE"){
 	echo "<li><a href='#' id=download style='text-decoration:none;color:#000;'>Download Data</a></li>";
+	echo "<li><a href='#' id=downloadnzgrapher style='text-decoration:none;color:#000;'>Save Session</a></li>";
 }
 ?>
 	<li onclick='updatereset();'>Save Current State for Reset</li>
@@ -982,4 +984,11 @@ if(isset($_GET['dev'])){
 </div>
 <map name=graphmap id=graphmap></map>
 </body>
+<script>
+if('serviceWorker' in navigator) {
+  navigator.serviceWorker
+           .register('./sw.js')
+           .then(function() { console.log("Service Worker Registered"); });
+}
+</script>
 </html>

@@ -36,10 +36,10 @@ if($loggedin==0){
 $_FILES["file"]["name"] = preg_replace('/\s+/', ' ', basename($_FILES["file"]["name"]));
 $temp = explode(".", $_FILES["file"]["name"]);
 $extension = end($temp);
-if(strtolower($extension)!="csv"){die('Invalid Extension');}
+if(strtolower($extension)!="csv" && strtolower($extension)!="nzgrapher"){die('Invalid Extension');}
 echo "<center>";
 
-$mimes = array('application/vnd.ms-excel','application/csv','text/plain','text/csv','text/tsv','text/comma-separated-values');
+$mimes = array('application/octet-stream','application/vnd.ms-excel','application/csv','text/plain','text/csv','text/tsv','text/comma-separated-values');
 	if (isset($_FILES['file'])){
 		if ($_FILES["file"]["error"] > 0) {
 			echo "Error: " . $_FILES["file"]["error"] . "<br>";

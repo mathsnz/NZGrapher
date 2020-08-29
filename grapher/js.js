@@ -67,6 +67,19 @@ $(function(){
 		// We actually need this to be a typical hyperlink
 	});
 	
+	$("#downloadnzgrapher").on('click', function (event) {
+		try {
+			ga('send', 'event', 'Function', 'Data - download NZGrapher', ipaddress);
+		} catch(err) {
+			console.log(err.message);
+		}
+		// CSV
+		exportNZGrapher.apply(this, [$('#data'), 'data.nzgrapher']);
+
+		// IF CSV, don't do event.preventDefault() or return false
+		// We actually need this to be a typical hyperlink
+	});
+	
 	var menu='hidden';
 
 	$( ".abutton" ).on('click',function() {
@@ -1536,6 +1549,38 @@ function exportTableToCSV($table, filename) {
 	});
 }
 
+function exportNZGrapher($table, filename) {
+	
+	setvals = {};
+	$('#variable select, #controls select, #controls input[type=text], #controls input[type=range]').each(function(){
+		setvals[$(this).attr('id')]=$(this).val();
+	})
+	
+	checkboxes = {};
+	$('#controls input[type=checkbox]').each(function(){
+		checkboxes[$(this).attr('id')]=$(this).is(':checked');
+	})
+	
+	toexport = {
+		datatable:$('#data').html(),
+		csv_data:csv_data,
+		setval:setvals,
+		checkboxes:checkboxes,
+	};
+	
+	console.log(toexport);
+		
+	// Data URI
+	exporturl = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(toexport));
+
+	$(this)
+		.attr({
+		'download': filename,
+			'href': exporturl,
+			'target': '_blank'
+	});
+}
+
 function updategraph(){
 	if(animate){
 		updategraphgo();
@@ -1680,6 +1725,10 @@ function jsgraphtoimage(dataURL) {
 			}
 		}).done(function(o) {
 			console.log('saved');
+			$('#loading').hide();
+		}).fail(function(o){
+			console.log('nointernet');
+			$('#jsgraph').html('<img src="'+dataURL+'" usemap="#graphmap">');
 			$('#loading').hide();
 		});
 	}
@@ -4551,6 +4600,7 @@ function drawSpline(ctx,pts,t){
 function newscatter(){
 	$('#reg').show();
 	$('#regshow').show();
+	$('#gridlinesshow').show();
 	$('#labelshow').show();
 	$('#jittershow').show();
 	$('#quadraticshow').show();
@@ -9195,15 +9245,30 @@ $( document ).ready(function() {
       }
 
       var reader = new FileReader();
-
+	  
       // Closure to capture the file information.
-      reader.onload = (function(theFile) {
-        return function(e) {
-			console.timeEnd("Loading from File");
-			csv_data = e.target.result;
-			loaddata();
-        };
-      })(f);
+	  
+	  if(f.name.substr(-10)==".nzgrapher"){
+		  console.log('.nzgrapher');
+		  reader.onload = (function(theFile) {
+			return function(e) {
+				loadeddata = JSON.parse(e.target.result);
+				csv_data = loadeddata.csv_data;
+				$('#data').html(loadeddata.datatable);
+				$('#progressdescription')[0].innerHTML = 'Updating Boxes';
+				loadnzgrapherfile();
+			};
+		  })(f);  
+	  } else {
+		  reader.onload = (function(theFile) {
+			return function(e) {
+				console.timeEnd("Loading from File");
+				csv_data = e.target.result;
+				loaddata();
+			};
+		  })(f);
+	  }
+      
 
       // Read in the image file as a data URL.
       reader.readAsText(f);
@@ -9221,10 +9286,39 @@ function loaddatafromurl(dataset){
 	$('#progressdescription')[0].innerHTML = 'Loading File';
 	console.time("Loading from URL");
 	$.get('./getdata.php',{dataset:dataset}).done(function(data){
-		console.timeEnd("Loading from URL");
-		csv_data = data;
-		loaddata();
+		if(dataset.substr(-10)==".nzgrapher"){
+			loadeddata = JSON.parse(data);
+			csv_data = loadeddata.csv_data;
+			$('#data').html(loadeddata.datatable);
+			$('#progressdescription')[0].innerHTML = 'Updating Boxes';
+			loadnzgrapherfile();
+		} else {
+			console.timeEnd("Loading from URL");
+			csv_data = data;
+			loaddata();
+		}
 	})
+}
+
+function loadnzgrapherfile(){
+	setTimeout(function(){
+		console.timeEnd("Loading from File");
+		console.time("Updating Boxes");
+		updatebox();
+		$('#progressdescription')[0].innerHTML = 'Restoring Options';
+		setTimeout(function(){
+			console.timeEnd("Updating Boxes");
+			console.time("Restoring Options");
+			$.each(loadeddata.setval,function(i,v){
+				$('#'+i).val(v);
+			});
+			$.each(loadeddata.checkboxes,function(i,v){
+				$('#'+i).prop('checked',v);
+			});
+			console.timeEnd("Restoring Options");
+			$('#progressbarholder').hide();
+		},30);
+	},30);
 }
 
 function loaddata(){

@@ -210,6 +210,10 @@ input[type=checkbox]{
 	visibility: hidden;
 }
 
+:-moz-any(input[type=checkbox]) {
+    visibility: visible !important;
+}
+
 input[type=checkbox]::before { 
     content: "";
     background-image: url('./unchecked.png');
