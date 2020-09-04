@@ -8,7 +8,7 @@ To Do List
 */
 
 ?>
-	<b>NEXT</b><ul>
+	<b>20200905</b><ul>
 		<li>Ability to show gridlines on scatter graphs.</li>
 		<li>Save the current session, including the variables, graph type and settings (Data -> Save Session)... this downloads a .nzgrapher file which can then be loaded back into NZGrapher later (using Data -> Open File or put into a school folder).</li>
 		<li>NZGrapher now works offline... as long as you've visited the site before, it will work. There are a couple of limitiations while you are offline:
