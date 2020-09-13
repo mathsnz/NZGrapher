@@ -1,15 +1,15 @@
 self.addEventListener('install', function(e) {
  e.waitUntil(
-   caches.open('nzgrapherv=20200905').then(function(cache) {
+   caches.open('nzgrapherv=20200913').then(function(cache) {
      return cache.addAll([
        './',
        './jquery-1.11.1.min.js',
        './jquery.csv.js',
        './regression.min.js',
        'https://fonts.googleapis.com/css?family=Roboto:400,700|Roboto+Condensed',
-	   './style.css?v=20200905',
-	   './js.js?v=20200905',
-	   './jsnew.js?v=20200905',
+	   './style.css?v=20200913',
+	   './js.js?v=20200913',
+	   './jsnew.js?v=20200913',
 	   './logob.png',
 	   './loading.gif',
 	   './logow.png',
