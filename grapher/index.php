@@ -971,7 +971,7 @@ if(isset($_GET['dev'])){
 			<tr><td colspan=2><b>Time Series Graphs:</b><br>
 			For creating axis limits it pretend the ____ value is ____
 			<tr><td>Min Y:<td><input id=timeseriesminy value=auto>
-			<tr><td>Max Y:<td><input id=timeseriesmaxytimeseriesmaxy value=auto>
+			<tr><td>Max Y:<td><input id=timeseriesmaxy value=auto>
 		</table>
 		<br><br>
 		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="$('#options input').val('auto');updategraph();">Reset</span>

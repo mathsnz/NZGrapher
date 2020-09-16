@@ -15,7 +15,7 @@ self.addEventListener('install', function(e) {
 	   './logow.png',
 	   './3dots.png',
 	   './change%20log.php',
-	   './getdata.php?dataset=http%3A%2F%2Flocalhost%2FNZGrapher%2Fgrapher%2Fdatasets%2FBabies.csv',
+	   './getdata.php?dataset=http%3A%2F%2Fgrapher.nz%2Fdatasets%2FBabies.csv',
 	   './unchecked.png',
 	   './checked.png',
 	   './about.php'
@@ -34,7 +34,7 @@ self.addEventListener('fetch', function(event) {
  console.log(event.request.url);
 	
   event.respondWith(
-    caches.open('nzgrapher').then(function(cache) {
+    caches.open('nzgrapherv=VERSION').then(function(cache) {
 		return cache.match(event.request).then(function (response) {
 			if(response){
 				console.log('from cache');

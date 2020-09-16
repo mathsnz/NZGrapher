@@ -8,6 +8,10 @@ To Do List
 */
 
 ?>
+	<b>NEXT</b><ul>
+		<li>Fix for manually setting the max of the timeseries graphs.</li>
+		<li>Fixes for Offline Access.</li>
+	</ul>
 	<b>2020-09-13</b><ul>
 		<li>Update for Te Wiki o te Reo Māori.</li>
 	</ul>
