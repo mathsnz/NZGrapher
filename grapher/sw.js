@@ -1,21 +1,21 @@
 self.addEventListener('install', function(e) {
  e.waitUntil(
-   caches.open('nzgrapherv=20200913').then(function(cache) {
+   caches.open('nzgrapherv=20200918').then(function(cache) {
      return cache.addAll([
        './',
        './jquery-1.11.1.min.js',
        './jquery.csv.js',
        './regression.min.js',
        'https://fonts.googleapis.com/css?family=Roboto:400,700|Roboto+Condensed',
-	   './style.css?v=20200913',
-	   './js.js?v=20200913',
-	   './jsnew.js?v=20200913',
+	   './style.css?v=20200918',
+	   './js.js?v=20200918',
+	   './jsnew.js?v=20200918',
 	   './logob.png',
 	   './loading.gif',
 	   './logow.png',
 	   './3dots.png',
 	   './change%20log.php',
-	   './getdata.php?dataset=http%3A%2F%2Flocalhost%2FNZGrapher%2Fgrapher%2Fdatasets%2FBabies.csv',
+	   './getdata.php?dataset=http%3A%2F%2Fgrapher.nz%2Fdatasets%2FBabies.csv',
 	   './unchecked.png',
 	   './checked.png',
 	   './about.php'
@@ -34,7 +34,7 @@ self.addEventListener('fetch', function(event) {
  console.log(event.request.url);
 	
   event.respondWith(
-    caches.open('nzgrapher').then(function(cache) {
+    caches.open('nzgrapherv=20200918').then(function(cache) {
 		return cache.match(event.request).then(function (response) {
 			if(response){
 				console.log('from cache');
