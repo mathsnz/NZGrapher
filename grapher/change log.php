@@ -8,6 +8,13 @@ To Do List
 */
 
 ?>
+	<b>NEXT</b><ul>
+		<li>Updated wording on re-randomisation teaching tool to make it more clear the difference between a re-randomisation distribution and a randomisation test.</li>
+		<li>Bug fix for extra thick line at top of time series graphs when showing gridlines.</li>
+		<li>Added privacy statement.</li>
+		<li>Improvements to visibility of bootstrap confidence intervals when dataset has an extreme range but most data is within a small range.</li>
+		<li>When launching the teaching tools the data box scrolls to the top so you can see the teaching tool if you are elsewhere in the dataset.</li>
+	</ul>
 	<b>2020-09-18</b><ul>
 		<li>Fix for manually setting the max of the timeseries graphs.</li>
 		<li>Fixes for Offline Access.</li>

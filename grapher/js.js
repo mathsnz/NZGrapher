@@ -599,6 +599,7 @@ $(function(){
 		$('#samvartable').empty();
 		$('#samvartable').append('<tr><td> <td><input id="samvar-">');
 		$('#presampledataholder').html($('#data').html());
+		$('#left').scrollTop(0);
 	});
 
 	$( "#rerand" ).click(function() {
@@ -614,6 +615,7 @@ $(function(){
 		$("#rerandteachdiv").show();
 		$("#bsteachdiv").hide();
 		$("#type").val("newrerandteach");
+		$('#left').scrollTop(0);
 		updatebox();
 	});
 
@@ -630,6 +632,7 @@ $(function(){
 		$("#rerandteachdiv").hide();
 		$("#bsteachdiv").show();
 		$("#type").val("newbsteach");
+		$('#left').scrollTop(0);
 		updatebox();
 	});
 	
@@ -2152,11 +2155,11 @@ function vertaxis(ctx,y1,y2,x,min,max,step,gridlinetop,append){
 	while (cury<=max){
 		var ypixel = convertvaltopixel(cury,min,max,y2,y1);
 		line(ctx,x,ypixel,add(x,-6*scalefactor),ypixel);
-    if(gridlines){
-      ctx.strokeStyle="#ddd";
-  		line(ctx,gridlinetop,ypixel,x,ypixel);
-      ctx.strokeStyle="#000";
-    }
+		if(gridlines){
+			ctx.strokeStyle="#ddd";
+			line(ctx,gridlinetop,ypixel,x,ypixel);
+			ctx.strokeStyle="#000";
+		}
 		fsize=13*scalefactor;
 		ctx.font = fsize+"px Roboto";
 		width = ctx.measureText(cury).width;
@@ -2186,11 +2189,12 @@ function rvertaxis(ctx,y1,y2,x,min,max,step,gridlinetop){
 	while (cury<=max){
 		var ypixel = convertvaltopixel(cury,min,max,y2,y1);
 		line(ctx,x,ypixel,add(x,6*scalefactor),ypixel);
-    if(gridlines){
-      ctx.strokeStyle="#ddd";
-  		line(ctx,gridlinetop,ypixel,x,ypixel);
-      ctx.strokeStyle="#000";
-    }
+		if(gridlines){
+			ctx.strokeStyle="#ddd";
+			console.log(1);
+			line(ctx,gridlinetop,ypixel,x,ypixel);
+			ctx.strokeStyle="#000";
+		}
 		fsize=13*scalefactor;
 		ctx.font = fsize+"px Roboto";
 		width = ctx.measureText(cury).width;
@@ -3344,10 +3348,10 @@ function bootstrap(mm){
 	intervalmaxpix=convertvaltopixel(intervalmax,minxtick,maxxtick,left,right);
 	ctx.textAlign = "right";
 	line(ctx,intervalminpix,add(y,18*scalefactor),intervalminpix,y-20*scalefactor);
-	ctx.fillText(intervalmin,intervalminpix,add(y,30*scalefactor));
+	ctx.fillText(intervalmin,intervalminpix-3*scalefactor,add(y,30*scalefactor));
 	ctx.textAlign = "left";
 	line(ctx,intervalmaxpix,add(y,18*scalefactor),intervalmaxpix,y-20*scalefactor);
-	ctx.fillText(intervalmax,intervalmaxpix,add(y,30*scalefactor));
+	ctx.fillText(intervalmax,intervalmaxpix+3*scalefactor,add(y,30*scalefactor));
 	y=y-15*scalefactor;
 	ctx.lineWidth = 10*scalefactor;
 	line(ctx,intervalminpix,y,intervalmaxpix,y);
@@ -3587,6 +3591,7 @@ function newtimeseries(){
 		seasonleft=right+90*scalefactor;
 		ctx.lineWidth = 1*scalefactor;
 		ctx.strokeStyle = 'rgba(0,0,0,1)';
+		ctx.beginPath();
 		ctx.rect(seasonleft-10*scalefactor,gtop-10*scalefactor,seasonright-seasonleft+20*scalefactor,gbottom-gtop+20*scalefactor);
 		ctx.stroke();
 		horaxis(ctx,seasonleft,seasonright,add(gbottom,10*scalefactor),1,seasons,1);

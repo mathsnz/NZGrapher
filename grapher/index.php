@@ -86,7 +86,7 @@ if (screen.availWidth < 1024)
 		</table>
 		<br>
 		<div style='max-width: 800px;margin: 0 auto;display: inline-block;border: none; position: relative;'>
-		By pressing the button below you are acknowledging that NZGrapher uses cookies, and if you acting on behalf of a school, you are agreeing to the costs associated... if you're not happy with this don't use this website.<br>
+		By pressing the button below you are acknowledging that NZGrapher uses cookies, and if you acting on behalf of a school, you are agreeing to the costs associated... if you're not happy with this don't use this website. (<a href='./privacy.html' target='blank'>Privacy Statement</a>)<br>
 		<button class=button style='margin-top:10px;margin-top: 10px;padding: 20px;border-radius: 15px;font-size: 18px;font-weight: bold;' id=hidewelcome onclick="$('#welcome').hide();document.cookie='welcome=yes; expires=<?php
 			echo date(DateTime::RSS, strtotime('24 hours'));
 		?>'">Start Using NZGrapher</button>
@@ -436,8 +436,8 @@ if(substr($dataset,0,6)!="SECURE"){
 	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=rerandteachtitle>Re-Randomisation Teaching Tool</div>
 	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#rerandteachdiv').hide();$('#type').val('newabout');">&times;</div><br>
 	<span id=rerandteachcontents style="font-size:14px">
-		This section lets you manually step through a re-randomisation.<br>
-		This is really useful for teaching re-randomisation.<br>
+		This section lets you manually step through a creating re-randomisation distribution.<br>
+		This is really useful for teaching how re-randomisation and the randomisation test work.<br>
 		You can see a <a href='https://www.mathsnz.com/nzgrapher-info/teaching-tools' target='_blank'>video tutorial on how to use this here</a>.<br>
 		<br>
 		Re-randomisation works by taking the sample, and randomly assigning each of the data points to one of the groups in the same proportion as the sample. 
