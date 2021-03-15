@@ -12,9 +12,9 @@
 	ga('send', 'pageview');
 	</script>
 	<!-- End Google Analytics -->
-	<script src="./jquery-1.11.1.min.js"></script>
-	<script src="./jquery.csv.js"></script>
-	<script src="./regression.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.11/jquery.csv.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/regression/2.0.1/regression.min.js"></script>
 	<title>NZGrapher</title>
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,700|Roboto+Condensed' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="style.css?v=<?php
