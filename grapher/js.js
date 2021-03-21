@@ -9276,7 +9276,7 @@ $( document ).ready(function() {
       
 
       // Read in the image file as a data URL.
-      reader.readAsText(f);
+      reader.readAsText(f, 'ISO-8859-1');
     }
   }
 

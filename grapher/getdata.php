@@ -29,6 +29,7 @@ if($code!="200"){
 	echo $url;
 	print_r($file_headers);
 } else {
-	echo file_get_contents($url);
+	header('Content-Type: charset=utf-8');
+	echo utf8_encode(file_get_contents($url));
 }
 ?>
