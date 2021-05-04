@@ -520,3 +520,20 @@ kbd {
     box-shadow: 0 1px 0 rgba(12,13,14,0.2), 0 0 0 2px #fff inset;
     white-space: nowrap;
 }
+.moveabledot {
+  width: 10px;
+  height: 10px;
+  background-color: rgb(245, 230, 99);
+  border: 2px solid rgba(136, 136, 136, .5);
+  border-radius: 50%;
+  touch-action: none;
+  user-select: none;
+  position:absolute;
+  z-index: 5;
+}
+.moveabledot:active {
+  background-color: rgba(168, 218, 220, 1.00);
+}
+.moveabledot:hover {
+  cursor: pointer;
+}

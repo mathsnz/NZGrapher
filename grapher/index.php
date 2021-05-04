@@ -367,8 +367,10 @@ if(substr($dataset,0,6)!="SECURE"){
 	<li id=reorder>Reorder Variable</li>
 	<li id=newvar>Create New Variable (From 2 Variables)</li>
 	<li id=newvarc2>Create New Variable (Linear Function)</li>
+	<li id=newvarc4>Create New Variable (Custom Function)</li>
 	<li id=newvarc3>Create New Variable (From Condition)</li>
 	<li id=regroup>Create New Variable (Re-Group)</li>
+	<li id=newvarc5>Create New Variable (Average)</li>
 	<li id=filter>Filter Data</li>
 	<li id=addindex onclick="addindex()">Add Graphable Index Column</li>
 	<li id=addindex onclick="converttimeshow()">Convert Time Column</li>
@@ -531,7 +533,7 @@ if(isset($_POST['csv_data'])){
 <div id=variable class=absolute>
 <table style='margin-left:3px;'>
 <tr><td><span id=var1label>variable 1:</span><td style='width:125px'>
-<select style='width:120px;display:none;' onChange="document.getElementById('xaxis').value=this.options[this.selectedIndex].text;updategraph();" name=xvals id=xvar>
+<select style='width:120px;display:none;' onChange="document.getElementById('xaxis').value=this.options[this.selectedIndex].text;$('#xaxis').change();updategraph();" name=xvals id=xvar>
 	<option value=" "> </option>
 </select><td>Graph Type: <td>
 <select style='width:120px' id=type onChange="graphchange(this);">
@@ -568,7 +570,7 @@ if(isset($_POST['csv_data'])){
 	<option value='newupdate'>Update</option>
 </select>
 <tr><td><span id=var2label>variable 2:</span><td>
-<select style='width:120px;display:none;' onChange="document.getElementById('yaxis').value=this.options[this.selectedIndex].text;updategraph();" name=yvals id=yvar>
+<select style='width:120px;display:none;' onChange="document.getElementById('yaxis').value=this.options[this.selectedIndex].text;$('#yaxis').change();updategraph();" name=yvals id=yvar>
 </select>
 <td>Colour by: <td>
 <select style='width:120px;display:none' onChange="document.getElementById('colorlabel').value=this.options[this.selectedIndex].text;updategraph();" name=color id=color>
@@ -582,6 +584,8 @@ if(isset($_POST['csv_data'])){
 </div>
 
 <div id=graphdiv class=absolute>
+    <div id="dot1" class=moveabledot style="top:100px;left:200px"></div>
+    <div id="dot2" class=moveabledot style="top:200px;left:100px"></div>
 <div id=jsgraph></div>
 <canvas id="myCanvas" width="600" height="400" style='display:none'></canvas>
 </div>
@@ -732,6 +736,18 @@ if(isset($_POST['csv_data'])){
 			<span id=removedpointsshow><label>
 				<input type="checkbox" onclick="updategraph();" id="removedpoints" name="removedpoints" value="yes" checked> Show ID of Removed Points</label><br>
 			</span>
+			<span id=customequationshow><label>
+				<input type="checkbox" onclick="updategraph();" id="customequationdots" name="customequationdots" value="yes"> Add Custom Line</label><br>
+				<input type="checkbox" onclick="updategraph();" id="customequationequation" name="customequationequation" value="yes"> Show Eqn</label><br>
+			</span>
+			<span id=errorbarsshowh style='text-indent: -15px;'><label>
+				Horizontal Error Bars:<br>
+				<select onchange="updategraph();" id="horizontalerrorbars" name="horizontalerrorbars" style='width: 100px;'></select>
+			</span>
+			<span id=errorbarsshowv style='text-indent: -15px;'><label>
+				Vertical Error Bars:<br>
+				<select onchange="updategraph();" id="verticalerrorbars" name="verticalerrorbars" style='width: 100px;'></select><br>
+			</span>
 			<span id=grayscaleshow><label>
 				<input type="checkbox" onclick="updategraph();" id="grayscale" name="grayscale" value="yes"> Gray Scale <br>(do not use on Firefox)</label><br>
 			</span>
@@ -744,7 +760,7 @@ if(isset($_POST['csv_data'])){
 			<span style='display:inline-block;width:50px;'>Size: </span><select id="standardsize" name="standardsize" onchange="updategraph()" style='width:120px;'>
 				<option>Auto</option>
 				<?php
-				//echo "<option>Auto - High Res</option>";
+				echo "<option>Auto - High Res</option>";
 				?>
 				<option>Standard</option>
 				<option>Short</option>
@@ -874,6 +890,37 @@ if(isset($_GET['dev'])){
 		</center>
 	</span>
 </div>
+<div id="newvarc4div" class=absolute style="z-index:6;display:none;padding:10px;position:absolute;border:none;box-shadow: 0px 0px 10px rgba(0,0,0,0.5);top:50%;left:50%;-webkit-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);min-width:300px;">
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=ordertitle>Create New Variable (Custom Function)</div>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' class=close>&times;</div><br>
+	<span id=samplecontents style="font-size:14px">
+		<center>
+		Variable: <select style='width:200px' onChange="" id=newvarc4var></select><br>
+		Function: <input style='width:200px;' onChange="" id=newvar4func></input><br>
+		Example: 1/log(x^2.5)<br>
+		Allowable functions: + - * / ^ exp() log()<br>
+		Note: log() is the natural log function.<br><br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=createc4go>Create</a><br><br><br>
+		</center>
+	</span>
+</div>
+<div id="newvarc5div" class=absolute style="z-index:6;display:none;padding:10px;position:absolute;border:none;box-shadow: 0px 0px 10px rgba(0,0,0,0.5);top:50%;left:50%;-webkit-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);min-width:300px;">
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=ordertitle>Create New Variable (Average)</div>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' class=close>&times;</div><br>
+	<span id=samplecontents style="font-size:14px">
+		<center>
+		Average of:<br>
+		<select style='width:200px' onChange="" id=newvarc5var1></select><br>
+		<select style='width:200px' onChange="" id=newvarc5var2></select><br>
+		<select style='width:200px' onChange="" id=newvarc5var3></select><br>
+		<select style='width:200px' onChange="" id=newvarc5var4></select><br>
+		<select style='width:200px' onChange="" id=newvarc5var5></select><br>
+		(leave blank if you want to average less than 5)<br>
+		<br><br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=createc5go>Create</a><br><br><br>
+		</center>
+	</span>
+</div>
 <div id="sortdiv" class=absolute style="z-index:6;display:none;padding:10px;position:absolute;border:none;box-shadow: 0px 0px 10px rgba(0,0,0,0.5);top:50%;left:50%;-webkit-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);">
 	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=ordertitle>Sort Data by Variable</div>
 	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' class=close>&times;</div><br>
@@ -948,11 +995,10 @@ if(isset($_GET['dev'])){
 		</center>
 	</span>
 </div>
-<div id=cover class=absolute style="width:100%;height:100%;position:fixed;top:0px;left:0px;background-color:rgba(255,255,255,0.5);z-index:20;display:none;" onclick="$('#cover').hide();$('#options').hide();"></div>
 <div id=options class=absolute style="width:35%;height:50%;position:fixed;top:20%;left:2.5%;border:1px solid #ccc;z-index:21;display:none;">
 	<div style="background-color:rgba(0, 100, 200, 0.85096);width:100%;text-align:center;height:25px;position:absolute;top:0px;left:0px;border:none;color:#fff;">
 		More Axis Options
-		<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#cover').hide();$('#options').hide();">&times;</div>
+		<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#options').hide();">&times;</div>
 	</div>
 	<div style='position:absolute;left:0px;top:25px;right:0px;bottom:0px;overflow:auto;padding:5px;font-size:12px;'>
 		<table>
@@ -967,6 +1013,8 @@ if(isset($_GET['dev'])){
 			<tr><td>Max X:<td><input id=scatplotmaxx value=auto>
 			<tr><td>Min Y:<td><input id=scatplotminy value=auto>
 			<tr><td>Max Y:<td><input id=scatplotmaxy value=auto>
+			<tr><td>Rename X on Equations to:<td><input id=scatplotnamex>
+			<tr><td>Rename Y on Equations to:<td><input id=scatplotnamey>
 			<tr><td>&nbsp;
 			<tr><td colspan=2><b>Time Series Graphs:</b><br>
 			For creating axis limits it pretend the ____ value is ____

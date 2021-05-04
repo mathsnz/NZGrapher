@@ -52,6 +52,14 @@ $(function(){
 	$( "#left" ).scroll(function() {
 		$(".tabletop td, .tabletop th").css("top",$("#left").scrollTop()-2+"px");
 	});
+	
+	$('#xaxis').change(function(){
+		$('#scatplotnamex').val($('#xaxis').val());
+	});
+	
+	$('#yaxis').change(function(){
+		$('#scatplotnamey').val($('#yaxis').val());
+	});
 
 	// This must be a hyperlink
 	$("#download").on('click', function (event) {
@@ -1215,6 +1223,54 @@ $(function(){
 		addnewcond();
 	});
 
+	$( "#newvarc4" ).click(function(){
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - newvarc4', ipaddress);
+		} catch(err) {
+			console.log(err.message);
+		}
+		$("#rowbox").hide();
+		$("#colbox").hide();
+		$("#sambox").hide();
+		$("#sampling").show();
+		$("#newvarc4div").show();
+		var col=2;
+		var options=[];
+		options.push('<option></option>');
+		$('#data tr:first td').each( function(){
+			options.push('<option>' + $(this).text() + '</option>');
+			col++;
+		});
+		//finally empty the select and append the items from the array
+		$('#newvarc4var').empty().append( options.join() );
+	});
+
+	$( "#newvarc5" ).click(function(){
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - newvarc5', ipaddress);
+		} catch(err) {
+			console.log(err.message);
+		}
+		$("#rowbox").hide();
+		$("#colbox").hide();
+		$("#sambox").hide();
+		$("#sampling").show();
+		$("#newvarc5div").show();
+		var col=2;
+		var options=[];
+		options.push('<option></option>');
+		$('#data tr:first td').each( function(){
+			options.push('<option>' + $(this).text() + '</option>');
+			col++;
+		});
+		//finally empty the select and append the items from the array
+		$('#newvarc5var1').empty().append( options.join() );
+		$('#newvarc5var2').empty().append( options.join() );
+		$('#newvarc5var3').empty().append( options.join() );
+		$('#newvarc5var4').empty().append( options.join() );
+		$('#newvarc5var5').empty().append( options.join() );
+	});
+
 	$( "#newvar" ).click(function(){
 		try {
 			ga('send', 'event', 'Function', 'Sample and More - newvar', ipaddress);
@@ -1393,6 +1449,112 @@ $(function(){
 		updatebox();
 		$ ("#sampling").hide();
 	});
+	
+	
+	$( "#createc4go" ).click(function(){
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - createc4go', ipaddress);
+		} catch(err) {
+			console.log(err.message);
+		}
+		$ ("#newvarc4div").hide();
+		var cx = $('#newvarc4var option:selected').text();
+		var func = $('#newvar4func').val();
+		var index = $("#data td:contains('"+cx.split("'")[0]+"')").filter(function() {
+			return $(this).text() === cx;
+		}).index() - 1;
+		var i=0;
+		$('#data tr').each(function(){
+			if(i==0){
+				title = func;
+				$(this).append("<td><div>" + title + "<br></div></td>");
+			} else {
+				val = $(this).children('td').eq(index).text();
+				val = eval(func.replace('x',val).replace('log','Math.log').replace('exp','Math.exp').replace('^','**'));
+				val = (parseFloat(val).toPrecision(10)*1).toString();
+				$(this).append("<td><div>" + val + "<br></div></td>");
+			}
+			i++;
+		});
+		$('#data td div').attr('contenteditable','true');
+		updatebox();
+		$ ("#sampling").hide();
+	});
+	
+	
+	$( "#createc5go" ).click(function(){
+		try {
+			ga('send', 'event', 'Function', 'Sample and More - createc5go', ipaddress);
+		} catch(err) {
+			console.log(err.message);
+		}
+		$ ("#newvarc5div").hide();
+		var c1 = $('#newvarc5var1 option:selected').text();
+		var index1 = $("#data td:contains('"+c1.split("'")[0]+"')").filter(function() {
+			return $(this).text() === c1;
+		}).index() - 1;
+		var c2 = $('#newvarc5var2 option:selected').text();
+		var index2 = $("#data td:contains('"+c2.split("'")[0]+"')").filter(function() {
+			return $(this).text() === c2;
+		}).index() - 1;
+		var c3 = $('#newvarc5var3 option:selected').text();
+		var index3 = $("#data td:contains('"+c3.split("'")[0]+"')").filter(function() {
+			return $(this).text() === c3;
+		}).index() - 1;
+		var c4 = $('#newvarc5var4 option:selected').text();
+		var index4 = $("#data td:contains('"+c4.split("'")[0]+"')").filter(function() {
+			return $(this).text() === c4;
+		}).index() - 1;
+		var c5 = $('#newvarc5var5 option:selected').text();
+		var index5 = $("#data td:contains('"+c5.split("'")[0]+"')").filter(function() {
+			return $(this).text() === c5;
+		}).index() - 1;
+		var i=0;
+		var toaverage = []
+		$('#data tr').each(function(){
+			if(i==0){
+				title = "Average of ";
+				if(index1!=-2){
+					title = title + " " + c1;
+					toaverage.push(index1);
+				}
+				if(index2!=-2){
+					title = title + " and " + c2;
+					toaverage.push(index2);
+				}
+				if(index3!=-2){
+					title = title + " and " + c3;
+					toaverage.push(index3);
+				}
+				if(index4!=-2){
+					title = title + " and " + c4;
+					toaverage.push(index4);
+				}
+				if(index5!=-2){
+					title = title + " and " + c5;
+					toaverage.push(index5);
+				}
+				$(this).append("<td><div>" + title + "<br></div></td>");
+			} else {
+				val = 0;
+				count = 0;
+				row = $(this);
+				$.each( toaverage, function(i, index){
+					thisval = row.children('td').eq(index).text();
+					if($.isNumeric(thisval)){
+						val = add(val,thisval);
+						count = count + 1;
+					}
+				})
+				val = (parseFloat(val/count).toPrecision(10)*1).toString();
+				$(this).append("<td><div>" + val + "<br></div></td>");
+			}
+			i++;
+		});
+		$('#data td div').attr('contenteditable','true');
+		updatebox();
+		$ ("#sampling").hide();
+	});
 
 	$ (".close").click(function(){
 		$ ("#sampling").hide();
@@ -1407,6 +1569,8 @@ $(function(){
 		$ ("#encodetimediv").hide();
 		$ ("#deletecoldiv").hide();
 		$ ("#newvarc3div").hide();
+		$ ("#newvarc4div").hide();
+		$ ("#newvarc5div").hide();
 	});
 
 	$( "#update" ).click(function(){
@@ -1453,7 +1617,6 @@ function moreoptions(){
 	} catch(err) {
 		console.log(err.message);
 	}
-	$("#cover").show();
 	$("#options").show();
 }
 
@@ -1507,7 +1670,11 @@ function graphchange(obj){
 	document.getElementById('stackdotsshow').style.display='none';
 	document.getElementById('stripgraphshow').style.display='none';
 	document.getElementById('donutshow').style.display='none';
+	document.getElementById('errorbarsshowv').style.display='none';
+	document.getElementById('errorbarsshowh').style.display='none';
 	$('#removedpointsshow').hide();
+	$('.moveabledot').hide();
+	$('#customequationshow').hide();
 	updategraph();
 }
 
@@ -1810,10 +1977,14 @@ function updatebox(){
 	var yselindex = document.getElementById("yvar").selectedIndex;
 	var zselindex = document.getElementById("zvar").selectedIndex;
 	var colselindex = document.getElementById("color").selectedIndex;
+	var verticalerrorbarsselindex = document.getElementById("verticalerrorbars").selectedIndex;
+	var horizontalerrorbarsselindex = document.getElementById("horizontalerrorbars").selectedIndex;
 	if(xselindex==-1){xselindex=0;}
 	if(yselindex==-1){yselindex=0;}
 	if(zselindex==-1){zselindex=0;}
 	if(colselindex==-1){colselindex=0;}
+	if(verticalerrorbarsselindex==-1){verticalerrorbarsselindex=0;}
+	if(horizontalerrorbarsselindex==-1){horizontalerrorbarsselindex=0;}
 	
 	optionsforboxes = options.join();
 	
@@ -1821,11 +1992,15 @@ function updatebox(){
 	$('#yvar').empty().append( optionsforboxes );
 	$('#zvar').empty().append( optionsforboxes );
 	$('#color').empty().append( optionsforboxes );
+	$('#verticalerrorbars').empty().append( optionsforboxes );
+	$('#horizontalerrorbars').empty().append( optionsforboxes );
 
 	if(xselindex < document.getElementById("xvar").length && xselindex > -1){document.getElementById("xvar").selectedIndex = xselindex;} else {$("#xvar")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resetx');}
 	if(yselindex < document.getElementById("yvar").length && yselindex > -1){document.getElementById("yvar").selectedIndex = yselindex;} else {$("#yvar")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resety');}
 	if(zselindex < document.getElementById("zvar").length && zselindex > -1){document.getElementById("zvar").selectedIndex = zselindex;} else {$("#zvar")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resetz');}
 	if(colselindex < document.getElementById("color").length && colselindex > -1){document.getElementById("color").selectedIndex = colselindex;} else {$("#color")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resetcol');}
+	if(verticalerrorbarsselindex < document.getElementById("verticalerrorbars").length && verticalerrorbarsselindex > -1){document.getElementById("verticalerrorbars").selectedIndex = verticalerrorbarsselindex;} else {$("#verticalerrorbars")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resetveb');}
+	if(horizontalerrorbarsselindex < document.getElementById("horizontalerrorbars").length && horizontalerrorbarsselindex > -1){document.getElementById("horizontalerrorbars").selectedIndex = horizontalerrorbarsselindex;} else {$("#horizontalerrorbars")[0].selectedIndex = 0;$('#type').val('newabout');console.log('resetheb');}
 	
 	graphchange(document.getElementById('type'));
 }
@@ -4614,6 +4789,7 @@ function newscatter(){
 	$('#logshow').show();
 	$('#powshow').show();
 	$('#yxshow').show();
+	$('#meandotshow').show();
 	$('#invertshow').show();
 	$('#thicklinesshow').show();
 	$('#xvar').show();
@@ -4626,6 +4802,15 @@ function newscatter(){
 	$('#removedpointsshow').show();
 	$('#pointsizename').html('Point Size:');
 	$('#transdiv').show();
+	$('#errorbarsshowv').show();
+	$('#errorbarsshowh').show();
+	$('#customequationshow').show();
+	
+	if($('#customequationdots').is(":checked")){
+		$('.moveabledot').show();
+	} else {
+		$('.moveabledot').hide();
+	}
 
 	var canvas = document.getElementById('myCanvas');
 	var ctx = canvas.getContext('2d');
@@ -4669,6 +4854,8 @@ function newscatter(){
 	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
 	var ypoints = (dataforselector[$('#yvar option:selected').text()]).slice();
 	var zpoints = (dataforselector[$('#zvar option:selected').text()]).slice();
+	var verticalerrorbars = (dataforselector[$('#verticalerrorbars option:selected').text()]).slice();
+	var horizontalerrorbars = (dataforselector[$('#horizontalerrorbars option:selected').text()]).slice();
 
 	//check for numeric value
 	var points=[];
@@ -4763,7 +4950,7 @@ function newscatter(){
 				ctx.textAlign="center";
 				ctx.fillText(group,add(thisleft,thisright-50*scalefactor)/2,oypixel-maxheight);
 				
-				plotscatter(ctx,points,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,add(thisleft,30*scalefactor),thisright-50*scalefactor,colors);
+				plotscatter(ctx,points,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,add(thisleft,30*scalefactor),thisright-50*scalefactor,colors,verticalerrorbars,horizontalerrorbars);
 
 				thisleft = add(thisleft,eachwidth);
 			}
@@ -4771,7 +4958,7 @@ function newscatter(){
 			return zdifferentgroups;
 		}
 	} else {
-		plotscatter(ctx,points,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,left,right,colors);
+		plotscatter(ctx,points,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,left,right,colors,verticalerrorbars,horizontalerrorbars);
 	}
 	
 	labelgraph(ctx,width,height);
@@ -4784,7 +4971,7 @@ function newscatter(){
 	return dataURL;
 }
 
-function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,left,right,colors){
+function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,left,right,colors,verticalerrorbars,horizontalerrorbars){
 	horaxis(ctx,left,right,add(bottom,10*scalefactor),minxtick,maxxtick,xstep);
 	vertaxis (ctx,gtop,bottom,left-10*scalefactor,minytick,maxytick,ystep);
 	ctx.lineWidth = 2*scalefactor;
@@ -4823,6 +5010,32 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			ctx.textAlign="left";
 			ctx.fillText(parseInt(add(index,1)),add(add(xpixel,rad*scalefactor),2*scalefactor),add(ypixel,4*scalefactor));
 		}
+		if($('#verticalerrorbars').is(':visible')){
+			if(verticalerrorbars){
+				if(verticalerrorbars.length>0){
+					var verticaluncertainty = verticalerrorbars[index];
+					var ypixeltop = convertvaltopixel(add(ypoint,verticaluncertainty),minytick,maxytick,bottom,gtop);
+					var ypixelbottom = convertvaltopixel(add(ypoint,-verticaluncertainty),minytick,maxytick,bottom,gtop);
+					line(ctx,xpixel,ypixeltop,xpixel,ypixelbottom);
+					line(ctx,add(xpixel,-5*scalefactor),ypixeltop,add(xpixel,5*scalefactor),ypixeltop)
+					line(ctx,add(xpixel,-5*scalefactor),ypixelbottom,add(xpixel,5*scalefactor),ypixelbottom)
+				}
+			}
+			if(horizontalerrorbars){
+				var xpixel = convertvaltopixel(xpoint,minxtick,maxxtick,left,right);
+			}
+			if(horizontalerrorbars){
+				if(horizontalerrorbars.length>0){
+					var horizontaluncertainty = horizontalerrorbars[index];
+					var xpixelleft = convertvaltopixel(add(xpoint,-horizontaluncertainty),minxtick,maxxtick,left,right);
+					var xpixelright = convertvaltopixel(add(xpoint,horizontaluncertainty),minxtick,maxxtick,left,right);
+					line(ctx,xpixelleft,ypixel,xpixelright,ypixel);
+					line(ctx,xpixelleft,add(ypixel,-5*scalefactor),xpixelleft,add(ypixel,5*scalefactor))
+					line(ctx,xpixelright,add(ypixel,-5*scalefactor),xpixelright,add(ypixel,5*scalefactor))
+				}
+			}
+			
+		}
 		num++;
 	}
 
@@ -4842,7 +5055,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		ctx.strokeStyle='#f00';
 		
 		res = regression.linear(pointstofit,{
-		  precision: 7,
+		  precision: 15,
 		});
 		
 		equations['Linear'] = {};
@@ -4877,7 +5090,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		} else {
 			c = " + " + c;
 		}
-		ctx.fillText($('#yaxis').val()+" = "+m+" * "+$('#xaxis').val()+c,left, equationtop);
+		ctx.fillText($('#scatplotnamey').val()+" = "+m+" * "+$('#scatplotnamex').val()+c,left, equationtop);
 		equationtop = add(equationtop,15*scalefactor);
 		ctx.fillText("r = "+r,left, equationtop);
 		equationtop = add(equationtop,15*scalefactor);
@@ -4889,7 +5102,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		
 		res = regression.polynomial(pointstofit,{
 		  order: 2,
-		  precision: 7,
+		  precision: 15,
 		});
 		
 		equations['Quadratic'] = {};
@@ -4925,7 +5138,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		} else {
 			c = " + " + c;
 		}
-		ctx.fillText($('#yaxis').val()+" = "+a+" * "+$('#xaxis').val()+"^2"+b+" * "+$('#xaxis').val()+c,left, equationtop);
+		ctx.fillText($('#scatplotnamey').val()+" = "+a+" * "+$('#scatplotnamex').val()+"^2"+b+" * "+$('#scatplotnamex').val()+c,left, equationtop);
 		equationtop = add(equationtop,15*scalefactor);
 	}
 	
@@ -4935,7 +5148,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		
 		res = regression.polynomial(pointstofit,{
 		  order: 3,
-		  precision: 10,
+		  precision: 15,
 		});
 		
 		equations['Cubic'] = {};
@@ -4977,7 +5190,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		} else {
 			d = " + " + d;
 		}
-		ctx.fillText($('#yaxis').val()+" = "+a+" * "+$('#xaxis').val()+"^3"+b+" * "+$('#xaxis').val()+"^2"+c+" * "+$('#xaxis').val()+d,left, equationtop);
+		ctx.fillText($('#scatplotnamey').val()+" = "+a+" * "+$('#scatplotnamex').val()+"^3"+b+" * "+$('#scatplotnamex').val()+"^2"+c+" * "+$('#scatplotnamex').val()+d,left, equationtop);
 		equationtop = add(equationtop,15*scalefactor);
 	}
 	
@@ -4986,7 +5199,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		ctx.strokeStyle='#952BFF';
 		
 		res = regression.exponential(pointstofit,{
-		  precision: 7,
+		  precision: 15,
 		});
 		
 		equations['Exponential'] = {};
@@ -5011,7 +5224,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			lasty = y;
 			x = add(x,step);
 		}
-		ctx.fillText($('#yaxis').val()+" = "+a+" * exp("+b+" * "+$('#xaxis').val()+")",left, equationtop);
+		ctx.fillText($('#scatplotnamey').val()+" = "+a+" * exp("+b+" * "+$('#scatplotnamex').val()+")",left, equationtop);
 		equationtop = add(equationtop,15*scalefactor);
 	}
 	
@@ -5020,7 +5233,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		ctx.strokeStyle='#FF972E';
 		
 		res = regression.logarithmic(pointstofit,{
-		  precision: 7,
+		  precision: 15,
 		});
 		
 		equations['Logarithmic'] = {};
@@ -5051,7 +5264,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		} else {
 			b = " + " + b;
 		}
-		ctx.fillText($('#yaxis').val()+" = "+a+" * ln("+$('#xaxis').val()+")"+b,left, equationtop);
+		ctx.fillText($('#scatplotnamey').val()+" = "+a+" * ln("+$('#scatplotnamex').val()+")"+b,left, equationtop);
 		equationtop = add(equationtop,15*scalefactor);
 	}
 	
@@ -5060,7 +5273,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		ctx.strokeStyle='#3ED2D2';
 		
 		res = regression.power(pointstofit,{
-		  precision: 7,
+		  precision: 15,
 		});
 		
 		equations['Power'] = {};
@@ -5085,7 +5298,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			lasty = y;
 			x = add(x,step);
 		}
-		ctx.fillText($('#yaxis').val()+" = "+a+" * "+$('#xaxis').val()+" ^ "+b,left, equationtop);
+		ctx.fillText($('#scatplotnamey').val()+" = "+a+" * "+$('#scatplotnamex').val()+" ^ "+b,left, equationtop);
 		equationtop = add(equationtop,15*scalefactor);
 	}
 	
@@ -5109,8 +5322,69 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		ctx.setLineDash([]);
 	}
 	
+	if($('#customequationdots').is(":checked")){
+		ctx.fillStyle = '#dbce58';
+		ctx.strokeStyle='#dbce58';
+		
+		dot1left = add($('#dot1')[0].style.left.replace('px',''),7);
+		dot2left = add($('#dot2')[0].style.left.replace('px',''),7);
+		dot1top = add($('#dot1')[0].style.top.replace('px',''),7);
+		dot2top = add($('#dot2')[0].style.top.replace('px',''),7);
+		
+		x1 = convertvaltopixel(dot1left,left,right,minxtick,maxxtick);
+		x2 = convertvaltopixel(dot2left,left,right,minxtick,maxxtick);
+		y1 = convertvaltopixel(dot1top,bottom,gtop,minytick,maxytick);
+		y2 = convertvaltopixel(dot2top,bottom,gtop,minytick,maxytick);
+		
+		m = (y2-y1)/(x2-x1);
+		c = y2 - m*x2;
+		
+		x = minxtick;
+		lasty=0;
+		step = (maxxtick - minxtick)/100;
+		while(x<maxxtick){
+			y = add(m * x,c);
+			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
+			ypixel = convertvaltopixel(y,minytick,maxytick,bottom,gtop);
+			if(x>minxtick && y>=minytick && y<=maxytick && lasty>=minytick && lasty<=maxytick){
+				line(ctx,lastxpixel,lastypixel,xpixel,ypixel);
+			}
+			lastxpixel=xpixel;
+			lastypixel=ypixel;
+			lasty = y;
+			x = add(x,step);
+		}
+		if($('#customequationequation').is(":checked")){
+			m = m.toPrecision(5);
+			c = c.toPrecision(5);
+			if(parseFloat(c)<0){
+				c = " - " + -1*c;
+			} else {
+				c = " + " + c;
+			}
+			ctx.fillText($('#scatplotnamey').val()+" = "+m+" * "+$('#scatplotnamex').val()+c,left, equationtop);
+			equationtop = add(equationtop,15*scalefactor);
+			
+			equations['Custom'] = {};
+			equations['Custom']['Equation'] = 'y = '+m+'x + '+c;
+			equations['Custom']['r2'] = '';
+		}
+	}
+	
 	if($('#regression, #cubic, #quadratic, #yx, #exp, #pow, #log').is(":checked") && $('#regshow, #cubicshow, #quadraticshow, #yxshow, #expshow, #powshow, #logshow').is(':visible')){
 		ctx.fillText("n = "+num,left, equationtop);
+	}
+	
+	if($('#meandot').is(":checked") && $('#meandot').is(':visible')){
+		meanx = calculatemean(xpoints);
+		meany = calculatemean(ypoints);
+		meanxgraph = convertvaltopixel(meanx,minxtick,maxxtick,left,right);
+		meanygraph = convertvaltopixel(meany,minytick,maxytick,bottom,gtop);
+		ctx.fillStyle = 'rgba(255,0,0,1)';
+		ctx.beginPath();
+		ctx.arc(meanxgraph, meanygraph, 7*scalefactor, 0, Math.PI*2, true);
+		ctx.closePath();
+		ctx.fill();
 	}
 	
 	if($('#type').val()=='newresiduals'){
@@ -5167,7 +5441,10 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			lasty = y;
 		}
 	}
-	console.table(equations);
+	
+	if(equations.length>0){
+		console.table(equations);
+	}
 
 }
 
@@ -6555,7 +6832,7 @@ function drawminihistogram(ctx,data,bleft,bright,btop,bbottom,r,title){
 	ctx.rect(bleft+bwidth/5*4, bbottom, bwidth/5, -bheight*sec5/max);ctx.fill();ctx.stroke();
 	ctx.fillStyle = '#000';
 	
-	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex=0;document.getElementById('type').value='newhistogram';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex=0;document.getElementById('type').value='newhistogram';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
 }
 
 function drawminibarchart(ctx,data,bleft,bright,btop,bbottom,r,title){
@@ -6586,7 +6863,7 @@ function drawminibarchart(ctx,data,bleft,bright,btop,bbottom,r,title){
 	});
 	ctx.fillStyle = '#000';
 	
-	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex=0;document.getElementById('type').value='newbargraph';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex=0;document.getElementById('type').value='newbargraph';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
 }
 
 function drawminiscatter(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r,title){
@@ -6605,7 +6882,7 @@ function drawminiscatter(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r,title){
 		ctx.stroke();
 	})
 	ctx.strokeStyle = '#000';
-	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('type').value='newscatter';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('type').value='newscatter';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
 }
 
 function drawminivboxes(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r,title){
@@ -6647,7 +6924,7 @@ function drawminivboxes(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r,title){
 		line(ctx,cen,maxval,cen,uq);
 		i++;
 	})
-	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex="+c+"+1;document.getElementById('type').value='newdotplot';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex="+c+"+1;document.getElementById('type').value='newdotplot';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
 }
 
 function drawminihboxes(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r,title){
@@ -6689,7 +6966,7 @@ function drawminihboxes(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r,title){
 		line(ctx,uq,cen,maxval,cen);
 		i++;
 	})
-	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('type').value='newdotplot';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('type').value='newdotplot';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
 }
 
 function drawminiareagraphs(ctx,ydata,xdata,bleft,bright,btop,bbottom,c,r,title){
@@ -6732,7 +7009,7 @@ function drawminiareagraphs(ctx,ydata,xdata,bleft,bright,btop,bbottom,c,r,title)
 		l=add(l,bwidth*total/count);
 	});
 	ctx.fillStyle = '#000';
-	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('type').value='bar and area graph';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('type').value='bar and area graph';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
 }
 
 function lockaxis(){
@@ -10611,3 +10888,67 @@ function newbsteach(){
 	document.getElementById("color").selectedIndex != document.getElementById("yvar").selectedIndex;
 	return newbsteachstep();
 }
+
+// code for moving around the two points for the manual equation
+$(document).ready(function(){
+	var customequationcontainer = document.querySelector("#graphdiv");
+	var customequationdragItem;
+	
+	var customequationactive = false;
+	var customequationcurrentX;
+	var customequationcurrentY;
+	var customequationinitialX;
+	var customequationinitialY;
+	
+	customequationcontainer.addEventListener("touchstart", dragStart, false);
+	customequationcontainer.addEventListener("touchend", dragEnd, false);
+	customequationcontainer.addEventListener("touchmove", drag, false);
+	
+	customequationcontainer.addEventListener("mousedown", dragStart, false);
+	customequationcontainer.addEventListener("mouseup", dragEnd, false);
+	customequationcontainer.addEventListener("mousemove", drag, false);
+	
+	function dragStart(e) {
+	  xOffset = e.target.style.left.replace('px','');
+	  yOffset = e.target.style.top.replace('px','');
+	  if (e.type === "touchstart") {
+	    customequationinitialX = e.touches[0].clientX - xOffset;
+	    customequationinitialY = e.touches[0].clientY - yOffset;
+	  } else {
+	    customequationinitialX = e.clientX - xOffset;
+	    customequationinitialY = e.clientY - yOffset;
+	  }
+	
+	  if (e.target.matches('.moveabledot')) {
+	    customequationactive = true;
+		customequationdragItem = e.target;
+	  }
+	}
+	
+	function dragEnd(e) {
+	  customequationinitialX = customequationcurrentX;
+	  customequationinitialY = customequationcurrentY;
+	
+	  customequationactive = false;
+	  
+	  updategraph();
+	}
+	
+	function drag(e) {
+	  if (customequationactive) {
+	  
+	    e.preventDefault();
+	  
+	    if (e.type === "touchmove") {
+	      customequationcurrentX = e.touches[0].clientX - customequationinitialX;
+	      customequationcurrentY = e.touches[0].clientY - customequationinitialY;
+	    } else {
+	      customequationcurrentX = e.clientX - customequationinitialX;
+	      customequationcurrentY = e.clientY - customequationinitialY;
+	    }
+	
+	    customequationdragItem.style.left = customequationcurrentX + "px";
+	    customequationdragItem.style.top =  customequationcurrentY + "px";
+	  }
+	}
+})
