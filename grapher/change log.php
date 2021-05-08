@@ -8,7 +8,7 @@ To Do List
 */
 
 ?>
-	<b>NEXT</b><ul>
+	<b>2021-05-08</b><ul>
 		<li>Improvement to fitting of non-linear models when one variable is much larger than the other.</li>
 		<li>Added option to show mean dot onto scatter graphs which provides a pivot point for the trend line (useful for teaching trend lines).</li>
 		<li>Create a new variable with custom functions</li>
