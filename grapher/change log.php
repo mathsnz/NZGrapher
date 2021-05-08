@@ -14,6 +14,7 @@ To Do List
 		<li>Create a new variable with custom functions</li>
 		<li>Create a new variable by averaging up to 5 columns</li>
 		<li>Rename the "x" and "y" in the equations that show on scatter graphs</li>
+		<li>Add a custom line on scatter graphs through two points that are draggable</li>
 	</ul>
 	<b>2021-03-22</b><ul>
 		<li>Fix for special characters not working when uploading files.</li>

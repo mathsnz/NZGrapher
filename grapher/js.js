@@ -1470,7 +1470,7 @@ $(function(){
 				$(this).append("<td><div>" + title + "<br></div></td>");
 			} else {
 				val = $(this).children('td').eq(index).text();
-				val = eval(func.replace('x',val).replace('log','Math.log').replace('exp','Math.exp').replace('^','**'));
+				val = eval(func.replace('x',val).replace('log','Math.log').replace('exp','Math.exp').replace('sqrt','Math.sqrt').replace('^','**'));
 				val = (parseFloat(val).toPrecision(10)*1).toString();
 				$(this).append("<td><div>" + val + "<br></div></td>");
 			}
