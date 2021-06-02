@@ -10928,10 +10928,12 @@ $(document).ready(function(){
 	function dragEnd(e) {
 	  customequationinitialX = customequationcurrentX;
 	  customequationinitialY = customequationcurrentY;
-	
-	  customequationactive = false;
 	  
-	  updategraph();
+	  if(customequationactive==true){
+	  	updategraph();
+	    customequationactive = false;
+	  }
+	  
 	}
 	
 	function drag(e) {

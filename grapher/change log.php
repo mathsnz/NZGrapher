@@ -8,6 +8,10 @@ To Do List
 */
 
 ?>
+	<b>2021-06-02</b><ul>
+		<li>Added sqrt() as a function in the custom functions</li>
+		<li>Bug fix for dot dragging causing unintended consequences</li>
+	</ul>
 	<b>2021-05-08</b><ul>
 		<li>Improvement to fitting of non-linear models when one variable is much larger than the other.</li>
 		<li>Added option to show mean dot onto scatter graphs which provides a pivot point for the trend line (useful for teaching trend lines).</li>

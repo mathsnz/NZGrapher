@@ -898,7 +898,7 @@ if(isset($_GET['dev'])){
 		Variable: <select style='width:200px' onChange="" id=newvarc4var></select><br>
 		Function: <input style='width:200px;' onChange="" id=newvar4func></input><br>
 		Example: 1/log(x^2.5)<br>
-		Allowable functions: + - * / ^ exp() log()<br>
+		Allowable functions: + - * / ^ exp() log() sqrt()<br>
 		Note: log() is the natural log function.<br><br>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=createc4go>Create</a><br><br><br>
 		</center>
