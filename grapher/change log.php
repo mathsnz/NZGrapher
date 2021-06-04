@@ -8,6 +8,9 @@ To Do List
 */
 
 ?>
+	<b>2021-06-04</b><ul>
+		<li>Switch to hosting javascript libraries locally as lots of school networks were blocking schools from accessing them</li>
+	</ul>
 	<b>2021-06-02</b><ul>
 		<li>Added sqrt() as a function in the custom functions</li>
 		<li>Bug fix for dot dragging causing unintended consequences</li>
