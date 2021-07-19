@@ -5,9 +5,20 @@
 /*
 To Do List
 - Custom height/width graphs
+On Dot Plots:
+- IQR only
+- median only - bolder
+Projector Mode?
+Leave a trail of medians on dotplot when doing resampling
+CSS Styles for "Basic Mode"
 */
 
 ?>
+	<b>2021-07-20</b><ul>
+		<li>Changed the colour of the cubic lines to be a darker green</li>
+		<li>Changed the font size of summary statistics on dot plots so they are more readable size. Option to adjust the size in the more options area.</li>
+		<li>Added Survey to Front Page.</li>
+	</ul>
 	<b>2021-06-04</b><ul>
 		<li>Switch to hosting javascript libraries locally as lots of school networks were blocking schools from accessing them</li>
 	</ul>

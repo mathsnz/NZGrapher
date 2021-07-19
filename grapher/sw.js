@@ -1,15 +1,15 @@
 self.addEventListener('install', function(e) {
  e.waitUntil(
-   caches.open('nzgrapherv=20210604').then(function(cache) {
+   caches.open('nzgrapherv=20210720').then(function(cache) {
      return cache.addAll([
        './',
        './jquery-1.11.1.min.js',
        './jquery.csv.js',
        './regression.min.js',
        'https://fonts.googleapis.com/css?family=Roboto:400,700|Roboto+Condensed',
-	   './style.css?v=20210604',
-	   './js.js?v=20210604',
-	   './jsnew.js?v=20210604',
+	   './style.css?v=20210720',
+	   './js.js?v=20210720',
+	   './jsnew.js?v=20210720',
 	   './logob.png',
 	   './loading.gif',
 	   './logow.png',
@@ -34,7 +34,7 @@ self.addEventListener('fetch', function(event) {
  console.log(event.request.url);
 	
   event.respondWith(
-    caches.open('nzgrapherv=20210604').then(function(cache) {
+    caches.open('nzgrapherv=20210720').then(function(cache) {
 		return cache.match(event.request).then(function (response) {
 			if(response){
 				console.log('from cache');

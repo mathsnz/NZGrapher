@@ -47,7 +47,6 @@ function Zip($source, $destination, $include_dir = false, $exclude)
         foreach ($files as $file)
         {
             $file = str_replace('\\', '/', $file);
-            echo $file."<br>";
 
             // Ignore "." and ".." folders
             if( in_array(substr($file, strrpos($file, '/')+1), array('.', '..')) )
@@ -81,6 +80,9 @@ function Zip($source, $destination, $include_dir = false, $exclude)
             }
             $uri = str_replace($source . '/', '', $file);
             $zip->renameName(basename($uri), str_replace('_', '-', basename($uri)));
+            if($include==1){
+                echo $file."\r\n";
+            }
         }
     }
     else if (is_file($source) === true)

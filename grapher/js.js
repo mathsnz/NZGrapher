@@ -3074,18 +3074,18 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 
 	if($('#regression').is(":checked")){
 		ctx.fillStyle = 'rgba(255,0,0,1)';
-		fontsize = 11*scalefactor;
+		fontsize = $('#textsize').val()*scalefactor;
 		ctx.font = fontsize+"px Roboto";
 		ctx.textAlign="left";
 		var ypix=oypixel-maxheight/2;
-		ctx.fillText('min: '+minval,left-60*scalefactor,ypix-44*scalefactor);
-		ctx.fillText('lq: '+lq,left-60*scalefactor,ypix-33*scalefactor);
-		ctx.fillText('med: '+med,left-60*scalefactor,ypix-22*scalefactor);
-		ctx.fillText('mean: '+mean,left-60*scalefactor,ypix-11*scalefactor);
+		ctx.fillText('min: '+minval,left-60*scalefactor,ypix-4*fontsize);
+		ctx.fillText('lq: '+lq,left-60*scalefactor,ypix-3*fontsize);
+		ctx.fillText('med: '+med,left-60*scalefactor,ypix-2*fontsize);
+		ctx.fillText('mean: '+mean,left-60*scalefactor,ypix-1*fontsize);
 		ctx.fillText('uq: '+uq,left-60*scalefactor,ypix);
-		ctx.fillText('max: '+maxval,left-60*scalefactor,ypix+11*scalefactor);
-		ctx.fillText('sd: '+sd,left-60*scalefactor,ypix+22*scalefactor);
-		ctx.fillText('num: '+num,left-60*scalefactor,ypix+33*scalefactor);
+		ctx.fillText('max: '+maxval,left-60*scalefactor,ypix+1*fontsize);
+		ctx.fillText('sd: '+sd,left-60*scalefactor,ypix+2*fontsize);
+		ctx.fillText('num: '+num,left-60*scalefactor,ypix+3*fontsize);
 	}
 
 	if($('#interval').is(":checked") || $('#intervallim').is(":checked")){
@@ -5143,8 +5143,8 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 	}
 	
 	if($('#cubic').is(":checked") && $('#cubicshow').is(':visible')){
-		ctx.fillStyle='#0f0';
-		ctx.strokeStyle='#0f0';
+		ctx.fillStyle='#0a0';
+		ctx.strokeStyle='#0a0';
 		
 		res = regression.polynomial(pointstofit,{
 		  order: 3,

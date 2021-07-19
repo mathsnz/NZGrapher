@@ -87,10 +87,11 @@ if (screen.availWidth < 1024)
 		<br>
 		<div style='max-width: 800px;margin: 0 auto;display: inline-block;border: none; position: relative;'>
 		By pressing the button below you are acknowledging that NZGrapher uses cookies, and if you acting on behalf of a school, you are agreeing to the costs associated... if you're not happy with this don't use this website. (<a href='./privacy.html' target='blank'>Privacy Statement</a>)<br>
-		<button class=button style='margin-top:10px;margin-top: 10px;padding: 20px;border-radius: 15px;font-size: 18px;font-weight: bold;' id=hidewelcome onclick="$('#welcome').hide();document.cookie='welcome=yes; expires=<?php
+		<button class=button style='margin-top:10px;padding: 20px;border-radius: 15px;font-size: 18px;font-weight: bold;vertical-align:text-top;' id=hidewelcome onclick="$('#welcome').hide();document.cookie='welcome=yes; expires=<?php
 			echo date(DateTime::RSS, strtotime('24 hours'));
 		?>'">Start Using NZGrapher</button>
-		<a href="http://eepurl.com/4JD3v" target='_blank'><button class=button style='margin-top:10px;margin-top: 10px;padding: 20px;border-radius: 15px;font-size: 18px;font-weight: bold;background-color:#C86400'>Newsletter Sign Up</button></a><br>
+		<a href="https://docs.google.com/forms/d/e/1FAIpQLSeoZIGdIJyD65Pdm1YHFCVQx8xRD09b_YHhKN_WPneay469Tg/viewform?usp=sf_link" target='_blank'><button class=button style='height:60px;margin-top: 10px;padding: 10px;border-radius: 15px;font-size: 18px;font-weight: bold;background-color:#00ad40;vertical-align:text-top;'>Teacher Survey<br><small>Help Plan NZGrapher's Future</small></button></a>
+		<a href="http://eepurl.com/4JD3v" target='_blank'><button class=button style='margin-top: 10px;padding: 20px;border-radius: 15px;font-size: 18px;font-weight: bold;background-color:#C86400;vertical-align:text-top;'>Newsletter Sign Up</button></a><br>
 		<br>
 		<div style='text-align:left;max-width: 800px;margin: 0 auto;display: inline-block;border: none; position: relative;'>
 		<span style="display:block;font-size:150%;"><b>New in this version of NZGrapher (<?php echo $v; ?>)</b></span>
@@ -1006,6 +1007,8 @@ if(isset($_GET['dev'])){
 			For creating axis limits it pretend the ____ value is ____
 			<tr><td>Min:<td><input id=boxplotmin value=auto>
 			<tr><td>Max:<td><input id=boxplotmax value=auto>
+			<tr><td colspan=2>For adjusting the size of the red summary statistics
+			<tr><td>Text Size:<td><input id=textsize value=13 type=number>
 			<tr><td>&nbsp;
 			<tr><td colspan=2><b>Scatter Graphs:</b><br>
 			For creating axis limits it pretend the ____ value is ____
@@ -1022,7 +1025,7 @@ if(isset($_GET['dev'])){
 			<tr><td>Max Y:<td><input id=timeseriesmaxy value=auto>
 		</table>
 		<br><br>
-		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="$('#options input').val('auto');updategraph();">Reset</span>
+		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="$('#options input').val('auto');$('#textsize').val('13');updategraph();">Reset</span>
 		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="updategraph()">Update Graph</span>
 	</div>
 </div>
