@@ -14,6 +14,11 @@ CSS Styles for "Basic Mode"
 */
 
 ?>
+	<b>2021-08-15</b><ul>
+		<li>'Select Data Table' is now 'Select and Copy Data Table'</li>
+		<li>In timeseries forecast output there is a button to 'Select and Copy Forecast Table'</li>
+		<li>Update to show a note to high usage schools that have not paid their subscriptions</li>
+	</ul>
 	<b>2021-07-20</b><ul>
 		<li>Changed the colour of the cubic lines to be a darker green</li>
 		<li>Changed the font size of summary statistics on dot plots so they are more readable size. Option to adjust the size in the more options area.</li>

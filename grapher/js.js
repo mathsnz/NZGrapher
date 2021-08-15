@@ -398,6 +398,7 @@ $(function(){
 		}
 		$('#filepop').hide();
 		selectText($('#data')[0]);
+		document.execCommand('copy');
 	});
 
 	$( "#reorder").click(function(){
@@ -6045,7 +6046,7 @@ function newtimeseriessforecasts(){
 			c++;
 		}
 
-		toreturn+="</table></div>";
+		toreturn+="</table><br><button class=button onclick=\"selectText($('#forecastoutput table')[0]);document.execCommand('copy');\" style='float:left'>Select and Copy Forecast Table</button></div>";
 		return toreturn;
 	} else {
 		
@@ -9462,6 +9463,13 @@ function factorial(n) {
 }
 
 $( document ).ready(function() {	
+	$.get('https://tracking.jake4maths.com/whichschoolflag.php').done(function(data){
+		if(data.length>10){
+			$('#flagcontent').html(data);
+			$('#flag').show();
+			$('#flagcover').show();
+		}
+	})
 	$('#directimport')[0].addEventListener('click', async event => {
 	  $('#progressdescription')[0].innerHTML = 'Starting';
 	  console.time("Starting");

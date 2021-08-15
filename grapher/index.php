@@ -341,7 +341,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 	<li id=directimport>Import from Clipboard</li>
 	<li id=pastetableclick>Paste Table (Legacy)</li>
 	<li id=pastelinkclick>Open Link</li>
-	<li id=highlightdatatable>Select Data Table</li>
+	<li id=highlightdatatable>Select and Copy Data Table</li>
 <?php
 if(substr($dataset,0,6)!="SECURE"){
 	echo "<li><a href='#' id=download style='text-decoration:none;color:#000;'>Download Data</a></li>";
@@ -1034,6 +1034,13 @@ if(isset($_GET['dev'])){
   <span style='padding:0px;margin:0px;text-align:left'>Tip</span>
 </div>
 <map name=graphmap id=graphmap></map>
+<div id=flagcover style='display:none;background-color:rgba(255,255,255,0.8);position:fixed;top:0px;left:0px;right:0px;bottom:0px;z-index:998;'></div>
+<div id=flag style='display:none;background-color:#ffdb99;position:fixed;top:100px;left:calc(50% - 210px);z-index:999;padding:10px;border: 1px solid #ccc;width:400px;'>
+	<div id=flagcontent></div>
+	<center>
+		<button onclick="$('#flag').hide();$('#flagcover').hide();" class=button style='background-color:#cc8500;'>OK</button>
+	</center>
+</div>
 </body>
 <script>
 if('serviceWorker' in navigator) {

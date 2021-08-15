@@ -98,6 +98,6 @@ $exclude=array('/imagetemp/','DS_Store');
 $return = Zip('./grapher/', './grapher.zip',true,$exclude);
 
 
-if($return==true){echo "Zip Complete";} else {echo "there was an error";}
+if($return==true){echo "Zip Complete\r\n\r\n";} else {echo "there was an error\r\n\r\n";}
 
 ?>
