@@ -14,6 +14,11 @@ CSS Styles for "Basic Mode"
 */
 
 ?>
+	<b>2021-12-15</b><ul>
+		<li>New Graph Type: Grid Density Plot</li>
+		<li>New options on Dot Plot with "Shape Outline", "Violin" and "Bee Swarm" options, as well as a "Hide Points" tickbox.</li>
+		<li>Added ability to create stacked scatter graphs, where you fit the same linear trend line for each colour.... play around, it's quite cool.</li>
+	</ul>
 	<b>2021-08-15</b><ul>
 		<li>'Select Data Table' is now 'Select and Copy Data Table'</li>
 		<li>In timeseries forecast output there is a button to 'Select and Copy Forecast Table'</li>

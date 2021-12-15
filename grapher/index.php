@@ -27,6 +27,7 @@
 	<script src="./jsnew.js?v=<?php
 		echo $v;
 	?>"></script>
+	<script src="./viridis.json"></script>
 	<meta name="description" content="NZGrapher is a web based graphing tool. NZ Grapher was designed for New Zealand Schools by a New Zealand Teacher.">
 	<link rel="canonical" href="https://grapher.nz/" />
 	<link rel="apple-touch-icon" sizes="57x57" href="./icon/apple-icon-57x57.png">
@@ -90,7 +91,6 @@ if (screen.availWidth < 1024)
 		<button class=button style='margin-top:10px;padding: 20px;border-radius: 15px;font-size: 18px;font-weight: bold;vertical-align:text-top;' id=hidewelcome onclick="$('#welcome').hide();document.cookie='welcome=yes; expires=<?php
 			echo date(DateTime::RSS, strtotime('24 hours'));
 		?>'">Start Using NZGrapher</button>
-		<a href="https://docs.google.com/forms/d/e/1FAIpQLSeoZIGdIJyD65Pdm1YHFCVQx8xRD09b_YHhKN_WPneay469Tg/viewform?usp=sf_link" target='_blank'><button class=button style='height:60px;margin-top: 10px;padding: 10px;border-radius: 15px;font-size: 18px;font-weight: bold;background-color:#00ad40;vertical-align:text-top;'>Teacher Survey<br><small>Help Plan NZGrapher's Future</small></button></a>
 		<a href="http://eepurl.com/4JD3v" target='_blank'><button class=button style='margin-top: 10px;padding: 20px;border-radius: 15px;font-size: 18px;font-weight: bold;background-color:#C86400;vertical-align:text-top;'>Newsletter Sign Up</button></a><br>
 		<br>
 		<div style='text-align:left;max-width: 800px;margin: 0 auto;display: inline-block;border: none; position: relative;'>
@@ -549,6 +549,7 @@ if(isset($_POST['csv_data'])){
 	<option value='newhistogramf'>Histogram - Summary Data</option>
 	<option value='newpiechart'>Pie Chart</option>
 	<option value='newscatter'>Scatter Graph</option>
+	<option value='newgriddensity'>Grid Density Plot</option>
 	<option value='newresiduals'>Residuals Plot</option>
 	<option disabled></option>
 	<option value='newbootstrap'>Bootstrap Single Variable</option>
@@ -616,6 +617,18 @@ if(isset($_POST['csv_data'])){
 			<span id=boxplotshow><label>
 				<input type="checkbox" onclick="updategraph();" id="boxplot" name="boxplot" value="yes"> Box Plots</label><br>
 			</span>
+			<span id=hidepointsshow><label>
+				<input type="checkbox" onclick="updategraph();" id="hidepoints" name="hidepointsshow" value="yes"> Hide Points</label><br>
+			</span>
+			<span id=shapeshow><label>
+				<input type="checkbox" onclick="updategraph();" id="shape" name="shapeshow" value="yes"> Shape Outline</label><br>
+			</span>
+			<span id=violinshow><label>
+				<input type="checkbox" onclick="updategraph();" id="violin" name="violinshow" value="yes"> Violin Graphs</label><br>
+			</span>
+			<span id=beeswarmshow><label>
+				<input type="checkbox" onclick="updategraph();" id="beeswarm" name="beeswarmshow" value="yes"> Bee Swarm</label><br>
+			</span>
 			<span id=stripgraphshow><label>
 				<input type="checkbox" onclick="updategraph();" id="stripgraph" name="stripgraphshow" value="yes"> Strip Graph</label><br>
 			</span>
@@ -661,6 +674,9 @@ if(isset($_POST['csv_data'])){
 			</span>
 			<span id=yxshow><label>
 				<input type="checkbox" onclick="updategraph();" id="yx" name="yx" value="yes"> y=x</label><br>
+			</span>
+			<span id=stackgraphsshow><label>
+				<input type="checkbox" onclick="updategraph();" id="stackgraphs" name="stackgraphs" value="yes"> Stack Graphs</label><br>
 			</span>
 			<span id=differentaxisshow><label>
 				<input type="checkbox" onclick="updategraph();" id="differentaxis" name="differentaxis" value="yes"> Different Axis</label><br>
@@ -733,6 +749,9 @@ if(isset($_POST['csv_data'])){
 			</span>
 			<span id=thicklinesshow><label>
 				<input type="checkbox" onclick="updategraph();" id="thicklines" name="thicklines" value="yes"> Thick Lines</label><br>
+			</span>
+			<span id=viridisshow><label>
+				<input type="checkbox" onclick="updategraph();" id="viridis" name="viridis" value="yes"> Viridis</label><br>
 			</span>
 			<span id=removedpointsshow><label>
 				<input type="checkbox" onclick="updategraph();" id="removedpoints" name="removedpoints" value="yes" checked> Show ID of Removed Points</label><br>

@@ -1670,9 +1670,15 @@ function graphchange(obj){
 	document.getElementById('weightedaverageshow').style.display='none';
 	document.getElementById('stackdotsshow').style.display='none';
 	document.getElementById('stripgraphshow').style.display='none';
+	document.getElementById('shapeshow').style.display='none';
+	document.getElementById('hidepointsshow').style.display='none';
+	document.getElementById('violinshow').style.display='none';
+	document.getElementById('beeswarmshow').style.display='none';
 	document.getElementById('donutshow').style.display='none';
 	document.getElementById('errorbarsshowv').style.display='none';
 	document.getElementById('errorbarsshowh').style.display='none';
+	document.getElementById('stackgraphsshow').style.display='none';
+	document.getElementById('viridisshow').style.display='none';
 	$('#removedpointsshow').hide();
 	$('.moveabledot').hide();
 	$('#customequationshow').hide();
@@ -2485,7 +2491,7 @@ function makecolors(alpha,ctx){
 		var colz=0;
 		while(colz<=1){
 			ctx.beginPath();
-			ctx.strokeStyle = ColorHSLaToRGBa(colz*end,s,l,alpha);
+			ctx.strokeStyle = ColorHSLaToRGBa(colz*end,s,l,1);
 			ctx.arc(left,48*scalefactor-rad,rad,0,2*Math.PI);
 			ctx.stroke();
 			left = left + rad*2 + 2;
@@ -2523,7 +2529,7 @@ function makecolors(alpha,ctx){
 		for (var index in colorindexs){
 			var name = colorindexs[index];
 			ctx.beginPath();
-			ctx.strokeStyle = thecolors[index];
+			ctx.strokeStyle = thecolors[index].replace(/[^,]+(?=\))/, '1');
 			ctx.arc(left,48*scalefactor-rad,rad,0,2*Math.PI);
 			ctx.stroke();
 			ctx.fillText(name,left+rad+2*scalefactor,48*scalefactor);
@@ -2684,8 +2690,12 @@ function newdotplot(){
 	$('#colorname').show();
 	$('#greyscaleshow').show();
 	$('#gridlinesshow').show();
-		$('#removedpointsshow').show();
-		$('#stripgraphshow').show();
+	$('#removedpointsshow').show();
+	$('#stripgraphshow').show();
+	$('#shapeshow').show();
+	$('#violinshow').show();
+	$('#beeswarmshow').show();
+	$('#hidepointsshow').show();
 	$('#var1label').html("Numerical 1:<br><small>required</small>");
 	$('#var2label').html("Category 1:<br><small>optional</small>");
 	$('#var3label').html("Category 2:<br><small>optional</small>");
@@ -2919,6 +2929,11 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 	if($('#stripgraph').is(":checked")){
 		stripgraph = 1;
 	}
+	beeswarm = 0;
+	if($('#beeswarm').is(":checked")){
+		beeswarm = 1;
+		sort=1;
+	}
 	var rad = $('#size').val()/2*scalefactor;
 	var thisvalues = [];
 	var xpixels = [];
@@ -2965,49 +2980,72 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 	var ypixel=oypixel;
 	var lastxpixel=0;
 	var yheight = rad*2;
+	center = oypixel-maxheight/2+8*scalefactor;
 	if ((maxheight-10*scalefactor)/maxpoints<yheight){yheight=(maxheight-10*scalefactor)/maxpoints;}
 	xpixels.sort(function(a, b) {return a[sort] - b[sort]})
 	if($('#labels').is(":checked")){var labels="yes";} else {var labels = "no";}
-	highestkey = -1;
-	$.each(xpixels, function( key, value ) {
-		key = value[0];
-		xpixel = value [1];
-		rawxpixel = value [2];
-		val = value[3];
-		if($('#stackdots').is(':checked')){
-			rawxpixel = xpixel;
-		}
-		ctx.beginPath();
-		if(lastxpixel==xpixel){
-			ypixel = ypixel - yheight;
-		} else {
-			ypixel = oypixel-10*scalefactor;
-		}
-		if(stripgraph==1){
-			ypixel = randint(oypixel-10*scalefactor,oypixel-maxheight+10*scalefactor+maxheight*0.5)
-		}
-		lastxpixel = xpixel;
-		if(Number.parseInt(key)>highestkey){
-			lastypixel = ypixel;
-			highestkey = Number.parseInt(key);
-		}
-		ctx.strokeStyle = colors[key];
-		ctx.arc(rawxpixel,ypixel,rad,0,2*Math.PI);
-		ctx.stroke();
-		if(hovers==1 || hovers=='Difference'){
-			xaxislabel = $('#xaxis').val();
-			if(hovers=='Difference'){xaxislabel = "Difference";}
-			$('#graphmap').append('<area shape="circle" coords="'+(rawxpixel/scalefactor)+','+(ypixel/scalefactor)+','+(rad/scalefactor)+'" alt="'+parseInt(add(key,1))+'" desc="Point ID: '+parseInt(add(key,1))+'<br>'+xaxislabel+': '+val+'">');
-		}
-		//text
-		if(labels == "yes"){
-			ctx.fillStyle = 'rgba(0,0,255,1)';
-			fontsize = 10*scalefactor;
-			ctx.font = fontsize+"px Roboto";
-			ctx.textAlign="left";
-			ctx.fillText(parseInt(add(key,1)),add(add(rawxpixel,rad),2*scalefactor),add(ypixel,4*scalefactor));
-		}
-	});
+	if($('#hidepoints').is(':checked') && $('#hidepoints').is(':visible')){
+		// don't show the points
+	} else {
+		highestkey = -1;
+		beeswarmmult = 1;
+		$.each(xpixels, function( key, value ) {
+			key = value[0];
+			xpixel = value [1];
+			rawxpixel = value [2];
+			val = value[3];
+			if($('#stackdots').is(':checked')){
+				rawxpixel = xpixel;
+			}
+			ctx.beginPath();
+			if(lastxpixel==xpixel){
+				ypixel = ypixel - yheight;
+			} else {
+				ypixel = oypixel-10*scalefactor;
+			}
+			if(stripgraph==1){
+				ypixel = randint(oypixel-10*scalefactor,oypixel-maxheight+10*scalefactor+maxheight*0.5)
+			}
+			if(beeswarm==1){
+				if(lastxpixel==xpixel){
+					if(beeswarmmult>0){
+						beeswarmmult *= -1;
+					} else {
+						beeswarmmult = beeswarmmult*-1 + 1;
+					}
+				} else {
+					halfcount = counts[xpixel]/2;
+					if(halfcount==Math.floor(halfcount)){
+						beeswarmmult=0.5;
+					} else {
+						beeswarmmult=0;
+					}
+				}
+				ypixel = center - beeswarmmult*yheight;
+			}
+			lastxpixel = xpixel;
+			if(Number.parseInt(key)>highestkey){
+				lastypixel = ypixel;
+				highestkey = Number.parseInt(key);
+			}
+			ctx.strokeStyle = colors[key];
+			ctx.arc(rawxpixel,ypixel,rad,0,2*Math.PI);
+			ctx.stroke();
+			if(hovers==1 || hovers=='Difference'){
+				xaxislabel = $('#xaxis').val();
+				if(hovers=='Difference'){xaxislabel = "Difference";}
+				$('#graphmap').append('<area shape="circle" coords="'+(rawxpixel/scalefactor)+','+(ypixel/scalefactor)+','+(rad/scalefactor)+'" alt="'+parseInt(add(key,1))+'" desc="Point ID: '+parseInt(add(key,1))+'<br>'+xaxislabel+': '+val+'">');
+			}
+			//text
+			if(labels == "yes"){
+				ctx.fillStyle = 'rgba(0,0,255,1)';
+				fontsize = 10*scalefactor;
+				ctx.font = fontsize+"px Roboto";
+				ctx.textAlign="left";
+				ctx.fillText(parseInt(add(key,1)),add(add(rawxpixel,rad),2*scalefactor),add(ypixel,4*scalefactor));
+			}
+		});
+	}
 	var mingraph = convertvaltopixel(minval,minxtick,maxxtick,left,right);
 	var lqgraph = convertvaltopixel(lq,minxtick,maxxtick,left,right);
 	var medgraph = convertvaltopixel(med,minxtick,maxxtick,left,right);
@@ -3016,6 +3054,101 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 	var minnooutliersgraph = convertvaltopixel(minnooutliersval,minxtick,maxxtick,left,right);
 	var maxnooutliersgraph = convertvaltopixel(maxnooutliersval,minxtick,maxxtick,left,right);
 	var y = oypixel - maxheight*0.1;
+	
+	if(($('#shape').is(':checked') && $('#shape').is(':visible')) || ($('#violin').is(':checked') && $('#violin').is(':visible'))){
+		weights = [];
+		allpointscount = values.length;
+		x = minxtick;
+		range = maxxtick-minxtick;
+		shapestep = range/100;
+		while(x<=maxxtick){
+			total = 0;
+			$.each(thisvalues, function( key, value ) {
+				total += Math.pow((1-Math.abs(value-x)/range),10);
+			});
+			weights.push([x,total/allpointscount]);
+			x+=shapestep;
+		}
+		if($('#yvar').val() == $('#color').val() || $('#zvar').val() == $('#color').val()){
+			ctx.strokeStyle = colors[xpixels[0][0]].replace(/[^,]+(?=\))/, '1');
+			ctx.fillStyle = colors[xpixels[0][0]].replace(/[^,]+(?=\))/, '0.3');
+		} else {
+			ctx.strokeStyle = 'rgba(80,80,80,0.8)';
+			ctx.fillStyle = 'rgba(80,80,80,0.3)';			
+		}
+		ctx.lineWidth = 2*scalefactor;
+	}
+	
+	if($('#shape').is(':checked') && $('#shape').is(':visible')){
+		i=0;
+		bottom = oypixel-10*scalefactor;
+		ctx.beginPath();
+		$.each(weights, function( key, value ) {
+			x = value[0];
+			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
+			y = value[1];
+			ypixel = y*maxheight*2;
+			if(i==0){
+				ctx.moveTo(xpixel, bottom-ypixel);
+			} else {
+				ctx.lineTo(xpixel, bottom-ypixel);
+			}
+			i++;
+		});
+		ctx.stroke();
+		ctx.lineTo(right, bottom);
+		ctx.lineTo(left, bottom);
+		ctx.closePath();
+		ctx.fill();
+	}
+	
+	if($('#violin').is(':checked') && $('#violin').is(':visible')){
+		i=0;
+		center = oypixel-maxheight/2+8*scalefactor;
+		ctx.beginPath();
+		$.each(weights, function( key, value ) {
+			x = value[0];
+			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
+			y = value[1];
+			ypixel = y*maxheight;
+			if(i==0){
+				ctx.moveTo(xpixel, center-ypixel);
+			} else {
+				ctx.lineTo(xpixel, center-ypixel);
+			}
+			i++;
+		});
+		$.each(weights.reverse(), function( key, value ) {
+			x = value[0];
+			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
+			y = value[1];
+			ypixel = y*maxheight;
+			ctx.lineTo(xpixel, center+ypixel);
+		});
+		ctx.closePath();
+		ctx.stroke();
+		ctx.fill();
+		var h = 4*scalefactor;
+		ctx.lineWidth = 1*scalefactor;
+		
+		line(ctx,minnooutliersgraph,center,maxnooutliersgraph,center);
+		
+		ctx.fillStyle = ctx.strokeStyle;
+		ctx.beginPath();
+		ctx.moveTo(lqgraph,add(center,-h));
+		ctx.lineTo(uqgraph,add(center,-h));
+		ctx.lineTo(uqgraph,add(center,h));
+		ctx.lineTo(lqgraph,add(center,h));
+		ctx.closePath();
+		ctx.fill();
+		
+		ctx.beginPath();
+		ctx.fillStyle = 'rgb(255,255,255)';
+		ctx.arc(medgraph,center,h,0,2*Math.PI);
+		ctx.fill();
+		ctx.stroke();
+	}
+	
 	if($('#boxplot').is(":checked")){
 		var y = oypixel - maxheight*0.1;
 		var h = maxheight*0.1;
@@ -4806,6 +4939,7 @@ function newscatter(){
 	$('#errorbarsshowv').show();
 	$('#errorbarsshowh').show();
 	$('#customequationshow').show();
+	$('#stackgraphsshow').show();
 	
 	if($('#customequationdots').is(":checked")){
 		$('.moveabledot').show();
@@ -4930,30 +5064,45 @@ function newscatter(){
 	var maxytick=minmaxstep[1];
 	var ystep=minmaxstep[2];
 
+	if(zpoints.length>0 && $('#stackgraphs').is(":checked")){
+		$('#color').val($('#zvar').val());
+	}
+
 	var alpha = 1-$('#trans').val()/100;
 	var colors = makecolors(alpha,ctx);
 	
 	if(zpoints.length>0){
+		stacknumber=0;
 		zdifferentgroups = split(points,zpoints,4,3);
 		if(typeof zdifferentgroups === 'object'){
 			zgroups = Object.keys(zdifferentgroups);
 			zgroups.sort(sortorder);
 			thisleft=60*scalefactor;
-			eachwidth=(width-40*scalefactor)/zgroups.length;
+			if($('#stackgraphs').is(":checked")){
+				eachwidth=width-70*scalefactor;
+			} else {
+				eachwidth=(width-40*scalefactor)/zgroups.length;
+			}
 			for (index in zgroups){
 				group = zgroups[index];
 				points = zdifferentgroups[group];
 
 				thisright = add(thisleft,eachwidth);
-
-				ctx.fillStyle = '#000000';
-				ctx.font = "bold "+15*scalefactor+"px Roboto";
-				ctx.textAlign="center";
-				ctx.fillText(group,add(thisleft,thisright-50*scalefactor)/2,oypixel-maxheight);
 				
-				plotscatter(ctx,points,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,add(thisleft,30*scalefactor),thisright-50*scalefactor,colors,verticalerrorbars,horizontalerrorbars);
-
-				thisleft = add(thisleft,eachwidth);
+				if(!$('#stackgraphs').is(":checked")){
+					ctx.fillStyle = '#000000';
+					ctx.font = "bold "+15*scalefactor+"px Roboto";
+					ctx.textAlign="center";
+					ctx.fillText(group,add(thisleft,thisright-50*scalefactor)/2,oypixel-maxheight);
+				} else {
+					stacknumber++;
+				}
+				
+				plotscatter(ctx,points,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,add(thisleft,30*scalefactor),thisright-50*scalefactor,colors,verticalerrorbars,horizontalerrorbars,stacknumber);
+				
+				if(!$('#stackgraphs').is(":checked")){
+					thisleft = add(thisleft,eachwidth);
+				}
 			}
 		} else {
 			return zdifferentgroups;
@@ -4972,9 +5121,13 @@ function newscatter(){
 	return dataURL;
 }
 
-function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,left,right,colors,verticalerrorbars,horizontalerrorbars){
-	horaxis(ctx,left,right,add(bottom,10*scalefactor),minxtick,maxxtick,xstep);
-	vertaxis (ctx,gtop,bottom,left-10*scalefactor,minytick,maxytick,ystep);
+
+
+function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,left,right,colors,verticalerrorbars,horizontalerrorbars,stacknumber=0){
+	if(stacknumber<2){
+		horaxis(ctx,left,right,add(bottom,10*scalefactor),minxtick,maxxtick,xstep);
+		vertaxis (ctx,gtop,bottom,left-10*scalefactor,minytick,maxytick,ystep);
+	}
 	ctx.lineWidth = 2*scalefactor;
 	if($('#thicklines').is(":checked")){
 		ctx.lineWidth = 5*scalefactor;
@@ -5039,8 +5192,10 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		}
 		num++;
 	}
-
-	equationtop = gtop;
+	
+	if(stacknumber<2){
+		equationtop = gtop;
+	}
 	ctx.textAlign="left";
 	ctx.fillStyle = '#000';
 	ctx.font = 13*scalefactor+"px Roboto";
@@ -5052,8 +5207,14 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 	var equations = [];
 	
 	if($('#regression').is(":checked") && $('#regshow').is(':visible')){
-		ctx.fillStyle='#f00';
-		ctx.strokeStyle='#f00';
+		if(stacknumber==0){
+			ctx.fillStyle='#f00';
+			ctx.strokeStyle='#f00';
+		} else {
+			ctx.fillStyle=colors[index].replace(/[^,]+(?=\))/, '1');
+			ctx.strokeStyle=colors[index].replace(/[^,]+(?=\))/, '1');
+			console.log(colors);
+		}
 		
 		res = regression.linear(pointstofit,{
 		  precision: 15,
@@ -5259,7 +5420,6 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			lasty = y;
 			x = add(x,step);
 		}
-		console.log(b);
 		if(parseFloat(b)<0){
 			b = " - " + -1*b;
 		} else {
@@ -5374,6 +5534,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 	
 	if($('#regression, #cubic, #quadratic, #yx, #exp, #pow, #log').is(":checked") && $('#regshow, #cubicshow, #quadraticshow, #yxshow, #expshow, #powshow, #logshow').is(':visible')){
 		ctx.fillText("n = "+num,left, equationtop);
+		equationtop = add(equationtop,15*scalefactor);
 	}
 	
 	if($('#meandot').is(":checked") && $('#meandot').is(':visible')){
@@ -5443,10 +5604,295 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		}
 	}
 	
-	if(equations.length>0){
+	if(Object.keys(equations).length>0){
 		console.table(equations);
 	}
 
+}
+
+function newgriddensity(){
+	$('#gridlinesshow').show();
+	$('#invertshow').show();
+	$('#xvar').show();
+	$('#yvar').show();
+	$('#zvar').show();
+	$('#greyscaleshow').show();
+	$('#sizediv').show();
+	$('#removedpointsshow').show();
+	$('#viridisshow').show();
+	$('#pointsizename').html('Intervals:');
+	
+	if($('#customequationdots').is(":checked")){
+		$('.moveabledot').show();
+	} else {
+		$('.moveabledot').hide();
+	}
+
+	var canvas = document.getElementById('myCanvas');
+	var ctx = canvas.getContext('2d');
+	
+	//set size
+	var width = $('#width').val();
+	var height = $('#height').val();
+
+	ctx.canvas.width = width;
+	ctx.canvas.height = height;
+
+	ctx.fillStyle = "#ffffff";
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+	//graph title
+	ctx.fillStyle = '#000000';
+	fontsize=20*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
+	ctx.textAlign="center";
+	ctx.fillText($('#title').val(),width/2,30*scalefactor);
+	
+	//x-axis title
+	ctx.fillStyle = '#000000';
+	ctx.font = "bold "+15*scalefactor+"px Roboto";
+	ctx.textAlign="center";
+	ctx.fillText($('#xaxis').val(),width/2,height-10*scalefactor);
+	
+	//y-axis title
+	x=20*scalefactor;
+	y=height/2;
+	ctx.save();
+	ctx.fillStyle = '#000000';
+	ctx.font = "bold "+15*scalefactor+"px Roboto";
+	ctx.translate(x, y);
+	ctx.rotate(-Math.PI/2);
+	ctx.textAlign = "center";
+	ctx.fillText($('#yaxis').val(), 0, 0);
+	ctx.restore();
+	
+	//get points
+	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
+	var ypoints = (dataforselector[$('#yvar option:selected').text()]).slice();
+	var zpoints = (dataforselector[$('#zvar option:selected').text()]).slice();
+	var verticalerrorbars = (dataforselector[$('#verticalerrorbars option:selected').text()]).slice();
+	var horizontalerrorbars = (dataforselector[$('#horizontalerrorbars option:selected').text()]).slice();
+
+	//check for numeric value
+	var points=[];
+	var allpoints=[];
+	var pointsremoved=[];
+	var pointsforminmax=[];
+	var pointsforminmaxy=[];
+	countx=0;
+	county=0;
+	for (var index in xpoints){
+		if($.isNumeric(xpoints[index])){countx++;}
+		if($.isNumeric(ypoints[index])){county++;}
+		if($.isNumeric(xpoints[index]) && $.isNumeric(ypoints[index])){
+			points.push(index);
+			allpoints.push(index);
+			pointsforminmax.push(xpoints[index]);
+			pointsforminmaxy.push(ypoints[index]);
+		} else {
+			pointsremoved.push(add(index,1));
+		}
+	}
+
+	if(countx==0){
+		return 'Error: You must select a numeric variable for variable 1';
+	}
+
+	if(county==0){
+		return 'Error: You must select a numeric variable for variable 2';
+	}
+
+	if(pointsremoved.length!=0 && $('#removedpoints').is(":checked")){
+		ctx.fillStyle = '#000000';
+		ctx.font = 13*scalefactor+"px Roboto";
+		ctx.textAlign="right";
+		ctx.fillText("ID(s) of Points Removed: "+pointsremoved.join(", "),width-48*scalefactor,48*scalefactor);
+	}
+
+	if(points.length==0){
+		return 'Error: You must select a numeric variable for variable 1';
+	}
+
+	var oypixel=height-60*scalefactor;
+	var maxheight=height-120*scalefactor;
+	var left=90*scalefactor;
+	var right=width-60*scalefactor;
+	var gtop=90*scalefactor;
+	var bottom=height-60*scalefactor;
+
+	xmin = Math.min.apply(null, pointsforminmax);
+	xmax = Math.max.apply(null, pointsforminmax);
+	ymin = Math.min.apply(null, pointsforminmaxy);
+	ymax = Math.max.apply(null, pointsforminmaxy);
+	if($.isNumeric($('#scatplotminx').val())){
+		xmin=$('#scatplotminx').val();
+	}
+	if($.isNumeric($('#scatplotmaxx').val())){
+		xmax=$('#scatplotmaxx').val();
+	}
+	if($.isNumeric($('#scatplotminy').val())){
+		ymin=$('#scatplotminy').val();
+	}
+	if($.isNumeric($('#scatplotmaxy').val())){
+		ymax=$('#scatplotmaxy').val();
+	}
+	var minmaxstep = axisminmaxstep(xmin,xmax);
+	var minxtick=minmaxstep[0];
+	var maxxtick=minmaxstep[1];
+	var xstep=minmaxstep[2];
+	var minmaxstep = axisminmaxstep(ymin,ymax);
+	var minytick=minmaxstep[0];
+	var maxytick=minmaxstep[1];
+	var ystep=minmaxstep[2];
+
+	var alpha = 1-$('#trans').val()/100;
+	var colors = makecolors(alpha,ctx);
+	
+	if(zpoints.length>0){
+		stacknumber=0;
+		zdifferentgroups = split(points,zpoints,4,3);
+		if(typeof zdifferentgroups === 'object'){
+			zgroups = Object.keys(zdifferentgroups);
+			zgroups.sort(sortorder);
+			thisleft=60*scalefactor;
+			if($('#stackgraphs').is(":checked")){
+				eachwidth=width-70*scalefactor;
+			} else {
+				eachwidth=(width-40*scalefactor)/zgroups.length;
+			}
+			for (index in zgroups){
+				group = zgroups[index];
+				points = zdifferentgroups[group];
+
+				thisright = add(thisleft,eachwidth);
+				
+				if(!$('#stackgraphs').is(":checked")){
+					ctx.fillStyle = '#000000';
+					ctx.font = "bold "+15*scalefactor+"px Roboto";
+					ctx.textAlign="center";
+					ctx.fillText(group,add(thisleft,thisright-50*scalefactor)/2,oypixel-maxheight+10*scalefactor);
+				} else {
+					stacknumber++;
+				}
+				
+				plotgriddensity(ctx,points,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,add(thisleft,30*scalefactor),thisright-50*scalefactor,colors,verticalerrorbars,horizontalerrorbars,stacknumber);
+				
+				if(!$('#stackgraphs').is(":checked")){
+					thisleft = add(thisleft,eachwidth);
+				}
+			}
+		} else {
+			return zdifferentgroups;
+		}
+	} else {
+		plotgriddensity(ctx,points,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,left,right,colors,verticalerrorbars,horizontalerrorbars);
+		
+	}
+	
+	labelgraph(ctx,width,height);
+	
+	if($('#invert').is(":checked")){
+		invert(ctx)
+	}
+
+	var dataURL = canvas.toDataURL();
+	return dataURL;
+}
+
+function plotgriddensity(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,left,right,colors,verticalerrorbars,horizontalerrorbars,stacknumber=0){
+	if(stacknumber<2){
+		horaxis(ctx,left,right,add(bottom,10*scalefactor),minxtick,maxxtick,xstep);
+		vertaxis (ctx,gtop,bottom,left-10*scalefactor,minytick,maxytick,ystep);
+	}
+	ctx.lineWidth = 2*scalefactor;
+	points = [];
+	for (var index in indexes){
+		var index = indexes[index];
+		var xpoint = parseFloat(xpoints[index]);
+		var ypoint = parseFloat(ypoints[index]);
+		points.push([xpoint,ypoint]);
+	}
+	
+	intervals=(($('#size').val()-3)/2).toFixed(0);
+	if(intervals==0){intervals=1;}
+	
+	xinterval = xstep / intervals;
+	yinterval = ystep / intervals;
+	
+	densitymax = 0;
+	densities = [];
+	
+	xstart = minxtick;
+	while(xstart<maxxtick){
+		xend = xstart + xinterval;
+		ystart = minytick;
+		while(ystart<maxytick){
+			yend = ystart + yinterval;
+			density = 0;
+			var len = points.length;
+			while (len--) {
+			    xpoint = points[len][0];
+			    if(xpoint<xend && xpoint>=xstart){
+			    	ypoint = points[len][1];
+			    	if(ypoint<yend && ypoint>=ystart){
+			    		density++;
+			    	}
+			    }
+			}
+			densities[xstart+'-'+ystart]=density;
+			if(densitymax<density){densitymax = density;}
+			ystart = ystart + yinterval;
+		}
+		xstart = xstart + xinterval;
+	}
+	
+	xstart = minxtick;
+	while(xstart<maxxtick){
+		xend = xstart + xinterval;
+		xstartpixel = convertvaltopixel(xstart,minxtick,maxxtick,left,right).toFixed(0);
+		xendpixel = convertvaltopixel(xend,minxtick,maxxtick,left,right).toFixed(0);
+		ystart = minytick;
+		while(ystart<maxytick){
+			yend = ystart + yinterval;
+			ystartpixel = convertvaltopixel(ystart,minytick,maxytick,bottom,gtop).toFixed(0);
+			yendpixel = convertvaltopixel(yend,minytick,maxytick,bottom,gtop).toFixed(0);
+			density = densities[xstart+'-'+ystart];
+			if($('#viridis').is(":checked")){
+				alpha = (density/densitymax*255).toFixed(0);
+				ctx.fillStyle = viridis[alpha];
+			} else {
+				alpha = density/densitymax;
+				ctx.fillStyle='rgba(0,0,0,'+alpha+')';
+			}
+			ctx.fillRect(xstartpixel, ystartpixel, xendpixel-xstartpixel, yendpixel-ystartpixel);
+			$('#graphmap').append('<area shape="rect" coords="'+(xstartpixel/scalefactor)+","+(ystartpixel/scalefactor)+","+(xendpixel/scalefactor)+","+(yendpixel/scalefactor)+'" alt="1" desc="Points: '+density+'<br>'+$('#xaxis').val()+': '+xstart+' to '+xend+'<br>'+$('#yaxis').val()+': '+ystart+' to '+yend+'">');
+			ystart = ystart + yinterval;
+		}
+		xstart = xstart + xinterval;
+	}
+	
+	var left = left - 30*scalefactor;
+	ctx.fillStyle = 'rgba(0,0,0,1)';
+	ctx.font = 12*scalefactor+"px Roboto";
+	ctx.textAlign="left";
+	ctx.fillText('0',left,48*scalefactor);
+	left = left + ctx.measureText('0').width + 5*scalefactor;
+	var colz=0;
+	while(colz<=1){
+		ctx.strokeWidth = scalefactor;
+		if($('#viridis').is(":checked")){
+			alpha = (colz*255).toFixed(0);
+			ctx.strokeStyle = viridis[alpha];
+		} else {
+			alpha = colz;
+			ctx.strokeStyle='rgba(0,0,0,'+alpha+')';
+		}
+		line(ctx,left,38*scalefactor,left,48*scalefactor);
+		left += 1*scalefactor;
+		colz=colz+0.01;
+	}
+	ctx.fillText(densitymax,left + 5*scalefactor,48*scalefactor);
+	
 }
 
 function selectText(element) {
