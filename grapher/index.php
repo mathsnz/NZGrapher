@@ -16,7 +16,7 @@
 	<script src="./jquery.csv.min.js"></script>
 	<script src="./regression.min.js"></script>
 	<title>NZGrapher</title>
-	<link href='https://fonts.googleapis.com/css?family=Roboto:400,700|Roboto+Condensed' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,700|Roboto+Condensed|Material+Icons+Outlined' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="style.css?v=<?php
 		date_default_timezone_set('Pacific/Auckland');
 		echo $v;
@@ -246,13 +246,13 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 
 <div id=top>
 	<div style="font-size:30px;background:none;border:none;position:absolute;top:3px;left:5px;z-index:4"><img src='logow.png' height=37></div>
-	<div style="position:absolute;top:18px;right:35px;background:none;border:none;">
+	<div style="position:absolute;top:6px;right:20px;background:none;border:none;">
 	<form id=datafolder method=get style='display:inline;'>
-		Folder: <input type="text" name=folder value="<?php echo $_GET['folder'];?>" style='width:80px;height:27px;'>
+		Folder: <input type="text" name=folder value="<?php echo $_GET['folder'];?>" style='width:80px;height:20px;'>
 	</form>
 	<form id=datasource method=get style='display:inline;'>
 		<input type=hidden name=folder value="<?php echo $_GET['folder'];?>">
-		Data Source: <select name=dataset onChange="document.getElementById('datasource').submit();" style='width:180px;height:27px;padding:0px;'>
+		Data Source: <select name=dataset onChange="document.getElementById('datasource').submit();" style='width:150px;height:20px;padding:0px;'>
 <?php
 
 	$files=glob($_GET['folder'].'/*.csv');
@@ -282,7 +282,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 		</select>
 	</form>
 	</div>
-	<img src='3dots.png' id='3dots' style="position:absolute;height:25px;right:15px;top:17px;z-index:10;cursor:pointer;">
+	<img src='3dots.png' id='3dots' style="position:absolute;height:20px;right:7px;top:6px;z-index:10;cursor:pointer;">
 </div>
 <div class="callout popup" id=showhideleftbottom style='position:absolute;right:5px;left:auto;top:45px;'>
 <ul>
@@ -301,6 +301,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 <div class=abutton id=samshowhide>Sample and More</div> <div class=spacer></div>
 <div class=abutton id=teachingtoolsshowhide>Teaching Tools</div> <div class=spacer></div>
 <div class=abutton id=update>Save Changes</div> <div class=spacer></div>
+<div class=abutton id=wizardmenu>Display Explorer <span class="material-icons-outlined" style='font-size: inherit'>insights</span></div> <div class=spacer></div>
 <div class=abutton id=helper>Help</div>
 </div>
 
@@ -586,8 +587,10 @@ if(isset($_POST['csv_data'])){
 </div>
 
 <div id=graphdiv class=absolute>
-    <div id="dot1" class=moveabledot style="top:100px;left:200px"></div>
-    <div id="dot2" class=moveabledot style="top:200px;left:100px"></div>
+    <div id="dot1" class='moveabledot moveabledot1' style="top:100px;left:200px"></div>
+    <div id="dot2" class='moveabledot moveabledot1' style="top:200px;left:100px"></div>
+    <div id="dot3" class='moveabledot moveabledot2' style="top:200px;left:200px"></div>
+    <div id="dot4" class='moveabledot moveabledot2' style="top:300px;left:100px"></div>
 <div id=jsgraph></div>
 <canvas id="myCanvas" width="600" height="400" style='display:none'></canvas>
 </div>
@@ -640,6 +643,16 @@ if(isset($_POST['csv_data'])){
 			</span>
 			<span id=boxnooutliershow><label>
 				<input type="checkbox" onclick="updategraph();" id="boxnooutlier" name="boxnooutlier" value="yes"> Box (No Outlier)</label><br>
+			</span>
+			<span id=halfquartershow style="text-indent: -15px;">
+				½ ¾ Rule:<br>
+				<select onchange="updategraph();" id="halfquarter" name="halfquarter" value="0">
+					<option value=0>None</option>
+					<option value=1>Top ½, Bottom ¾</option>
+					<option value=2>Bottom ½, Top ¾</option>
+					<option value=3>Top ¾, Bottom ½</option>
+					<option value=4>Bottom ¾, Top ½</option>
+				</select>
 			</span>
 			<span id=intervalshow>
 				<label><input type="checkbox" onclick="updategraph();" id="interval" name="interval" value="yes"> Informal C-I</label><br>
@@ -756,9 +769,13 @@ if(isset($_POST['csv_data'])){
 			<span id=removedpointsshow><label>
 				<input type="checkbox" onclick="updategraph();" id="removedpoints" name="removedpoints" value="yes" checked> Show ID of Removed Points</label><br>
 			</span>
-			<span id=customequationshow><label>
-				<input type="checkbox" onclick="updategraph();" id="customequationdots" name="customequationdots" value="yes"> Add Custom Line</label><br>
-				<input type="checkbox" onclick="updategraph();" id="customequationequation" name="customequationequation" value="yes"> Show Eqn</label><br>
+			<span id=customequationshow>
+				<label><input type="checkbox" onclick="updategraph();" id="customequationdots" name="customequationdots" value="yes"> Add Cust. Line</label><br>
+				<label><input type="checkbox" onclick="updategraph();" id="customequationequation" name="customequationequation" value="yes"> Show Eqn</label><br>
+			</span>
+			<span id=customequationshow2>
+				<label><input type="checkbox" onclick="updategraph();" id="customequationdots2" name="customequationdots2" value="yes"> Add Cust. Line 2</label><br>
+				<label><input type="checkbox" onclick="updategraph();" id="customequationequation2" name="customequationequation2" value="yes"> Show Eqn 2</label><br>
 			</span>
 			<span id=errorbarsshowh style='text-indent: -15px;'><label>
 				Horizontal Error Bars:<br>
@@ -1015,7 +1032,7 @@ if(isset($_GET['dev'])){
 		</center>
 	</span>
 </div>
-<div id=options class=absolute style="width:35%;height:50%;position:fixed;top:20%;left:2.5%;border:1px solid #ccc;z-index:21;display:none;">
+<div id=options class=absolute style="width:35%;height:70%;position:fixed;top:10%;left:2.5%;border:1px solid #ccc;z-index:21;display:none;">
 	<div style="background-color:rgba(0, 100, 200, 0.85096);width:100%;text-align:center;height:25px;position:absolute;top:0px;left:0px;border:none;color:#fff;">
 		More Axis Options
 		<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#options').hide();">&times;</div>
@@ -1028,6 +1045,8 @@ if(isset($_GET['dev'])){
 			<tr><td>Max:<td><input id=boxplotmax value=auto>
 			<tr><td colspan=2>For adjusting the size of the red summary statistics
 			<tr><td>Text Size:<td><input id=textsize value=13 type=number>
+			<tr><td>Smoothing Power:<td><input id=smoothingpower value=10 type=number>
+			<tr><td colspan=2>For adjusting the smoothness on violin and shape outline graphs. Smaller number is more smooth.
 			<tr><td>&nbsp;
 			<tr><td colspan=2><b>Scatter Graphs:</b><br>
 			For creating axis limits it pretend the ____ value is ____
@@ -1044,7 +1063,7 @@ if(isset($_GET['dev'])){
 			<tr><td>Max Y:<td><input id=timeseriesmaxy value=auto>
 		</table>
 		<br><br>
-		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="$('#options input').val('auto');$('#textsize').val('13');updategraph();">Reset</span>
+		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="$('#options input').val('auto');$('#textsize').val('13');$('#smoothingpower').val('10');updategraph();">Reset</span>
 		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="updategraph()">Update Graph</span>
 	</div>
 </div>
@@ -1059,6 +1078,49 @@ if(isset($_GET['dev'])){
 	<center>
 		<button onclick="$('#flag').hide();$('#flagcover').hide();" class=button style='background-color:#cc8500;'>OK</button>
 	</center>
+</div>
+<div id="wizard" style="
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: #fff;
+    z-index: 99;
+    padding:10px;
+    padding-top:80px;
+    display:none;
+    overflow-y: auto;
+">
+	<div id=wizardtop style='color:#fff;text-align: center;height:70px;background-color:rgba(0,100,200,0.85);position:absolute;top:0px;left:0px;right:0px;'>
+    	<span class="material-icons-outlined" onclick="$('#wizard').hide()" style='position:absolute;top:5px;right:5px;cursor:pointer;'>close</span>
+    	<img src="logows.png" style="width: 300px;vertical-align: top;">
+		<span style="font-size: 45px;font-weight: bold;">Display Explorer
+			<span class="material-icons-outlined" style='font-size: 36px;'>
+				insights
+			</span>
+		</span>
+	</div>
+	Welcome to the NZGrapher Display Explorer. 
+	<ul style='margin:0'>
+		<li>This mode helps you explore the data by suggesting a number of different graphs that might be useful for looking at your data.</li>
+		<li>It uses the currently loaded dataset. If you want to look at a different one, close out of this mode and either choose one of the built-in datasets or upload your own.</li>
+		<li>As these are automatically generated, potentially some of them may not be helpful.</li>
+		<li>You can choose <b>one</b> variable for summary investigations, or <b>two</b> variables for other investigations.</li>
+	</ul>
+	<br>
+	The main variable I want to look at is: <select id=wizardx onchange='wizardupdate()'></select> which is <select id=wizardxtype onchange='wizardupdate()'>
+		<option></option>
+		<option>Numerical</option>
+		<option>Categorical</option>
+		<option>Time Series</option>
+	</select><br>
+	(Optional: I also want to look at: <select id=wizardy onchange='wizardupdate()'></select> which is <select id=wizardytype onchange='wizardupdate()'>
+		<option></option>
+		<option>Numerical</option>
+		<option>Categorical</option>
+	</select>)<br>
+	<div id=wizardoutput></div>
 </div>
 </body>
 <script>

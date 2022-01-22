@@ -45,7 +45,7 @@ div.absolute{
 #top input, #top select {
 	color:#000;
 	background-color:#fff;
-	font-size:16px;
+	font-size:14px;
 	border:none;
 }
 
@@ -536,4 +536,14 @@ kbd {
 }
 .moveabledot:hover {
   cursor: pointer;
+}
+.moveabledot2 {
+  background-color: rgb(245, 99, 223);
+}
+.moveabledot2:active {
+  background-color: rgba(248, 140, 231, 1.00);
+}
+#wizardoutput img {
+	width:300px;
+	cursor:pointer;
 }

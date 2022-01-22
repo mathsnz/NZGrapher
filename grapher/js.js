@@ -1,3 +1,5 @@
+/* global $ ga ipaddress */
+
 var xmin;
 var xmax;
 var ymin;
@@ -10,6 +12,7 @@ var r;
 var scalefactor;
 var dataforselector;
 var highestkey;
+var countdotplotrow;
 
 function getCookie(cname) {
   var name = cname + "=";
@@ -354,7 +357,7 @@ $(function(){
 		} catch(err) {
 			console.log(err.message);
 		}
-		col=$('#columndel').val();
+		var col=$('#columndel').val();
 		$('#data tr').each(function(){
 			$(this).find('td:eq('+col+')').remove();
 		})
@@ -435,7 +438,7 @@ $(function(){
 				a=a+1;
 			})
 			var allvals=values;
-			uniquevalues=unique( values );
+			var uniquevalues=unique( values );
 			if(uniquevalues.length<10){
 				uniquevalues.sort(sortorder);
 				var value="";
@@ -591,7 +594,7 @@ $(function(){
 				a=a+1;
 			})
 			var allvals=values;
-			uniquevalues=unique( values );
+			var uniquevalues=unique( values );
 			if(uniquevalues.length<500){
 				uniquevalues.sort(sortorder);
 				var value="";
@@ -679,7 +682,7 @@ $(function(){
 				a=a+1;
 			})
 			var allvals=values;
-			uniquevalues=unique( values );
+			var uniquevalues=unique( values );
 			if(uniquevalues.length<500){
 				uniquevalues.sort(sortorder);
 				var value="";
@@ -731,6 +734,7 @@ $(function(){
 			regroupfrom = regroupfrom.slice(8);
 			regroups[regroupfrom]=regroupto;
 		}
+		var val, currentval;
 		$('#data tr').each(function(){
 			if(a==0){
 				$(this).append("<td><div>" + variable + " (Re-Grouped)<br></div></td>");
@@ -781,7 +785,7 @@ $(function(){
 				a=a+1;
 			})
 			var allvals=values;
-			uniquevalues=unique( values );
+			var uniquevalues=unique( values );
 			if(uniquevalues.length<500){
 				uniquevalues.sort(sortorder);
 				var value="";
@@ -967,7 +971,8 @@ $(function(){
 		}
 		}, 0.0001);
 	});
-
+	
+	var animatetimeout;
 	function animatefunction(){
 		if(animaterunning && !animate){
 			clearTimeout(animatetimeout);
@@ -1148,6 +1153,7 @@ $(function(){
 				return $(this).text() === filterby;
 			}).index() - 1;
 		var a=0;
+		var val;
 		$('#data tr').each(function(){
 			if(a!=0){
 				val = parseFloat($(this).children('td').eq(index).text());
@@ -1157,7 +1163,7 @@ $(function(){
 			}
 			a++;
 		});
-		i=0;
+		var i=0;
 		$('#data tr th:first-child').each(function() {
 			if(i!=0){$(this).html(i);}
 			i++;
@@ -1583,6 +1589,26 @@ $(function(){
 		updatebox()
 	});
 
+	$( "#wizardmenu" ).click(function(){
+		try {
+			ga('send', 'event', 'Function', 'Wizard - Open', ipaddress);
+		} catch(err) {
+			console.log(err.message);
+		}
+		$('#wizard').show();
+		var xselindex = Math.max(0,$('#wizardx').prop('selectedIndex'));
+		var yselindex = Math.max(0,$('#wizardy').prop('selectedIndex'));
+		$('#wizardx').empty();
+		$('#wizardy').empty();
+		$('#xvar option').each(function(){
+			$('#wizardx').append('<option>'+$(this).text()+'</option>');
+			$('#wizardy').append('<option>'+$(this).text()+'</option>');
+		})
+		$('#wizardx').prop('selectedIndex',xselindex);
+		$('#wizardy').prop('selectedIndex',yselindex);
+		wizardupdate();
+	});
+
 	$( "#importlink" ).click(function() {
 		try {
 			ga('send', 'event', 'Function', 'Data - importlink', ipaddress);
@@ -1679,9 +1705,11 @@ function graphchange(obj){
 	document.getElementById('errorbarsshowh').style.display='none';
 	document.getElementById('stackgraphsshow').style.display='none';
 	document.getElementById('viridisshow').style.display='none';
+	document.getElementById('halfquartershow').style.display='none';
 	$('#removedpointsshow').hide();
 	$('.moveabledot').hide();
 	$('#customequationshow').hide();
+	$('#customequationshow2').hide();
 	updategraph();
 }
 
@@ -1814,9 +1842,9 @@ function updategraphgo(){
 		document.getElementById('height').value=document.getElementById('graphdiv').offsetHeight*5;
 		scalefactor=5;
 	} else {
-    document.getElementById('width').value=document.getElementById('graphdiv').offsetWidth;
-  	document.getElementById('height').value=document.getElementById('graphdiv').offsetHeight;
-  }
+    	document.getElementById('width').value=document.getElementById('graphdiv').offsetWidth;
+		document.getElementById('height').value=document.getElementById('graphdiv').offsetHeight;
+	}
   $('#scalefactor').val(scalefactor);
 	w=$('#type').val();
 	if(animate){
@@ -2696,6 +2724,7 @@ function newdotplot(){
 	$('#violinshow').show();
 	$('#beeswarmshow').show();
 	$('#hidepointsshow').show();
+	$('#halfquartershow').show();
 	$('#var1label').html("Numerical 1:<br><small>required</small>");
 	$('#var2label').html("Category 1:<br><small>optional</small>");
 	$('#var3label').html("Category 2:<br><small>optional</small>");
@@ -2889,6 +2918,7 @@ function labelgraph(ctx,width,height){
 }
 
 function plotysplit(ctx,left,right,oypixel,minxtick,maxxtick,xstep,maxheight,points,xpoints,ypoints,colors,allygroups){
+	countdotplotrow = 0;
 	ctx.strokeStyle = '#000000';
 	horaxis(ctx,left,right,add(oypixel,10*scalefactor),minxtick,maxxtick,xstep);
 	if(ypoints.length>0){
@@ -2920,7 +2950,7 @@ function plotysplit(ctx,left,right,oypixel,minxtick,maxxtick,xstep,maxheight,poi
 }
 
 function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,maxheight,colors,sort,hovers){
-
+	countdotplotrow++;
 	ctx.lineWidth = 2*scalefactor;
 	if($('#thicklines').is(":checked")){
 		ctx.lineWidth = 5*scalefactor;
@@ -3064,7 +3094,7 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		while(x<=maxxtick){
 			total = 0;
 			$.each(thisvalues, function( key, value ) {
-				total += Math.pow((1-Math.abs(value-x)/range),10);
+				total += Math.pow((1-Math.abs(value-x)/range),$('#smoothingpower').val());
 			});
 			weights.push([x,total/allpointscount]);
 			x+=shapestep;
@@ -3251,6 +3281,39 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		ctx.arc(meangraph, oypixel-5*scalefactor, 7*scalefactor, 0, Math.PI*2, true);
 		ctx.closePath();
 		ctx.fill();
+	}
+
+	if($('#halfquarter').val()>0){
+		/*
+		var mingraph = convertvaltopixel(minval,minxtick,maxxtick,left,right);
+		var lqgraph = convertvaltopixel(lq,minxtick,maxxtick,left,right);
+		var medgraph = convertvaltopixel(med,minxtick,maxxtick,left,right);
+		var uqgraph = convertvaltopixel(uq,minxtick,maxxtick,left,right);
+		var maxgraph = convertvaltopixel(maxval,minxtick,maxxtick,left,right);
+		var minnooutliersgraph = convertvaltopixel(minnooutliersval,minxtick,maxxtick,left,right);
+		var maxnooutliersgraph = convertvaltopixel(maxnooutliersval,minxtick,maxxtick,left,right);
+		*/
+		var bottom = oypixel;
+		if((countdotplotrow==1 && $('#halfquarter').val()==4) || (countdotplotrow==2 && $('#halfquarter').val()==1)){
+			// Top 1/2
+			ctx.fillStyle = 'rgba(255,0,0,0.2)';
+			ctx.fillRect(medgraph, bottom, maxgraph-medgraph, -maxheight*0.95);
+		}
+		if((countdotplotrow==1 && $('#halfquarter').val()==3) || (countdotplotrow==2 && $('#halfquarter').val()==2)){
+			// Bottom 1/2
+			ctx.fillStyle = 'rgba(255,0,0,0.2)';
+			ctx.fillRect(mingraph, bottom, medgraph-mingraph, -maxheight*0.95);
+		}
+		if((countdotplotrow==2 && $('#halfquarter').val()==3) || (countdotplotrow==1 && $('#halfquarter').val()==2)){
+			// Top 3/4
+			ctx.fillStyle = 'rgba(0,0,255,0.2)';
+			ctx.fillRect(lqgraph, bottom, maxgraph-lqgraph, -maxheight*0.95);
+		}
+		if((countdotplotrow==2 && $('#halfquarter').val()==4) || (countdotplotrow==1 && $('#halfquarter').val()==1)){
+			// Bottom 3/4
+			ctx.fillStyle = 'rgba(0,0,255,0.2)';
+			ctx.fillRect(mingraph, bottom, uqgraph-mingraph, -maxheight*0.95);
+		}
 	}
 
 }
@@ -4939,12 +5002,19 @@ function newscatter(){
 	$('#errorbarsshowv').show();
 	$('#errorbarsshowh').show();
 	$('#customequationshow').show();
+	$('#customequationshow2').show();
 	$('#stackgraphsshow').show();
 	
 	if($('#customequationdots').is(":checked")){
-		$('.moveabledot').show();
+		$('.moveabledot1').show();
 	} else {
-		$('.moveabledot').hide();
+		$('.moveabledot1').hide();
+	}
+	
+	if($('#customequationdots2').is(":checked")){
+		$('.moveabledot2').show();
+	} else {
+		$('.moveabledot2').hide();
 	}
 
 	var canvas = document.getElementById('myCanvas');
@@ -5532,6 +5602,55 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		}
 	}
 	
+	if($('#customequationdots2').is(":checked")){
+		ctx.fillStyle = '#f660df';
+		ctx.strokeStyle='#f660df';
+		
+		dot3left = add($('#dot3')[0].style.left.replace('px',''),7);
+		dot4left = add($('#dot4')[0].style.left.replace('px',''),7);
+		dot3top = add($('#dot3')[0].style.top.replace('px',''),7);
+		dot4top = add($('#dot4')[0].style.top.replace('px',''),7);
+		
+		x1 = convertvaltopixel(dot3left,left,right,minxtick,maxxtick);
+		x2 = convertvaltopixel(dot4left,left,right,minxtick,maxxtick);
+		y1 = convertvaltopixel(dot3top,bottom,gtop,minytick,maxytick);
+		y2 = convertvaltopixel(dot4top,bottom,gtop,minytick,maxytick);
+		
+		m = (y2-y1)/(x2-x1);
+		c = y2 - m*x2;
+		
+		x = minxtick;
+		lasty=0;
+		step = (maxxtick - minxtick)/100;
+		while(x<maxxtick){
+			y = add(m * x,c);
+			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
+			ypixel = convertvaltopixel(y,minytick,maxytick,bottom,gtop);
+			if(x>minxtick && y>=minytick && y<=maxytick && lasty>=minytick && lasty<=maxytick){
+				line(ctx,lastxpixel,lastypixel,xpixel,ypixel);
+			}
+			lastxpixel=xpixel;
+			lastypixel=ypixel;
+			lasty = y;
+			x = add(x,step);
+		}
+		if($('#customequationequation2').is(":checked")){
+			m = m.toPrecision(5);
+			c = c.toPrecision(5);
+			if(parseFloat(c)<0){
+				c = " - " + -1*c;
+			} else {
+				c = " + " + c;
+			}
+			ctx.fillText($('#scatplotnamey').val()+" = "+m+" * "+$('#scatplotnamex').val()+c,left, equationtop);
+			equationtop = add(equationtop,15*scalefactor);
+			
+			equations['Custom'] = {};
+			equations['Custom']['Equation'] = 'y = '+m+'x + '+c;
+			equations['Custom']['r2'] = '';
+		}
+	}
+	
 	if($('#regression, #cubic, #quadratic, #yx, #exp, #pow, #log').is(":checked") && $('#regshow, #cubicshow, #quadraticshow, #yxshow, #expshow, #powshow, #logshow').is(':visible')){
 		ctx.fillText("n = "+num,left, equationtop);
 		equationtop = add(equationtop,15*scalefactor);
@@ -5621,12 +5740,6 @@ function newgriddensity(){
 	$('#removedpointsshow').show();
 	$('#viridisshow').show();
 	$('#pointsizename').html('Intervals:');
-	
-	if($('#customequationdots').is(":checked")){
-		$('.moveabledot').show();
-	} else {
-		$('.moveabledot').hide();
-	}
 
 	var canvas = document.getElementById('myCanvas');
 	var ctx = canvas.getContext('2d');
@@ -8997,7 +9110,16 @@ function newbargraphfnf(fnf){
 
 	//check x points for number of groups
 	if(xpoints.length==0){
-		return 'Error: You must select a variable for "Category"';
+		var colourpoints = (dataforselector[$('#color option:selected').text()]).slice();
+		if(colourpoints.length==0){
+			return 'Error: You must select a variable for "Category"';
+		} else {
+			xpoints = [];
+			for (var index in colourpoints){
+				xpoints.push(" ");
+			}
+			
+		}
 	}
 	
 	if(fnf=='f'){
@@ -9185,6 +9307,22 @@ function newbargraphfnf(fnf){
 	ctx.font = "bold "+fontsize+"px Roboto";
 	ctx.textAlign="center";
 	ctx.fillText($('#xaxis').val(),width/2,height-10*scalefactor);
+	
+	//y-axis title
+	if($('#yaxis').val() != "Y Axis Title"){
+		var x, y;
+		x=20*scalefactor;
+		y=height/2;
+		ctx.save();
+		ctx.fillStyle = '#000000';
+		fontsize = 15*scalefactor;
+		ctx.font = "bold "+fontsize+"px Roboto";
+		ctx.translate(x, y);
+		ctx.rotate(-Math.PI/2);
+		ctx.textAlign = "center";
+		ctx.fillText($('#yaxis').val(), 0, 0);
+		ctx.restore();
+	}
 
 	labelgraph(ctx,width,height);
 	if($('#invert').is(":checked")){
@@ -9207,22 +9345,6 @@ function plotbargraph(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,poin
 	maxheight = maxheight - 60*scalefactor;
 	
 	gbottom = add(gtop,maxheight);
-	
-	//y-axis title
-	if($('#yaxis').val() != "Y Axis Title"){
-		var x, y;
-		x=20*scalefactor;
-		y=gtop + maxheight/2;
-		ctx.save();
-		ctx.fillStyle = '#000000';
-		fontsize = 15*scalefactor;
-		ctx.font = "bold "+fontsize+"px Roboto";
-		ctx.translate(x, y);
-		ctx.rotate(-Math.PI/2);
-		ctx.textAlign = "center";
-		ctx.fillText($('#yaxis').val(), 0, 0);
-		ctx.restore();
-	}
 	
 	append = '';
 	if(percent100){append = '%';}
@@ -11408,3 +11530,543 @@ $(document).ready(function(){
 	  }
 	}
 })
+
+function resetsettings(){
+	$('#arrows').prop('checked',false);
+	$('#regression').prop('checked',false);
+	$('#boxplot').prop('checked',false);
+	$('#hidepoints').prop('checked',false);
+	$('#shape').prop('checked',false);
+	$('#violin').prop('checked',false);
+	$('#beeswarm').prop('checked',false);
+	$('#stripgraph').prop('checked',false);
+	$('#highboxplot').prop('checked',false);
+	$('#boxnowhisker').prop('checked',false);
+	$('#boxnooutlier').prop('checked',false);
+	$('#interval').prop('checked',false);
+	$('#intervallim').prop('checked',false);
+	$('#labels').prop('checked',false);
+	$('#meandot').prop('checked',false);
+	$('#stackdots').prop('checked',false);
+	$('#jitter').prop('checked',false);
+	$('#quadratic').prop('checked',false);
+	$('#cubic').prop('checked',false);
+	$('#exp').prop('checked',false);
+	$('#log').prop('checked',false);
+	$('#pow').prop('checked',false);
+	$('#yx').prop('checked',false);
+	$('#stackgraphs').prop('checked',false);
+	$('#differentaxis').prop('checked',false);
+	$('#weightedaverage').prop('checked',false);
+	$('#residualsforcex').prop('checked',false);
+	$('#longtermtrend').prop('checked',false);
+	$('#seasonal').prop('checked',false);
+	$('#startfinish').prop('checked',false);
+	$('#gridlines').prop('checked',false);
+	$('#percent100').prop('checked',false);
+	$('#relativefrequency').prop('checked',false);
+	$('#relativewidth').prop('checked',false);
+	$('#donut').prop('checked',false);
+	$('#normaldist').prop('checked',false);
+	$('#rectangulardist').prop('checked',false);
+	$('#triangulardist').prop('checked',false);
+	$('#poissondist').prop('checked',false);
+	$('#binomialdist').prop('checked',false);
+	$('#invert').prop('checked',false);
+	$('#thicklines').prop('checked',false);
+	$('#viridis').prop('checked',false);
+	$('#removedpoints').prop('checked',false);
+	$('#customequationdots').prop('checked',false);
+	$('#customequationequation').prop('checked',false);
+	$('#customequationdots2').prop('checked',false);
+	$('#customequationequation2').prop('checked',false);
+	$('#grayscale').prop('checked',false);
+	$('#btype').prop('selectedIndex',0);
+	$('#regtype').prop('selectedIndex',0);
+	$('#addmult').prop('selectedIndex',0);
+	$('#horizontalerrorbars').prop('selectedIndex',0);
+	$('#verticalerrorbars').prop('selectedIndex',0);
+	$('#options input').val('auto');
+	$('#textsize').val('13');
+	$('#smoothingpower').val('10');
+	$('#size').val('7');
+	$('#trans').val('50');
+	$('#color').prop('selectedIndex',0);
+}
+
+var wizardfunctionstodraw=[];
+var graphcount = 0;
+var wizardswapxy = false;
+
+function wizardupdate(){
+	$('#xaxis').val($('#wizardx').val());
+	resetsettings();
+	$('#wizardoutput').html('');
+	$('#standardsize').val('Small').change();
+	updategraph();
+	
+	wizardfunctionstodraw = [];
+	wizardswapxy = false;
+	
+	if($('#wizardy').prop('selectedIndex')==0){
+		// single variable mode
+		if($('#wizardxtype').val()=='Numerical'){
+			wizardfunctionstodraw = ['wizarddotplot','wizardboxplot','wizarddotandboxplot','wizardbeeswarm','wizardridgeline','wizardviolin','wizardhistogram'];
+			console.log('Wizard Single - Numerical')
+		}
+		if($('#wizardxtype').val()=='Categorical'){
+			wizardfunctionstodraw = ['wizardbargraph','wizardstripgraph','wizarddonutchart','wizardpiechart'];
+			console.log('Wizard Single - Categorical')
+		}
+	} else {
+		// two variable mode
+		if($('#wizardxtype').val()=='Numerical'){
+			if($('#wizardytype').val()=='Numerical'){
+				wizardfunctionstodraw = ['wizardscatter','wizardscatterregression','wizardgriddensity','wizardgriddensityviridis']
+				console.log('Wizard Double - Numerical / Numerical')
+			}
+			if($('#wizardytype').val()=='Categorical'){
+				wizardfunctionstodraw = ['wizarddotplot','wizardcolordotplot','wizardboxplot','wizarddotandboxplot','wizardbeeswarm','wizardridgeline','wizardviolin','wizardhistogram'];
+				console.log('Wizard Double - Numerical / Categorical')
+			}
+		}
+		if($('#wizardxtype').val()=='Categorical'){
+			if($('#wizardytype').val()=='Numerical'){
+				wizardfunctionstodraw = ['wizarddotplot','wizardcolordotplot','wizardboxplot','wizarddotandboxplot','wizardbeeswarm','wizardridgeline','wizardviolin','wizardhistogram'];
+				wizardswapxy = true;
+				console.log('Wizard Double - Categorical / Numerical')
+			}
+			if($('#wizardytype').val()=='Categorical'){
+				wizardfunctionstodraw = ['wizardbargraph','wizardbargraphcolor','wizardstripgraph2var','wizardareagraph','wizarddonutchart','wizardpiechart'];
+				console.log('Wizard Double - Categorical / Categorical')
+			}
+		}
+		if($('#wizardxtype').val()=='Time Series'){
+			if($('#wizardytype').val()=='Numerical'){
+				wizardfunctionstodraw = ['wizardtimeseriesbasic','wizardtimeserieswithseasonal','wizardtimeseriesrecomp','wizardtimeseriesseasonal','wizardtimeseriesforecast'];
+				console.log('Wizard Double - Time Series / Numerical')
+			}
+		}
+	}
+	
+	graphcount = 0;
+	
+	$('#wizardoutput').append('<div id=wizardloading><br>Loading more... please wait...</div>');
+	setTimeout(drawnext, 10);
+}
+
+function drawnext(){
+	$('#wizardloading').remove();
+	
+	if (wizardfunctionstodraw.length>0){
+		var value = wizardfunctionstodraw.shift();
+		console.log(value);
+		document.getElementById('width').value=600;
+		document.getElementById('height').value=400;
+		var graphdata = window[value]();
+		if(graphdata.substr(0,4)=='data'){
+			$('#wizardoutput').append('<img src="'+graphdata+'" onclick="'+value+'();$(\'#wizard\').hide();graphchange();">');
+			graphcount++
+		} else {
+			console.log(graphdata);
+		}
+		$('#wizardoutput').append('<div id=wizardloading><br>Loading more... please wait...</div>');
+		setTimeout(drawnext, 10);
+	} else {
+		if(graphcount==0){
+			$('#wizardoutput').append("<br><b>Sorry, we couldn't automatically make any graphs with that selection.</b>");
+		} else {
+			$('#wizardoutput').append("<br><br>Click on any of the graphs to open in full NZGrapher mode and edit the settings.");
+		}
+		resetsettings();
+		$('#standardsize').val('Auto').change();
+	}
+	
+}
+
+function wizarddotplot(){
+	if(wizardswapxy){
+		$('#xvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+		$('#yvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	} else {
+		$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+		$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));	
+	}
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Dot Plot of '+xvartitle);
+	$('#type').val('newdotplot');
+	return newdotplot();
+}
+
+function wizardcolordotplot(){
+	if(wizardswapxy){
+		$('#xvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+	$('#yvar').prop('selectedIndex',0);
+	} else {
+		$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	$('#yvar').prop('selectedIndex',0);	
+	}
+	$('#yaxis').val('');
+	resetsettings();
+	if(wizardswapxy){
+		$('#color').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	} else {
+		$('#color').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));	
+	}
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Dot Plot of '+xvartitle);
+	$('#type').val('newdotplot');
+	return newdotplot();
+}
+
+function wizardhistogram(){
+	if(wizardswapxy){
+		$('#xvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+		$('#yvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	} else {
+		$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+		$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));	
+	}
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Histogram of '+xvartitle);
+	$('#type').val('newhistogram');
+	return newhistogram();
+}
+
+function wizardboxplot(){
+	if(wizardswapxy){
+		$('#xvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+		$('#yvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	} else {
+		$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+		$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));	
+	}
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Box and Whisker of '+xvartitle);
+	$('#boxplot').prop('checked',true);
+	$('#hidepoints').prop('checked',true);
+	$('#type').val('newdotplot');
+	return newdotplot();
+}
+
+function wizarddotandboxplot(){
+	if(wizardswapxy){
+		$('#xvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+		$('#yvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	} else {
+		$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+		$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));	
+	}
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Dot Plot and Box and Whisker of '+xvartitle);
+	$('#highboxplot').prop('checked',true);
+	$('#trans').val('75');
+	$('#type').val('newdotplot');
+	return newdotplot();
+}
+
+function wizardbeeswarm(){
+	if(wizardswapxy){
+		$('#xvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+		$('#yvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	} else {
+		$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+		$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));	
+	}
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Bee Swarm of '+xvartitle);
+	$('#beeswarm').prop('checked',true);
+	$('#type').val('newdotplot');
+	return newdotplot();
+}
+
+function wizardridgeline(){
+	if(wizardswapxy){
+		$('#xvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+		$('#yvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	} else {
+		$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+		$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));	
+	}
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	if(wizardswapxy){
+		$('#color').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	} else {
+		$('#color').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));	
+	}
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Shape Outline of '+xvartitle);
+	$('#shape').prop('checked',true);
+	$('#hidepoints').prop('checked',true);
+	$('#type').val('newdotplot');
+	return newdotplot();
+}
+
+function wizardviolin(){
+	if(wizardswapxy){
+		$('#xvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+		$('#yvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	} else {
+		$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+		$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));	
+	}
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	if(wizardswapxy){
+		$('#color').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	} else {
+		$('#color').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));	
+	}
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Violin Graph of '+xvartitle);
+	$('#violin').prop('checked',true);
+	$('#hidepoints').prop('checked',true);
+	$('#type').val('newdotplot');
+	return newdotplot();
+}
+
+function wizardpiechart(){
+	$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val('');
+	resetsettings();
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Pie Chart of '+xvartitle);
+	$('#type').val('newpiechart');
+	return newpiechart();
+}
+
+function wizarddonutchart(){
+	$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val('');
+	resetsettings();
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Donut Chart of '+xvartitle);
+	$('#donut').prop('checked',true);
+	$('#type').val('newpiechart');
+	return newpiechart();
+}
+
+function wizardbargraph(){
+	$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Bar Graph of '+xvartitle);
+	$('#type').val('newbargraph');
+	return newbargraph();
+}
+
+function wizardbargraphcolor(){
+	$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	$('#yvar').prop('selectedIndex',0);
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	$('#color').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Stacked Bar Graph of '+xvartitle);
+	$('#trans').val(0);
+	$('#type').val('newbargraph');
+	return newbargraph();
+}
+
+function wizardstripgraph(){
+	$('#xvar').prop('selectedIndex',0);
+	$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	$('#color').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Strip Graph of '+xvartitle);
+	$('#trans').val(0);
+	$('#type').val('newbargraph');
+	$('#percent100').prop('checked',true);
+	return newbargraph();
+}
+
+function wizardstripgraph2var(){
+	$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	$('#yvar').prop('selectedIndex',0);
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	$('#color').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Strip Graph of '+xvartitle);
+	$('#trans').val(0);
+	$('#type').val('newbargraph');
+	$('#percent100').prop('checked',true);
+	return newbargraph();
+}
+
+function wizardareagraph(){
+	$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	$('#yvar').prop('selectedIndex',0);
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	$('#color').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Area Graph of '+xvartitle);
+	$('#trans').val(0);
+	$('#type').val('newbargraph');
+	$('#percent100').prop('checked',true);
+	$('#relativewidth').prop('checked',true);
+	return newbargraph();
+}
+
+function wizardscatter(){
+	$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Scatter Graph of '+xvartitle);
+	$('#type').val('newscatter');
+	return newscatter();
+}
+
+function wizardscatterregression(){
+	$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Scatter Graph of '+xvartitle);
+	$('#regression').prop('checked',true);
+	$('#type').val('newscatter');
+	return newscatter();
+}
+
+function wizardgriddensity(){
+	$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Grid Density Plot of '+xvartitle);
+	$('#type').val('newgriddensity');
+	return newgriddensity();
+}
+
+function wizardgriddensityviridis(){
+	$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	var xvartitle = $('#wizardx').val();
+	if($('#wizardy').val()!=''){xvartitle += ' by '+$('#wizardy').val();}
+	$('#title').val('Grid Density Plot of '+xvartitle);
+	$('#viridis').prop('checked',true);
+	$('#type').val('newgriddensity');
+	return newgriddensity();
+}
+
+function wizardtimeseriesbasic(){
+	$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	var xvartitle = $('#wizardy').val();
+	$('#title').val('Time Series of '+xvartitle);
+	$('#type').val('newtimeseries');
+	return newtimeseries();
+}
+
+function wizardtimeserieswithseasonal(){
+	$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	var xvartitle = $('#wizardy').val();
+	$('#title').val('Time Series of '+xvartitle);
+	$('#longtermtrend').prop('checked',true);
+	$('#seasonal').prop('checked',true);
+	$('#type').val('newtimeseries');
+	return newtimeseries();
+}
+
+function wizardtimeseriesrecomp(){
+	$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	var xvartitle = $('#wizardy').val();
+	$('#title').val('Time Series Recomposition of '+xvartitle);
+	$('#type').val('newtimeseriesrecomp');
+	return newtimeseriesrecomp();
+}
+
+function wizardtimeseriesseasonal(){
+	$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	var xvartitle = $('#wizardy').val();
+	$('#title').val('Seasonal Effects of '+xvartitle);
+	$('#type').val('newtimeseriesseasonaleffects');
+	return newtimeseriesseasonaleffects();
+}
+
+function wizardtimeseriesforecast(){
+	$('#xvar').prop('selectedIndex',$('#wizardx').prop('selectedIndex'));
+	$('#yvar').prop('selectedIndex',$('#wizardy').prop('selectedIndex'));
+	$('#zvar').prop('selectedIndex',0);
+	$('#yaxis').val($('#wizardy').val());
+	resetsettings();
+	var xvartitle = $('#wizardy').val();
+	$('#title').val('Forecast for '+xvartitle);
+	$('#type').val('newtimeseriessforecasts');
+	return newtimeseriessforecasts();
+}

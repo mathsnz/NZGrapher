@@ -10,10 +10,15 @@ On Dot Plots:
 - median only - bolder
 Projector Mode?
 Leave a trail of medians on dotplot when doing resampling
-CSS Styles for "Basic Mode"
 */
 
-?>
+?>	<b>2022-01-22</b><ul>
+		<li>New function: Display Explorer... great for exploring data.</li>
+		<li>Under More Options is the ability to adjust the smoothness of the violin and shape outline graphs.</li>
+		<li>Updated Sea Ice dataset (thanks Marion).</li>
+		<li>Highlight ½ ¾ Rule on dot plots.</li>
+		<li>Can draw a second custom line on scatter graphs.</li>
+	</ul>
 	<b>2021-12-15</b><ul>
 		<li>New Graph Type: Grid Density Plot</li>
 		<li>New options on Dot Plot with "Shape Outline", "Violin" and "Bee Swarm" options, as well as a "Hide Points" tickbox.</li>
