@@ -17,7 +17,7 @@ $img = str_replace(' ', '+', $img);
 $fileData = base64_decode($img);
 
 //saving
-$randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
+$randomString = uniqid();
 $fileName = "./imagetemp/$randomString.png";
 file_put_contents($fileName, $fileData);
 

@@ -12,7 +12,10 @@ Projector Mode?
 Leave a trail of medians on dotplot when doing resampling
 */
 
-?>	<b>2022-01-22</b><ul>
+?>	<b>2022-02-10</b><ul>
+		<li>Update the method of saving graphs to avoid duplicate codes.</li>
+	</ul>
+	<b>2022-01-22</b><ul>
 		<li>New function: Display Explorer... great for exploring data.</li>
 		<li>Under More Options is the ability to adjust the smoothness of the violin and shape outline graphs.</li>
 		<li>Updated Sea Ice dataset (thanks Marion).</li>
