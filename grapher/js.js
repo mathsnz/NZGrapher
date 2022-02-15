@@ -3764,6 +3764,7 @@ function newtimeseries(){
 	$('#zvar').show();
 	$('#differentaxisshow').show();
 	$('#gridlinesshow').show();
+	$('#recompoutput,#recompoutputextra').remove();
 
 	var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
@@ -4267,6 +4268,7 @@ function newtimeseriesrecomp(){
 	$('#xvar').show();
 	$('#yvar').show();
 	$('#gridlinesshow').show();
+	$('#recompoutput,#recompoutputextra').remove();
 
 	var canvas = document.getElementById('myCanvas');
 	var ctx = canvas.getContext('2d');
@@ -6033,6 +6035,7 @@ function newtimeseriesseasonaleffects(){
 	$('#addmultshow').show();
 	$('#xvar').show();
 	$('#yvar').show();
+	$('#recompoutput,#recompoutputextra').remove();
 
 	var canvas = document.getElementById('myCanvas');
 	var ctx = canvas.getContext('2d');
@@ -6302,6 +6305,7 @@ function newtimeseriessforecasts(){
 	$('#yvar').show();
 	$('#for').show();
 	$('#invertshow').show();
+	$('#recompoutput,#recompoutputextra').remove();
 
 	var canvas = document.getElementById('myCanvas');
 	var ctx = canvas.getContext('2d');
@@ -10892,36 +10896,108 @@ function advancedtoolsshow(){
 	$('#advanceddiv').show();
 }
 
+//============================================================================
+//      tscomponents() fix, original code from grapher.nz 2022
+//      modified by Jayden Litolff (jayden.litolff@tbc.school.nz)(jayden.pl@outlook.com)(www.gitlab.com/jaybigguy10)
+//============================================================================
+
 function tscomponents(){
-	let output = [];
-	let compare=function(a,b){return(a<b)?-1:1};
-	output["Rawdata"]={};
-	output['Rawdata']['Min']=ymin;
-	output['Rawdata']['Max']=ymax;
-	let range=ymax-ymin;
-	output['Rawdata']['Range']=range;
-	let trenddata=[...trend];
-	trenddata.sort(compare);
-	output["Trend"]={};
-	output['Trend']['Min']=trenddata[0];
-	output['Trend']['Max']=trenddata[trenddata.length-1];
-	output['Trend']['Range']=(trenddata[trenddata.length-1]-trenddata[0]);
-	output['Trend']['Influence']=((trenddata[trenddata.length-1]-trenddata[0])/range*100).toFixed(1)+'%';
-	let seasondata=[...s];
-	seasondata.sort(compare);
-	output["Seasonal"]={};
-	output['Seasonal']['Min']=seasondata[0];
-	output['Seasonal']['Max']=seasondata[seasondata.length-1];
-	output['Seasonal']['Range']=seasondata[seasondata.length-1]-seasondata[0];
-	output['Seasonal']['Influence']=((seasondata[seasondata.length-1]-seasondata[0])/range*100).toFixed(1)+'%';
-	let residualdata=[...r];
-	residualdata.sort(compare);
-	output["Residual"]={};
-	output['Residual']['Min']=residualdata[0];
-	output['Residual']['Max']=residualdata[residualdata.length-1];
-	output['Residual']['Range']=(residualdata[residualdata.length-1]-residualdata[0]);
-	output['Residual']['Influence']=((residualdata[residualdata.length-1]-residualdata[0])/range*100).toFixed(1)+'%';
-	console.table(output)
+
+  let output = [];
+  let compare=function(a,b){return(a<b)?-1:1};
+
+  var ypoints = (dataforselector[$('#yvar option:selected').text()]).slice();
+  ypoints.sort(function(a, b) {
+    return a - b;
+    });
+
+  output["Rawdata"]={};
+  output['Rawdata']['Min'] = Number(ypoints[0]);
+  output['Rawdata']['Max'] = Number(ypoints[ypoints.length-1]);
+  
+  let range = ypoints[ypoints.length-1] - ypoints[0];
+  output['Rawdata']['Range']=range;
+
+  let trenddata=[...trend];
+  trenddata.sort(compare);
+  output["Trend"]={};
+  output['Trend']['Min']=trenddata[0];
+  output['Trend']['Max']=trenddata[trenddata.length-1];
+  output['Trend']['Range']=(trenddata[trenddata.length-1]-trenddata[0]);
+  output['Trend']['Influence']=((trenddata[trenddata.length-1]-trenddata[0])/range*100).toFixed(1)+'%';
+  let seasondata=[...s];
+  seasondata.sort(compare);
+  output["Seasonal"]={};
+  output['Seasonal']['Min']=seasondata[0];
+  output['Seasonal']['Max']=seasondata[seasondata.length-1];
+  output['Seasonal']['Range']=seasondata[seasondata.length-1]-seasondata[0];
+  output['Seasonal']['Influence']=((seasondata[seasondata.length-1]-seasondata[0])/range*100).toFixed(1)+'%';
+  let residualdata=[...r];
+  residualdata.sort(compare);
+  output["Residual"]={};
+  output['Residual']['Min']=residualdata[0];
+  output['Residual']['Max']=residualdata[residualdata.length-1];
+  output['Residual']['Range']=(residualdata[residualdata.length-1]-residualdata[0]);
+  output['Residual']['Influence']=((residualdata[residualdata.length-1]-residualdata[0])/range*100).toFixed(1)+'%';
+  console.table(output)
+  
+  $('#recompoutput,#recompoutputextra').remove();
+
+  var $table = $( '<table id=recompoutput class=recompoutput></table>' );
+
+  $table.append( '<tr><td></td><td>Minimum</td><td>Maximum</td><td>Range</td><td>Influence</td></tr>' );
+
+  var $line = $( '<tr></tr>' );
+  $line.append( $( '<td></td>' ).html( "RawData" ) );
+  $line.append( $( '<td></td>' ).html( Math.round((output['Rawdata']['Min'] + Number.EPSILON) * 100) / 100 ) );
+  $line.append( $( '<td></td>' ).html( Math.round((output['Rawdata']['Max'] + Number.EPSILON) * 100) / 100 ) );
+  $line.append( $( '<td></td>' ).html( Math.round((output['Rawdata']['Range'] + Number.EPSILON) * 100) / 100 ) );
+  $line.append( $( '<td></td>' ).html( " " ) );
+  $table.append( $line );
+
+  var $line = $( '<tr></tr>' );
+  $line.append( $( '<td></td>' ).html( "Trend" ) );
+  $line.append( $( '<td></td>' ).html( Math.round((output['Trend']['Min'] + Number.EPSILON) * 100) / 100 ) );
+  $line.append( $( '<td></td>' ).html( Math.round((output['Trend']['Max'] + Number.EPSILON) * 100) / 100 ) );
+  $line.append( $( '<td></td>' ).html( Math.round((output['Trend']['Range'] + Number.EPSILON) * 100) / 100) );
+  $line.append( $( '<td></td>' ).html( output['Trend']['Influence']) );
+  $table.append( $line );
+
+  var $line = $( '<tr></tr>' );
+  $line.append( $( '<td></td>' ).html( "Seasonal" ) );
+  $line.append( $( '<td></td>' ).html( Math.round((output['Seasonal']['Min'] + Number.EPSILON) * 100) / 100 ) );
+  $line.append( $( '<td></td>' ).html( Math.round((output['Seasonal']['Max'] + Number.EPSILON) * 100) / 100 ) );
+  $line.append( $( '<td></td>' ).html( Math.round((output['Seasonal']['Range'] + Number.EPSILON) * 100) / 100 ) );
+  $line.append( $( '<td></td>' ).html( output['Seasonal']['Influence']) );
+  $table.append( $line );
+
+  var $line = $( '<tr></tr>' );
+  $line.append( $( '<td></td>' ).html( "Residual" ) );
+  $line.append( $( '<td></td>' ).html( Math.round((output['Residual']['Min'] + Number.EPSILON) * 100) / 100 ) );
+  $line.append( $( '<td></td>' ).html( Math.round((output['Residual']['Max'] + Number.EPSILON) * 100) / 100 ) );
+  $line.append( $( '<td></td>' ).html( Math.round((output['Residual']['Range'] + Number.EPSILON) * 100) / 100 ) );
+  $line.append( $( '<td></td>' ).html( output['Residual']['Influence'] ) );
+  $table.append( $line );
+
+  $table.appendTo( $( "#advanceddiv" ) );
+
+  var toreturn = "<span id=recompoutputextra><br><button class=button onclick=\"selectText($('#recompoutput')[0]);document.execCommand('copy');\" style='float:left'>Select and Copy Table</button></div>"+
+  "				<style>"+
+  "				.recompoutput {"+
+  "					border-collapse:collapse;"+
+  "					margin-top: 20px;"+
+  "				}"+
+  "				.recompoutput td, .recompoutput th {"+
+  "					border:1px solid #000;"+
+  "					padding-left:4px;"+
+  "					padding-right:4px;"+
+  "					width:80px;"+
+  "				}"+
+  "			</style>"+
+  "	</span>"
+
+  $( "#advanceddiv" ).append(toreturn)
+  
 }
 
 function newbsteachstep(){
