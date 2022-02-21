@@ -9,8 +9,15 @@ stream_context_set_default( [
 ]);
 
 $url = urldecode($_GET['dataset']);
+if(substr_count($url,":")>1){
+	die("You cannot use a port number in the url or recursive queries. If this is a valid link download the csv and then upload to NZGrapher. ".substr_count($url,":"));
+}
 $url = str_replace(" ","%20",$url);
 $file_headers = get_headers($url);
+
+echo "<pre>";
+print_r($file_headers);
+die();
 
 // we want the the last errorcode, reverse array so we start at the end:
 $file_headers = array_reverse($file_headers);

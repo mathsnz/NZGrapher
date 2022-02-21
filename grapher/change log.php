@@ -12,7 +12,11 @@ Projector Mode?
 Leave a trail of medians on dotplot when doing resampling
 */
 
-?>	<b>2022-02-10</b><ul>
+?>	<b>2022-02-21</b><ul>
+		<li>Update to display of timeseries components.</li>
+		<li>Changes to how urls are fetched.</li>
+	</ul>
+	<b>2022-02-10</b><ul>
 		<li>Update the method of saving graphs to avoid duplicate codes.</li>
 	</ul>
 	<b>2022-01-22</b><ul>
