@@ -13,6 +13,10 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2022-03-22</b><ul>
+		<li>Added option to use the viridis colour scale rather than a rainbow colour scale.</li>
+		<li>Fixed the clicking on two categorical variables on the pairs plot.</li>
+	</ul>
 	<b>2022-03-02</b><ul>
 		<li>New option on dot plots to show OVS (Overall Visual Spread) & DBM (Difference Between Medians).</li>
 	</ul>

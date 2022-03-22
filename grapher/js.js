@@ -1664,6 +1664,7 @@ function graphchange(obj){
 	document.getElementById('zvar').style.display='none';
 	document.getElementById('color').style.display='none';
 	document.getElementById('colorname').style.display='none';
+	document.getElementById('colourscale').style.display='none';
 	document.getElementById('sizediv').style.display='none';
 	document.getElementById('transdiv').style.display='none';
 	document.getElementById('quadraticshow').style.display='none';
@@ -2504,14 +2505,27 @@ function makecolors(alpha,ctx){
 		var end=0.8;
 		var s=0.75;
 		var l=0.6;
-		for (var index in colorpoints){
-			if($.isNumeric(colorpoints[index])){
-				var n = (colorpoints[index]-min)/(max-min);
-				colors[index]=ColorHSLaToRGBa(n*end,s,l,alpha);
-			} else {
-				colors[index]='rgba(80,80,80,'+alpha+')';
+		if($('#colourscale').val()=='Rainbow'){
+			for (var index in colorpoints){
+				if($.isNumeric(colorpoints[index])){
+					var n = (colorpoints[index]-min)/(max-min);
+					colors[index]=ColorHSLaToRGBa(n*end,s,l,alpha);
+				} else {
+					colors[index]='rgba(80,80,80,'+alpha+')';
+				}
+			}
+		} else {
+			for (var index in colorpoints){
+				if($.isNumeric(colorpoints[index])){
+					end = 0.9;
+					var n = ((colorpoints[index]-min)/(max-min)*end*255).toFixed(0);
+					colors[index]=viridis[n]+('0'+(1*(255*alpha).toFixed(0)).toString(16)).substr(-2);
+				} else {
+					colors[index]='rgba(80,80,80,'+alpha+')';
+				}
 			}
 		}
+		
 		var left=40*scalefactor;
 		var rad = $('#size').val()/2*scalefactor;
 		ctx.fillStyle = 'rgba(0,0,0,1)';
@@ -2523,7 +2537,12 @@ function makecolors(alpha,ctx){
 		var colz=0;
 		while(colz<=1){
 			ctx.beginPath();
-			ctx.strokeStyle = ColorHSLaToRGBa(colz*end,s,l,1);
+			if($('#colourscale').val()=='Rainbow'){
+				ctx.strokeStyle = ColorHSLaToRGBa(colz*end,s,l,1);
+			} else {
+				var n = (colz*end*255).toFixed(0);
+				ctx.strokeStyle = viridis[n];
+			}
 			ctx.arc(left,48*scalefactor-rad,rad,0,2*Math.PI);
 			ctx.stroke();
 			left = left + rad*2 + 2;
@@ -2538,13 +2557,24 @@ function makecolors(alpha,ctx){
 		colorindexs.sort(sortorder);
 		$.unique(colorindexs);
 		var thecolors=[];
+		var thecolorsnoalpha=[];
 		var colorcount = colorindexs.length;
 		var end=colorcount/add(colorcount,1)*0.8;
 		var s=0.75;
 		var l=0.6;
-		for (var index in colorindexs){
-			var n = index/(colorcount-1);
-			thecolors[index]=ColorHSLaToRGBa(n*end,s,l,alpha);
+		if($('#colourscale').val()=='Rainbow'){
+			for (var index in colorindexs){
+				var n = index/(colorcount-1);
+				thecolors[index]=ColorHSLaToRGBa(n*end,s,l,alpha);
+				thecolorsnoalpha[index]=ColorHSLaToRGBa(n*end,s,l,1);
+			}
+		} else {
+			for (var index in colorindexs){
+				end = 0.9
+				var n = (index/(colorcount-1)*255*end).toFixed(0);
+				thecolors[index]=viridis[n]+('0'+(1*(255*alpha).toFixed(0)).toString(16)).substr(-2);
+				thecolorsnoalpha[index]=viridis[n];
+			}
 		}
 		for (var index in colorpoints){
 			var point = colorindexs.indexOf(colorpoints[index]);
@@ -2561,7 +2591,7 @@ function makecolors(alpha,ctx){
 		for (var index in colorindexs){
 			var name = colorindexs[index];
 			ctx.beginPath();
-			ctx.strokeStyle = thecolors[index].replace(/[^,]+(?=\))/, '1');
+			ctx.strokeStyle = thecolorsnoalpha[index];
 			ctx.arc(left,48*scalefactor-rad,rad,0,2*Math.PI);
 			ctx.stroke();
 			ctx.fillText(name,left+rad+2*scalefactor,48*scalefactor);
@@ -2720,6 +2750,7 @@ function newdotplot(){
 	$('#zvar').show();
 	$('#color').show();
 	$('#colorname').show();
+	$('#colourscale').show();
 	$('#greyscaleshow').show();
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
@@ -5043,6 +5074,7 @@ function newscatter(){
 	$('#zvar').show();
 	$('#color').show();
 	$('#colorname').show();
+	$('#colourscale').show();
 	$('#greyscaleshow').show();
 	$('#sizediv').show();
 	$('#removedpointsshow').show();
@@ -7620,7 +7652,7 @@ function drawminiareagraphs(ctx,ydata,xdata,bleft,bright,btop,bbottom,c,r,title)
 		l=add(l,bwidth*total/count);
 	});
 	ctx.fillStyle = '#000';
-	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('type').value='bar and area graph';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('color').selectedIndex="+r+"+1;document.getElementById('type').value='newbargraph';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();$('#percent100').prop('checked',true);$('#relativewidth').prop('checked',true);graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
 }
 
 function lockaxis(){
@@ -7643,6 +7675,7 @@ function newresiduals(){
 	$('#yvar').show();
 	$('#color').show();
 	$('#colorname').show();
+	$('#colourscale').show();
 	$('#labelshow').show();
 	$('#greyscaleshow').show();
 	$('#sizediv').show();
@@ -7939,6 +7972,7 @@ function newpiechart(){
 	$('#xvar').show();
 	$('#yvar').show();
 	$('#zvar').show();
+	$('#colourscale').show();
 	$('#var1label').html("Category 1:<br><small>required</small>");
 	$('#var2label').html("Category 2:<br><small>optional</small>");
 	$('#var3label').html("Frequency:<br><small>optional</small>");
@@ -9125,6 +9159,7 @@ function newbargraphfnf(fnf){
 	$('#yvar').show();
 	$('#color').show();
 	$('#colorname').show();
+	$('#colourscale').show();
 	$('#transdiv').show();
 	$('#greyscaleshow').show();
 	$('#gridlinesshow').show();
@@ -10393,6 +10428,7 @@ function newpairedexperiment(){
 	$('#yvar').show();
 	$('#color').show();
 	$('#colorname').show();
+	$('#colourscale').show();
 	$('#greyscaleshow').show();
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();

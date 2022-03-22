@@ -580,7 +580,7 @@ if(isset($_POST['csv_data'])){
 <tr><td><span id=var3label>variable 3:</span><td>
 <select style='width:120px;display:none;' onChange="updategraph();" name=zvals id=zvar>
 </select>
-<td>
+<td>Colour Scale: <td><select style="width: 120px;" onChange="updategraph();" id=colourscale><option>Rainbow</option><option>Viridis</option></select></td>
 </table>
 	<input type="hidden" id=width name=width value=500>
 	<input type="hidden" id=height name=height value=500>
