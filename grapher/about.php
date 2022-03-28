@@ -1,5 +1,5 @@
 <center>
-	<h1>About <img src='logob.png' style='position:relative;top:22px;height:65px;'></h1>
+	<h1>About <img src='img/logob.png' style='position:relative;top:22px;height:65px;'></h1>
 </center>
 <br>
 <br>	

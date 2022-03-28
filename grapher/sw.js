@@ -10,15 +10,15 @@ self.addEventListener('install', function(e) {
 	   './style.css?v=20220322',
 	   './js.js?v=20220322',
 	   './jsnew.js?v=20220322',
-	   './logob.png',
-	   './loading.gif',
-	   './logow.png',
-	   './3dots.png',
+	   './img/logob.png',
+	   './img/loading.gif',
+	   './img/logow.png',
+	   './img/3dots.png',
 	   './change%20log.php',
 	   './getdata.php?dataset=http%3A%2F%2Fgrapher.nz%2Fdatasets%2FBabies.csv',
-	   './unchecked.png',
-	   './checked.png',
-	   './about.php'
+	   './img/unchecked.png',
+	   './img/checked.png',
+	   './img/about.php'
      ]);
    })
  );

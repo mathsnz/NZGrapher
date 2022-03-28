@@ -66,7 +66,7 @@ if (screen.availWidth < 1024)
 ?>>
 	<div id=welcomecontent class=absolute onclick="event.stopPropagation()" style='text-align:center;font-size:90%;'>
 		<br>
-		<span style='display:block;width:100%;text-align:center'><img src='logob.png' style='max-height:70px;'></span>
+		<span style='display:block;width:100%;text-align:center'><img src='img/logob.png' style='max-height:70px;'></span>
 		<table style='width:100%;margin-bottom:5px;max-width: 800px;margin: 0 auto;font-size:100%;'>
 			<tr>
 				<td style='width:50%;border-right:1px solid #ccc;padding-right:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
@@ -185,7 +185,7 @@ if (screen.availWidth < 1024)
 <div class=absolute style='position:absolute;top:50%;left:50%;width:400px;height:150px;z-index:12;text-align:center;padding:5px;margin-left:-105px;margin-top:-155px;'>
 <div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=progresstitle>Progress</div>
 <br><br><span id=progressdescription></span><br><span id=progresssize></span><br><br>
-<img src='./loading.gif'>
+<img src='./img/loading.gif'>
 </div>
 </div>
 
@@ -245,7 +245,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 </div>
 
 <div id=top>
-	<div style="font-size:30px;background:none;border:none;position:absolute;top:3px;left:5px;z-index:4"><img src='logow.png' height=37></div>
+	<div style="font-size:30px;background:none;border:none;position:absolute;top:3px;left:5px;z-index:4"><img src='img/logow.png' height=37></div>
 	<div style="position:absolute;top:6px;right:20px;background:none;border:none;">
 	<form id=datafolder method=get style='display:inline;'>
 		Folder: <input type="text" name=folder value="<?php echo $_GET['folder'];?>" style='width:80px;height:20px;'>
@@ -282,7 +282,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 		</select>
 	</form>
 	</div>
-	<img src='3dots.png' id='3dots' style="position:absolute;height:20px;right:7px;top:6px;z-index:10;cursor:pointer;">
+	<img src='img/3dots.png' id='3dots' style="position:absolute;height:20px;right:7px;top:6px;z-index:10;cursor:pointer;">
 </div>
 <div class="callout popup" id=showhideleftbottom style='position:absolute;right:5px;left:auto;top:45px;'>
 <ul>
@@ -1098,7 +1098,7 @@ if(isset($_GET['dev'])){
 ">
 	<div id=wizardtop style='color:#fff;text-align: center;height:70px;background-color:rgba(0,100,200,0.85);position:absolute;top:0px;left:0px;right:0px;'>
     	<span class="material-icons-outlined" onclick="$('#wizard').hide()" style='position:absolute;top:5px;right:5px;cursor:pointer;'>close</span>
-    	<img src="logows.png" style="width: 300px;vertical-align: top;">
+    	<img src="img/logows.png" style="width: 300px;vertical-align: top;">
 		<span style="font-size: 45px;font-weight: bold;">Display Explorer
 			<span class="material-icons-outlined" style='font-size: 36px;'>
 				insights

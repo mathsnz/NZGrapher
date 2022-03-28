@@ -216,7 +216,7 @@ input[type=checkbox]{
 
 input[type=checkbox]::before { 
     content: "";
-    background-image: url('./unchecked.png');
+    background-image: url('./img/unchecked.png');
     background-size: 15px 15px;
     display: inline-block;
     width:15px;
@@ -224,7 +224,7 @@ input[type=checkbox]::before {
 	visibility: visible;
 }
 input[type=checkbox]:checked::before { 
-    background-image: url('./checked.png');
+    background-image: url('./img/checked.png');
 	background-repeat: no-repeat;
 }
 
