@@ -1,5 +1,5 @@
 	<center>
-	<h1><img src='logob.png' style='position:relative;top:22px;height:65px;'> Update</h1>
+	<h1><img src='img/logob.png' style='position:relative;top:22px;height:65px;'> Update</h1>
 <br>
 <?php
 set_time_limit(0);

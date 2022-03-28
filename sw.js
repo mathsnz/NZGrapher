@@ -10,14 +10,14 @@ self.addEventListener('install', function(e) {
 	   './style.css?v=VERSION',
 	   './js.js?v=VERSION',
 	   './jsnew.js?v=VERSION',
-	   './logob.png',
-	   './loading.gif',
-	   './logow.png',
-	   './3dots.png',
+	   './img/logob.png',
+	   './img/loading.gif',
+	   './img/logow.png',
+	   './img/3dots.png',
 	   './change%20log.php',
 	   './getdata.php?dataset=http%3A%2F%2Fgrapher.nz%2Fdatasets%2FBabies.csv',
-	   './unchecked.png',
-	   './checked.png',
+	   './img/unchecked.png',
+	   './img/checked.png',
 	   './about.php'
      ]);
    })
