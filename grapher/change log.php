@@ -13,6 +13,9 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2022-05-04</b><ul>
+		<li>Fixed size of start and end points on time series graphs when high-res option was ticked.</li>
+	</ul>
 	<b>2022-03-22</b><ul>
 		<li>Added option to use the viridis colour scale rather than a rainbow colour scale.</li>
 		<li>Fixed the clicking on two categorical variables on the pairs plot.</li>

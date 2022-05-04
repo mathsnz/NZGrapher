@@ -4136,6 +4136,8 @@ function newtimeseries(){
 					ctx.textAlign="right";
 				}
 				ctx.fillStyle = 'rgba(255,255,255,1)';
+				fontsize = 12*scalefactor;
+				ctx.font = "bold "+fontsize+"px Roboto";
 				ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel-2);
 				ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel+2,trendpixel-2);
 				ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel+2);
@@ -4145,8 +4147,6 @@ function newtimeseries(){
 				} else {
 					ctx.fillStyle = 'rgba(0,0,0,1)';
 				}
-				fontsize = 12*scalefactor;
-				ctx.font = "bold "+fontsize+"px Roboto";
 				ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel,trendpixel);
 			}
 			lasttrendpixel=trendpixel;
@@ -4254,13 +4254,13 @@ function newtimeseries(){
 						ctx.textAlign="right";
 					}
 					ctx.fillStyle = 'rgba(255,255,255,1)';
+					fontsize = 12*scalefactor;
+					ctx.font = "bold "+fontsize+"px Roboto";
 					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel-2);
 					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel+2,trendpixel-2);
 					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel+2);
 					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel+2,trendpixel+2);
 					ctx.fillStyle = 'rgba(191,108,36,1)';
-					fontsize = 12*scalefactor;
-					ctx.font = "bold "+fontsize+"px Roboto";
 					ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel,trendpixel);
 				}
 				lasttrendpixel=trendpixel;
@@ -4539,13 +4539,14 @@ function newtimeseriesrecomp(){
 			if(index==0){
 				ctx.textAlign="right";
 			}
+			fontsize = 12*scalefactor;
+			ctx.font = "bold "+fontsize+"px Roboto";
 			ctx.fillStyle = 'rgba(255,255,255,1)';
 			ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel-2);
 			ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel+2,trendpixel-2);
 			ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel-2,trendpixel+2);
 			ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel+2,trendpixel+2);
 			ctx.fillStyle = 'rgba(0,0,255,1)';
-			ctx.font = "bold 12px Roboto";
 			ctx.fillText(parseFloat(trend[index].toPrecision(3)),xpixel,trendpixel);
 		}
 		if(index != 0){
@@ -4704,7 +4705,7 @@ function stl(xpoints,ypoints,seasons){
 	n_s=7;
 	n_t=nextodd(1.5*seasons/(1-1.5/n_s));
 	il=innerloop(xpoints,raw,T,n_s,n_l,n_t);
-	if(typeof il == 'string'){return il+", Loop 1";}
+	if(typeof il == 'string'){return il+", Loop 1<br><br>Often this is caused by an extra blank line at the end of your dataset.<br>Scroll to the bottom and check, and if there is a blank line there go to Row -> Delete Last Row";}
 	T=il[0];
 	S=il[1];
 	il=innerloop(xpoints,raw,T,n_s,n_l,n_t);
@@ -5287,17 +5288,15 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 	var rad = $('#size').val()/2*scalefactor;
 	num = 0;
 	pointstofit = [];
-	xcurvefit="";
-	ycurvefit="";
+	pointstofitadjusted = [];
 	for (var index in indexes){
 		var index = indexes[index];
 		var xpoint = xpoints[index];
 		var ypoint = ypoints[index];
-		if(xpoint==0){xpoint = xpoint + 0.0000000000001;}
-		if(ypoint==0){ypoint = ypoint + 0.0000000000001;}
+		if(xpoint==0){adjustedx = xpoint + 1E-99;} else {adjustedx = xpoint;}
+		if(ypoint==0){adjustedy = ypoint + 1E-99;} else {adjustedy = ypoint;}
 		pointstofit.push([parseFloat(xpoint),parseFloat(ypoint)]);
-		xcurvefit+=xpoint+",";
-		ycurvefit+=ypoint+",";
+		pointstofitadjusted.push([parseFloat(adjustedx),parseFloat(adjustedy)]);
 		var xpixel = convertvaltopixel(xpoint,minxtick,maxxtick,left,right);
 		var ypixel = convertvaltopixel(ypoint,minytick,maxytick,bottom,gtop);
 		if($('#jitter').is(":checked") && $('#jittershow').is(':visible')){
@@ -5511,7 +5510,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		ctx.fillStyle='#952BFF';
 		ctx.strokeStyle='#952BFF';
 		
-		res = regression.exponential(pointstofit,{
+		res = regression.exponential(pointstofitadjusted,{
 		  precision: 15,
 		});
 		
@@ -5545,7 +5544,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		ctx.fillStyle='#FF972E';
 		ctx.strokeStyle='#FF972E';
 		
-		res = regression.logarithmic(pointstofit,{
+		res = regression.logarithmic(pointstofitadjusted,{
 		  precision: 15,
 		});
 		
@@ -5584,7 +5583,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		ctx.fillStyle='#3ED2D2';
 		ctx.strokeStyle='#3ED2D2';
 		
-		res = regression.power(pointstofit,{
+		res = regression.power(pointstofitadjusted,{
 		  precision: 15,
 		});
 		
@@ -10362,6 +10361,9 @@ function loaddata(){
 			for (i = 0; i < finaldata.length; i++) {
 				var cells = finaldata[i];
 				if(i==0){firstrow=cells.length;}
+				if(cells.join('').length==0){
+					continue;
+				}
 				if (cells.length >= firstrow){
 					if(i==0){
 						r[++j] ='<tr class=tabletop><th>id';
@@ -10376,6 +10378,7 @@ function loaddata(){
 					}
 				}
 			}
+			console.log(finaldata);
 			postcreatetable();
 		},30);
 	},30);
