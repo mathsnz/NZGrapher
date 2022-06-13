@@ -1659,6 +1659,7 @@ function graphchange(obj){
 	document.getElementById('intervalshow').style.display='none';
 	document.getElementById('labelshow').style.display='none';
 	document.getElementById('arrowsshow').style.display='none';
+	document.getElementById('colorarrowsshow').style.display='none';
 	document.getElementById('xvar').style.display='none';
 	document.getElementById('yvar').style.display='none';
 	document.getElementById('zvar').style.display='none';
@@ -3288,7 +3289,7 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		ctx.fillText('num: '+num,left-60*scalefactor,ypix+3*fontsize);
 	}
 
-	if($('#interval').is(":checked") || $('#intervallim').is(":checked")){
+	if($('#interval').is(":checked") || $('#intervallim').is(":checked") || $('#intervalhighlight').is(":checked")){
 		intervalhalfwidth = 1.5*(uq-lq)/Math.sqrt(num);
 		intervalmin = parseFloat(add(med,-intervalhalfwidth).toPrecision(5));
 		intervalmax = parseFloat(add(med,intervalhalfwidth).toPrecision(5));
@@ -3307,6 +3308,12 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 			ctx.fillText(intervalmin,intervalmingraph,add(y,maxheight*0.1+8*scalefactor));
 			ctx.textAlign="left";
 			ctx.fillText(intervalmax,intervalmaxgraph,add(y,maxheight*0.1+8*scalefactor));
+		}
+		if($('#intervalhighlight').is(":checked")){
+			y = oypixel - (maxheight-10*scalefactor)*0.5;
+			ctx.lineWidth = maxheight-10*scalefactor;
+			ctx.strokeStyle = 'rgba(0,0,255,0.4)';
+			line(ctx,intervalmingraph,y,intervalmaxgraph,y);
 		}
 	}
 
@@ -10413,6 +10420,7 @@ function postcreatetable(){
 
 function newpairedexperiment(){
 	$('#arrowsshow').show();
+	$('#colorarrowsshow').show();
 	$('#regshow').show();
 	$('#sum').show();
 	$('#invertshow').show();
@@ -10507,6 +10515,19 @@ function newpairedexperiment(){
 
 	var alpha = 1-$('#trans').val()/100;
 	var colors = makecolors(alpha,ctx);
+	
+	if($('#colorarrows').is(":checked")){
+		colors = [];
+		for (var index in pointsforminmax){
+			if(pointsforminmax[index]<0){
+				color = 'rgba(255,0,0,'+alpha+')';
+			} else {
+				color = 'rgba(0,0,255,'+alpha+')';
+			}
+			colors.push(color);
+		}
+	}
+	console.log(colors);
 	
 	if($('#arrows').is(":checked")){
 		var finalxpoints=[];
@@ -10907,15 +10928,18 @@ function newbootstrap(){
 	if($('#regression').is(":checked")){var wasreg="yes";} else {var wasreg = "no";}
 	if($('#interval').is(":checked")){var wasint="yes";} else {var wasint = "no";}
 	if($('#intervallim').is(":checked")){var wasintlim="yes";} else {var wasintlim = "no";}
+	if($('#intervalhighlight').is(":checked")){var wasinthigh="yes";} else {var wasinthigh = "no";}
 	$('#labels')[0].checked=false;
 	$('#regression')[0].checked=false;
 	$('#interval')[0].checked=false;
 	$('#intervallim')[0].checked=false;
+	$('#intervalhighlight')[0].checked=false;
 	plotdotplot(ctx,bspoints,bootstrapvals,minxtick,maxxtick,oypixel,left,right,maxheight,colors,1,0);
 	if(waslabels=="yes"){$('#labels')[0].checked=true;}
 	if(wasreg=="yes"){$('#regression')[0].checked=true;}
 	if(wasint=="yes"){$('#interval')[0].checked=true;}
 	if(wasintlim=="yes"){$('#intervallim')[0].checked=true;}
+	if(wasinthigh=="yes"){$('#intervalhighlight')[0].checked=true;}
 
 	bootstrapvals.sort(function(a, b){return a-b});
 	
@@ -11618,6 +11642,7 @@ function newbsteach(){
 	$('#boxnooutlier').prop('checked', false);
 	$('#interval').prop('checked', false);
 	$('#intervallim').prop('checked', false);
+	$('#intervalhighlight').prop('checked', false);
 	$('#regression').prop('checked', false);
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
@@ -11707,6 +11732,7 @@ function resetsettings(){
 	$('#boxnooutlier').prop('checked',false);
 	$('#interval').prop('checked',false);
 	$('#intervallim').prop('checked',false);
+	$('#intervalhighlight').prop('checked',false);
 	$('#labels').prop('checked',false);
 	$('#meandot').prop('checked',false);
 	$('#stackdots').prop('checked',false);

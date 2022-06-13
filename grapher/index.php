@@ -601,6 +601,9 @@ if(isset($_POST['csv_data'])){
 			<span id=arrowsshow>
 				<label><input type="checkbox" onclick="updategraph();" id="arrows" name="arrows" value="yes"> Arrows</label><br>
 			</span>
+			<span id=colorarrowsshow>
+				<label><input type="checkbox" onclick="updategraph();" id="colorarrows" name="colorarrows" value="yes"> Colour by Difference</label><br>
+			</span>
 			<span id=btypeshow>
 				Bootstrap:<br>
 				<select onchange="updategraph();" id="btype" name="btype" value="Median" style='width:100px;'>
@@ -661,6 +664,7 @@ if(isset($_POST['csv_data'])){
 			<span id=intervalshow>
 				<label><input type="checkbox" onclick="updategraph();" id="interval" name="interval" value="yes"> Informal C-I</label><br>
 				<label><input type="checkbox" onclick="updategraph();" id="intervallim" name="intervallim" value="yes"> C-I Limits</label><br>
+				<label><input type="checkbox" onclick="updategraph();" id="intervalhighlight" name="intervalhighlight" value="yes"> C-I Highlight</label><br>
 			</span>
 			<span id=labelshow><label>
 				<input type="checkbox" onclick="updategraph();" id="labels" name="labels" value="yes"> Point Labels</label><br>

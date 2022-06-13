@@ -13,6 +13,10 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2022-06-13</b><ul>
+		<li>Added "C-I Highlight" option on "Dot Plot (and Box and Whisker)"</li>
+		<li>Added "Colour by Difference" option on "Paired Experiment Dot Plot (and Arrows Graph)"</li>
+	</ul>
 	<b>2022-05-04</b><ul>
 		<li>Fixed size of start and end points on time series graphs when high-res option was ticked.</li>
 	</ul>
