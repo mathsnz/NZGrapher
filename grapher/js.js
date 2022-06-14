@@ -7798,7 +7798,7 @@ function newresiduals(){
 	if(regtype=="Linear"){
 		
 		res = regression.linear(pointstofit,{
-		  precision: 7,
+		  precision: 15,
 		});
 		console.log(res);
 		
@@ -7814,7 +7814,7 @@ function newresiduals(){
 		
 		res = regression.polynomial(pointstofit,{
 		  order: 2,
-		  precision: 7,
+		  precision: 15,
 		});
 		console.log(res);
 		
@@ -7832,7 +7832,7 @@ function newresiduals(){
 		
 		res = regression.polynomial(pointstofit,{
 		  order: 3,
-		  precision: 10,
+		  precision: 15,
 		});
 		console.log(res);
 		
@@ -7850,7 +7850,7 @@ function newresiduals(){
 	} else if (regtype=="y=a*exp(b*x)"){
 		
 		res = regression.exponential(pointstofit,{
-		  precision: 7,
+		  precision: 15,
 		});
 		console.log(res);
 		
@@ -7866,7 +7866,7 @@ function newresiduals(){
 	} else if (regtype=="y=a*ln(x)+b"){
 		
 		res = regression.logarithmic(pointstofit,{
-		  precision: 7,
+		  precision: 15,
 		});
 		console.log(res);
 		
@@ -7883,7 +7883,7 @@ function newresiduals(){
 	} else if (regtype=="y=a*x^b"){
 		
 		res = regression.power(pointstofit,{
-		  precision: 7,
+		  precision: 15,
 		});
 		console.log(res);
 		
