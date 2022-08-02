@@ -10611,12 +10611,15 @@ function newpairedexperiment(){
 				bottomxpixel = add(bottomxpixel,randint(-$('#size').val()*scalefactor,$('#size').val()*scalefactor));
 			}
 			
-			if(xpoints[index]<ypoints[index]){
+			if(parseFloat(xpoints[index])<parseFloat(ypoints[index])){
 				positive++;
+				console.log(xpoints[index],ypoints[index],'positive');
 			} else if(xpoints[index]==ypoints[index]){
 				nochange++;
+				console.log(xpoints[index],ypoints[index],'nochange');
 			} else {
 				negative++;
+				console.log(xpoints[index],ypoints[index],'negative');
 			}
 			
 			ctx.strokeStyle = colors[index];

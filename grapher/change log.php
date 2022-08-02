@@ -13,7 +13,7 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
-	<b>2022-08-02</b><ul>
+	<b>2022-08-03</b><ul>
 		<li>Update to smoothing function used for violin graphs and shape outlines.</li>
 		<li>Added jitter option to the arrows graph.</li>
 		<li>Added summary of positive / negative shifts on arrows graph when summary stats tickbox is checked.</li>
