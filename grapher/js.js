@@ -3128,10 +3128,31 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		x = minxtick;
 		range = maxxtick-minxtick;
 		shapestep = range/100;
+		hiqr = (uq-lq)/2*$('#smoothingpower').val();
+		bandwith = 0.9*Math.min(sd,(uq-lq)/1.34)*Math.pow(num,-1/5)*$('#smoothingpower').val();
+		console.log(sd);
+		if(hiqr==0){
+			hiqr=1;
+		}
 		while(x<=maxxtick){
 			total = 0;
 			$.each(thisvalues, function( key, value ) {
-				total += Math.pow((1-Math.abs(value-x)/range),$('#smoothingpower').val());
+				//total += Math.pow((1-Math.abs(value-x)/range),$('#smoothingpower').val());
+				
+				/*
+				var thisweight = 1-Math.abs(value-x)/hiqr;
+				if(thisweight>0){
+					total += Math.pow(thisweight,$('#smoothingpower').val());
+				}
+				*/
+				
+				var difference = Math.abs(value - x);
+				if(difference<bandwith){
+					var thisweighta = difference/bandwith;
+					var thisweight = 3/4*(1-Math.pow(thisweighta,2));
+					total += thisweight;
+				}
+				
 			});
 			weights.push([x,total/allpointscount]);
 			x+=shapestep;
@@ -3154,7 +3175,7 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 			x = value[0];
 			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
 			y = value[1];
-			ypixel = y*maxheight*2;
+			ypixel = y*maxheight*8/$('#smoothingpower').val();
 			if(i==0){
 				ctx.moveTo(xpixel, bottom-ypixel);
 			} else {
@@ -3177,7 +3198,7 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 			x = value[0];
 			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
 			y = value[1];
-			ypixel = y*maxheight;
+			ypixel = y*maxheight*4/$('#smoothingpower').val();
 			if(i==0){
 				ctx.moveTo(xpixel, center-ypixel);
 			} else {
@@ -3189,7 +3210,7 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 			x = value[0];
 			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
 			y = value[1];
-			ypixel = y*maxheight;
+			ypixel = y*maxheight*4/$('#smoothingpower').val();
 			ctx.lineTo(xpixel, center+ypixel);
 		});
 		ctx.closePath();
@@ -3522,6 +3543,10 @@ function bootstrap(mm){
 	$('#interval').prop('checked', false);
 	$('#intervallim').prop('checked', false);
 	$('#regression').prop('checked', false);
+	$('#shape').prop('checked', false);
+	$('#violin').prop('checked', false);
+	$('#beeswarm').prop('checked', false);
+	$('#stripgraph').prop('checked', false);
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
 	$('#stripgraphshow').show();
@@ -8250,6 +8275,10 @@ function rerand(mm){
 	$('#interval').prop('checked', false);
 	$('#intervallim').prop('checked', false);
 	$('#regression').prop('checked', false);
+	$('#shape').prop('checked', false);
+	$('#violin').prop('checked', false);
+	$('#beeswarm').prop('checked', false);
+	$('#stripgraph').prop('checked', false);
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
 	$('#stripgraphshow').show();
@@ -9141,6 +9170,10 @@ function newrerandteach(){
 	$('#interval').prop('checked', false);
 	$('#intervallim').prop('checked', false);
 	$('#regression').prop('checked', false);
+	$('#shape').prop('checked', false);
+	$('#violin').prop('checked', false);
+	$('#beeswarm').prop('checked', false);
+	$('#stripgraph').prop('checked', false);
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
 	$('#var1label').html("Numerical 1:<br><small>required</small>");
@@ -10444,6 +10477,7 @@ function newpairedexperiment(){
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
 	$('#stripgraphshow').show();
+	$('#jittershow').show();
 	$('#var1label').html("Numerical 1:<br><small>required</small>");
 	$('#var2label').html("Numerical 2:<br><small>required</small>");
 	$('#var3label').html("");
@@ -10521,13 +10555,14 @@ function newpairedexperiment(){
 		for (var index in pointsforminmax){
 			if(pointsforminmax[index]<0){
 				color = 'rgba(255,0,0,'+alpha+')';
+			} else if(pointsforminmax[index]==0){
+				color = 'rgba(0,0,0,'+alpha+')';
 			} else {
 				color = 'rgba(0,0,255,'+alpha+')';
 			}
 			colors.push(color);
 		}
 	}
-	console.log(colors);
 	
 	if($('#arrows').is(":checked")){
 		var finalxpoints=[];
@@ -10562,11 +10597,28 @@ function newpairedexperiment(){
 		
 		var rad = $('#size').val()/2*scalefactor;
 		if($('#labels').is(":checked")){var labels="yes";} else {var labels = "no";}
-			
+		
+		var positive = 0;
+		var nochange = 0;
+		var negative = 0;
+		
 		for (var i in points){
 			index = points[i];
 			topxpixel = convertvaltopixel(xpoints[index],minxtick,maxxtick,left,right);
 			bottomxpixel = convertvaltopixel(ypoints[index],minxtick,maxxtick,left,right);
+			if($('#jitter').is(":checked")){
+				topxpixel = add(topxpixel,randint(-$('#size').val()*scalefactor,$('#size').val()*scalefactor));
+				bottomxpixel = add(bottomxpixel,randint(-$('#size').val()*scalefactor,$('#size').val()*scalefactor));
+			}
+			
+			if(xpoints[index]<ypoints[index]){
+				positive++;
+			} else if(xpoints[index]==ypoints[index]){
+				nochange++;
+			} else {
+				negative++;
+			}
+			
 			ctx.strokeStyle = colors[index];
 			ctx.fillStyle = colors[index];
 			ctx.beginPath();
@@ -10644,6 +10696,15 @@ function newpairedexperiment(){
 			ctx.fillText('max: '+maxval,left-60*scalefactor,ypix+11*scalefactor);
 			ctx.fillText('sd: '+sd,left-60*scalefactor,ypix+22*scalefactor);
 			ctx.fillText('num: '+num,left-60*scalefactor,ypix+33*scalefactor);
+			
+			var ypix=oypixel-maxheight;
+			ctx.fillStyle = '#0000FF';
+			ctx.fillText('Positive Shifts: '+positive,right-120*scalefactor,ypix+33*scalefactor);
+			ctx.fillStyle = '#000000';
+			ctx.fillText('No Shift: '+nochange,right-120*scalefactor,ypix+44*scalefactor);
+			ctx.fillStyle = '#FF0000';
+			ctx.fillText('Negative Shift: '+negative,right-120*scalefactor,ypix+55*scalefactor);
+			
 		} else {
 			ctx.fillStyle = '#000000';
 			fontsize = 15*scalefactor;
@@ -10761,6 +10822,10 @@ function newbootstrap(){
 	$('#var1label').html("Numerical 1:<br><small>required</small>");
 	$('#var2label').html("");
 	$('#var3label').html("");
+	$('#shape').prop('checked', false);
+	$('#violin').prop('checked', false);
+	$('#beeswarm').prop('checked', false);
+	$('#stripgraph').prop('checked', false);
 
 	var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
@@ -11644,6 +11709,10 @@ function newbsteach(){
 	$('#intervallim').prop('checked', false);
 	$('#intervalhighlight').prop('checked', false);
 	$('#regression').prop('checked', false);
+	$('#shape').prop('checked', false);
+	$('#violin').prop('checked', false);
+	$('#beeswarm').prop('checked', false);
+	$('#stripgraph').prop('checked', false);
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
 	$('#var1label').html("Numerical 1:<br><small>required</small>");

@@ -623,6 +623,9 @@ if(isset($_POST['csv_data'])){
 			<span id=boxplotshow><label>
 				<input type="checkbox" onclick="updategraph();" id="boxplot" name="boxplot" value="yes"> Box Plots</label><br>
 			</span>
+			<span id=highboxplotshow><label>
+				<input type="checkbox" onclick="updategraph();" id="highboxplot" name="highboxplot" value="yes"> High Box Plot</label><br>
+			</span>
 			<span id=hidepointsshow><label>
 				<input type="checkbox" onclick="updategraph();" id="hidepoints" name="hidepointsshow" value="yes"> Hide Points</label><br>
 			</span>
@@ -637,9 +640,6 @@ if(isset($_POST['csv_data'])){
 			</span>
 			<span id=stripgraphshow><label>
 				<input type="checkbox" onclick="updategraph();" id="stripgraph" name="stripgraphshow" value="yes"> Strip Graph</label><br>
-			</span>
-			<span id=highboxplotshow><label>
-				<input type="checkbox" onclick="updategraph();" id="highboxplot" name="highboxplot" value="yes"> High Box Plot</label><br>
 			</span>
 			<span id=boxnowhiskershow><label>
 				<input type="checkbox" onclick="updategraph();" id="boxnowhisker" name="boxnowhisker" value="yes"> Box (No Whisker)</label><br>
@@ -1053,7 +1053,7 @@ if(isset($_GET['dev'])){
 			<tr><td>Max:<td><input id=boxplotmax value=auto>
 			<tr><td colspan=2>For adjusting the size of the red summary statistics
 			<tr><td>Text Size:<td><input id=textsize value=13 type=number>
-			<tr><td>Smoothing Power:<td><input id=smoothingpower value=10 type=number>
+			<tr><td>Smoothing Power:<td><input id=smoothingpower value=1 type=number>
 			<tr><td colspan=2>For adjusting the smoothness on violin and shape outline graphs. Smaller number is more smooth.
 			<tr><td>&nbsp;
 			<tr><td colspan=2><b>Scatter Graphs:</b><br>
