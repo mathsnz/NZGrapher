@@ -13,6 +13,10 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2022-08-29</b><ul>
+		<li>Added tickbox to allow more categories on bar graphs.</li>
+		<li>Tweaks to smoothing for shape outline and violin graphs.</li>
+	</ul>
 	<b>2022-08-03</b><ul>
 		<li>Update to smoothing function used for violin graphs and shape outlines.</li>
 		<li>Added jitter option to the arrows graph.</li>

@@ -1682,6 +1682,7 @@ function graphchange(obj){
 	document.getElementById('addmultshow').style.display='none';
 	document.getElementById('longtermtrendshow').style.display='none';
 	document.getElementById('startfinishshow').style.display='none';
+	document.getElementById('morecatsshow').style.display='none';
 	document.getElementById('gridlinesshow').style.display='none';
 	document.getElementById('seasonalshow').style.display='none';
 	document.getElementById('boxnowhiskershow').style.display='none';
@@ -4856,6 +4857,7 @@ function innerloop(xpoints,raw,T,n_s,n_l,n_t){
 				S[xpoint]=C[xpoint]-L[xpoint];
 			}
 		}
+		
 		S2=[];
 
 		for (index in xpoints){
@@ -4967,6 +4969,7 @@ function loess(xpoints,ypoints,nPts,xvals,row){
 			distances[i]=Math.abs(xpoint-currentx);
 			i++;
 		}
+		
 
 		smallestndistances=[];
 		for (index in distances){
@@ -5028,6 +5031,7 @@ function loess(xpoints,ypoints,nPts,xvals,row){
 		WLRSlope = (SumWts * SumWtXY - SumWtX * SumWtY) / Denom;
 		WLRIntercept = (SumWtX2 * SumWtY - SumWtX * SumWtXY) / Denom;
 		yreturn[currentx.toFixed(4)] = WLRSlope * currentx + WLRIntercept;
+		
 	}
 	return yreturn;
 }
@@ -9201,6 +9205,7 @@ function newbargraphfnf(fnf){
 	$('#colourscale').show();
 	$('#transdiv').show();
 	$('#greyscaleshow').show();
+	$('#morecatsshow').show();
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
 	$('#percent100show').show();
@@ -9286,7 +9291,12 @@ function newbargraphfnf(fnf){
 	
 	var colorpoints = dataforselector[$('#color option:selected').text()].slice();
 	
-	xdifferentgroups = split(points,xpoints,10,'"Category"');
+	var maxcategories = 10;
+	if($('#morecats').is(":checked")){
+		maxcategories = 99
+	}
+	
+	xdifferentgroups = split(points,xpoints,maxcategories,'"Category"');
 	if(typeof xdifferentgroups !== 'object'){
 		return xdifferentgroups;
 	}
@@ -11822,6 +11832,7 @@ function resetsettings(){
 	$('#longtermtrend').prop('checked',false);
 	$('#seasonal').prop('checked',false);
 	$('#startfinish').prop('checked',false);
+	$('#morecats').prop('checked',false);
 	$('#gridlines').prop('checked',false);
 	$('#percent100').prop('checked',false);
 	$('#relativefrequency').prop('checked',false);
@@ -11850,7 +11861,7 @@ function resetsettings(){
 	$('#verticalerrorbars').prop('selectedIndex',0);
 	$('#options input').val('auto');
 	$('#textsize').val('13');
-	$('#smoothingpower').val('10');
+	$('#smoothingpower').val('3');
 	$('#size').val('7');
 	$('#trans').val('50');
 	$('#color').prop('selectedIndex',0);
