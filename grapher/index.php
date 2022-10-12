@@ -329,6 +329,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 <ul>
 	<li id=addrow>Add Row</li>
 	<li id=delrow>Delete Last Row</li>
+	<li id=dellastrows>Delete Last __ Rows</li>
 	<li id=delspecrow>Delete Specific Row</li>
 </ul>
 </div>
@@ -872,6 +873,16 @@ if(isset($_GET['dev'])){
 		<center>
 		Which Column: <select style='width:120px' onChange="" id=columndel></select><br><br>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=deletecolgo>Remove</a><br><br>
+		</center>
+	</span>
+</div>
+<div id="deleterowsdiv" class=absolute style="z-index:99;max-height:80%;overflow-y:auto;display:none;padding:10px;position:absolute;border:none;box-shadow: 0px 0px 10px rgba(0,0,0,0.5);top:50%;left:50%;-webkit-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);">
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>Delete Last __ Rows</div>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' class=close>&times;</div><br>
+	<span id=samplecontents style="font-size:14px">
+		<center>
+		How Many Rows?: <input id=numberofrowstodelete><br><br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=deleterowsgo>Remove</a><br><br>
 		</center>
 	</span>
 </div>

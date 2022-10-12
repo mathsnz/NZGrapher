@@ -13,6 +13,9 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2022-10-12</b><ul>
+		<li>Added option to remove last __ rows from the menu.</li>
+	</ul>
 	<b>2022-08-29</b><ul>
 		<li>Added tickbox to allow more categories on bar graphs.</li>
 		<li>Tweaks to smoothing for shape outline and violin graphs.</li>

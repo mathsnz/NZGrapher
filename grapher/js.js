@@ -323,6 +323,40 @@ $(function(){
 		};
 		updatebox();
 	});
+	
+	$( "#dellastrows" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Column - dellastrows', ipaddress);
+		} catch(err) {
+			console.log(err.message);
+		}
+		$("#rowbox").hide();
+		$("#colbox").hide();
+		$("#sambox").hide();
+		$("#deleterowsdiv").show();
+	});
+	$( "#deleterowsgo" ).click(function() {
+		try {
+			ga('send', 'event', 'Function', 'Row - delrowsgo', ipaddress);
+		} catch(err) {
+			console.log(err.message);
+		}
+		toremove = 0+$('#numberofrowstodelete').val();
+		if(isNaN(toremove)){
+			alert('You must put in a number');
+			return;
+		}
+		var removed = 0;
+		while (removed<toremove){
+			if($('#data tr').length>1){
+				$('#data tr:last').remove();
+			};
+			removed++;
+		}
+		$("#deleterowsdiv").hide();
+		updatebox();
+	});
+	
 	$( "#delcol" ).click(function() {
 		try {
 			ga('send', 'event', 'Function', 'Column - delcol', ipaddress);
