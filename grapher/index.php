@@ -71,18 +71,18 @@ if (screen.availWidth < 1024)
 			<tr>
 				<td style='width:50%;border-right:1px solid #ccc;padding-right:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
 					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Need Help?</b></span><br>
-					Need help <b>getting started</b>? Watching <a target='_blank' href='https://www.mathsnz.com/nzgrapher-info/video-tutorials'>these videos</a> is a great place to start.<br>
+					Need help <b>getting started</b>? Watching <a target='_blank' href='https://info.grapher.nz/video-tutorials/'>these videos</a> is a great place to start.<br>
 					<br>
-					Want to <b>know more</b>? Information on the graphs and datasets, as well as video tutorials are over on <a target='_blank' href='https://www.mathsnz.com/nzgrapher-info'>MathsNZ</a>.<br>
+					Want to <b>know more</b>? Information on the graphs and datasets, as well as video tutorials are over on the <a target='_blank' href='https://info.grapher.nz/'>NZGrapher Info Site</a>.<br>
 					<br>
-					Something <b>not working</b> or <b>have an idea</b> to make NZGrapher better... please <a target='_blank' href='https://www.mathsnz.com/contact'>let me know</a>.<br>
+					Something <b>not working</b> or <b>have an idea</b> to make NZGrapher better... please <a target='_blank' href='https://info.grapher.nz/contact/'>let me know</a>.<br>
 				<td style='width:50%;padding-left:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
 					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Cost</b></span><br>
-					NZGrapher is free for non-commercial <b>individual</b> use, you can however <a target='_blank' href='https://www.mathsnz.com/donate'>make a donation</a>.<br>
+					NZGrapher is free for non-commercial <b>individual</b> use, you can however <a target='_blank' href='https://info.grapher.nz/donate/'>make a donation</a>.<br>
 					<br>
-					<b>Schools</b> are required to subscribe at a minimum of $0.50 per student using NZGrapher. <b>Commercial users</b> are also required to pay. Please visit the <a target='_blank' href='https://www.mathsnz.com/nzgrapher-invoice'>invoice creator</a> for details.<br>
+					<b>Schools</b> are required to subscribe at a minimum of $0.50 per student using NZGrapher. <b>Commercial users</b> are also required to pay. Please visit the <a target='_blank' href='https://info.grapher.nz/nzgrapher-invoice/'>invoice creator</a> for details.<br>
 					<br>
-					Any questions about this please <a target='_blank' href='https://www.mathsnz.com/contact'>get in touch</a>.
+					Any questions about this please <a target='_blank' href='https://info.grapher.nz/contact/'>get in touch</a>.
 			</tr>
 		</table>
 		<br>
@@ -307,10 +307,11 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 
 <div id=helppopup class="callout popup">
 <ul>
-	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/video-tutorials','_blank');try{ga('send', 'event', 'Function', 'Help - Video Tutorials', '');} catch(err) {console.log(err.message);}">Video Tutorials</li>
-	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/graph-information','_blank');try{ga('send', 'event', 'Function', 'Help - Graph Information', '');} catch(err) {console.log(err.message);}">Graph Information</li>
-	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/function-information','_blank');try{ga('send', 'event', 'Function', 'Help - Function Information', '');} catch(err) {console.log(err.message);}">Function Information</li>
-	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/dataset-information','_blank');try{ga('send', 'event', 'Function', 'Help - Dataset Information', '');} catch(err) {console.log(err.message);}">Dataset Information</li>
+	<li onclick="window.open('https://info.grapher.nz/video-tutorials/','_blank');try{ga('send', 'event', 'Function', 'Help - Video Tutorials', '');} catch(err) {console.log(err.message);}">Video Tutorials</li>
+	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/graph-information','_blank');try{ga('send', 'event', 'Function', 'Help - Graph Information', '');} catch(err) {console.log(err.message);}">Graph Information - Old</li>
+	<li onclick="window.open('https://info.grapher.nz/graph-information/','_blank');try{ga('send', 'event', 'Function', 'Help - Graph Information', '');} catch(err) {console.log(err.message);}">Graph Information - New</li>
+	<li onclick="window.open('https://info.grapher.nz/function-information/','_blank');try{ga('send', 'event', 'Function', 'Help - Function Information', '');} catch(err) {console.log(err.message);}">Function Information</li>
+	<li onclick="window.open('https://info.grapher.nz/dataset-info/','_blank');try{ga('send', 'event', 'Function', 'Help - Dataset Information', '');} catch(err) {console.log(err.message);}">Dataset Information</li>
 	<li onclick="document.getElementById('welcome').style.display='block';try{ga('send', 'event', 'Function', 'Help - Show Welcome', '');} catch(err) {console.log(err.message);}">Show Welcome</li>
 	<li onclick="document.getElementById('tour').style.display='block';try{ga('send', 'event', 'Function', 'Help - Show Overlay', '');} catch(err) {console.log(err.message);}">Show Overlay</li>
 </ul>
@@ -321,7 +322,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 	<li id=bs>Bootstrapping</li>
 	<li id=rerand>Re-Randomisation</li>
 	<li id=samvar>Sampling Variability</li>
-	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/teaching-tools','_blank');try{ga('send', 'event', 'Function', 'Teaching Tools - Video Tutorials', '');} catch(err) {console.log(err.message);}">Video Tutorials</li>
+	<li onclick="window.open('https://info.grapher.nz/teaching-tools/','_blank');try{ga('send', 'event', 'Function', 'Teaching Tools - Video Tutorials', '');} catch(err) {console.log(err.message);}">Video Tutorials</li>
 </ul>
 </div>
 
@@ -417,7 +418,7 @@ if(substr($dataset,0,6)!="SECURE"){
 	<span id=samvarcontents style="font-size:14px">
 		This section lets you re-sample the same data while looking at a graph to see what happens when you take repeated samples.<br>
 		This is really useful for teaching sampling variability.<br>
-		You can see a <a href='https://www.mathsnz.com/nzgrapher-info/teaching-tools' target='_blank'>video tutorial on how to use this here</a>.<br>
+		You can see a <a href='https://info.grapher.nz/teaching-tools/' target='_blank'>video tutorial on how to use this here</a>.<br>
 				<br>
 		Sample With: <select style='width:120px' onChange="" id=samvaron></select><br><br>
 		<center>
@@ -443,7 +444,7 @@ if(substr($dataset,0,6)!="SECURE"){
 	<span id=rerandteachcontents style="font-size:14px">
 		This section lets you manually step through a creating re-randomisation distribution.<br>
 		This is really useful for teaching how re-randomisation and the randomisation test work.<br>
-		You can see a <a href='https://www.mathsnz.com/nzgrapher-info/teaching-tools' target='_blank'>video tutorial on how to use this here</a>.<br>
+		You can see a <a href='https://info.grapher.nz/teaching-tools/' target='_blank'>video tutorial on how to use this here</a>.<br>
 		<br>
 		Re-randomisation works by taking the sample, and randomly assigning each of the data points to one of the groups in the same proportion as the sample. 
 		It then works out the median or mean for each group and plots the difference between them on the graph below.
@@ -475,7 +476,7 @@ if(substr($dataset,0,6)!="SECURE"){
 	<span id=rerandteachcontents style="font-size:14px">
 		This section lets you manually step through creating a bootstrap confidence interval.<br>
 		This is really useful for teaching bootstrapping.<br>
-		You can see a <a href='https://www.mathsnz.com/nzgrapher-info/teaching-tools' target='_blank'>video tutorial on how to use this here</a>.<br>
+		You can see a <a href='https://info.grapher.nz/teaching-tools/' target='_blank'>video tutorial on how to use this here</a>.<br>
 		<br>
 		Bootstrapping works by taking the sample, and randomly choosing as many points as in the original sample from the original sample, using replacement. 
 		This means that each point can potentially be chosen multiple times, or not at all.
@@ -1144,6 +1145,7 @@ if(isset($_GET['dev'])){
 	</select>)<br>
 	<div id=wizardoutput></div>
 </div>
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "4eaaec79ef86402d8fd86b8ba0063ab2"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 <script>
 if('serviceWorker' in navigator) {

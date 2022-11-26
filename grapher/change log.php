@@ -13,6 +13,9 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2022-11-27</b><ul>
+		<li>Updated Documentation.</li>
+	</ul>
 	<b>2022-10-12</b><ul>
 		<li>Added option to remove last __ rows from the menu.</li>
 	</ul>
