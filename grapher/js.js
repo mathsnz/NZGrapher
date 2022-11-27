@@ -17,6 +17,12 @@ var lastmedian;
 var ovsmin;
 var ovsmax;
 
+function analytics(c,a){
+	const d = new Date();
+	let ms = d.valueOf();
+	$.get('https://analytics.jpw.nz/nzgraphernew.php?c='+c+'&a='+a+'&r='+ms)
+}
+
 function getCookie(cname) {
   var name = cname + "=";
   var decodedCookie = decodeURIComponent(document.cookie);
@@ -69,11 +75,7 @@ $(function(){
 
 	// This must be a hyperlink
 	$("#download").on('click', function (event) {
-		try {
-			ga('send', 'event', 'Function', 'Data - download', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+    	analytics('Function','Data - downloadcsv');
 		// CSV
 		exportTableToCSV.apply(this, [$('#data'), 'data.csv']);
 
@@ -82,11 +84,7 @@ $(function(){
 	});
 	
 	$("#downloadnzgrapher").on('click', function (event) {
-		try {
-			ga('send', 'event', 'Function', 'Data - download NZGrapher', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Data - downloadNZGrapher');
 		// CSV
 		exportNZGrapher.apply(this, [$('#data'), 'data.nzgrapher']);
 
@@ -150,22 +148,14 @@ $(function(){
 	});
 	
 	$('#pastelinkclick').click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Data - pastelinkclick', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Data - pastelinkclick');
 		document.getElementById("pastelink").style.display="block";
 		document.getElementById("linkarea").value="";
 		document.getElementById("linkarea").focus();
 	});
 	
 	$('#pastetableclick').click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Data - pastetableclick', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Data - pastetableclick');
 		document.getElementById("pastetext").style.display="block";
 		document.getElementById("textarea").value="";
 		document.getElementById("textarea").focus();
@@ -268,11 +258,7 @@ $(function(){
 	});
 
 	$( "#3dots" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', '3dots', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','3dots');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -286,21 +272,13 @@ $(function(){
 	$("#data td div").keypress(function(e){ if(e.which == 44){alert("You entered a comma... you can't to this.");} });
 
 	$( "#addcol" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Column - addcol', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Column - addcol');
 		$("#data tr").append("<td><div><br></div></td>");
 		$('#data td div').attr('contenteditable','true');
 		updatebox();
 	});
 	$( "#addrow" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Row - addrow', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Row - addrow');
 		var col=$("#data").find("tr:first td").length;
 		var row=$('#data tr').length;
 		var add="<tr><th>"+(row);
@@ -313,11 +291,7 @@ $(function(){
 		$("#rowshowhide").click();
 	});
 	$( "#delrow" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Row - delrow', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Row - delrow');
 		if($('#data tr').length>1){
 			$('#data tr:last').remove();
 		};
@@ -325,22 +299,14 @@ $(function(){
 	});
 	
 	$( "#dellastrows" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Column - dellastrows', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Row - dellastrows');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
 		$("#deleterowsdiv").show();
 	});
 	$( "#deleterowsgo" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Row - delrowsgo', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Row - delrowsgo');
 		toremove = 0+$('#numberofrowstodelete').val();
 		if(isNaN(toremove)){
 			alert('You must put in a number');
@@ -358,22 +324,14 @@ $(function(){
 	});
 	
 	$( "#delcol" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Column - delcol', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Column - delcol');
 		$('#data tr td:last-child').remove();
 		$('#type').val('newabout');
 		updatebox();
 	});
 
 	$( "#delspecrow" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Row - delspecrow', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Row - delspecrow');
 		var row;
 		row=prompt("Which row do you want to delete?");
 		$('#data tr:eq('+row+')').remove();
@@ -389,11 +347,7 @@ $(function(){
 	});
 	
 	$( "#deletecolgo" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Column - deletecolgo', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Column - deletecolgo');
 		var col=$('#columndel').val();
 		$('#data tr').each(function(){
 			$(this).find('td:eq('+col+')').remove();
@@ -411,11 +365,7 @@ $(function(){
 	});
 	
 	$( "#delspeccol" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Column - delspeccol', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Column - deletespeccol');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -431,22 +381,14 @@ $(function(){
 	});
 	
 	$( "#highlightdatatable" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Data - highlightdatatable', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Data - highlightdatatable');
 		$('#filepop').hide();
 		selectText($('#data')[0]);
 		document.execCommand('copy');
 	});
 
 	$( "#reorder").click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - reorder', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - reorder');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -493,11 +435,7 @@ $(function(){
 	});
 
 	$ ("#orderby").change(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - orderby', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - orderby');
 		var sampleon = $('#orderby option:selected').text();
 		var options = this.value.split(',');
 		options.pop();
@@ -512,11 +450,7 @@ $(function(){
 	});
 
 	$ ("#ordergo").click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - ordergo', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - ordergo');
 		$ ("#sampling").hide();
 		window.setTimeout(function(){
 		var orderby = $('#orderby option:selected').text();
@@ -541,11 +475,7 @@ $(function(){
 	});
 
 	$( "#sort" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - sort', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - sort');
 		$ ("#sortdiv").show();
 		$ ("#sampling").show();
 		$("#rowbox").hide();
@@ -563,11 +493,7 @@ $(function(){
 	});
 
 	$( "#filter" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - filter', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - filter');
 		$ ("#filterdiv").show();
 		$ ("#sampling").show();
 		$("#rowbox").hide();
@@ -585,11 +511,7 @@ $(function(){
 	});
 
 	$ ("#sortgo").click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - sortgo', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - sortgo');
 		var col = $('#sortby').val();
 		sortTable(col);
 		$ ("#sampling").hide();
@@ -597,11 +519,7 @@ $(function(){
 	});
 
 	$( "#samvar" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Teaching Tools - samvar', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Teaching Tools - samvar');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -652,11 +570,7 @@ $(function(){
 	});
 
 	$( "#rerand" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Teaching Tools - rerand', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Teaching Tools - rerand');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -669,11 +583,7 @@ $(function(){
 	});
 
 	$( "#bs" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Teaching Tools - bs', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Teaching Tools - bs');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -686,11 +596,7 @@ $(function(){
 	});
 	
 	$( "#regroup" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - regroup', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - regroup');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -752,11 +658,7 @@ $(function(){
 	});
 
 	$ ("#regroupgo").click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - regroupgo', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - regroupgo');
 		$ ("#regroupdiv").hide();
 		var variable = $('#regroupwith option:selected').text();
 		var index = $("#data td:contains('"+variable.split("'")[0]+"')").filter(function() {
@@ -789,11 +691,7 @@ $(function(){
 	});
 
 	$( "#sample" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - sample', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - sample');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -869,11 +767,7 @@ $(function(){
 	});
 
 	$ ("#samplego").click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - samplego', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - samplego');
 		$("#samplediv").hide();
 		window.setTimeout(function(){
 		console.log($('[id^="sample-"]').length);
@@ -943,11 +837,7 @@ $(function(){
 	});
 
 	$ ("#samvargo").click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - samvargo', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - samvargo');
 		$('#data').html($('#presampledataholder').html());
 		window.setTimeout(function(){
 		if($('[id^="samvar-"]').length==1){
@@ -1169,11 +1059,7 @@ $(function(){
 	});
 		
 	$ ("#filtergo").click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - filtergo', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - filtergo');
 		var filtermin = parseFloat($('#filtermin').val());
 		var filtermax = parseFloat($('#filtermax').val());
 		if(isNaN(filtermin) || isNaN(filtermax)){
@@ -1211,22 +1097,14 @@ $(function(){
 
 
 	$( "#reset" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'reset', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','reset');
 		$('#progressdescription')[0].innerHTML = 'Resetting';
 		$('#progressbarholder').show();
 		loaddata();
 	});
 
 	$( "#newvarc2" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - newvarc2', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - newvarc2');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -1244,11 +1122,7 @@ $(function(){
 	});
 
 	$( "#newvarc3" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - newvarc3', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - newvarc3');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -1268,11 +1142,7 @@ $(function(){
 	});
 
 	$( "#newvarc4" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - newvarc4', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - newvarc4');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -1290,11 +1160,7 @@ $(function(){
 	});
 
 	$( "#newvarc5" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - newvarc5', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - newvarc5');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -1316,11 +1182,7 @@ $(function(){
 	});
 
 	$( "#newvar" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - newvar', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - newvar');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -1339,11 +1201,7 @@ $(function(){
 	});
 
 	$( "#creatego" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - creatego', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - creatego');
 		$ ("#newvardiv").hide();
 		var type = encodeURIComponent($('#newvarcom option:selected').text());
 		var var1 = $('#newvar1 option:selected').text();
@@ -1380,11 +1238,7 @@ $(function(){
 	});
 
 	$( "#createcgo" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - createcgo', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - createcgo');
 		$ ("#newvarcdiv").hide();
 		var cx = $('#newvarcx option:selected').text();
 		var md = encodeURIComponent($('#newvarcmd option:selected').text());
@@ -1434,11 +1288,7 @@ $(function(){
 	});
 
 	$( "#createc3go" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - createc3go', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - createc3go');
 		$ ("#newvarc3div").hide();
 		var cx = $('#newvarc3var option:selected').text();
 		var index = $("#data td:contains('"+cx.split("'")[0]+"')").filter(function() {
@@ -1496,11 +1346,7 @@ $(function(){
 	
 	
 	$( "#createc4go" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - createc4go', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - createc4go');
 		$ ("#newvarc4div").hide();
 		var cx = $('#newvarc4var option:selected').text();
 		var func = $('#newvar4func').val();
@@ -1527,11 +1373,7 @@ $(function(){
 	
 	
 	$( "#createc5go" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - createc5go', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - createc5go');
 		$ ("#newvarc5div").hide();
 		var c1 = $('#newvarc5var1 option:selected').text();
 		var index1 = $("#data td:contains('"+c1.split("'")[0]+"')").filter(function() {
@@ -1618,20 +1460,12 @@ $(function(){
 	});
 
 	$( "#update" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'update', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','update');
 		updatebox()
 	});
 
 	$( "#wizardmenu" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Wizard - Open', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Wizard - Open');
 		$('#wizard').show();
 		var xselindex = Math.max(0,$('#wizardx').prop('selectedIndex'));
 		var yselindex = Math.max(0,$('#wizardy').prop('selectedIndex'));
@@ -1647,21 +1481,14 @@ $(function(){
 	});
 
 	$( "#importlink" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Data - importlink', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Data - importlink');
 		var link = document.getElementById("linkarea").value;
 		document.location = document.location.origin + document.location.pathname + '?url=' + encodeURIComponent(link);
 	});
 	
 	$( "#import" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Data - import', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Data - import');
+		analytics('Dataset','Pasted Table');
 		var data = document.getElementById("textarea").value;
 		csv_data = data;
 		console.timeEnd("Loading Pasted Data");
@@ -1676,11 +1503,7 @@ function addnewcond(){
 }
 
 function moreoptions(){
-	try {
-		ga('send', 'event', 'Function', 'moreoptions', ipaddress);
-	} catch(err) {
-		console.log(err.message);
-	}
+	analytics('Function','moreoptions');
 	$("#options").show();
 }
 
@@ -1850,19 +1673,7 @@ function updategraphgo(){
 	$('#var3label').html("variable 3:");
 	$('.highlight').removeClass('highlight');
     $('#tooltip').css('display','none');
-	if($('#type').val()=='newabout'){
-		try {
-			ga('send', 'event', 'Load', 'About', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
-	} else {
-		try {
-			ga('send', 'event', 'Graph Draw', $('#type').val(), ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
-	}
+    analytics('Graph Draw',$('#type').val());
 	if(!$('#xvar').length){
 		alert('NZGrapher is not loaded properly... please load again with a valid dataset.');
 		window.location = './';
@@ -2115,11 +1926,7 @@ function updatereset(){
 }
 
 function showhideleft(){
-	try {
-		ga('send', 'event', 'Function', 'showhideleft', ipaddress);
-	} catch(err) {
-		console.log(err.message);
-	}
+    analytics('Function','showhideleft');
 	var button=document.getElementById('showhideleft');
 	var li=document.getElementById('showhideleftli');
 	var buttons=document.getElementById('buttons');
@@ -2146,11 +1953,7 @@ function showhideleft(){
 }
 
 function showhidebottom(){
-	try {
-		ga('send', 'event', 'Function', 'showhidebottom', ipaddress);
-	} catch(err) {
-		console.log(err.message);
-	}
+    analytics('Function','showhidebottom');
 	var button=document.getElementById('showhidebottom');
 	var li=document.getElementById('showhidebottomli');
 	var variable=document.getElementById('variable');
@@ -10223,11 +10026,8 @@ $( document ).ready(function() {
 	  console.time("Loading from Clipboard");
 	  try {
 		var data = await navigator.clipboard.readText();
-		try {
-			ga('send', 'event', 'Function', 'Data - directimport', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+    	analytics('Function','Data - directimport');
+    	analytics('Dataset','Clipboard');
 		csv_data = data;
 		console.timeEnd("Loading from Clipboard");
 		$('#progressdescription')[0].innerHTML = 'Creating Table';
@@ -10240,11 +10040,7 @@ $( document ).ready(function() {
 	})
 	
   function handleFileSelect(evt) {
-	try {
-		ga('send', 'event', 'Function', 'Data - filenew', ipaddress);
-	} catch(err) {
-		console.log(err.message);
-	}  
+    analytics('Function','Data - filenew');
 	  
 	$('#progressdescription')[0].innerHTML = 'Starting';
 	console.time("Starting");
@@ -10270,6 +10066,8 @@ $( document ).ready(function() {
 		$('#progressbarholder').hide();
         return;
       }
+      
+      analytics('Dataset',f.name);
 
       var reader = new FileReader();
 	  

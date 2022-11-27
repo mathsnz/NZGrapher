@@ -228,18 +228,11 @@ function isSecure() {
 
 $protocol = isSecure() === true ? 'https://' : 'http://';
 $actual_link = urlencode($protocol.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']);
-$time = date('U');
-$randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
-$ip = getenv('HTTP_CLIENT_IP')?:
-getenv('HTTP_X_FORWARDED_FOR')?:
-getenv('HTTP_X_FORWARDED')?:
-getenv('HTTP_FORWARDED_FOR')?:
-getenv('HTTP_FORWARDED')?:
-getenv('REMOTE_ADDR');
-if(file_exists('./windowsapp.php')){$actual_link='Windows App v2';}
+
 echo "<script>
-var ipaddress = '$ip';
-$.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&time=$time&r=$randomString'+Math.random());
+const d = new Date();
+let ms = d.valueOf();
+$.get('https://analytics.jpw.nz/nzgraphernew.php?c=InitialLoad&a=$actual_link&r='+ms);
 </script>";
 ?>
 </div>
@@ -252,7 +245,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 	</form>
 	<form id=datasource method=get style='display:inline;'>
 		<input type=hidden name=folder value="<?php echo $_GET['folder'];?>">
-		Data Source: <select name=dataset onChange="document.getElementById('datasource').submit();" style='width:150px;height:20px;padding:0px;'>
+		Data Source: <select name=dataset id=dataset onChange="document.getElementById('datasource').submit();" style='width:150px;height:20px;padding:0px;'>
 <?php
 
 	$files=glob($_GET['folder'].'/*.csv');
@@ -1153,5 +1146,10 @@ if('serviceWorker' in navigator) {
            .register('./sw.js')
            .then(function() { console.log("Service Worker Registered"); });
 }
+</script>
+<script>
+	const d2 = new Date();
+	let ms2 = d2.valueOf();
+	$.get('https://analytics.jpw.nz/nzgraphernew.php?c=Dataset&a='+$('#dataset').val()+'&r='+ms2);
 </script>
 </html>
