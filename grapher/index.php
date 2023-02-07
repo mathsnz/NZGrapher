@@ -71,18 +71,18 @@ if (screen.availWidth < 1024)
 			<tr>
 				<td style='width:50%;border-right:1px solid #ccc;padding-right:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
 					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Need Help?</b></span><br>
-					Need help <b>getting started</b>? Watching <a target='_blank' href='https://www.mathsnz.com/nzgrapher-info/video-tutorials'>these videos</a> is a great place to start.<br>
+					Need help <b>getting started</b>? Watching <a target='_blank' href='https://info.grapher.nz/video-tutorials/'>these videos</a> is a great place to start.<br>
 					<br>
-					Want to <b>know more</b>? Information on the graphs and datasets, as well as video tutorials are over on <a target='_blank' href='https://www.mathsnz.com/nzgrapher-info'>MathsNZ</a>.<br>
+					Want to <b>know more</b>? Information on the graphs and datasets, as well as video tutorials are over on the <a target='_blank' href='https://info.grapher.nz/'>NZGrapher Info Site</a>.<br>
 					<br>
-					Something <b>not working</b> or <b>have an idea</b> to make NZGrapher better... please <a target='_blank' href='https://www.mathsnz.com/contact'>let me know</a>.<br>
+					Something <b>not working</b> or <b>have an idea</b> to make NZGrapher better... please <a target='_blank' href='https://info.grapher.nz/contact/'>let me know</a>.<br>
 				<td style='width:50%;padding-left:10px;vertical-align:top;padding-bottom:0px;padding-top:0px;'>
 					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Cost</b></span><br>
-					NZGrapher is free for non-commercial <b>individual</b> use, you can however <a target='_blank' href='https://www.mathsnz.com/donate'>make a donation</a>.<br>
+					NZGrapher is free for non-commercial <b>individual</b> use, you can however <a target='_blank' href='https://info.grapher.nz/donate/'>make a donation</a>.<br>
 					<br>
-					<b>Schools</b> are required to subscribe at a minimum of $0.50 per student using NZGrapher. <b>Commercial users</b> are also required to pay. Please visit the <a target='_blank' href='https://www.mathsnz.com/nzgrapher-invoice'>invoice creator</a> for details.<br>
+					<b>Schools</b> are required to subscribe at a minimum of $0.50 per student using NZGrapher. <b>Commercial users</b> are also required to pay. Please visit the <a target='_blank' href='https://info.grapher.nz/nzgrapher-invoice/'>invoice creator</a> for details.<br>
 					<br>
-					Any questions about this please <a target='_blank' href='https://www.mathsnz.com/contact'>get in touch</a>.
+					Any questions about this please <a target='_blank' href='https://info.grapher.nz/contact/'>get in touch</a>.
 			</tr>
 		</table>
 		<br>
@@ -228,18 +228,11 @@ function isSecure() {
 
 $protocol = isSecure() === true ? 'https://' : 'http://';
 $actual_link = urlencode($protocol.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']);
-$time = date('U');
-$randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
-$ip = getenv('HTTP_CLIENT_IP')?:
-getenv('HTTP_X_FORWARDED_FOR')?:
-getenv('HTTP_X_FORWARDED')?:
-getenv('HTTP_FORWARDED_FOR')?:
-getenv('HTTP_FORWARDED')?:
-getenv('REMOTE_ADDR');
-if(file_exists('./windowsapp.php')){$actual_link='Windows App v2';}
+
 echo "<script>
-var ipaddress = '$ip';
-$.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&time=$time&r=$randomString'+Math.random());
+const d = new Date();
+let ms = d.valueOf();
+$.get('https://analytics.jpw.nz/nzgraphernew.php?c=InitialLoad&a=$actual_link&r='+ms);
 </script>";
 ?>
 </div>
@@ -252,7 +245,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 	</form>
 	<form id=datasource method=get style='display:inline;'>
 		<input type=hidden name=folder value="<?php echo $_GET['folder'];?>">
-		Data Source: <select name=dataset onChange="document.getElementById('datasource').submit();" style='width:150px;height:20px;padding:0px;'>
+		Data Source: <select name=dataset id=dataset onChange="document.getElementById('datasource').submit();" style='width:150px;height:20px;padding:0px;'>
 <?php
 
 	$files=glob($_GET['folder'].'/*.csv');
@@ -307,10 +300,11 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 
 <div id=helppopup class="callout popup">
 <ul>
-	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/video-tutorials','_blank');try{ga('send', 'event', 'Function', 'Help - Video Tutorials', '');} catch(err) {console.log(err.message);}">Video Tutorials</li>
-	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/graph-information','_blank');try{ga('send', 'event', 'Function', 'Help - Graph Information', '');} catch(err) {console.log(err.message);}">Graph Information</li>
-	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/function-information','_blank');try{ga('send', 'event', 'Function', 'Help - Function Information', '');} catch(err) {console.log(err.message);}">Function Information</li>
-	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/dataset-information','_blank');try{ga('send', 'event', 'Function', 'Help - Dataset Information', '');} catch(err) {console.log(err.message);}">Dataset Information</li>
+	<li onclick="window.open('https://info.grapher.nz/video-tutorials/','_blank');try{ga('send', 'event', 'Function', 'Help - Video Tutorials', '');} catch(err) {console.log(err.message);}">Video Tutorials</li>
+	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/graph-information','_blank');try{ga('send', 'event', 'Function', 'Help - Graph Information', '');} catch(err) {console.log(err.message);}">Graph Information - Old</li>
+	<li onclick="window.open('https://info.grapher.nz/graph-information/','_blank');try{ga('send', 'event', 'Function', 'Help - Graph Information', '');} catch(err) {console.log(err.message);}">Graph Information - New</li>
+	<li onclick="window.open('https://info.grapher.nz/function-information/','_blank');try{ga('send', 'event', 'Function', 'Help - Function Information', '');} catch(err) {console.log(err.message);}">Function Information</li>
+	<li onclick="window.open('https://info.grapher.nz/dataset-info/','_blank');try{ga('send', 'event', 'Function', 'Help - Dataset Information', '');} catch(err) {console.log(err.message);}">Dataset Information</li>
 	<li onclick="document.getElementById('welcome').style.display='block';try{ga('send', 'event', 'Function', 'Help - Show Welcome', '');} catch(err) {console.log(err.message);}">Show Welcome</li>
 	<li onclick="document.getElementById('tour').style.display='block';try{ga('send', 'event', 'Function', 'Help - Show Overlay', '');} catch(err) {console.log(err.message);}">Show Overlay</li>
 </ul>
@@ -321,7 +315,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 	<li id=bs>Bootstrapping</li>
 	<li id=rerand>Re-Randomisation</li>
 	<li id=samvar>Sampling Variability</li>
-	<li onclick="window.open('https://www.mathsnz.com/nzgrapher-info/teaching-tools','_blank');try{ga('send', 'event', 'Function', 'Teaching Tools - Video Tutorials', '');} catch(err) {console.log(err.message);}">Video Tutorials</li>
+	<li onclick="window.open('https://info.grapher.nz/teaching-tools/','_blank');try{ga('send', 'event', 'Function', 'Teaching Tools - Video Tutorials', '');} catch(err) {console.log(err.message);}">Video Tutorials</li>
 </ul>
 </div>
 
@@ -329,6 +323,7 @@ $.get('https://tracking.jake4maths.com/trackingimage.php?v=$v&url=$actual_link&t
 <ul>
 	<li id=addrow>Add Row</li>
 	<li id=delrow>Delete Last Row</li>
+	<li id=dellastrows>Delete Last __ Rows</li>
 	<li id=delspecrow>Delete Specific Row</li>
 </ul>
 </div>
@@ -416,7 +411,7 @@ if(substr($dataset,0,6)!="SECURE"){
 	<span id=samvarcontents style="font-size:14px">
 		This section lets you re-sample the same data while looking at a graph to see what happens when you take repeated samples.<br>
 		This is really useful for teaching sampling variability.<br>
-		You can see a <a href='https://www.mathsnz.com/nzgrapher-info/teaching-tools' target='_blank'>video tutorial on how to use this here</a>.<br>
+		You can see a <a href='https://info.grapher.nz/teaching-tools/' target='_blank'>video tutorial on how to use this here</a>.<br>
 				<br>
 		Sample With: <select style='width:120px' onChange="" id=samvaron></select><br><br>
 		<center>
@@ -442,7 +437,7 @@ if(substr($dataset,0,6)!="SECURE"){
 	<span id=rerandteachcontents style="font-size:14px">
 		This section lets you manually step through a creating re-randomisation distribution.<br>
 		This is really useful for teaching how re-randomisation and the randomisation test work.<br>
-		You can see a <a href='https://www.mathsnz.com/nzgrapher-info/teaching-tools' target='_blank'>video tutorial on how to use this here</a>.<br>
+		You can see a <a href='https://info.grapher.nz/teaching-tools/' target='_blank'>video tutorial on how to use this here</a>.<br>
 		<br>
 		Re-randomisation works by taking the sample, and randomly assigning each of the data points to one of the groups in the same proportion as the sample. 
 		It then works out the median or mean for each group and plots the difference between them on the graph below.
@@ -474,7 +469,7 @@ if(substr($dataset,0,6)!="SECURE"){
 	<span id=rerandteachcontents style="font-size:14px">
 		This section lets you manually step through creating a bootstrap confidence interval.<br>
 		This is really useful for teaching bootstrapping.<br>
-		You can see a <a href='https://www.mathsnz.com/nzgrapher-info/teaching-tools' target='_blank'>video tutorial on how to use this here</a>.<br>
+		You can see a <a href='https://info.grapher.nz/teaching-tools/' target='_blank'>video tutorial on how to use this here</a>.<br>
 		<br>
 		Bootstrapping works by taking the sample, and randomly choosing as many points as in the original sample from the original sample, using replacement. 
 		This means that each point can potentially be chosen multiple times, or not at all.
@@ -601,6 +596,9 @@ if(isset($_POST['csv_data'])){
 			<span id=arrowsshow>
 				<label><input type="checkbox" onclick="updategraph();" id="arrows" name="arrows" value="yes"> Arrows</label><br>
 			</span>
+			<span id=colorarrowsshow>
+				<label><input type="checkbox" onclick="updategraph();" id="colorarrows" name="colorarrows" value="yes"> Colour by Difference</label><br>
+			</span>
 			<span id=btypeshow>
 				Bootstrap:<br>
 				<select onchange="updategraph();" id="btype" name="btype" value="Median" style='width:100px;'>
@@ -620,6 +618,9 @@ if(isset($_POST['csv_data'])){
 			<span id=boxplotshow><label>
 				<input type="checkbox" onclick="updategraph();" id="boxplot" name="boxplot" value="yes"> Box Plots</label><br>
 			</span>
+			<span id=highboxplotshow><label>
+				<input type="checkbox" onclick="updategraph();" id="highboxplot" name="highboxplot" value="yes"> High Box Plot</label><br>
+			</span>
 			<span id=hidepointsshow><label>
 				<input type="checkbox" onclick="updategraph();" id="hidepoints" name="hidepointsshow" value="yes"> Hide Points</label><br>
 			</span>
@@ -634,9 +635,6 @@ if(isset($_POST['csv_data'])){
 			</span>
 			<span id=stripgraphshow><label>
 				<input type="checkbox" onclick="updategraph();" id="stripgraph" name="stripgraphshow" value="yes"> Strip Graph</label><br>
-			</span>
-			<span id=highboxplotshow><label>
-				<input type="checkbox" onclick="updategraph();" id="highboxplot" name="highboxplot" value="yes"> High Box Plot</label><br>
 			</span>
 			<span id=boxnowhiskershow><label>
 				<input type="checkbox" onclick="updategraph();" id="boxnowhisker" name="boxnowhisker" value="yes"> Box (No Whisker)</label><br>
@@ -661,6 +659,7 @@ if(isset($_POST['csv_data'])){
 			<span id=intervalshow>
 				<label><input type="checkbox" onclick="updategraph();" id="interval" name="interval" value="yes"> Informal C-I</label><br>
 				<label><input type="checkbox" onclick="updategraph();" id="intervallim" name="intervallim" value="yes"> C-I Limits</label><br>
+				<label><input type="checkbox" onclick="updategraph();" id="intervalhighlight" name="intervalhighlight" value="yes"> C-I Highlight</label><br>
 			</span>
 			<span id=labelshow><label>
 				<input type="checkbox" onclick="updategraph();" id="labels" name="labels" value="yes"> Point Labels</label><br>
@@ -723,6 +722,9 @@ if(isset($_POST['csv_data'])){
 			</span>
 			<span id=startfinishshow><label>
 				<input type="checkbox" onclick="updategraph();" id="startfinish" name="startfinish" value="yes"> Start / End Points</label><br>
+			</span>
+			<span id=morecatsshow><label>
+				<input type="checkbox" onclick="updategraph();" id="morecats" name="morecats" value="yes"> Allow More Categories</label><br>
 			</span>
 			<span id=gridlinesshow><label>
 				<input type="checkbox" onclick="updategraph();" id="gridlines" name="gridlines" value="yes"> Gridlines</label><br>
@@ -865,6 +867,16 @@ if(isset($_GET['dev'])){
 		<center>
 		Which Column: <select style='width:120px' onChange="" id=columndel></select><br><br>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=deletecolgo>Remove</a><br><br>
+		</center>
+	</span>
+</div>
+<div id="deleterowsdiv" class=absolute style="z-index:99;max-height:80%;overflow-y:auto;display:none;padding:10px;position:absolute;border:none;box-shadow: 0px 0px 10px rgba(0,0,0,0.5);top:50%;left:50%;-webkit-transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);">
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>Delete Last __ Rows</div>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' class=close>&times;</div><br>
+	<span id=samplecontents style="font-size:14px">
+		<center>
+		How Many Rows?: <input id=numberofrowstodelete><br><br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=deleterowsgo>Remove</a><br><br>
 		</center>
 	</span>
 </div>
@@ -1049,8 +1061,8 @@ if(isset($_GET['dev'])){
 			<tr><td>Max:<td><input id=boxplotmax value=auto>
 			<tr><td colspan=2>For adjusting the size of the red summary statistics
 			<tr><td>Text Size:<td><input id=textsize value=13 type=number>
-			<tr><td>Smoothing Power:<td><input id=smoothingpower value=10 type=number>
-			<tr><td colspan=2>For adjusting the smoothness on violin and shape outline graphs. Smaller number is more smooth.
+			<tr><td>Smoothing Power:<td><input id=smoothingpower value=3 type=number>
+			<tr><td colspan=2>For adjusting the smoothness on violin and shape outline graphs. Larger number is more smooth.
 			<tr><td>&nbsp;
 			<tr><td colspan=2><b>Scatter Graphs:</b><br>
 			For creating axis limits it pretend the ____ value is ____
@@ -1126,6 +1138,7 @@ if(isset($_GET['dev'])){
 	</select>)<br>
 	<div id=wizardoutput></div>
 </div>
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "4eaaec79ef86402d8fd86b8ba0063ab2"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 <script>
 if('serviceWorker' in navigator) {
@@ -1133,5 +1146,10 @@ if('serviceWorker' in navigator) {
            .register('./sw.js')
            .then(function() { console.log("Service Worker Registered"); });
 }
+</script>
+<script>
+	const d2 = new Date();
+	let ms2 = d2.valueOf();
+	$.get('https://analytics.jpw.nz/nzgraphernew.php?c=Dataset&a='+$('#dataset').val()+'&r='+ms2);
 </script>
 </html>

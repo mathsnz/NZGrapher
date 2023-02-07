@@ -13,6 +13,29 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2022-11-28</b><ul>
+		<li>Updated Documentation.</li>
+		<li>Removed Google Analytics.</li>
+	</ul>
+	<b>2022-10-12</b><ul>
+		<li>Added option to remove last __ rows from the menu.</li>
+	</ul>
+	<b>2022-08-29</b><ul>
+		<li>Added tickbox to allow more categories on bar graphs.</li>
+		<li>Tweaks to smoothing for shape outline and violin graphs.</li>
+	</ul>
+	<b>2022-08-03</b><ul>
+		<li>Update to smoothing function used for violin graphs and shape outlines.</li>
+		<li>Added jitter option to the arrows graph.</li>
+		<li>Added summary of positive / negative shifts on arrows graph when summary stats tickbox is checked.</li>
+	</ul>
+	<b>2022-06-15</b><ul>
+		<li>Fix for small numbers of residual graphs not working correctly.</li>
+	</ul>
+	<b>2022-06-13</b><ul>
+		<li>Added "C-I Highlight" option on "Dot Plot (and Box and Whisker)"</li>
+		<li>Added "Colour by Difference" option on "Paired Experiment Dot Plot (and Arrows Graph)"</li>
+	</ul>
 	<b>2022-05-04</b><ul>
 		<li>Fixed size of start and end points on time series graphs when high-res option was ticked.</li>
 	</ul>

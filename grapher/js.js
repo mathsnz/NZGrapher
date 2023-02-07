@@ -17,6 +17,12 @@ var lastmedian;
 var ovsmin;
 var ovsmax;
 
+function analytics(c,a){
+	const d = new Date();
+	let ms = d.valueOf();
+	$.get('https://analytics.jpw.nz/nzgraphernew.php?c='+c+'&a='+a+'&r='+ms)
+}
+
 function getCookie(cname) {
   var name = cname + "=";
   var decodedCookie = decodeURIComponent(document.cookie);
@@ -69,11 +75,7 @@ $(function(){
 
 	// This must be a hyperlink
 	$("#download").on('click', function (event) {
-		try {
-			ga('send', 'event', 'Function', 'Data - download', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+    	analytics('Function','Data - downloadcsv');
 		// CSV
 		exportTableToCSV.apply(this, [$('#data'), 'data.csv']);
 
@@ -82,11 +84,7 @@ $(function(){
 	});
 	
 	$("#downloadnzgrapher").on('click', function (event) {
-		try {
-			ga('send', 'event', 'Function', 'Data - download NZGrapher', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Data - downloadNZGrapher');
 		// CSV
 		exportNZGrapher.apply(this, [$('#data'), 'data.nzgrapher']);
 
@@ -150,22 +148,14 @@ $(function(){
 	});
 	
 	$('#pastelinkclick').click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Data - pastelinkclick', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Data - pastelinkclick');
 		document.getElementById("pastelink").style.display="block";
 		document.getElementById("linkarea").value="";
 		document.getElementById("linkarea").focus();
 	});
 	
 	$('#pastetableclick').click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Data - pastetableclick', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Data - pastetableclick');
 		document.getElementById("pastetext").style.display="block";
 		document.getElementById("textarea").value="";
 		document.getElementById("textarea").focus();
@@ -268,11 +258,7 @@ $(function(){
 	});
 
 	$( "#3dots" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', '3dots', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','3dots');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -286,21 +272,13 @@ $(function(){
 	$("#data td div").keypress(function(e){ if(e.which == 44){alert("You entered a comma... you can't to this.");} });
 
 	$( "#addcol" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Column - addcol', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Column - addcol');
 		$("#data tr").append("<td><div><br></div></td>");
 		$('#data td div').attr('contenteditable','true');
 		updatebox();
 	});
 	$( "#addrow" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Row - addrow', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Row - addrow');
 		var col=$("#data").find("tr:first td").length;
 		var row=$('#data tr').length;
 		var add="<tr><th>"+(row);
@@ -313,33 +291,47 @@ $(function(){
 		$("#rowshowhide").click();
 	});
 	$( "#delrow" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Row - delrow', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Row - delrow');
 		if($('#data tr').length>1){
 			$('#data tr:last').remove();
 		};
 		updatebox();
 	});
-	$( "#delcol" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Column - delcol', ipaddress);
-		} catch(err) {
-			console.log(err.message);
+	
+	$( "#dellastrows" ).click(function() {
+		analytics('Function','Row - dellastrows');
+		$("#rowbox").hide();
+		$("#colbox").hide();
+		$("#sambox").hide();
+		$("#deleterowsdiv").show();
+	});
+	$( "#deleterowsgo" ).click(function() {
+		analytics('Function','Row - delrowsgo');
+		toremove = 0+$('#numberofrowstodelete').val();
+		if(isNaN(toremove)){
+			alert('You must put in a number');
+			return;
 		}
+		var removed = 0;
+		while (removed<toremove){
+			if($('#data tr').length>1){
+				$('#data tr:last').remove();
+			};
+			removed++;
+		}
+		$("#deleterowsdiv").hide();
+		updatebox();
+	});
+	
+	$( "#delcol" ).click(function() {
+		analytics('Function','Column - delcol');
 		$('#data tr td:last-child').remove();
 		$('#type').val('newabout');
 		updatebox();
 	});
 
 	$( "#delspecrow" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Row - delspecrow', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Row - delspecrow');
 		var row;
 		row=prompt("Which row do you want to delete?");
 		$('#data tr:eq('+row+')').remove();
@@ -355,11 +347,7 @@ $(function(){
 	});
 	
 	$( "#deletecolgo" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Column - deletecolgo', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Column - deletecolgo');
 		var col=$('#columndel').val();
 		$('#data tr').each(function(){
 			$(this).find('td:eq('+col+')').remove();
@@ -377,11 +365,7 @@ $(function(){
 	});
 	
 	$( "#delspeccol" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Column - delspeccol', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Column - deletespeccol');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -397,22 +381,14 @@ $(function(){
 	});
 	
 	$( "#highlightdatatable" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Data - highlightdatatable', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Data - highlightdatatable');
 		$('#filepop').hide();
 		selectText($('#data')[0]);
 		document.execCommand('copy');
 	});
 
 	$( "#reorder").click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - reorder', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - reorder');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -459,11 +435,7 @@ $(function(){
 	});
 
 	$ ("#orderby").change(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - orderby', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - orderby');
 		var sampleon = $('#orderby option:selected').text();
 		var options = this.value.split(',');
 		options.pop();
@@ -478,11 +450,7 @@ $(function(){
 	});
 
 	$ ("#ordergo").click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - ordergo', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - ordergo');
 		$ ("#sampling").hide();
 		window.setTimeout(function(){
 		var orderby = $('#orderby option:selected').text();
@@ -507,11 +475,7 @@ $(function(){
 	});
 
 	$( "#sort" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - sort', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - sort');
 		$ ("#sortdiv").show();
 		$ ("#sampling").show();
 		$("#rowbox").hide();
@@ -529,11 +493,7 @@ $(function(){
 	});
 
 	$( "#filter" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - filter', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - filter');
 		$ ("#filterdiv").show();
 		$ ("#sampling").show();
 		$("#rowbox").hide();
@@ -551,11 +511,7 @@ $(function(){
 	});
 
 	$ ("#sortgo").click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - sortgo', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - sortgo');
 		var col = $('#sortby').val();
 		sortTable(col);
 		$ ("#sampling").hide();
@@ -563,11 +519,7 @@ $(function(){
 	});
 
 	$( "#samvar" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Teaching Tools - samvar', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Teaching Tools - samvar');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -618,11 +570,7 @@ $(function(){
 	});
 
 	$( "#rerand" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Teaching Tools - rerand', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Teaching Tools - rerand');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -635,11 +583,7 @@ $(function(){
 	});
 
 	$( "#bs" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Teaching Tools - bs', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Teaching Tools - bs');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -652,11 +596,7 @@ $(function(){
 	});
 	
 	$( "#regroup" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - regroup', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - regroup');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -718,11 +658,7 @@ $(function(){
 	});
 
 	$ ("#regroupgo").click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - regroupgo', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - regroupgo');
 		$ ("#regroupdiv").hide();
 		var variable = $('#regroupwith option:selected').text();
 		var index = $("#data td:contains('"+variable.split("'")[0]+"')").filter(function() {
@@ -755,11 +691,7 @@ $(function(){
 	});
 
 	$( "#sample" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - sample', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - sample');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -835,11 +767,7 @@ $(function(){
 	});
 
 	$ ("#samplego").click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - samplego', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - samplego');
 		$("#samplediv").hide();
 		window.setTimeout(function(){
 		console.log($('[id^="sample-"]').length);
@@ -909,11 +837,7 @@ $(function(){
 	});
 
 	$ ("#samvargo").click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - samvargo', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - samvargo');
 		$('#data').html($('#presampledataholder').html());
 		window.setTimeout(function(){
 		if($('[id^="samvar-"]').length==1){
@@ -1135,11 +1059,7 @@ $(function(){
 	});
 		
 	$ ("#filtergo").click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - filtergo', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - filtergo');
 		var filtermin = parseFloat($('#filtermin').val());
 		var filtermax = parseFloat($('#filtermax').val());
 		if(isNaN(filtermin) || isNaN(filtermax)){
@@ -1177,22 +1097,14 @@ $(function(){
 
 
 	$( "#reset" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'reset', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','reset');
 		$('#progressdescription')[0].innerHTML = 'Resetting';
 		$('#progressbarholder').show();
 		loaddata();
 	});
 
 	$( "#newvarc2" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - newvarc2', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - newvarc2');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -1210,11 +1122,7 @@ $(function(){
 	});
 
 	$( "#newvarc3" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - newvarc3', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - newvarc3');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -1234,11 +1142,7 @@ $(function(){
 	});
 
 	$( "#newvarc4" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - newvarc4', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - newvarc4');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -1256,11 +1160,7 @@ $(function(){
 	});
 
 	$( "#newvarc5" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - newvarc5', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - newvarc5');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -1282,11 +1182,7 @@ $(function(){
 	});
 
 	$( "#newvar" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - newvar', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - newvar');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -1305,11 +1201,7 @@ $(function(){
 	});
 
 	$( "#creatego" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - creatego', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - creatego');
 		$ ("#newvardiv").hide();
 		var type = encodeURIComponent($('#newvarcom option:selected').text());
 		var var1 = $('#newvar1 option:selected').text();
@@ -1346,11 +1238,7 @@ $(function(){
 	});
 
 	$( "#createcgo" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - createcgo', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - createcgo');
 		$ ("#newvarcdiv").hide();
 		var cx = $('#newvarcx option:selected').text();
 		var md = encodeURIComponent($('#newvarcmd option:selected').text());
@@ -1400,11 +1288,7 @@ $(function(){
 	});
 
 	$( "#createc3go" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - createc3go', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - createc3go');
 		$ ("#newvarc3div").hide();
 		var cx = $('#newvarc3var option:selected').text();
 		var index = $("#data td:contains('"+cx.split("'")[0]+"')").filter(function() {
@@ -1462,11 +1346,7 @@ $(function(){
 	
 	
 	$( "#createc4go" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - createc4go', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - createc4go');
 		$ ("#newvarc4div").hide();
 		var cx = $('#newvarc4var option:selected').text();
 		var func = $('#newvar4func').val();
@@ -1493,11 +1373,7 @@ $(function(){
 	
 	
 	$( "#createc5go" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Sample and More - createc5go', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Sample and More - createc5go');
 		$ ("#newvarc5div").hide();
 		var c1 = $('#newvarc5var1 option:selected').text();
 		var index1 = $("#data td:contains('"+c1.split("'")[0]+"')").filter(function() {
@@ -1584,20 +1460,12 @@ $(function(){
 	});
 
 	$( "#update" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'update', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','update');
 		updatebox()
 	});
 
 	$( "#wizardmenu" ).click(function(){
-		try {
-			ga('send', 'event', 'Function', 'Wizard - Open', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Wizard - Open');
 		$('#wizard').show();
 		var xselindex = Math.max(0,$('#wizardx').prop('selectedIndex'));
 		var yselindex = Math.max(0,$('#wizardy').prop('selectedIndex'));
@@ -1613,21 +1481,14 @@ $(function(){
 	});
 
 	$( "#importlink" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Data - importlink', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Data - importlink');
 		var link = document.getElementById("linkarea").value;
 		document.location = document.location.origin + document.location.pathname + '?url=' + encodeURIComponent(link);
 	});
 	
 	$( "#import" ).click(function() {
-		try {
-			ga('send', 'event', 'Function', 'Data - import', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+		analytics('Function','Data - import');
+		analytics('Dataset','Pasted Table');
 		var data = document.getElementById("textarea").value;
 		csv_data = data;
 		console.timeEnd("Loading Pasted Data");
@@ -1642,11 +1503,7 @@ function addnewcond(){
 }
 
 function moreoptions(){
-	try {
-		ga('send', 'event', 'Function', 'moreoptions', ipaddress);
-	} catch(err) {
-		console.log(err.message);
-	}
+	analytics('Function','moreoptions');
 	$("#options").show();
 }
 
@@ -1659,6 +1516,7 @@ function graphchange(obj){
 	document.getElementById('intervalshow').style.display='none';
 	document.getElementById('labelshow').style.display='none';
 	document.getElementById('arrowsshow').style.display='none';
+	document.getElementById('colorarrowsshow').style.display='none';
 	document.getElementById('xvar').style.display='none';
 	document.getElementById('yvar').style.display='none';
 	document.getElementById('zvar').style.display='none';
@@ -1681,6 +1539,7 @@ function graphchange(obj){
 	document.getElementById('addmultshow').style.display='none';
 	document.getElementById('longtermtrendshow').style.display='none';
 	document.getElementById('startfinishshow').style.display='none';
+	document.getElementById('morecatsshow').style.display='none';
 	document.getElementById('gridlinesshow').style.display='none';
 	document.getElementById('seasonalshow').style.display='none';
 	document.getElementById('boxnowhiskershow').style.display='none';
@@ -1814,19 +1673,7 @@ function updategraphgo(){
 	$('#var3label').html("variable 3:");
 	$('.highlight').removeClass('highlight');
     $('#tooltip').css('display','none');
-	if($('#type').val()=='newabout'){
-		try {
-			ga('send', 'event', 'Load', 'About', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
-	} else {
-		try {
-			ga('send', 'event', 'Graph Draw', $('#type').val(), ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
-	}
+    analytics('Graph Draw',$('#type').val());
 	if(!$('#xvar').length){
 		alert('NZGrapher is not loaded properly... please load again with a valid dataset.');
 		window.location = './';
@@ -2079,11 +1926,7 @@ function updatereset(){
 }
 
 function showhideleft(){
-	try {
-		ga('send', 'event', 'Function', 'showhideleft', ipaddress);
-	} catch(err) {
-		console.log(err.message);
-	}
+    analytics('Function','showhideleft');
 	var button=document.getElementById('showhideleft');
 	var li=document.getElementById('showhideleftli');
 	var buttons=document.getElementById('buttons');
@@ -2110,11 +1953,7 @@ function showhideleft(){
 }
 
 function showhidebottom(){
-	try {
-		ga('send', 'event', 'Function', 'showhidebottom', ipaddress);
-	} catch(err) {
-		console.log(err.message);
-	}
+    analytics('Function','showhidebottom');
 	var button=document.getElementById('showhidebottom');
 	var li=document.getElementById('showhidebottomli');
 	var variable=document.getElementById('variable');
@@ -3127,10 +2966,31 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		x = minxtick;
 		range = maxxtick-minxtick;
 		shapestep = range/100;
+		hiqr = (uq-lq)/2*$('#smoothingpower').val();
+		bandwith = 0.9*Math.min(sd,(uq-lq)/1.34)*Math.pow(num,-1/5)*$('#smoothingpower').val();
+		console.log(sd);
+		if(hiqr==0){
+			hiqr=1;
+		}
 		while(x<=maxxtick){
 			total = 0;
 			$.each(thisvalues, function( key, value ) {
-				total += Math.pow((1-Math.abs(value-x)/range),$('#smoothingpower').val());
+				//total += Math.pow((1-Math.abs(value-x)/range),$('#smoothingpower').val());
+				
+				/*
+				var thisweight = 1-Math.abs(value-x)/hiqr;
+				if(thisweight>0){
+					total += Math.pow(thisweight,$('#smoothingpower').val());
+				}
+				*/
+				
+				var difference = Math.abs(value - x);
+				if(difference<bandwith){
+					var thisweighta = difference/bandwith;
+					var thisweight = 3/4*(1-Math.pow(thisweighta,2));
+					total += thisweight;
+				}
+				
 			});
 			weights.push([x,total/allpointscount]);
 			x+=shapestep;
@@ -3153,7 +3013,7 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 			x = value[0];
 			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
 			y = value[1];
-			ypixel = y*maxheight*2;
+			ypixel = y*maxheight*8/$('#smoothingpower').val();
 			if(i==0){
 				ctx.moveTo(xpixel, bottom-ypixel);
 			} else {
@@ -3176,7 +3036,7 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 			x = value[0];
 			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
 			y = value[1];
-			ypixel = y*maxheight;
+			ypixel = y*maxheight*4/$('#smoothingpower').val();
 			if(i==0){
 				ctx.moveTo(xpixel, center-ypixel);
 			} else {
@@ -3188,7 +3048,7 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 			x = value[0];
 			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
 			y = value[1];
-			ypixel = y*maxheight;
+			ypixel = y*maxheight*4/$('#smoothingpower').val();
 			ctx.lineTo(xpixel, center+ypixel);
 		});
 		ctx.closePath();
@@ -3288,7 +3148,7 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		ctx.fillText('num: '+num,left-60*scalefactor,ypix+3*fontsize);
 	}
 
-	if($('#interval').is(":checked") || $('#intervallim').is(":checked")){
+	if($('#interval').is(":checked") || $('#intervallim').is(":checked") || $('#intervalhighlight').is(":checked")){
 		intervalhalfwidth = 1.5*(uq-lq)/Math.sqrt(num);
 		intervalmin = parseFloat(add(med,-intervalhalfwidth).toPrecision(5));
 		intervalmax = parseFloat(add(med,intervalhalfwidth).toPrecision(5));
@@ -3307,6 +3167,12 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 			ctx.fillText(intervalmin,intervalmingraph,add(y,maxheight*0.1+8*scalefactor));
 			ctx.textAlign="left";
 			ctx.fillText(intervalmax,intervalmaxgraph,add(y,maxheight*0.1+8*scalefactor));
+		}
+		if($('#intervalhighlight').is(":checked")){
+			y = oypixel - (maxheight-10*scalefactor)*0.5;
+			ctx.lineWidth = maxheight-10*scalefactor;
+			ctx.strokeStyle = 'rgba(0,0,255,0.4)';
+			line(ctx,intervalmingraph,y,intervalmaxgraph,y);
 		}
 	}
 
@@ -3515,6 +3381,10 @@ function bootstrap(mm){
 	$('#interval').prop('checked', false);
 	$('#intervallim').prop('checked', false);
 	$('#regression').prop('checked', false);
+	$('#shape').prop('checked', false);
+	$('#violin').prop('checked', false);
+	$('#beeswarm').prop('checked', false);
+	$('#stripgraph').prop('checked', false);
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
 	$('#stripgraphshow').show();
@@ -4824,6 +4694,7 @@ function innerloop(xpoints,raw,T,n_s,n_l,n_t){
 				S[xpoint]=C[xpoint]-L[xpoint];
 			}
 		}
+		
 		S2=[];
 
 		for (index in xpoints){
@@ -4935,6 +4806,7 @@ function loess(xpoints,ypoints,nPts,xvals,row){
 			distances[i]=Math.abs(xpoint-currentx);
 			i++;
 		}
+		
 
 		smallestndistances=[];
 		for (index in distances){
@@ -4996,6 +4868,7 @@ function loess(xpoints,ypoints,nPts,xvals,row){
 		WLRSlope = (SumWts * SumWtXY - SumWtX * SumWtY) / Denom;
 		WLRIntercept = (SumWtX2 * SumWtY - SumWtX * SumWtXY) / Denom;
 		yreturn[currentx.toFixed(4)] = WLRSlope * currentx + WLRIntercept;
+		
 	}
 	return yreturn;
 }
@@ -7474,7 +7347,7 @@ function drawminihistogram(ctx,data,bleft,bright,btop,bbottom,r,title){
 	ctx.rect(bleft+bwidth/5*4, bbottom, bwidth/5, -bheight*sec5/max);ctx.fill();ctx.stroke();
 	ctx.fillStyle = '#000';
 	
-	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex=0;document.getElementById('type').value='newhistogram';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex=0;document.getElementById('zvar').selectedIndex=0;document.getElementById('color').selectedIndex=0;document.getElementById('type').value='newhistogram';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
 }
 
 function drawminibarchart(ctx,data,bleft,bright,btop,bbottom,r,title){
@@ -7505,7 +7378,7 @@ function drawminibarchart(ctx,data,bleft,bright,btop,bbottom,r,title){
 	});
 	ctx.fillStyle = '#000';
 	
-	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex=0;document.getElementById('type').value='newbargraph';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex=0;document.getElementById('zvar').selectedIndex=0;document.getElementById('color').selectedIndex=0;document.getElementById('type').value='newbargraph';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
 }
 
 function drawminiscatter(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r,title){
@@ -7524,7 +7397,7 @@ function drawminiscatter(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r,title){
 		ctx.stroke();
 	})
 	ctx.strokeStyle = '#000';
-	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('type').value='newscatter';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('zvar').selectedIndex=0;document.getElementById('color').selectedIndex=0;document.getElementById('type').value='newscatter';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
 }
 
 function drawminivboxes(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r,title){
@@ -7566,7 +7439,7 @@ function drawminivboxes(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r,title){
 		line(ctx,cen,maxval,cen,uq);
 		i++;
 	})
-	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex="+c+"+1;document.getElementById('type').value='newdotplot';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+r+"+1;document.getElementById('yvar').selectedIndex="+c+"+1;document.getElementById('zvar').selectedIndex=0;document.getElementById('color').selectedIndex=0;document.getElementById('type').value='newdotplot';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
 }
 
 function drawminihboxes(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r,title){
@@ -7608,7 +7481,7 @@ function drawminihboxes(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r,title){
 		line(ctx,uq,cen,maxval,cen);
 		i++;
 	})
-	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('type').value='newdotplot';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('zvar').selectedIndex=0;document.getElementById('color').selectedIndex=0;document.getElementById('type').value='newdotplot';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
 }
 
 function drawminiareagraphs(ctx,ydata,xdata,bleft,bright,btop,bbottom,c,r,title){
@@ -7651,7 +7524,7 @@ function drawminiareagraphs(ctx,ydata,xdata,bleft,bright,btop,bbottom,c,r,title)
 		l=add(l,bwidth*total/count);
 	});
 	ctx.fillStyle = '#000';
-	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('color').selectedIndex="+r+"+1;document.getElementById('type').value='newbargraph';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();$('#percent100').prop('checked',true);$('#relativewidth').prop('checked',true);graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
+	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex=0;document.getElementById('color').selectedIndex="+r+"+1;document.getElementById('type').value='newbargraph';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();$('#percent100').prop('checked',true);$('#relativewidth').prop('checked',true);graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
 }
 
 function lockaxis(){
@@ -7791,7 +7664,7 @@ function newresiduals(){
 	if(regtype=="Linear"){
 		
 		res = regression.linear(pointstofit,{
-		  precision: 7,
+		  precision: 15,
 		});
 		console.log(res);
 		
@@ -7807,7 +7680,7 @@ function newresiduals(){
 		
 		res = regression.polynomial(pointstofit,{
 		  order: 2,
-		  precision: 7,
+		  precision: 15,
 		});
 		console.log(res);
 		
@@ -7825,7 +7698,7 @@ function newresiduals(){
 		
 		res = regression.polynomial(pointstofit,{
 		  order: 3,
-		  precision: 10,
+		  precision: 15,
 		});
 		console.log(res);
 		
@@ -7843,7 +7716,7 @@ function newresiduals(){
 	} else if (regtype=="y=a*exp(b*x)"){
 		
 		res = regression.exponential(pointstofit,{
-		  precision: 7,
+		  precision: 15,
 		});
 		console.log(res);
 		
@@ -7859,7 +7732,7 @@ function newresiduals(){
 	} else if (regtype=="y=a*ln(x)+b"){
 		
 		res = regression.logarithmic(pointstofit,{
-		  precision: 7,
+		  precision: 15,
 		});
 		console.log(res);
 		
@@ -7876,7 +7749,7 @@ function newresiduals(){
 	} else if (regtype=="y=a*x^b"){
 		
 		res = regression.power(pointstofit,{
-		  precision: 7,
+		  precision: 15,
 		});
 		console.log(res);
 		
@@ -8243,6 +8116,10 @@ function rerand(mm){
 	$('#interval').prop('checked', false);
 	$('#intervallim').prop('checked', false);
 	$('#regression').prop('checked', false);
+	$('#shape').prop('checked', false);
+	$('#violin').prop('checked', false);
+	$('#beeswarm').prop('checked', false);
+	$('#stripgraph').prop('checked', false);
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
 	$('#stripgraphshow').show();
@@ -9134,6 +9011,10 @@ function newrerandteach(){
 	$('#interval').prop('checked', false);
 	$('#intervallim').prop('checked', false);
 	$('#regression').prop('checked', false);
+	$('#shape').prop('checked', false);
+	$('#violin').prop('checked', false);
+	$('#beeswarm').prop('checked', false);
+	$('#stripgraph').prop('checked', false);
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
 	$('#var1label').html("Numerical 1:<br><small>required</small>");
@@ -9161,6 +9042,7 @@ function newbargraphfnf(fnf){
 	$('#colourscale').show();
 	$('#transdiv').show();
 	$('#greyscaleshow').show();
+	$('#morecatsshow').show();
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
 	$('#percent100show').show();
@@ -9246,7 +9128,12 @@ function newbargraphfnf(fnf){
 	
 	var colorpoints = dataforselector[$('#color option:selected').text()].slice();
 	
-	xdifferentgroups = split(points,xpoints,10,'"Category"');
+	var maxcategories = 10;
+	if($('#morecats').is(":checked")){
+		maxcategories = 99
+	}
+	
+	xdifferentgroups = split(points,xpoints,maxcategories,'"Category"');
 	if(typeof xdifferentgroups !== 'object'){
 		return xdifferentgroups;
 	}
@@ -10139,11 +10026,8 @@ $( document ).ready(function() {
 	  console.time("Loading from Clipboard");
 	  try {
 		var data = await navigator.clipboard.readText();
-		try {
-			ga('send', 'event', 'Function', 'Data - directimport', ipaddress);
-		} catch(err) {
-			console.log(err.message);
-		}
+    	analytics('Function','Data - directimport');
+    	analytics('Dataset','Clipboard');
 		csv_data = data;
 		console.timeEnd("Loading from Clipboard");
 		$('#progressdescription')[0].innerHTML = 'Creating Table';
@@ -10156,11 +10040,7 @@ $( document ).ready(function() {
 	})
 	
   function handleFileSelect(evt) {
-	try {
-		ga('send', 'event', 'Function', 'Data - filenew', ipaddress);
-	} catch(err) {
-		console.log(err.message);
-	}  
+    analytics('Function','Data - filenew');
 	  
 	$('#progressdescription')[0].innerHTML = 'Starting';
 	console.time("Starting");
@@ -10186,6 +10066,8 @@ $( document ).ready(function() {
 		$('#progressbarholder').hide();
         return;
       }
+      
+      analytics('Dataset',f.name);
 
       var reader = new FileReader();
 	  
@@ -10413,6 +10295,7 @@ function postcreatetable(){
 
 function newpairedexperiment(){
 	$('#arrowsshow').show();
+	$('#colorarrowsshow').show();
 	$('#regshow').show();
 	$('#sum').show();
 	$('#invertshow').show();
@@ -10436,6 +10319,7 @@ function newpairedexperiment(){
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
 	$('#stripgraphshow').show();
+	$('#jittershow').show();
 	$('#var1label').html("Numerical 1:<br><small>required</small>");
 	$('#var2label').html("Numerical 2:<br><small>required</small>");
 	$('#var3label').html("");
@@ -10508,6 +10392,20 @@ function newpairedexperiment(){
 	var alpha = 1-$('#trans').val()/100;
 	var colors = makecolors(alpha,ctx);
 	
+	if($('#colorarrows').is(":checked")){
+		colors = [];
+		for (var index in pointsforminmax){
+			if(pointsforminmax[index]<0){
+				color = 'rgba(255,0,0,'+alpha+')';
+			} else if(pointsforminmax[index]==0){
+				color = 'rgba(0,0,0,'+alpha+')';
+			} else {
+				color = 'rgba(0,0,255,'+alpha+')';
+			}
+			colors.push(color);
+		}
+	}
+	
 	if($('#arrows').is(":checked")){
 		var finalxpoints=[];
 		var finalypoints=[];
@@ -10541,11 +10439,31 @@ function newpairedexperiment(){
 		
 		var rad = $('#size').val()/2*scalefactor;
 		if($('#labels').is(":checked")){var labels="yes";} else {var labels = "no";}
-			
+		
+		var positive = 0;
+		var nochange = 0;
+		var negative = 0;
+		
 		for (var i in points){
 			index = points[i];
 			topxpixel = convertvaltopixel(xpoints[index],minxtick,maxxtick,left,right);
 			bottomxpixel = convertvaltopixel(ypoints[index],minxtick,maxxtick,left,right);
+			if($('#jitter').is(":checked")){
+				topxpixel = add(topxpixel,randint(-$('#size').val()*scalefactor,$('#size').val()*scalefactor));
+				bottomxpixel = add(bottomxpixel,randint(-$('#size').val()*scalefactor,$('#size').val()*scalefactor));
+			}
+			
+			if(parseFloat(xpoints[index])<parseFloat(ypoints[index])){
+				positive++;
+				console.log(xpoints[index],ypoints[index],'positive');
+			} else if(xpoints[index]==ypoints[index]){
+				nochange++;
+				console.log(xpoints[index],ypoints[index],'nochange');
+			} else {
+				negative++;
+				console.log(xpoints[index],ypoints[index],'negative');
+			}
+			
 			ctx.strokeStyle = colors[index];
 			ctx.fillStyle = colors[index];
 			ctx.beginPath();
@@ -10623,6 +10541,15 @@ function newpairedexperiment(){
 			ctx.fillText('max: '+maxval,left-60*scalefactor,ypix+11*scalefactor);
 			ctx.fillText('sd: '+sd,left-60*scalefactor,ypix+22*scalefactor);
 			ctx.fillText('num: '+num,left-60*scalefactor,ypix+33*scalefactor);
+			
+			var ypix=oypixel-maxheight;
+			ctx.fillStyle = '#0000FF';
+			ctx.fillText('Positive Shifts: '+positive,right-120*scalefactor,ypix+33*scalefactor);
+			ctx.fillStyle = '#000000';
+			ctx.fillText('No Shift: '+nochange,right-120*scalefactor,ypix+44*scalefactor);
+			ctx.fillStyle = '#FF0000';
+			ctx.fillText('Negative Shift: '+negative,right-120*scalefactor,ypix+55*scalefactor);
+			
 		} else {
 			ctx.fillStyle = '#000000';
 			fontsize = 15*scalefactor;
@@ -10740,6 +10667,10 @@ function newbootstrap(){
 	$('#var1label').html("Numerical 1:<br><small>required</small>");
 	$('#var2label').html("");
 	$('#var3label').html("");
+	$('#shape').prop('checked', false);
+	$('#violin').prop('checked', false);
+	$('#beeswarm').prop('checked', false);
+	$('#stripgraph').prop('checked', false);
 
 	var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
@@ -10907,15 +10838,18 @@ function newbootstrap(){
 	if($('#regression').is(":checked")){var wasreg="yes";} else {var wasreg = "no";}
 	if($('#interval').is(":checked")){var wasint="yes";} else {var wasint = "no";}
 	if($('#intervallim').is(":checked")){var wasintlim="yes";} else {var wasintlim = "no";}
+	if($('#intervalhighlight').is(":checked")){var wasinthigh="yes";} else {var wasinthigh = "no";}
 	$('#labels')[0].checked=false;
 	$('#regression')[0].checked=false;
 	$('#interval')[0].checked=false;
 	$('#intervallim')[0].checked=false;
+	$('#intervalhighlight')[0].checked=false;
 	plotdotplot(ctx,bspoints,bootstrapvals,minxtick,maxxtick,oypixel,left,right,maxheight,colors,1,0);
 	if(waslabels=="yes"){$('#labels')[0].checked=true;}
 	if(wasreg=="yes"){$('#regression')[0].checked=true;}
 	if(wasint=="yes"){$('#interval')[0].checked=true;}
 	if(wasintlim=="yes"){$('#intervallim')[0].checked=true;}
+	if(wasinthigh=="yes"){$('#intervalhighlight')[0].checked=true;}
 
 	bootstrapvals.sort(function(a, b){return a-b});
 	
@@ -11618,7 +11552,12 @@ function newbsteach(){
 	$('#boxnooutlier').prop('checked', false);
 	$('#interval').prop('checked', false);
 	$('#intervallim').prop('checked', false);
+	$('#intervalhighlight').prop('checked', false);
 	$('#regression').prop('checked', false);
+	$('#shape').prop('checked', false);
+	$('#violin').prop('checked', false);
+	$('#beeswarm').prop('checked', false);
+	$('#stripgraph').prop('checked', false);
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
 	$('#var1label').html("Numerical 1:<br><small>required</small>");
@@ -11707,6 +11646,7 @@ function resetsettings(){
 	$('#boxnooutlier').prop('checked',false);
 	$('#interval').prop('checked',false);
 	$('#intervallim').prop('checked',false);
+	$('#intervalhighlight').prop('checked',false);
 	$('#labels').prop('checked',false);
 	$('#meandot').prop('checked',false);
 	$('#stackdots').prop('checked',false);
@@ -11724,6 +11664,7 @@ function resetsettings(){
 	$('#longtermtrend').prop('checked',false);
 	$('#seasonal').prop('checked',false);
 	$('#startfinish').prop('checked',false);
+	$('#morecats').prop('checked',false);
 	$('#gridlines').prop('checked',false);
 	$('#percent100').prop('checked',false);
 	$('#relativefrequency').prop('checked',false);
@@ -11752,7 +11693,7 @@ function resetsettings(){
 	$('#verticalerrorbars').prop('selectedIndex',0);
 	$('#options input').val('auto');
 	$('#textsize').val('13');
-	$('#smoothingpower').val('10');
+	$('#smoothingpower').val('3');
 	$('#size').val('7');
 	$('#trans').val('50');
 	$('#color').prop('selectedIndex',0);
