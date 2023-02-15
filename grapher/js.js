@@ -18,8 +18,8 @@ var ovsmin;
 var ovsmax;
 
 function analytics(c,a){
-	const d = new Date();
-	let ms = d.valueOf();
+	const currentdate = new Date();
+	let ms = currentdate.valueOf();
 	$.get('https://analytics.jpw.nz/nzgraphernew.php?c='+c+'&a='+a+'&r='+ms)
 }
 

@@ -13,6 +13,9 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2023-02-15</b><ul>
+		<li>Fix for cubic models not working.</li>
+	</ul>
 	<b>2022-11-28</b><ul>
 		<li>Updated Documentation.</li>
 		<li>Removed Google Analytics.</li>
