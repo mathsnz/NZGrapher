@@ -13,8 +13,9 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
-	<b>2023-02-15</b><ul>
+	<b>2023-02-17</b><ul>
 		<li>Fix for cubic models not working.</li>
+		<li>Note: if colours of graphs are not working correctly on Safari, please update to the latest version, this is a bug with Safari, not NZGrapher.</li>
 	</ul>
 	<b>2022-11-28</b><ul>
 		<li>Updated Documentation.</li>

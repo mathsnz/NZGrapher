@@ -230,8 +230,8 @@ $protocol = isSecure() === true ? 'https://' : 'http://';
 $actual_link = urlencode($protocol.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']);
 
 echo "<script>
-const d = new Date();
-let ms = d.valueOf();
+var currentdate = new Date();
+var ms = currentdate.valueOf();
 $.get('https://analytics.jpw.nz/nzgraphernew.php?c=InitialLoad&a=$actual_link&r='+ms);
 </script>";
 ?>
