@@ -13,6 +13,10 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2023-03-12</b><ul>
+		<li>Update of Sea Ice Data, moved old versions to <a href='https://grapher.nz/?folder=seaice'>here.</a>.</li>
+		<li>Update to fix blank values on pairs plot scatter graphs being graphed as zeros.</li>
+	</ul>
 	<b>2023-02-17</b><ul>
 		<li>Fix for cubic models not working.</li>
 		<li>Note: if colours of graphs are not working correctly on Safari, please update to the latest version, this is a bug with Safari, not NZGrapher.</li>

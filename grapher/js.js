@@ -7393,11 +7393,13 @@ function drawminiscatter(ctx,xdata,ydata,bleft,bright,btop,bbottom,c,r,title){
 	$.each(xdata,function(index,value){
 		var xpoint = value;
 		var ypoint = ydata[index];
-		var xpixel = convertvaltopixel(xpoint,minx,maxx,bleft+10*scalefactor,bright-10*scalefactor);
-		var ypixel = convertvaltopixel(ypoint,miny,maxy,bbottom-10*scalefactor,btop+10*scalefactor);
-		ctx.beginPath();
-		ctx.arc(xpixel,ypixel,2*scalefactor,0,2*Math.PI);
-		ctx.stroke();
+		if($.isNumeric(xpoint) && $.isNumeric(ypoint)){
+			var xpixel = convertvaltopixel(xpoint,minx,maxx,bleft+10*scalefactor,bright-10*scalefactor);
+			var ypixel = convertvaltopixel(ypoint,miny,maxy,bbottom-10*scalefactor,btop+10*scalefactor);
+			ctx.beginPath();
+			ctx.arc(xpixel,ypixel,2*scalefactor,0,2*Math.PI);
+			ctx.stroke();
+		}
 	})
 	ctx.strokeStyle = 'rgb(0,0,0)';
 	$('#graphmap').append("<area shape='rect' coords='"+(bleft/scalefactor)+","+(btop/scalefactor)+","+(bright/scalefactor)+","+(bbottom/scalefactor)+"' href=\"javascript:document.getElementById('xvar').selectedIndex="+c+"+1;document.getElementById('yvar').selectedIndex="+r+"+1;document.getElementById('zvar').selectedIndex=0;document.getElementById('color').selectedIndex=0;document.getElementById('type').value='newscatter';document.getElementById('xaxis').value=document.getElementById('xvar').options[document.getElementById('xvar').selectedIndex].text;$('#xaxis').change();document.getElementById('yaxis').value=document.getElementById('yvar').options[document.getElementById('yvar').selectedIndex].text;$('#yaxis').change();graphchange(document.getElementById('type'));updategraph();\" alt='"+bleft+","+btop+"' desc='"+title+"'>");
