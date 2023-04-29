@@ -13,6 +13,9 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2023-04-29</b><ul>
+		<li>Fix for some histograms not drawing correctly.</li>
+	</ul>
 	<b>2023-03-12</b><ul>
 		<li>Update of Sea Ice Data, moved old versions to <a href='https://grapher.nz/?folder=seaice'>here.</a>.</li>
 		<li>Update to fix blank values on pairs plot scatter graphs being graphed as zeros.</li>

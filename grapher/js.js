@@ -9816,6 +9816,7 @@ function plothistogram(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,poi
 		}
 		$('#graphmap').append("<area shape='rect' coords='"+(boxleft/scalefactor)+","+(boxtop/scalefactor)+","+(add(boxleft,stepsize)/scalefactor)+","+(boxbottom/scalefactor)+"' desc='"+title+"'>");
 		currentx -= -xstep;
+		currentx = parseFloat(currentx.toPrecision(10));
 	}
 	
 	var minval = parseFloat(Math.min.apply(null, thisvalues).toPrecision(10));
