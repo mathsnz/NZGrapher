@@ -3638,9 +3638,8 @@ function bootstrap(mm){
 	maxxtick=maxxtick+offset;
 
 	oypixel = height - 90*scalefactor;
-	horaxis(ctx,left,right,add(oypixel,30*scalefactor),minxtick,maxxtick,xstep);
-
 	maxheight=height*0.5-100*scalefactor;
+	horaxis(ctx,left,right,add(oypixel,30*scalefactor),minxtick,maxxtick,xstep,oypixel-maxheight);
 
 	if($('#labels').is(":checked")){var waslabels="yes";} else {var waslabels = "no";}
 	$('#labels')[0].checked=false;
@@ -8398,9 +8397,9 @@ function rerand(mm){
 	maxxtick=maxxtick+offset;
 
 	oypixel = height - 90*scalefactor;
-	horaxis(ctx,left,right,add(oypixel,30*scalefactor),minxtick,maxxtick,xstep);
-
 	maxheight=height*0.5-100*scalefactor;
+	horaxis(ctx,left,right,add(oypixel,30*scalefactor),minxtick,maxxtick,xstep,oypixel-maxheight);
+
 
 	if($('#labels').is(":checked")){var waslabels="yes";} else {var waslabels = "no";}
 	$('#labels')[0].checked=false;
@@ -10796,7 +10795,7 @@ function newbootstrap(){
 	var oypixel=height-90*scalefactor;
 	var maxheight=height*0.6-120*scalefactor;
 	
-	horaxis(ctx,left,right,add(oypixel,40*scalefactor),minxtick,maxxtick,xstep);
+	horaxis(ctx,left,right,add(oypixel,40*scalefactor),minxtick,maxxtick,xstep,oypixel-maxheight);
 	
 	bootstrapvals=[];
 	num=points.length;

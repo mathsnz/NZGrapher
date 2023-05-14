@@ -13,6 +13,9 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2023-05-14</b><ul>
+		<li>Fix for gridlines not working on re-randomisation and bootstrap graphs properly.</li>
+	</ul>
 	<b>2023-04-29</b><ul>
 		<li>Fix for some histograms not drawing correctly.</li>
 	</ul>
