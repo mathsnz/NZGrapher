@@ -3206,12 +3206,12 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 			ctx.fillStyle = 'rgba(255,0,0,0.2)';
 			ctx.fillRect(mingraph, bottom, medgraph-mingraph, -maxheight*0.95);
 		}
-		if((countdotplotrow==2 && $('#halfquarter').val()==3) || (countdotplotrow==1 && $('#halfquarter').val()==2)){
+		if((countdotplotrow==2 && $('#halfquarter').val()==3) || (countdotplotrow==1 && $('#halfquarter').val()==2) || (countdotplotrow==2 && $('#halfquarter').val()==5) || (countdotplotrow==1 && $('#halfquarter').val()==6)){
 			// Top 3/4
 			ctx.fillStyle = 'rgba(0,0,255,0.2)';
 			ctx.fillRect(lqgraph, bottom, maxgraph-lqgraph, -maxheight*0.95);
 		}
-		if((countdotplotrow==2 && $('#halfquarter').val()==4) || (countdotplotrow==1 && $('#halfquarter').val()==1)){
+		if((countdotplotrow==2 && $('#halfquarter').val()==4) || (countdotplotrow==1 && $('#halfquarter').val()==1) || (countdotplotrow==1 && $('#halfquarter').val()==5) || (countdotplotrow==2 && $('#halfquarter').val()==6)){
 			// Bottom 3/4
 			ctx.fillStyle = 'rgba(0,0,255,0.2)';
 			ctx.fillRect(mingraph, bottom, uqgraph-mingraph, -maxheight*0.95);
@@ -5509,18 +5509,18 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 	}
 	
 	if($('#customequationdots').is(":checked")){
-		ctx.fillStyle = '#dbce58';
-		ctx.strokeStyle='#dbce58';
+		ctx.fillStyle = '#AFA546';
+		ctx.strokeStyle='#AFA546';
 		
 		dot1left = add($('#dot1')[0].style.left.replace('px',''),7);
 		dot2left = add($('#dot2')[0].style.left.replace('px',''),7);
 		dot1top = add($('#dot1')[0].style.top.replace('px',''),7);
 		dot2top = add($('#dot2')[0].style.top.replace('px',''),7);
 		
-		x1 = convertvaltopixel(dot1left,left,right,minxtick,maxxtick);
-		x2 = convertvaltopixel(dot2left,left,right,minxtick,maxxtick);
-		y1 = convertvaltopixel(dot1top,bottom,gtop,minytick,maxytick);
-		y2 = convertvaltopixel(dot2top,bottom,gtop,minytick,maxytick);
+		x1 = convertvaltopixel(dot1left*scalefactor,left,right,minxtick,maxxtick);
+		x2 = convertvaltopixel(dot2left*scalefactor,left,right,minxtick,maxxtick);
+		y1 = convertvaltopixel(dot1top*scalefactor,bottom,gtop,minytick,maxytick);
+		y2 = convertvaltopixel(dot2top*scalefactor,bottom,gtop,minytick,maxytick);
 		
 		m = (y2-y1)/(x2-x1);
 		c = y2 - m*x2;
@@ -5566,10 +5566,10 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		dot3top = add($('#dot3')[0].style.top.replace('px',''),7);
 		dot4top = add($('#dot4')[0].style.top.replace('px',''),7);
 		
-		x1 = convertvaltopixel(dot3left,left,right,minxtick,maxxtick);
-		x2 = convertvaltopixel(dot4left,left,right,minxtick,maxxtick);
-		y1 = convertvaltopixel(dot3top,bottom,gtop,minytick,maxytick);
-		y2 = convertvaltopixel(dot4top,bottom,gtop,minytick,maxytick);
+		x1 = convertvaltopixel(dot3left*scalefactor,left,right,minxtick,maxxtick);
+		x2 = convertvaltopixel(dot4left*scalefactor,left,right,minxtick,maxxtick);
+		y1 = convertvaltopixel(dot3top*scalefactor,bottom,gtop,minytick,maxytick);
+		y2 = convertvaltopixel(dot4top*scalefactor,bottom,gtop,minytick,maxytick);
 		
 		m = (y2-y1)/(x2-x1);
 		c = y2 - m*x2;

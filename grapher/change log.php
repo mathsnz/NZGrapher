@@ -13,6 +13,11 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2023-08-16</b><ul>
+		<li>Changed the colour of the custom line 1 to be darker.</li>
+		<li>Fixed an issue where the custom line did not work on high-res mode.</li>
+		<li>Added Top ¾, Bottom ¾ to the ½ ¾ Rule</li>
+	</ul>
 	<b>2023-05-14</b><ul>
 		<li>Fix for gridlines not working on re-randomisation and bootstrap graphs properly.</li>
 	</ul>

@@ -80,7 +80,7 @@ if (screen.availWidth < 1024)
 					<span style='display:block;width:100%;text-align:center;font-size:150%;'><b>Cost</b></span><br>
 					NZGrapher is free for non-commercial <b>individual</b> use, you can however <a target='_blank' href='https://info.grapher.nz/donate/'>make a donation</a>.<br>
 					<br>
-					<b>Schools</b> are required to subscribe at a minimum of $0.50 per student using NZGrapher. <b>Commercial users</b> are also required to pay. Please visit the <a target='_blank' href='https://info.grapher.nz/nzgrapher-invoice/'>invoice creator</a> for details.<br>
+					<b>Schools</b> are required to subscribe. I'm not asking much (50c or $1 per annum, per student, using NZGrapher), this just helps cover my costs for running NZGrapher. <b>Commercial users</b> are also required to pay. Please visit the <a target='_blank' href='https://info.grapher.nz/nzgrapher-invoice/'>invoice creator</a> for details.<br>
 					<br>
 					Any questions about this please <a target='_blank' href='https://info.grapher.nz/contact/'>get in touch</a>.
 			</tr>
@@ -654,6 +654,8 @@ if(isset($_POST['csv_data'])){
 					<option value=2>Bottom ½, Top ¾</option>
 					<option value=3>Top ¾, Bottom ½</option>
 					<option value=4>Bottom ¾, Top ½</option>
+					<option value=5>Top ¾, Bottom ¾</option>
+					<option value=6>Bottom ¾, Top ¾</option>
 				</select>
 			</span>
 			<span id=intervalshow>

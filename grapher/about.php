@@ -8,7 +8,7 @@ The idea behind NZGrapher was to create a web based statistical package that can
 <span id=whichschoolholder></span>
 <br>
 <b>Help</b><br>
-You can access <b><a target='_blank' href="https://www.mathsnz.com/nzgrapher-info/video-tutorials">video tutorials</a></b> to help you getting started on <a target='_blank' href="https://www.mathsnz.com/nzgrapher-info/video-tutorials">MathsNZ</a>. 
+You can access <b><a target='_blank' href="https://info.grapher.nz/video-tutorials/">video tutorials</a></b> to help you getting started on <a target='_blank' href="https://info.grapher.nz/video-tutorials/">the support site</a>. 
 They are organised in two ways, firstly by the type of feature you are trying to use, and secondly by the NCEA standard that they relate to. 
 There is a help button in the top menu with more help content. 
 The data section on the left also allows you to edit the data directly just by clicking on the part you want to edit and typing the changes in.<br>
@@ -28,13 +28,13 @@ If you have a dataset you want to share with lots of students see the section be
 <b>For Teachers</b><br>
 NZ Grapher also supports custom folders for assessments or your own datasets, allowing students to easily access the datasets. 
 If you are a teacher and would like me to set up a custom folder for you, please let me know. 
-You can contact me at <a href='https://www.mathsnz.com/contact' target='_blank'>MathsNZ</a>. 
+You can find my contact details <a href='https://info.grapher.nz/contact/' target='_blank'>here</a>. 
 Once the folder is set up you can manage the files inside it via a password protected page.<br>
 <br>
 <b>Costs</b><br>
-NZGrapher is free for non-commercial individual use, you can however <a href='https://www.mathsnz.com/donate'>make a donation</a>.<br>
-<br>Schools are required to subscribe at a minimum of $0.50 per student using NZGrapher. 
-Commerial users are also required to pay. Please visit the <a href='https://www.mathsnz.com/nzgrapher-invoice'>invoice creator</a> for details.<br>
+NZGrapher is free for non-commercial individual use, you can however <a href='https://info.grapher.nz/donate/'>make a donation</a>.<br>
+<br>Schools are required to subscribe. I'm not asking much (50c or $1 per annum, per student, using NZGrapher), this just helps cover my costs for running NZGrapher.
+<br>Commerial users are also required to pay. Please visit the <a href='https://info.grapher.nz/nzgrapher-invoice/'>invoice creator</a> for details.<br>
 </div>
 <script>
 if(getCookie('whichschool')!='yes'){
