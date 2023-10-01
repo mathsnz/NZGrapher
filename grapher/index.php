@@ -360,6 +360,7 @@ if(substr($dataset,0,6)!="SECURE"){
 <div class="callout popup" id=sambox>
 <ul>
 	<li id=sample>Sample</li>
+	<li id=viewgroup>View Group(s)</li>
 	<li id=sort>Sort</li>
 	<li id=reorder>Reorder Variable</li>
 	<li id=newvar>Create New Variable (From 2 Variables)</li>
@@ -418,11 +419,34 @@ if(substr($dataset,0,6)!="SECURE"){
 		<table id=samvartable style='text-size:14px;'>
 			<tr><td> <td><input id="samvar-">
 		</table><br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=fillnumberssamvar>Fill Numbers</a> 
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;line-height:60px;' id=samvargo>(Re)Sample</a>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvaranimateslow>Animate (Slow)</a>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvaranimatefast>Animate (Fast)</a>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvarstop>Stop</a>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samvarreset>Reset Data</a>
+		<br><br>
+		Often it is useful to <b>fix the axis</b> when looking at scatter graphs and or dot plots.<br><br>
+		<span href='#' style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick='lockaxis()'>Lock Axis Values</span>
+		<span href="#" style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick="$('#options input').val('auto');">Reset</span>
+		<span href='#' style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick='moreoptions()'>More Options</span><br>
+		</center>
+	</span>
+</div>
+<div id="viewgroupdiv" class=absolute style="display:none;z-index:11;position:absolute;top:30px;left:30px;right:30px;bottom:30px;text-align:center;padding:10px;overflow-y: auto;">
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=sampletitle>View Group(s)</div>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#data').html($('#presampledataholder').html());$('#data td div').attr('contenteditable','true');updatebox();$('#viewgroupdiv').hide();">&times;</div><br>
+	<span id=viewgroupcontents style="font-size:14px">
+		This section lets you look at a single group inside a cateogry.<br>
+		<br>
+		Category to Fiter On: <select style='width:120px' onChange="" id=viewsinglegroupcategory></select><br><br>
+		<center>
+		<table id=viewgrouptable style='text-size:14px;'>
+		</table><br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;line-height:60px;' id=viewgroupselectall>Select All</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;;' id=viewgroupselectnone>Select None</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=viewgroupreset>Reset Data</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' onclick="$('#data td div').attr('contenteditable','true');$('#viewgroupdiv').hide();">Close Without Resetting</a>
 		<br><br>
 		Often it is useful to <b>fix the axis</b> when looking at scatter graphs and or dot plots.<br><br>
 		<span href='#' style="text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;cursor:pointer;" onclick='lockaxis()'>Lock Axis Values</span>
@@ -858,6 +882,7 @@ if(isset($_GET['dev'])){
 		<table id=samplingtable style='text-size:14px;'>
 			<tr><td> <td><input id="sample-">
 		</table><br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=fillnumbers>Fill Numbers</a> 
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=samplego>Sample</a><br><br>
 		</center>
 	</span>

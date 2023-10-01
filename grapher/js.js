@@ -528,7 +528,8 @@ $(function(){
 		$("#bsteachdiv").hide();
 		var col=2;
 		var options=[];
-		options.push('<option value=",,">Simple Random</option>');
+		var totalcount = $('#data tr:not(:first)').length;
+		options.push('<option value=",'+totalcount+',">Simple Random</option>');
 		$('#data tr:first td').each( function(){
 			var items=[];
 			//Iterate all td's in second column
@@ -562,9 +563,56 @@ $(function(){
 			col++;
 		});
 		//finally empty the select and append the items from the array
-		$('#samvaron').empty().append( options.join() );
-		$('#samvartable').empty();
-		$('#samvartable').append('<tr><td> <td><input id="samvar-">');
+		$('#samvaron').empty().append( options.join() ).change();
+		$('#presampledataholder').html($('#data').html());
+		$('#left').scrollTop(0);
+	});
+
+	$( "#viewgroup" ).click(function() {
+		analytics('Function','Sampling and More - viewgroup');
+		$("#rowbox").hide();
+		$("#colbox").hide();
+		$("#sambox").hide();
+		$("#viewgroupdiv").show();
+		$("#samvardiv").hide();
+		$("#rerandteachdiv").hide();
+		$("#bsteachdiv").hide();
+		var col=2;
+		var options=[];
+		$('#data tr:first td').each( function(){
+			var items=[];
+			//Iterate all td's in second column
+			$('#data tr td:nth-child('+col+')').each( function(){
+			   //add item to array
+			   items.push( $(this).text() );
+			});
+			var values=[];
+			var a=0;
+			var optionname;
+			//iterate unique array and build array of select options
+			$.each( items, function(i, item){
+				if(a==0){
+					optionname=item.trim();
+				} else {
+					values.push(item.trim());
+				}
+				a=a+1;
+			})
+			var allvals=values;
+			var uniquevalues=unique( values );
+			if(uniquevalues.length<500){
+				uniquevalues.sort(sortorder);
+				var value="";
+				$.each(uniquevalues, function( index, val ) {
+					var num=countval(allvals,val);
+					value=value+val+','+num+',';
+				});
+				options.push('<option value="' + value + '">' + optionname + '</option>');
+			}
+			col++;
+		});
+		//finally empty the select and append the items from the array
+		$('#viewsinglegroupcategory').empty().append( options.join() ).change();
 		$('#presampledataholder').html($('#data').html());
 		$('#left').scrollTop(0);
 	});
@@ -699,7 +747,8 @@ $(function(){
 		$ ("#samplediv").show();
 		var col=2;
 		var options=[];
-		options.push('<option value=",,">Simple Random</option>');
+		var totalcount = $('#data tr:not(:first)').length;
+		options.push('<option value=",'+totalcount+',">Simple Random</option>');
 		$('#data tr:first td').each( function(){
 			var items=[];
 			//Iterate all td's in second column
@@ -733,9 +782,7 @@ $(function(){
 			col++;
 		});
 		//finally empty the select and append the items from the array
-		$('#sampleon').empty().append( options.join() );
-		$('#samplingtable').empty();
-		$('#samplingtable').append('<tr><td> <td><input id="sample-">');
+		$('#sampleon').empty().append( options.join() ).change();
 	});
 
 	$ ("#sampleon").change(function(){
@@ -747,7 +794,7 @@ $(function(){
 		}
 		$('#samplingtable').empty();
 		for(var i=0;i<options.length;i++) {
-			$('#samplingtable').append('<tr><td style="font-size:14px;">'+options[i]+' ('+options[i+1]+')'+'<td><input id="sample-'+options[i]+'"><td>');
+			$('#samplingtable').append('<tr><td style="font-size:14px;">'+options[i]+' (<span class=number>'+options[i+1]+'</span>)'+'<td><input id="sample-'+options[i]+'"><td>');
 			i++;
 		}
 	});
@@ -761,9 +808,92 @@ $(function(){
 		}
 		$('#samvartable').empty();
 		for(var i=0;i<options.length;i++) {
-			$('#samvartable').append('<tr><td style="font-size:14px;">'+options[i]+' ('+options[i+1]+')'+'<td><input id="samvar-'+options[i]+'"><td>');
+			$('#samvartable').append('<tr><td style="font-size:14px;">'+options[i]+' (<span class=number>'+options[i+1]+'</span>)'+'<td><input id="samvar-'+options[i]+'"><td>');
 			i++;
 		}
+	});
+	
+	$ ("#viewsinglegroupcategory").change(function(){
+		var sampleon = $('#viewsinglegroupcategory option:selected').text();
+		var options = this.value.split(',');
+		options.pop();
+		if($.inArray( sampleon, options )>-1){
+			alert('Title of column matches some of the contents... this will cause issues when sampling. Please change the name of the column');
+		}
+		$('#viewgrouptable').empty();
+		for(var i=0;i<options.length;i++) {
+			$('#viewgrouptable').append('<tr><td style="font-size:14px;">'+options[i]+' (<span class=number>'+options[i+1]+'</span>)'+'<td><input type=checkbox checked class=singlecatcheckbox id="sincat-'+options[i]+'" value="'+options[i+1]+'"><td>');
+			i++;
+		}
+	});
+	
+	$('#viewgroupselectall').click(function(){
+		$('.singlecatcheckbox').prop( "checked", true );
+		$('.singlecatcheckbox').eq(0).change();
+	})
+	
+	
+	$('#viewgroupselectnone').click(function(){
+		$('.singlecatcheckbox').prop( "checked", false );
+		$('.singlecatcheckbox').eq(0).change();
+	})
+	
+	$("#viewgrouptable").on('change', '.singlecatcheckbox',function(){
+		analytics('Function','Sample and More - singlecatcheckbox');
+		$('#data').html($('#presampledataholder').html());
+		window.setTimeout(function(){
+			var sampleon = $('#viewsinglegroupcategory option:selected').text();
+			var index = $("#data td:contains('"+sampleon.split("'")[0]+"')").filter(function() {
+					return $(this).text() === sampleon;
+				}).index() + 1;
+			var num = $('[id^="sincat-"]').length;
+			for(var i=0;i<num;i++){
+				var  samplesize = 0;
+				if($('[id^="sincat-"]').eq(i).is(':checked')){
+					samplesize = $('[id^="sincat-"]')[i].value;
+				}
+				var  samplename = $('[id^="sincat-"]')[i].id;
+				samplename = samplename.slice(7);
+				console.log(samplesize,samplename);
+				var rows = $("#data td:nth-child(" + index + "):contains('"+samplename.split("'")[0]+"')").filter(function() {
+					return $(this).text() === samplename;
+				});
+				var parentrows = rows.parent();
+				var okCount = parentrows.length;
+
+				var z;
+				var rem;
+
+				while (okCount>samplesize){
+					var row = Math.floor(okCount * Math.random());
+					rem = parentrows[row];
+					rem.parentNode.removeChild(rem);
+					delete parentrows[row];
+					parentrows.splice(row,1);
+					okCount = okCount-1;
+				}
+			}
+			i=0;
+			$('#data tr th:first-child').each(function() {
+				if(i!=0){$(this).html(i);}
+				i++;
+			});
+			updatebox();
+		}, 0.0001);
+	})
+	
+	$ ("#fillnumbers").click(function(){
+		analytics('Function','Sample and More - fillnumbers');
+		$('#samplingtable tr').each(function(){
+		    $(this).find('input').val($(this).find('.number').text());
+		});
+	});
+	
+	$ ("#fillnumberssamvar").click(function(){
+		analytics('Function','Sample Variation - fillnumbers');
+		$('#samvartable tr').each(function(){
+		    $(this).find('input').val($(this).find('.number').text());
+		});
 	});
 
 	$ ("#samplego").click(function(){
@@ -910,6 +1040,11 @@ $(function(){
 			animatetimeout = setTimeout(animatefunction,animatespeed);
 		}
 	}
+
+	$ ("#viewgroupreset").click(function(){
+		$('#data').html($('#presampledataholder').html());
+		updatebox();
+	});
 
 	$ ("#samvarreset").click(function(){
 		$('#samvarstop').click();

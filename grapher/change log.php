@@ -13,6 +13,10 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2023-10-01</b><ul>
+		<li>'Fill Numbers' button on sample and sample variation screens... this button fills the sample boxes with the total number in each group to make removing groups easier.</li>
+		<li>New Function: 'Sample and More' -> 'View Group(s)' allows you to easily view single or multiple groups in a particular category.</li>
+	</ul>
 	<b>2023-08-16</b><ul>
 		<li>Changed the colour of the custom line 1 to be darker.</li>
 		<li>Fixed an issue where the custom line did not work on high-res mode.</li>
