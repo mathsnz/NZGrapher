@@ -352,7 +352,7 @@ input[type=text]{
 	position:absolute;
 	left:-1px;
 	top:-1px;
-	z-index:15;
+	z-index:10;
 	display:block;
 	width:125px;
 	height:140px;
@@ -546,4 +546,27 @@ kbd {
 #wizardoutput img {
 	width:300px;
 	cursor:pointer;
+}
+.probabilitysimulationevent, .eventrecorderevent, .eventrecorderrecorderevent {
+    display: inline-block;
+    vertical-align: top;
+    padding:5px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    margin:3px;
+    position:relative;
+}
+.eventrecorderevent table input {
+	width: 160px;
+}
+.eventrecorderrecorderevent button {
+    background-color: #eee;
+    border: 1px solid #ccc;
+    padding: 3px 5px;
+    margin: 1px;
+}
+.eventrecorderrecorderevent button.clicked {
+    background-color: rgba(0,100,200,0.85);
+    border-color: rgba(0,100,200,0.85);
+    color:#fff;
 }

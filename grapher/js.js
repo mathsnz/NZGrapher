@@ -54,6 +54,22 @@ $(document).on('paste', function(e) {
     }
     $('#textarea').val(text);
 });
+	
+function addprobabilityeventrow(button){
+	button.closest('.probabilitysimulationevent').find('table').append('<tr><td><input class=outcome placeholder=Outcome><td><input class=probability placeholder=Probability>');
+}
+	
+function duplicateprobabilityevent(button){
+	$('#probabilitysimulationevents').append(button.closest('.probabilitysimulationevent').clone());
+}
+	
+function addeventrecordereventrow(button){
+	button.closest('.eventrecorderevent').find('table').append('<tr><td><input class=outcome placeholder=Outcome>');
+}
+	
+function duplicateeventrecorderevent(button){
+	$('#eventrecorderevents').append(button.closest('.eventrecorderevent').clone());
+}
 
 $(function(){
 
@@ -153,6 +169,196 @@ $(function(){
 		document.getElementById("linkarea").value="";
 		document.getElementById("linkarea").focus();
 	});
+	
+	$('#eventrecorder').click(function() {
+		analytics('Function','Data - eventrecorder');
+		$('#eventrecorderdiv').show();
+		$('#eventrecorderrecorderdiv').hide();
+		if($('.eventrecorderevent').length==0){
+			$('#eventrecorderaddevent').click();
+		}
+	});
+	
+	$('#eventrecorderaddevent').click(function(){
+		$('#eventrecorderevents').append('<div class=eventrecorderevent><span onclick="$(this).parent().remove()" style="position:absolute;top:0px;right:5px;cursor:pointer;">&times;</span><b>Title:</b> <input class=eventrecordereventtitle><br><br><table><tr><th>Outcomes</table><br><button class="button addeventrecordereventrow" onclick="addeventrecordereventrow($(this));">Add Outcome</button> <button class="button duplicateeventrecorderevent" onclick="duplicateeventrecorderevent($(this));">Duplicate</button></div>');
+		$('.addeventrecordereventrow').last().click();
+		$('.addeventrecordereventrow').last().click();
+	})
+	
+	$('#eventrecorderreset').click(function(){
+		$('#eventrecorderevents').html('');
+		$('#eventrecorderaddevent').click();
+	})
+	
+	$('#eventrecorderstart').click(function(){
+		$('#eventrecorderdiv').hide();
+		$('#eventrecorderrecorderdiv').show();
+		$('#data tbody').html('');
+		var titles = '<tr class="tabletop"><th>id<td><div>Trial</div>';
+		
+		$('.eventrecorderevent').each(function(){
+		    titles+='<td><div>'+$(this).find('.eventrecordereventtitle').val()+'</div>';
+		});
+		
+		desiredoutcome = $('#eventrecorderdesiredoutcome').val();
+		if($('#eventrecordercountof').is(':checked')){titles+='<td><div>Count of '+desiredoutcome;}
+		desiredoutcome2 = $('#eventrecorderdesiredoutcome2').val();
+		if($('#eventrecordercountof2').is(':checked')){titles+='<td><div>Count of '+desiredoutcome2;}
+		if($('#eventrecordersum').is(':checked')){titles+='<td><div>Sum';}
+		if($('#eventrecorderoutcomes').is(':checked')){titles+='<td><div>Unique Outcomes';}
+		
+		$('#data').append(titles);
+		$('#eventrecorderrecorderevents').html('');
+		
+		$('.eventrecorderevent').each(function(){
+		    event = '<div class=eventrecorderrecorderevent><b>'+$(this).find('.eventrecordereventtitle').val()+'</b><br>';
+		    $(this).find('tr:not(:first-child)').each(function(){
+		        event += '<button>'+$(this).find('.outcome').val() + '</button><br> ';
+		    });
+			$('#eventrecorderrecorderevents').append(event+'</div>');
+		});
+		
+		updatebox();
+	})
+	
+	$('#eventrecorderrecorderevents').on("click", "button", function(){
+	    $(this).closest('.eventrecorderrecorderevent').find('button').removeClass('clicked');
+	    $(this).addClass('clicked');
+	});
+	
+	$('#eventrecordersavetrial').click(function(){
+		trial = $('#data tr').length;
+		row = '<tr><th>'+trial+'<td><div>'+trial+'</div>';
+		desiredoutcome = $('#eventrecorderdesiredoutcome').val();
+		desiredoutcome2 = $('#eventrecorderdesiredoutcome2').val();
+		count = 0;
+		count2 = 0;
+		sum = 0;
+		outcomes = [];
+		$('.eventrecorderrecorderevent').each(function(){
+		    outcome = $(this).find('button.clicked').text();
+		    row += '<td><div>'+outcome+'</div>';
+		    sum -= (-outcome);
+		    outcomes.push(outcome);
+		    if(outcome==desiredoutcome){count++;}
+		    if(outcome==desiredoutcome2){count2++;}
+		});
+		if($('#eventrecordercountof').is(':checked')){row+='<td><div>'+count;}
+		if($('#eventrecordercountof2').is(':checked')){row+='<td><div>'+count2;}
+		if($('#eventrecordersum').is(':checked')){row+='<td><div>'+sum;}
+		if($('#eventrecorderoutcomes').is(':checked')){row+='<td><div>'+unique( outcomes ).length;}
+		$('#data').append(row);
+		$('#eventrecorderrecorderevents button').removeClass('clicked');
+		updatebox();
+	})
+	
+	$('#eventrecorderfinish').click(function(){
+		$('#eventrecorderrecorderdiv').hide();
+		$('#data td div').attr('contenteditable','true');
+		updatebox();
+	})
+	
+	$('#probabilitysimulation').click(function() {
+		analytics('Function','Data - probabilitysimulation');
+		$('#probabilitysimulationdiv').show();
+		if($('.probabilitysimulationevent').length==0){
+			$('#probabilitysimulationaddevent').click();
+		}
+	});
+	
+	$('#probabilitysimulationaddevent').click(function(){
+		$('#probabilitysimulationevents').append('<div class=probabilitysimulationevent><span onclick="$(this).parent().remove()" style="position:absolute;top:0px;right:5px;cursor:pointer;">&times;</span><b>Title:</b> <input class=probabilitysimulationeventtitle><br><br><table><tr><th>Outcome<th>Probability</table><br><button class="button addprobabilityeventrow" onclick="addprobabilityeventrow($(this));">Add Outcome</button> <button class="button duplicateprobabilityevent" onclick="duplicateprobabilityevent($(this));">Duplicate</button></div>');
+		$('.addprobabilityeventrow').last().click();
+		$('.addprobabilityeventrow').last().click();
+	})
+	
+	$('#probabilitysimulationreset').click(function(){
+		$('#probabilitysimulationevents').html('');
+		$('#probabilitysimulationaddevent').click();
+	})
+	
+	$('#probabilitysimulationcreate').click(function(){
+		var trials = parseFloat($('#probabilitysimulationtrials').val())
+		var trial = 0;
+		var events = [];
+		var data = [];
+		var row = ['Trial'];
+		var error = 0;
+		$('.probabilitysimulationevent').each(function(){
+		    row.push($(this).find('.probabilitysimulationeventtitle').val());
+		    outcomes = [];
+		    cpds = [];
+		    cpd = 0;
+		    $(this).find('tr:not(:first-child)').each(function(){
+		        outcomes.push($(this).find('.outcome').val());
+		        cpd += parseFloat(eval($(this).find('.probability').val()));
+		        cpds.push(cpd);
+		    });
+		    if(cpd.toFixed(8)!='1.00000000'){
+		    	alert($(this).find('.probabilitysimulationeventtitle').val()+' probabilities do not add up to 1, they add to '+cpd.toFixed(8));
+		    	error++;
+		    	return false;
+		    }
+		    events.push([outcomes,cpds]);
+		});
+		if(error!=0){
+			return false;
+		}
+		desiredoutcome = $('#probabilitysimulationdesiredoutcome').val();
+		if($('#probabilitysimulationcountof').is(':checked')){row.push('Count of '+desiredoutcome);}
+		desiredoutcome2 = $('#probabilitysimulationdesiredoutcome2').val();
+		if($('#probabilitysimulationcountof2').is(':checked')){row.push('Count of '+desiredoutcome2);}
+		if($('#probabilitysimulationsum').is(':checked')){row.push('Sum');}
+		if($('#probabilitysimulationoutcomes').is(':checked')){row.push('Unqiue Outcomes');}
+		data.push(row);
+		while(trial++<trials){
+		    e = 0;
+		    row = [];
+		    outcomes = [];
+		    while(e<events.length){
+		        var randomnum = Math.random();
+		        cpds = events[e][1];
+		        o = 0;
+		        while(o<cpds.length){
+		            if(randomnum>=cpds[o]){o++} else {break}
+		        }
+		        row.push(events[e][0][o]);
+		        outcomes.push(events[e][0][o]);
+		        e++
+		    }
+		    if($('#probabilitysimulationsum').is(':checked')){
+		    	sum = 0;
+				for (var i=0; i<row.length; i++) {
+				  sum-=(-row[i]);
+				}
+		    }
+		    if($('#probabilitysimulationcountof').is(':checked')){
+		    	count = 0;
+				for (var i=0; i<row.length; i++) {
+				  if (row[i] == desiredoutcome) {
+				    count++;
+				  }
+				}
+				row.push(count);
+		    }
+		    if($('#probabilitysimulationcountof2').is(':checked')){
+		    	count = 0;
+				for (var i=0; i<row.length; i++) {
+				  if (row[i] == desiredoutcome2) {
+				    count++;
+				  }
+				}
+				row.push(count);
+		    }
+			if($('#probabilitysimulationsum').is(':checked')){row.push(sum);}
+			if($('#probabilitysimulationoutcomes').is(':checked')){row.push(unique(outcomes).length);}
+		    row.unshift(trial);
+		    data.push(row);
+		}
+		csv_data = $.csv.fromArrays(data);
+		$('#probabilitysimulationdiv').hide();
+		loaddata();
+	})
 	
 	$('#pastetableclick').click(function() {
 		analytics('Function','Data - pastetableclick');
@@ -1709,6 +1915,7 @@ function graphchange(obj){
 	$('#customequationshow').hide();
 	$('#customequationshow2').hide();
 	$('#dbmshow').hide();
+	$('#newrunningproportionsuccessshow').hide();
 	updategraph();
 }
 
@@ -5285,7 +5492,7 @@ function newscatter(){
 
 
 
-function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,left,right,colors,verticalerrorbars,horizontalerrorbars,stacknumber=0){
+function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,left,right,colors,verticalerrorbars,horizontalerrorbars,stacknumber=0,joinpoints=false){
 	if(stacknumber<2){
 		horaxis(ctx,left,right,add(bottom,10*scalefactor),minxtick,maxxtick,xstep);
 		vertaxis (ctx,gtop,bottom,left-10*scalefactor,minytick,maxytick,ystep);
@@ -5349,6 +5556,13 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 				}
 			}
 			
+		}
+		if(joinpoints){
+			if(index>0){
+				line(ctx,lastxpixel,lastypixel,xpixel,ypixel);
+			}
+			lastxpixel = xpixel;
+			lastypixel = ypixel;
 		}
 		num++;
 	}
@@ -7953,6 +8167,119 @@ function newresiduals(){
 	var dataURL = canvas.toDataURL();
 	return dataURL;
 	
+}
+
+function newrunningproportion(){
+	$('#var1label').html("Event");
+	$('#var2label').html("");
+	$('#var3label').html("");
+	$('#xvar').show();
+	$('#labelshow').show();
+	$('#greyscaleshow').show();
+	$('#sizediv').show();
+	$('#pointsizename').html('Point Size:');
+	$('#transdiv').show();
+	$('#newrunningproportionsuccessshow').show();
+	
+	var canvas = document.getElementById('myCanvas');
+	var ctx = canvas.getContext('2d');
+	
+	//set size
+	var width = $('#width').val();
+	var height = $('#height').val();
+
+	ctx.canvas.width = width;
+	ctx.canvas.height = height;
+
+	ctx.fillStyle = "#ffffff";
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+	//graph title
+	ctx.fillStyle = 'rgb(0,0,0)';
+	fontsize=20*scalefactor;
+	ctx.font = "bold "+fontsize+"px Roboto";
+	ctx.textAlign="center";
+	ctx.fillText($('#title').val(),width/2,30*scalefactor);
+	
+	//x-axis title
+	ctx.fillStyle = 'rgb(0,0,0)';
+	ctx.font = "bold "+15*scalefactor+"px Roboto";
+	ctx.textAlign="center";
+	ctx.fillText('Trial',width/2,height-10*scalefactor);
+	
+	//y-axis title
+	x=20*scalefactor;
+	y=height/2;
+	ctx.save();
+	ctx.fillStyle = 'rgb(0,0,0)';
+	ctx.font = "bold "+15*scalefactor+"px Roboto";
+	ctx.translate(x, y);
+	ctx.rotate(-Math.PI/2);
+	ctx.textAlign = "center";
+	ctx.fillText("Running Proportion", 0, 0);
+	ctx.restore();
+	
+	//get points
+	var data = (dataforselector[$('#xvar option:selected').text()]).slice();
+	
+	if(data.length==0){
+		return 'Error: You must select a variable for variable "Event"';
+	}
+	
+	options = data.filter( onlyUnique ).sort(sortorder);
+	optionsforselect = options.join('</option><option>');
+	
+	var selindex = document.getElementById("newrunningproportionsuccess").selectedIndex;
+	if(selindex==-1){selindex=0;}
+	$('#newrunningproportionsuccess').empty().append( '<option>'+optionsforselect+'</option>' );
+	if(selindex < document.getElementById("newrunningproportionsuccess").length && selindex > -1){document.getElementById("newrunningproportionsuccess").selectedIndex = selindex;}
+	
+	xmin = 0;
+	xmax = data.length;
+	
+	var pointsforminmax = [];
+	var points = [];
+	var trial = [];
+	var cpd = [];
+	var successes = 0;
+	
+	var success = $('#newrunningproportionsuccess').val();
+	
+	for (var i = 0; i < data.length; i++) {
+		points.push(i);
+		trial.push(i+1);
+		point = data[i];
+		if(point==success){successes++;}
+		cpd.push(successes/(i+1));
+	}
+	
+	var alpha = 1-$('#trans').val()/100;
+	var colors = makecolors(alpha,ctx);
+	
+	var minmaxstep = axisminmaxstep(1,points.length);
+	var minxtick=minmaxstep[0];
+	var maxxtick=minmaxstep[1];
+	var xstep=minmaxstep[2];
+	var minmaxstep = axisminmaxstep(0,1);
+	var minytick=minmaxstep[0];
+	var maxytick=minmaxstep[1];
+	var ystep=minmaxstep[2];
+
+	var left=90*scalefactor;
+	var right=width-60*scalefactor;
+	var gtop=90*scalefactor;
+	var bottom=height-60*scalefactor;
+	
+	plotscatter(ctx,points,trial,cpd,minxtick,maxxtick,xstep,minytick,maxytick,ystep,gtop,bottom,left,right,colors,false,false,0,true);
+	
+	labelgraph(ctx,width,height);
+	
+	if($('#invert').is(":checked")){
+		invert(ctx)
+	}
+
+	var dataURL = canvas.toDataURL();
+	return dataURL;
 }
 
 function newchangelog(){

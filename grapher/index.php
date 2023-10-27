@@ -336,6 +336,8 @@ $.get('https://analytics.jpw.nz/nzgraphernew.php?c=InitialLoad&a=$actual_link&r=
 	</li>
 	<li id=directimport>Import from Clipboard</li>
 	<li id=pastetableclick>Paste Table (Legacy)</li>
+	<li id=probabilitysimulation>Probability Simulation</li>
+	<li id=eventrecorder>Event Recorder</li>
 	<li id=pastelinkclick>Open Link</li>
 	<li id=highlightdatatable>Select and Copy Data Table</li>
 <?php
@@ -519,6 +521,40 @@ if(substr($dataset,0,6)!="SECURE"){
 		
 	</span>
 </div>
+
+<div id="eventrecorderdiv" class=absolute style="display:none;z-index:11;position:absolute;top:30px;left:30px;right:30px;bottom:30px;text-align:center;padding:10px;overflow-y: auto;">
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=eventrecordertitle>Event Recorder</div>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#eventrecorderdiv').hide();$('#data td div').attr('contenteditable','true');updatebox();">&times;</div><br>
+	<span id=eventrecordercontents style="font-size:14px">
+		<b>Events</b><br>
+		<div id=eventrecorderevents></div><br>
+		<br>
+		<button class=button id=eventrecorderaddevent>Add Event</button>
+		<button class=button id=eventrecorderreset>Reset</button><br>
+		<br>
+		<div id=extracolumns style='text-align:left;display: inline-block;'>
+			<input type=checkbox id=eventrecordercountof> Count of: <input type=text id=eventrecorderdesiredoutcome> (type outcome you want to count)<br>
+			<input type=checkbox id=eventrecordercountof2> Count of: <input type=text id=eventrecorderdesiredoutcome2> (type another outcome you want to count)<br>
+			<input type=checkbox id=eventrecordersum> Sum (only works if outcomes are numeric)<br>
+			<input type=checkbox id=eventrecorderoutcomes> Unique Outcomes<br>
+		</div><br>
+		<br>
+		<button class=button id=eventrecorderstart>Start Recording</button><br>
+	</span>
+</div>
+
+<div id="eventrecorderrecorderdiv" class=absolute style="display:none;z-index:11;position:absolute;top:30px;left:30px;right:30px;bottom:30px;text-align:center;padding:10px;overflow-y: auto;">
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=eventrecordertitle>Event Recorder</div>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#eventrecorderfinish').click();">&times;</div><br>
+	<span id=eventrecorderrecordercontents style="font-size:14px">
+		<b>Events</b><br>
+		<div id=eventrecorderrecorderevents></div><br>
+		<br>
+		<button class=button id=eventrecordersavetrial>Save Trial</button> 
+		<button class=button id=eventrecorderfinish>Finish Recording</button><br>
+	</span>
+</div>
+
 <?php
 echo "<table id=data></table>";
 if(empty($dataset)){
@@ -571,6 +607,7 @@ if(isset($_POST['csv_data'])){
 	<option value='newscatter'>Scatter Graph</option>
 	<option value='newgriddensity'>Grid Density Plot</option>
 	<option value='newresiduals'>Residuals Plot</option>
+	<option value='newrunningproportion'>Running Proportion</option>
 	<option disabled></option>
 	<option value='newbootstrap'>Bootstrap Single Variable</option>
 	<option value='newbootstrapcimedian'>Bootstrap Confidence Interval - Median</option>
@@ -800,6 +837,10 @@ if(isset($_POST['csv_data'])){
 			</span>
 			<span id=removedpointsshow><label>
 				<input type="checkbox" onclick="updategraph();" id="removedpoints" name="removedpoints" value="yes" checked> Show ID of Removed Points</label><br>
+			</span>
+			<span id=newrunningproportionsuccessshow style='text-indent: -15px;'>
+				Success:<br>
+				<select onchange="updategraph();" id="newrunningproportionsuccess" name="newrunningproportionsuccess" style='width: 100px;'></select>
 			</span>
 			<span id=customequationshow>
 				<label><input type="checkbox" onclick="updategraph();" id="customequationdots" name="customequationdots" value="yes"> Add Cust. Line</label><br>
@@ -1121,6 +1162,40 @@ if(isset($_GET['dev'])){
 	<center>
 		<button onclick="$('#flag').hide();$('#flagcover').hide();" class=button style='background-color:#cc8500;'>OK</button>
 	</center>
+</div>
+<div id="probabilitysimulationdiv" style="
+    position: fixed;
+    top: 62px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: #fff;
+    z-index: 11;
+    padding:10px;
+    display:none;
+    overflow-y: auto;
+    text-align:center;
+">
+    <span class="material-icons-outlined" onclick="$('#probabilitysimulationdiv').hide()" style='position:absolute;top:5px;right:5px;cursor:pointer;'>close</span>
+    <span style="font-size: 30px;font-weight: bold;">Probability Simulation</span><br>
+    <br>
+    <b>Events</b><br>
+	<div id=probabilitysimulationevents></div><br>
+	<br>
+	<button class=button id=probabilitysimulationaddevent>Add Event</button>
+	<button class=button id=probabilitysimulationreset>Reset</button><br>
+	<br>
+	<div id=extracolumns style='text-align:left;display: inline-block;'>
+		<input type=checkbox id=probabilitysimulationcountof> Count of: <input type=text id=probabilitysimulationdesiredoutcome> (type outcome you want to count)<br>
+		<input type=checkbox id=probabilitysimulationcountof2> Count of: <input type=text id=probabilitysimulationdesiredoutcome2> (type another outcome you want to count)<br>
+		<input type=checkbox id=probabilitysimulationsum> Sum (only works if outcomes are numeric)<br>
+		<input type=checkbox id=probabilitysimulationoutcomes> Unique Outcomes<br>
+	</div><br>
+	<br>
+	Trials: <input type=number id=probabilitysimulationtrials value=30><br>
+	<br>
+	<button class=button id=probabilitysimulationcreate>Create Dataset</button><br>
+	Note: probabilities can be given as a decimal or fraction, but not as a percent.
 </div>
 <div id="wizard" style="
     position: fixed;

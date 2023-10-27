@@ -13,6 +13,11 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2023-10-27</b><ul>
+		<li>New Probability Simulation option under "data" that allows you to run probability simulations - <a href='https://youtu.be/sNT6CCcjuqM'>video guide</a>.</li>
+		<li>New Event Recorder option under "data" that allows you to record events as they happen (great for recording experiments) - <a href='https://youtu.be/r9npjB-KttM'>video guide</a>.</li>
+		<li>New graph type: "Running Proportion" which is great for looking at long term probability and when the noise starts to reduce - <a href='https://youtu.be/JGpzK0YBOsg'>video guide</a>.</li>
+	</ul>
 	<b>2023-10-01</b><ul>
 		<li>'Fill Numbers' button on sample and sample variation screens... this button fills the sample boxes with the total number in each group to make removing groups easier.</li>
 		<li>New Function: 'Sample and More' -> 'View Group(s)' allows you to easily view single or multiple groups in a particular category.</li>
