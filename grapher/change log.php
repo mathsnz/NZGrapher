@@ -13,6 +13,10 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2023-12-17</b><ul>
+		<li>New Quadrant Count and Quadrant Count Ratio option for scatter graphs. Read more about this <a href='https://en.wikipedia.org/wiki/Quadrant_count_ratio'>here</a>. This is at an appropriate level for the new Level 1 standards coming in next year.</li>
+		<li>New option to show points and colour them by the season on the time series graph. This is a useful way for students doing the new level 1 standards to identify seasonal trends visually.</li>
+	</ul>
 	<b>2023-10-27</b><ul>
 		<li>New Probability Simulation option under "data" that allows you to run probability simulations - <a href='https://youtu.be/sNT6CCcjuqM'>video guide</a>.</li>
 		<li>New Event Recorder option under "data" that allows you to record events as they happen (great for recording experiments) - <a href='https://youtu.be/r9npjB-KttM'>video guide</a>.</li>

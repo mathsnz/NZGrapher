@@ -1886,6 +1886,8 @@ function graphchange(obj){
 	document.getElementById('boxnowhiskershow').style.display='none';
 	document.getElementById('boxnooutliershow').style.display='none';
 	document.getElementById('meandotshow').style.display='none';
+	document.getElementById('quadrantshow').style.display='none';
+	document.getElementById('showdotsshow').style.display='none';
 	document.getElementById('invertshow').style.display='none';
 	document.getElementById('thicklinesshow').style.display='none';
 	document.getElementById('relativefrequencyshow').style.display='none';
@@ -2844,10 +2846,14 @@ function median(values){
 }
 
 function calculatemean(values){
- count = values.length;
+ count = 0;
  sum=0;
  for (var index in values){
-	 sum = add(sum,values[index]);
+	value = values[index]
+	if($.isNumeric(value)){
+		sum = add(sum,value);
+		count++;
+	}
  }
  return parseFloat((sum/count).toPrecision(5));
 }
@@ -4044,6 +4050,7 @@ function reload_js()
    }
 function newtimeseries(){
 	$('#labelshow').show();
+	$('#showdotsshow').show();
 	$('#longtermtrendshow').show();
 	$('#addmultshow').show();
 	$('#startfinishshow').show();
@@ -4329,10 +4336,13 @@ function newtimeseries(){
 	}
 
 	if($('#labels').is(":checked")){var labels="yes";} else {var labels = "no";}
+	if($('#showdots').is(":checked")){var showdots="yes";} else {var showdots = "no";}
+	if($('#seasonalcolour').is(":checked")){var seasonalcolour="yes";} else {var seasonalcolour = "no";}
 	ytrendpts=[];
 	for (index in tsxpoints){
 		if(zpoints.length>0){
 			ctx.strokeStyle = 'rgba(48,145,255,1)';
+			ctx.fillStyle = 'rgba(48,145,255,1)';
 		}
 		xpixel=convertvaltopixel(tsxpoints[index],minxtick,maxxtick,left,right);
 		ypixel=convertvaltopixel(ypoints[index],maxytick,minytick,gtop,gbottom);
@@ -4388,6 +4398,22 @@ function newtimeseries(){
 				lastseasonypixel=seasonypixel;
 			}
 		}
+		if(showdots == "yes"){
+			if(seasonalcolour == "yes"){
+				point=parseFloat(tsxpoints[index]);
+				season=Math.round((point-Math.floor(point))*seasons+1);
+				ctx.fillStyle = ColorHSLaToRGBa(season/seasons*0.99,0.75,0.6,1);
+			} else {
+				if(zpoints.length>0){
+					ctx.fillStyle = 'rgba(48,145,255,1)';
+				} else {
+					ctx.fillStyle = 'rgba(0,0,0,1)';
+				}
+			}
+			ctx.beginPath();
+			ctx.arc(xpixel,ypixel,4*scalefactor,0,2*Math.PI);
+			ctx.fill();
+		}
 		if(labels == "yes"){
 			ctx.fillStyle = 'rgba(0,0,255,1)';
 			fontsize = 10*scalefactor;
@@ -4441,6 +4467,7 @@ function newtimeseries(){
 			}
 		}
 		ctx.strokeStyle = 'rgba(191,108,36,1)';
+		ctx.fillStyle = 'rgba(191,108,36,1)';
 		ztrendpts=[]
 		for (index in tsxpoints){
 			xpixel=convertvaltopixel(tsxpoints[index],minxtick,maxxtick,left,right);
@@ -4507,6 +4534,18 @@ function newtimeseries(){
 					lastseasonxpixel=seasonxpixel;
 					lastseasonypixel=seasonypixel;
 				}
+			}
+			if(showdots == "yes"){
+				if(seasonalcolour == "yes"){
+					point=parseFloat(tsxpoints[index]);
+					season=Math.round((point-Math.floor(point))*seasons+1);
+					ctx.fillStyle = ColorHSLaToRGBa(season/seasons*0.99,0.75,0.6,1);
+				} else {
+					ctx.fillStyle = 'rgba(191,108,36,1)';
+				}
+				ctx.beginPath();
+				ctx.arc(xpixel,ypixel,4*scalefactor,0,2*Math.PI);
+				ctx.fill();
 			}
 			if(labels == "yes"){
 				ctx.fillStyle = 'rgba(0,0,255,1)';
@@ -5285,6 +5324,7 @@ function newscatter(){
 	$('#powshow').show();
 	$('#yxshow').show();
 	$('#meandotshow').show();
+	$('#quadrantshow').show();
 	$('#invertshow').show();
 	$('#thicklinesshow').show();
 	$('#xvar').show();
@@ -5506,12 +5546,16 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 	num = 0;
 	pointstofit = [];
 	pointstofitadjusted = [];
+	xpointsforcalcs = [];
+	ypointsforcalcs = [];
 	for (var index in indexes){
 		var index = indexes[index];
 		var xpoint = xpoints[index];
 		var ypoint = ypoints[index];
 		if(xpoint==0){adjustedx = xpoint + 1E-99;} else {adjustedx = xpoint;}
 		if(ypoint==0){adjustedy = ypoint + 1E-99;} else {adjustedy = ypoint;}
+		xpointsforcalcs.push(parseFloat(xpoint));
+		ypointsforcalcs.push(parseFloat(ypoint));
 		pointstofit.push([parseFloat(xpoint),parseFloat(ypoint)]);
 		pointstofitadjusted.push([parseFloat(adjustedx),parseFloat(adjustedy)]);
 		var xpixel = convertvaltopixel(xpoint,minxtick,maxxtick,left,right);
@@ -5961,8 +6005,8 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 	}
 	
 	if($('#meandot').is(":checked") && $('#meandot').is(':visible')){
-		meanx = calculatemean(xpoints);
-		meany = calculatemean(ypoints);
+		meanx = calculatemean(xpointsforcalcs);
+		meany = calculatemean(ypointsforcalcs);
 		meanxgraph = convertvaltopixel(meanx,minxtick,maxxtick,left,right);
 		meanygraph = convertvaltopixel(meany,minytick,maxytick,bottom,gtop);
 		ctx.fillStyle = 'rgba(255,0,0,1)';
@@ -5970,6 +6014,55 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		ctx.arc(meanxgraph, meanygraph, 7*scalefactor, 0, Math.PI*2, true);
 		ctx.closePath();
 		ctx.fill();
+	}
+	
+	if($('#quadrant').is(":checked") && $('#quadrant').is(':visible')){
+		meanx = calculatemean(xpointsforcalcs);
+		meany = calculatemean(ypointsforcalcs);
+		meanxgraph = convertvaltopixel(meanx,minxtick,maxxtick,left,right);
+		meanygraph = convertvaltopixel(meany,minytick,maxytick,bottom,gtop);
+		ctx.strokeStyle = 'rgba(255,0,0,1)';
+		ctx.fillStyle = 'rgba(255,0,0,1)';
+		line(ctx,left,meanygraph,right,meanygraph);
+		line(ctx,meanxgraph,gtop,meanxgraph,bottom);
+		
+		var q1=0;
+		var q2=0;
+		var q3=0;
+		var q4=0;
+		
+		for (var index in indexes){
+			var index = indexes[index];
+			var pointx = xpoints[index];
+			var pointy = ypoints[index];
+			if(pointx>=meanx){
+				if(pointy>=meany){
+					q1++;
+				} else {
+					q4++
+				}
+			} else {
+				if(pointy>=meany){
+					q2++
+				} else {
+					q3++
+				}
+			}
+		}
+		
+		ctx.textAlign='right';
+		ctx.fillText('Quadrant 1: '+q1,right, meanygraph-5);
+		ctx.fillText('Quadrant 4: '+q4,right, meanygraph+15);
+		
+		ctx.textAlign='left';
+		ctx.fillText('Quadrant 2: '+q2,left, meanygraph-5);
+		ctx.fillText('Quadrant 3: '+q3,left, meanygraph+15);
+		
+		if($('#quadrantratio').is(":checked")){
+			ctx.fillText("Quadrant Count Ratio = "+((q1-q2-q4+q3)/num).toFixed(3),left, equationtop);
+			equationtop = add(equationtop,15*scalefactor);
+		}
+		
 	}
 	
 	if($('#type').val()=='newresiduals'){

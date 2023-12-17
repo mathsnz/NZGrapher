@@ -730,6 +730,10 @@ if(isset($_POST['csv_data'])){
 			<span id=meandotshow><label>
 				<input type="checkbox" onclick="updategraph();" id="meandot" name="meandot" value="yes"> Mean Dot</label><br>
 			</span>
+			<span id=quadrantshow><label>
+				<input type="checkbox" onclick="updategraph();" id="quadrant" name="quadrant" value="yes"> Quadrant Count</label><br>
+				<input type="checkbox" onclick="updategraph();" id="quadrantratio" name="quadrantratio" value="yes"> Show Ratio</label><br>
+			</span>
 			<span id=stackdotsshow><label>
 				<input type="checkbox" onclick="updategraph();" id="stackdots" name="stackdots" value="yes"> Stack Dots</label><br>
 			</span>
@@ -756,6 +760,10 @@ if(isset($_POST['csv_data'])){
 			</span>
 			<span id=stackgraphsshow><label>
 				<input type="checkbox" onclick="updategraph();" id="stackgraphs" name="stackgraphs" value="yes"> Stack Graphs</label><br>
+			</span>
+			<span id=showdotsshow><label>
+				<input type="checkbox" onclick="updategraph();" id="showdots" name="showdots" value="yes"> Show Dots</label><br>
+				<input type="checkbox" onclick="updategraph();" id="seasonalcolour" name="seasonalcolour" value="yes"> Seasonal</label><br>
 			</span>
 			<span id=differentaxisshow><label>
 				<input type="checkbox" onclick="updategraph();" id="differentaxis" name="differentaxis" value="yes"> Different Axis</label><br>
