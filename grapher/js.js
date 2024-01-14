@@ -1916,6 +1916,7 @@ function graphchange(obj){
 	$('.moveabledot').hide();
 	$('#customequationshow').hide();
 	$('#customequationshow2').hide();
+	$('#customequationshow3').hide();
 	$('#dbmshow').hide();
 	$('#newrunningproportionsuccessshow').hide();
 	updategraph();
@@ -5342,6 +5343,7 @@ function newscatter(){
 	$('#errorbarsshowh').show();
 	$('#customequationshow').show();
 	$('#customequationshow2').show();
+	$('#customequationshow3').show();
 	$('#stackgraphsshow').show();
 	
 	if($('#customequationdots').is(":checked")){
@@ -5354,6 +5356,12 @@ function newscatter(){
 		$('.moveabledot2').show();
 	} else {
 		$('.moveabledot2').hide();
+	}
+	
+	if($('#customequationdots3').is(":checked")){
+		$('.moveabledot3').show();
+	} else {
+		$('.moveabledot3').hide();
 	}
 
 	var canvas = document.getElementById('myCanvas');
@@ -5993,9 +6001,58 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			ctx.fillText($('#scatplotnamey').val()+" = "+m+" * "+$('#scatplotnamex').val()+c,left, equationtop);
 			equationtop = add(equationtop,15*scalefactor);
 			
-			equations['Custom'] = {};
-			equations['Custom']['Equation'] = 'y = '+m+'x + '+c;
-			equations['Custom']['r2'] = '';
+			equations['Custom2'] = {};
+			equations['Custom2']['Equation'] = 'y = '+m+'x + '+c;
+			equations['Custom2']['r2'] = '';
+		}
+	}
+	
+	if($('#customequationdots3').is(":checked")){
+		ctx.fillStyle = '#3FE7E7';
+		ctx.strokeStyle='#3FE7E7';
+		
+		dot5left = add($('#dot5')[0].style.left.replace('px',''),7);
+		dot6left = add($('#dot6')[0].style.left.replace('px',''),7);
+		dot5top = add($('#dot5')[0].style.top.replace('px',''),7);
+		dot6top = add($('#dot6')[0].style.top.replace('px',''),7);
+		
+		x1 = convertvaltopixel(dot5left*scalefactor,left,right,minxtick,maxxtick);
+		x2 = convertvaltopixel(dot6left*scalefactor,left,right,minxtick,maxxtick);
+		y1 = convertvaltopixel(dot5top*scalefactor,bottom,gtop,minytick,maxytick);
+		y2 = convertvaltopixel(dot6top*scalefactor,bottom,gtop,minytick,maxytick);
+		
+		m = (y2-y1)/(x2-x1);
+		c = y2 - m*x2;
+		
+		x = minxtick;
+		lasty=0;
+		step = (maxxtick - minxtick)/100;
+		while(x<maxxtick){
+			y = add(m * x,c);
+			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
+			ypixel = convertvaltopixel(y,minytick,maxytick,bottom,gtop);
+			if(x>minxtick && y>=minytick && y<=maxytick && lasty>=minytick && lasty<=maxytick){
+				line(ctx,lastxpixel,lastypixel,xpixel,ypixel);
+			}
+			lastxpixel=xpixel;
+			lastypixel=ypixel;
+			lasty = y;
+			x = add(x,step);
+		}
+		if($('#customequationequation3').is(":checked")){
+			m = m.toPrecision(5);
+			c = c.toPrecision(5);
+			if(parseFloat(c)<0){
+				c = " - " + -1*c;
+			} else {
+				c = " + " + c;
+			}
+			ctx.fillText($('#scatplotnamey').val()+" = "+m+" * "+$('#scatplotnamex').val()+c,left, equationtop);
+			equationtop = add(equationtop,15*scalefactor);
+			
+			equations['Custom3'] = {};
+			equations['Custom3']['Equation'] = 'y = '+m+'x + '+c;
+			equations['Custom3']['r2'] = '';
 		}
 	}
 	

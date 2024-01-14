@@ -13,6 +13,9 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2024-01-15</b><ul>
+		<li>Added option to have 3 custom lines on scatter graphs... great for showing railway tracks for the new Level 1 standards.</li>
+	</ul>
 	<b>2023-12-17</b><ul>
 		<li>New Quadrant Count and Quadrant Count Ratio option for scatter graphs. Read more about this <a href='https://en.wikipedia.org/wiki/Quadrant_count_ratio'>here</a>. This is at an appropriate level for the new Level 1 standards coming in next year.</li>
 		<li>New option to show points and colour them by the season on the time series graph. This is a useful way for students doing the new level 1 standards to identify seasonal trends visually.</li>

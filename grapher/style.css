@@ -543,6 +543,12 @@ kbd {
 .moveabledot2:active {
   background-color: rgba(248, 140, 231, 1.00);
 }
+.moveabledot3 {
+  background-color: rgb(63, 231, 231);
+}
+.moveabledot3:active {
+  background-color: rgba(102, 255, 255, 1.00);
+}
 #wizardoutput img {
 	width:300px;
 	cursor:pointer;

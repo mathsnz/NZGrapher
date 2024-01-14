@@ -647,6 +647,8 @@ if(isset($_POST['csv_data'])){
     <div id="dot2" class='moveabledot moveabledot1' style="top:200px;left:100px"></div>
     <div id="dot3" class='moveabledot moveabledot2' style="top:200px;left:200px"></div>
     <div id="dot4" class='moveabledot moveabledot2' style="top:300px;left:100px"></div>
+    <div id="dot5" class='moveabledot moveabledot3' style="top:300px;left:200px"></div>
+    <div id="dot6" class='moveabledot moveabledot3' style="top:400px;left:100px"></div>
 <div id=jsgraph></div>
 <canvas id="myCanvas" width="600" height="400" style='display:none'></canvas>
 </div>
@@ -786,7 +788,7 @@ if(isset($_POST['csv_data'])){
 				</select>
 			</span>
 			<span id=longtermtrendshow><label>
-				<input type="checkbox" onclick="if(this.checked==true){$('#seasonal')[0].checked=true;}else{$('#seasonal')[0].checked=false;};updategraph();" id="longtermtrend" name="longtermtrend" value="yes"> Long Term Trend (STL)</label><br>
+				<input type="checkbox" onclick="if(this.checked==false){$('#seasonal')[0].checked=false;};updategraph();" id="longtermtrend" name="longtermtrend" value="yes"> Long Term Trend (STL)</label><br>
 			</span>
 			<span id=seasonalshow><label>
 				<input type="checkbox" onclick="if(this.checked==true){$('#longtermtrend')[0].checked=true;};updategraph();" id="seasonal" name="seasonal" value="yes"> Seasonal (STL)</label><br>
@@ -857,6 +859,10 @@ if(isset($_POST['csv_data'])){
 			<span id=customequationshow2>
 				<label><input type="checkbox" onclick="updategraph();" id="customequationdots2" name="customequationdots2" value="yes"> Add Cust. Line 2</label><br>
 				<label><input type="checkbox" onclick="updategraph();" id="customequationequation2" name="customequationequation2" value="yes"> Show Eqn 2</label><br>
+			</span>
+			<span id=customequationshow3>
+				<label><input type="checkbox" onclick="updategraph();" id="customequationdots3" name="customequationdots3" value="yes"> Add Cust. Line 3</label><br>
+				<label><input type="checkbox" onclick="updategraph();" id="customequationequation3" name="customequationequation3" value="yes"> Show Eqn 3</label><br>
 			</span>
 			<span id=errorbarsshowh style='text-indent: -15px;'><label>
 				Horizontal Error Bars:<br>
