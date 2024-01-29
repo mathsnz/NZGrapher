@@ -5910,8 +5910,8 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 	}
 	
 	if($('#customequationdots').is(":checked")){
-		ctx.fillStyle = '#AFA546';
-		ctx.strokeStyle='#AFA546';
+		ctx.fillStyle = '#8C8438';
+		ctx.strokeStyle='#8C8438';
 		
 		dot1left = add($('#dot1')[0].style.left.replace('px',''),7);
 		dot2left = add($('#dot2')[0].style.left.replace('px',''),7);

@@ -13,6 +13,9 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2024-01-29</b><ul>
+		<li>Made custom line 1 darker.</li>
+	</ul>
 	<b>2024-01-15</b><ul>
 		<li>Added option to have 3 custom lines on scatter graphs... great for showing railway tracks for the new Level 1 standards.</li>
 	</ul>
