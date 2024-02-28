@@ -873,7 +873,7 @@ if(isset($_POST['csv_data'])){
 				<select onchange="updategraph();" id="verticalerrorbars" name="verticalerrorbars" style='width: 100px;'></select><br>
 			</span>
 			<span id=grayscaleshow><label>
-				<input type="checkbox" onclick="updategraph();" id="grayscale" name="grayscale" value="yes"> Gray Scale <br>(do not use on Firefox)</label><br>
+				<input type="checkbox" onclick="updategraph();" id="grayscale" name="grayscale" value="yes"> Gray Scale</label><br>
 			</span>
 		</div>
 		<td><span style='font-size:12px;line-height:27px;'>
@@ -883,9 +883,8 @@ if(isset($_POST['csv_data'])){
 			<span id=colorname><span style='display:inline-block;width:50px;'>Colour: </span><input type="text" id="colorlabel" name="colorlabel" value="Color Label"><br></span>
 			<span style='display:inline-block;width:50px;'>Size: </span><select id="standardsize" name="standardsize" onchange="updategraph()" style='width:120px;'>
 				<option>Auto</option>
-				<?php
-				echo "<option>Auto - High Res</option>";
-				?>
+				<option>Auto - High Res</option>
+				<option>Auto - Server Side Processing</option>
 				<option>Standard</option>
 				<option>Short</option>
 				<option>Small</option>

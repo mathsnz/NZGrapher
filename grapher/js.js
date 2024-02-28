@@ -2094,11 +2094,11 @@ function updategraphgo(){
 
 function desaturate(){
 	if($('#grayscale').is(":checked")){
-		$('body').css('-webkit-filter','grayscale(100%)');
-		$('body').css('filter','grayscale(100%)');
+		$('body > *').css('-webkit-filter','grayscale(100%)');
+		$('body > *').css('filter','grayscale(100%)');
 	} else {
-		$('body').css('-webkit-filter','none');
-		$('body').css('filter','none');
+		$('body > *').css('-webkit-filter','none');
+		$('body > *').css('filter','none');
 	}
 }
 
@@ -2115,12 +2115,13 @@ function jsgraphtoimage(dataURL) {
     if (document.getElementById('standardsize').value=='Auto - High Res'){
       highres='yes';
     }
-		$.ajax({
+    if (document.getElementById('standardsize').value=='Auto - Server Side Processing'){
+    	$.ajax({
 			type: "POST",
 			url: "saveimagefromjs.php",
 			data: {
 				imgBase64: dataURL,
-        highres: highres
+        		highres: highres
 			},
 			success: function(data){
 				$('#jsgraph').html(data);
@@ -2133,7 +2134,19 @@ function jsgraphtoimage(dataURL) {
 			$('#jsgraph').html('<img src="'+dataURL+'" usemap="#graphmap">');
 			$('#loading').hide();
 		});
-	}
+    } else {
+    	if(highres=='yes'){
+    		$('#jsgraph').html('<img style="width:100%;" src="'+dataURL+'" usemap="#graphmap">');
+    	} else {
+    		$('#jsgraph').html('<img src="'+dataURL+'" usemap="#graphmap">');
+    	}
+		$('#loading').hide();
+    }
+    
+    $('#jsgraph').html('<img src="'+dataURL+'" usemap="#graphmap">');
+	$('#loading').hide();
+    
+  }
 }
 
 var rtime = new Date(1, 1, 2000, 12,00,00);

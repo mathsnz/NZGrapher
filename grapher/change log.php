@@ -13,6 +13,11 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2024-02-29</b><ul>
+		<li>Made OVS line darker.</li>
+		<li>Made gray scale option work on firefox (thanks to Aliah from MAGS).</li>
+		<li>Change to how images are saved so they are saved less on the server and handled client side.</li>
+	</ul>
 	<b>2024-01-29</b><ul>
 		<li>Made custom line 1 darker.</li>
 	</ul>
