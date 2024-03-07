@@ -13,6 +13,9 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2024-03-07</b><ul>
+		<li>Fixed issue where colour by wasn't always working for categorical data.</li>
+	</ul>
 	<b>2024-02-29</b><ul>
 		<li>Made OVS line darker.</li>
 		<li>Made gray scale option work on firefox (thanks to Aliah from MAGS).</li>

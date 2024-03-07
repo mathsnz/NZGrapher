@@ -2679,11 +2679,13 @@ function makecolors(alpha,ctx){
 		ctx.lineWidth = 5*scalefactor;
 	}
 	var colors = [];
+	var colorpoints = [];
 	if($('#color option:selected').text()!="" && $('#color option:selected').text()!=" "){
 		var colorpoints = dataforselector[$('#color option:selected').text()].slice();
 	} else {
 		var colorpoints = [];
 	}
+	
 	if(colorpoints.length<1){
 		var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
 		for (var index in xpoints){
@@ -2751,8 +2753,8 @@ function makecolors(alpha,ctx){
 		for (var i in colorpoints) {
 			colorindexs[i] = colorpoints[i];
 		}
-		colorindexs.sort(sortorder);
-		$.unique(colorindexs);
+		colorindexs = colorindexs.filter( onlyUnique ).sort(sortorder);
+		console.log(colorindexs);
 		var thecolors=[];
 		var thecolorsnoalpha=[];
 		var colorcount = colorindexs.length;
