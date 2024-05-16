@@ -339,9 +339,9 @@ $.get('https://analytics.jpw.nz/nzgraphernew.php?c=InitialLoad&a=$actual_link&r=
 	<li id=probabilitysimulation>Probability Simulation</li>
 	<li id=eventrecorder>Event Recorder</li>
 	<li id=pastelinkclick>Open Link</li>
-	<li id=highlightdatatable>Select and Copy Data Table</li>
 <?php
 if(substr($dataset,0,6)!="SECURE"){
+	echo "<li id=highlightdatatable>Select and Copy Data Table</li>";
 	echo "<li><a href='#' id=download style='text-decoration:none;color:#000;'>Download Data</a></li>";
 	echo "<li><a href='#' id=downloadnzgrapher style='text-decoration:none;color:#000;'>Save Session</a></li>";
 }

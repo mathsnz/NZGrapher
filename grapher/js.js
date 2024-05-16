@@ -11001,6 +11001,7 @@ function newpairedexperiment(){
 			pointstoplot[index] = ypoints[index]-xpoints[index];
 		} else {
 			pointsremoved.push(add(index,1));
+			pointsforminmax.push(0);
 		}
 	}
 

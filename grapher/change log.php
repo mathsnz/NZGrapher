@@ -13,6 +13,10 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2024-05-17</b><ul>
+		<li>Fixed issue where colour by difference wasn't working for paired experiment data where some data was missing.</li>
+		<li>Fixed issue where select and copy data table was still showing for datasets that shouldn't be downloaded.</li>
+	</ul>
 	<b>2024-03-07</b><ul>
 		<li>Fixed issue where colour by wasn't always working for categorical data.</li>
 	</ul>
