@@ -16,6 +16,8 @@ var countdotplotrow;
 var lastmedian;
 var ovsmin;
 var ovsmax;
+var newrerandteach=0;
+var newbsteach=0;
 
 function analytics(c,a){
 	const currentdate = new Date();
@@ -2018,7 +2020,21 @@ function updategraphgo(){
 	$('#var3label').html("variable 3:");
 	$('.highlight').removeClass('highlight');
     $('#tooltip').css('display','none');
-    analytics('Graph Draw',$('#type').val());
+    if($('#type').val()=='newrerandteach'){
+    	if(newrerandteach==0){
+    		analytics('Graph Draw',$('#type').val());
+    	} else {
+    		newrerandteach++;
+    	}
+    } else if($('#type').val()=='newbsteach'){
+    	if(newbsteach==0){
+    		analytics('Graph Draw',$('#type').val());
+    	} else {
+    		newbsteach++;
+    	}
+    } else {
+    	analytics('Graph Draw',$('#type').val());
+    }
 	if(!$('#xvar').length){
 		alert('NZGrapher is not loaded properly... please load again with a valid dataset.');
 		window.location = './';
