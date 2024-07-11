@@ -16,8 +16,8 @@ var countdotplotrow;
 var lastmedian;
 var ovsmin;
 var ovsmax;
-var newrerandteach=0;
-var newbsteach=0;
+var newrerandteachcount=0;
+var newbsteachcount=0;
 
 function analytics(c,a){
 	const currentdate = new Date();
@@ -2021,16 +2021,16 @@ function updategraphgo(){
 	$('.highlight').removeClass('highlight');
     $('#tooltip').css('display','none');
     if($('#type').val()=='newrerandteach'){
-    	if(newrerandteach==0){
+    	if(newrerandteachcount==0){
     		analytics('Graph Draw',$('#type').val());
     	} else {
-    		newrerandteach++;
+    		newrerandteachcount++;
     	}
     } else if($('#type').val()=='newbsteach'){
-    	if(newbsteach==0){
+    	if(newbsteachcount==0){
     		analytics('Graph Draw',$('#type').val());
     	} else {
-    		newbsteach++;
+    		newbsteachcount++;
     	}
     } else {
     	analytics('Graph Draw',$('#type').val());

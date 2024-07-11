@@ -644,11 +644,11 @@ if(isset($_POST['csv_data'])){
 
 <div id=graphdiv class=absolute>
     <div id="dot1" class='moveabledot moveabledot1' style="top:100px;left:200px"></div>
-    <div id="dot2" class='moveabledot moveabledot1' style="top:200px;left:100px"></div>
-    <div id="dot3" class='moveabledot moveabledot2' style="top:200px;left:200px"></div>
-    <div id="dot4" class='moveabledot moveabledot2' style="top:300px;left:100px"></div>
-    <div id="dot5" class='moveabledot moveabledot3' style="top:300px;left:200px"></div>
-    <div id="dot6" class='moveabledot moveabledot3' style="top:400px;left:100px"></div>
+    <div id="dot2" class='moveabledot moveabledot1' style="top:150px;left:100px"></div>
+    <div id="dot3" class='moveabledot moveabledot2' style="top:150px;left:200px"></div>
+    <div id="dot4" class='moveabledot moveabledot2' style="top:200px;left:100px"></div>
+    <div id="dot5" class='moveabledot moveabledot3' style="top:200px;left:200px"></div>
+    <div id="dot6" class='moveabledot moveabledot3' style="top:250px;left:100px"></div>
 <div id=jsgraph></div>
 <canvas id="myCanvas" width="600" height="400" style='display:none'></canvas>
 </div>
