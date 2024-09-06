@@ -2159,8 +2159,8 @@ function jsgraphtoimage(dataURL) {
 		$('#loading').hide();
     }
     
-    $('#jsgraph').html('<img src="'+dataURL+'" usemap="#graphmap">');
-	$('#loading').hide();
+    //$('#jsgraph').html('<img src="'+dataURL+'" usemap="#graphmap">');
+	//$('#loading').hide();
     
   }
 }
@@ -4093,6 +4093,13 @@ function newtimeseries(){
 	$('#differentaxisshow').show();
 	$('#gridlinesshow').show();
 	$('#recompoutput,#recompoutputextra').remove();
+	$('#customequationshow').show();
+	
+	if($('#customequationdots').is(":checked")){
+		$('.moveabledot1').show();
+	} else {
+		$('.moveabledot1').hide();
+	}
 
 	var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
@@ -4600,6 +4607,7 @@ function newtimeseries(){
 			lefta="";
 			righta="";
 		}
+		
 		ctx.lineWidth = 2*scalefactor;
 		ctx.textAlign="left";
 		fontsize = 13*scalefactor;
@@ -4612,6 +4620,60 @@ function newtimeseries(){
 		ctx.fillStyle = 'rgba(191,108,36,1)';
 		line(ctx,left,add(gtop,15*scalefactor),add(left,10*scalefactor),add(gtop,15*scalefactor));
 		ctx.fillText($("#zvar option:selected").text()+righta,add(left,15*scalefactor),add(gtop,20*scalefactor));
+	}
+	
+	if($('#customequationdots').is(":checked")){
+		ctx.fillStyle = '#8C8438';
+		ctx.strokeStyle='#8C8438';
+		
+		dot1left = add($('#dot1')[0].style.left.replace('px',''),7);
+		dot2left = add($('#dot2')[0].style.left.replace('px',''),7);
+		dot1top = add($('#dot1')[0].style.top.replace('px',''),7);
+		dot2top = add($('#dot2')[0].style.top.replace('px',''),7);
+		
+		x1 = convertvaltopixel(dot1left*scalefactor,left,right,minxtick,maxxtick);
+		x2 = convertvaltopixel(dot2left*scalefactor,left,right,minxtick,maxxtick);
+		y1 = convertvaltopixel(dot1top*scalefactor,gbottom,gtop,minytick,maxytick);
+		y2 = convertvaltopixel(dot2top*scalefactor,gbottom,gtop,minytick,maxytick);
+		
+		m = (y2-y1)/(x2-x1);
+		c = y2 - m*x2;
+		
+		x = minxtick;
+		lasty=0;
+		step = (maxxtick - minxtick)/100;
+		while(x<maxxtick){
+			y = add(m * x,c);
+			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
+			ypixel = convertvaltopixel(y,minytick,maxytick,gbottom,gtop);
+			if(x>minxtick && y>=minytick && y<=maxytick && lasty>=minytick && lasty<=maxytick){
+				line(ctx,lastxpixel,lastypixel,xpixel,ypixel);
+			}
+			lastxpixel=xpixel;
+			lastypixel=ypixel;
+			lasty = y;
+			x = add(x,step);
+		}
+		equationtop = gtop+10*scalefactor;
+		equations = {};
+		
+		if($('#customequationequation').is(":checked")){
+			m = m.toPrecision(5);
+			c = c.toPrecision(5);
+			if(parseFloat(c)<0){
+				c = " - " + -1*c;
+			} else {
+				c = " + " + c;
+			}
+			ctx.textAlign="left";
+			ctx.font = 13*scalefactor+"px Roboto";
+			ctx.fillText($('#scatplotnamey').val()+" = "+m+" * "+$('#scatplotnamex').val()+c,left, equationtop);
+			equationtop = add(equationtop,15*scalefactor);
+			
+			equations['Custom'] = {};
+			equations['Custom']['Equation'] = 'y = '+m+'x + '+c;
+			equations['Custom']['r2'] = '';
+		}
 	}
 
 	if(seasonal=='yes'){

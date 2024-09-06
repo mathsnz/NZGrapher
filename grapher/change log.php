@@ -13,6 +13,10 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2024-09-06</b><ul>
+		<li>Added custom lines to Time Series graphs.</li>
+		<li>Fixed issue with high-res graphs not displaying correctly.</li>
+	</ul>
 	<b>2024-07-11</b><ul>
 		<li>Fixed issue where screens with limited vertical height couldn't use the third custom line as the dots were off the screen.</li>
 		<li>Fixed issue where teaching tools had stopped working.</li>
