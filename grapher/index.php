@@ -736,6 +736,9 @@ if(isset($_POST['csv_data'])){
 				<input type="checkbox" onclick="updategraph();" id="quadrant" name="quadrant" value="yes"> Quadrant Count</label><br>
 				<input type="checkbox" onclick="updategraph();" id="quadrantratio" name="quadrantratio" value="yes"> Show Ratio</label><br>
 			</span>
+			<span id=bootstraptrendlineshow><label>
+				<input type="checkbox" onclick="updategraph();" id="bootstraptrendline" name="bootstraptrendline" value="yes"> Bootstrap Trendline</label><br>
+			</span>
 			<span id=stackdotsshow><label>
 				<input type="checkbox" onclick="updategraph();" id="stackdots" name="stackdots" value="yes"> Stack Dots</label><br>
 			</span>

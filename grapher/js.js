@@ -1889,6 +1889,7 @@ function graphchange(obj){
 	document.getElementById('boxnooutliershow').style.display='none';
 	document.getElementById('meandotshow').style.display='none';
 	document.getElementById('quadrantshow').style.display='none';
+	document.getElementById('bootstraptrendlineshow').style.display='none';
 	document.getElementById('showdotsshow').style.display='none';
 	document.getElementById('invertshow').style.display='none';
 	document.getElementById('thicklinesshow').style.display='none';
@@ -2165,7 +2166,7 @@ function jsgraphtoimage(dataURL) {
   }
 }
 
-var rtime = new Date(1, 1, 2000, 12,00,00);
+var rtime = new Date(1, 1, 2000, 12,0,0);
 var timeout = false;
 var delta = 200;
 $(window).resize(function() {
@@ -5419,6 +5420,7 @@ function newscatter(){
 	$('#yxshow').show();
 	$('#meandotshow').show();
 	$('#quadrantshow').show();
+	$('#bootstraptrendlineshow').show();
 	$('#invertshow').show();
 	$('#thicklinesshow').show();
 	$('#xvar').show();
@@ -5724,6 +5726,44 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 	}
 	
 	var equations = [];
+	
+	if($('#bootstraptrendline').is(":checked") && $('#bootstraptrendline').is(':visible')){
+		ctx.strokeStyle = 'rgba(150,150,150,0.05)';
+
+		b=0;
+		num = pointstofit.length;
+		while(b<1000){
+			b++;
+			thisbootstrap=[];
+			for (index in pointstofit){
+				sel=randint(0,num-1);
+				point=pointstofit[sel];
+				thisbootstrap.push(point);
+			}
+			res = regression.linear(thisbootstrap,{
+				precision: 15,
+			});
+
+			c = res.equation[1].toPrecision(5);
+			m = res.equation[0].toPrecision(5);
+			x = minxtick;
+			lasty=0;
+			step = (maxxtick - minxtick)/100;
+			while(x<maxxtick){
+				y = add(m * x,c);
+				xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
+				ypixel = convertvaltopixel(y,minytick,maxytick,bottom,gtop);
+				if(x>minxtick && y>=minytick && y<=maxytick && lasty>=minytick && lasty<=maxytick){
+					line(ctx,lastxpixel,lastypixel,xpixel,ypixel);
+				}
+				lastxpixel=xpixel;
+				lastypixel=ypixel;
+				lasty = y;
+				x = add(x,step);
+			}
+		}
+		
+	}
 	
 	if($('#regression').is(":checked") && $('#regshow').is(':visible')){
 		if(stacknumber==0){

@@ -13,6 +13,10 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2024-01-21</b><ul>
+		<li>New Option: Bootstrap Trendlines on Scatter Graphs.</li>
+		<li>Update of Sea Ice Data, moved old versions to <a href='https://grapher.nz/?folder=seaice'>here.</a>.</li>
+	</ul>
 	<b>2024-09-06</b><ul>
 		<li>Added custom lines to Time Series graphs.</li>
 		<li>Fixed issue with high-res graphs not displaying correctly.</li>
