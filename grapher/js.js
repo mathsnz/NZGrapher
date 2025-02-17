@@ -6241,12 +6241,12 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		}
 		
 		ctx.textAlign='right';
-		ctx.fillText('Quadrant 1: '+q1,right, meanygraph-5);
-		ctx.fillText('Quadrant 4: '+q4,right, meanygraph+15);
+		ctx.fillText('Quadrant 1: '+q1,right, meanygraph-5*scalefactor);
+		ctx.fillText('Quadrant 4: '+q4,right, meanygraph+15*scalefactor);
 		
 		ctx.textAlign='left';
-		ctx.fillText('Quadrant 2: '+q2,left, meanygraph-5);
-		ctx.fillText('Quadrant 3: '+q3,left, meanygraph+15);
+		ctx.fillText('Quadrant 2: '+q2,left, meanygraph-5*scalefactor);
+		ctx.fillText('Quadrant 3: '+q3,left, meanygraph+15*scalefactor);
 		
 		if($('#quadrantratio').is(":checked")){
 			ctx.fillText("Quadrant Count Ratio = "+((q1-q2-q4+q3)/num).toFixed(3),left, equationtop);

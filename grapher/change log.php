@@ -13,7 +13,10 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
-	<b>2024-01-21</b><ul>
+	<b>2025-02-17</b><ul>
+		<li>Bug fix where quadrant count ratios weren't displaying properly on high res graphs.</li>
+	</ul>
+	<b>2025-01-21</b><ul>
 		<li>New Option: Bootstrap Trendlines on Scatter Graphs.</li>
 		<li>Update of Sea Ice Data, moved old versions to <a href='https://grapher.nz/?folder=seaice'>here.</a>.</li>
 	</ul>

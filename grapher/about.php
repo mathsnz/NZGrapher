@@ -3,7 +3,7 @@
 </center>
 <br>
 <br>	
-NZGrapher has been developed by Jake Wills, a maths teacher in New Zealand specifically for supporting the teaching of the statistics in New Zealand. 
+NZGrapher has been developed by Jake Wills, a maths teacher in New Zealand specifically for supporting the teaching of statistics in New Zealand. 
 The idea behind NZGrapher was to create a web based statistical package that can run on <b>any device</b>, without an install.<br>
 <span id=whichschoolholder></span>
 <br>
