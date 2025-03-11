@@ -705,6 +705,10 @@ if(isset($_POST['csv_data'])){
 			<span id=boxnooutliershow><label>
 				<input type="checkbox" onclick="updategraph();" id="boxnooutlier" name="boxnooutlier" value="yes"> Box (No Outlier)</label><br>
 			</span>
+			<span id=madshow>
+				<label><input type="checkbox" onclick="updategraph();" id="mad" name="mad" value="yes"> MAD</label><br>
+				<label><input type="checkbox" onclick="updategraph();" id="madnumbers" name="madnumbers" value="yes"> Numbers</label><br>
+			</span>
 			<span id=dbmshow>
 				<label><input type="checkbox" onclick="updategraph();" id="dbm" name="dbm" value="yes"> DBM & OVS</label><br>
 				<label><input type="checkbox" onclick="updategraph();" id="dbmnumbers" name="dbmnumbers" value="yes"> Numbers</label><br>

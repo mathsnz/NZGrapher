@@ -1921,6 +1921,7 @@ function graphchange(obj){
 	$('#customequationshow2').hide();
 	$('#customequationshow3').hide();
 	$('#dbmshow').hide();
+	$('#madshow').hide();
 	$('#newrunningproportionsuccessshow').hide();
 	updategraph();
 }
@@ -2981,6 +2982,7 @@ function newdotplot(){
 	$('#hidepointsshow').show();
 	$('#halfquartershow').show();
 	$('#dbmshow').show();
+	$('#madshow').show();
 	$('#var1label').html("Numerical 1:<br><small>required</small>");
 	$('#var2label').html("Category 1:<br><small>optional</small>");
 	$('#var3label').html("Category 2:<br><small>optional</small>");
@@ -3639,6 +3641,68 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 				ctx.fillText(parseFloat(Number(ovsmax - ovsmin).toPrecision(10)),ovsmaxgraph+5,yposition+4);
 			}
 		}
+	}
+	
+	if($('#mad').is(":checked")){
+
+		var madpoints = [];
+		$.each(thisvalues,function(i,v){
+			madpoints.push(Math.abs(v-mean))
+		})	
+		var mad = calculatemean(madpoints);
+		console.log(mad);
+
+		var minmadgraph = convertvaltopixel(mean-mad,minxtick,maxxtick,left,right);
+		var meangraph = convertvaltopixel(mean,minxtick,maxxtick,left,right);
+		var maxmadgraph = convertvaltopixel(mean-(-mad),minxtick,maxxtick,left,right);
+
+		ctx.lineWidth = 3*scalefactor;
+		ctx.strokeStyle = 'rgb(0, 187, 255)';
+		ctx.fillStyle = 'rgba(0,187,255,0.25)';
+
+		ctx.fillRect(minmadgraph, oypixel, maxmadgraph-minmadgraph, 10*scalefactor-maxheight);
+		line(ctx,minmadgraph,oypixel,minmadgraph,oypixel+10*scalefactor-maxheight);
+		line(ctx,maxmadgraph,oypixel,maxmadgraph,oypixel+10*scalefactor-maxheight);
+
+		ctx.lineWidth = 1*scalefactor;
+		line(ctx,meangraph,oypixel,meangraph,oypixel+10*scalefactor-maxheight);
+
+		if($('#madnumbers').is(":checked")){
+			fontsize = 12*scalefactor;
+			ctx.font = fontsize+"px Roboto";
+			ctx.textAlign="right";
+			ctx.fillStyle = 'rgb(0, 147, 201)';
+			ctx.fillText('MAD: ±'+parseFloat(Number(mad).toPrecision(10)),maxmadgraph-3,oypixel+24*scalefactor-maxheight);
+		}
+
+		/*
+		var yposition = add(oypixel,maxheight*0.025);
+		line(ctx,lastmedgraph,yposition,medgraph,yposition);
+		fontsize = 12*scalefactor;
+		ctx.font = fontsize+"px Roboto";
+		var leftend = Math.min.apply(null,[lastmedgraph,medgraph]);
+		ctx.textAlign="right";
+		if($('#madnumbers').is(":checked")){
+			var rightend = Math.max.apply(null,[lastmedgraph,medgraph]);
+			ctx.textAlign="left";
+			ctx.fillText(parseFloat(Number(Math.abs(med - lastmedian)).toPrecision(10)),rightend+5,yposition+4);
+		}
+		console.log([uq,lq,ovsmax,ovsmin])
+		ovsmax = Math.max.apply(null,[ovsmax,uq]);
+		ovsmin = Math.min.apply(null,[ovsmin,lq]);
+		yposition += 10;
+		ctx.strokeStyle = 'rgb(0, 207, 110)';
+		ctx.fillStyle = 'rgb(0, 207, 110)';
+		var ovsmaxgraph = convertvaltopixel(ovsmax,minxtick,maxxtick,left,right);
+		var ovsmingraph = convertvaltopixel(ovsmin,minxtick,maxxtick,left,right);
+		line(ctx,ovsmingraph,yposition,ovsmaxgraph,yposition);
+		ctx.textAlign="right";
+		if($('#madnumbers').is(":checked")){
+			var rightend = Math.max.apply(null,[lastmedgraph,medgraph]);
+			ctx.textAlign="left";
+			ctx.fillText(parseFloat(Number(ovsmax - ovsmin).toPrecision(10)),ovsmaxgraph+5,yposition+4);
+		}
+		*/
 	}
 
 }
