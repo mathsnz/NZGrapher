@@ -13,6 +13,9 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2025-03-27</b><ul>
+		<li>Bug fix with quadrant count ratio tickbox not working on iPads and Chromebooks.</li>
+	</ul>
 	<b>2025-03-11</b><ul>
 		<li>Added MAD (Mean Absolute Deviation) to dot plots / box and whiskers. See more <a href='https://info.grapher.nz/graph-information/#dotplotandboxandwhisker:~:text=MAD,introduce%20standard%20deviation.'>here</a>.</li>
 	</ul>
