@@ -234,7 +234,7 @@ var currentdate = new Date();
 var ms = currentdate.valueOf();
 $( document ).ready(function() {
 	$.get('https://analytics.jpw.nz/nzgraphernew.php?c=InitialLoad&a=$actual_link&r='+ms);
-}
+});
 </script>";
 ?>
 </div>
@@ -769,6 +769,16 @@ if(isset($_POST['csv_data'])){
 			<span id=yxshow><label>
 				<input type="checkbox" onclick="updategraph();" id="yx" name="yx" value="yes"> y=x</label><br>
 			</span>
+			<span id=colourbydistanceshow>
+				<label><input type="checkbox" onclick="updategraph();" id="colourbydistance" name="colourbydistance" value="yes"> Colour by Dist.</label><br>
+				<label><input type="checkbox" onclick="updategraph();" id="colourbydistancelimit" name="colourbydistancelimit" value="yes"> Limit &nbsp; &nbsp; &nbsp; <select onchange="updategraph();" id=colourbydistancelimitlimit>
+					<option>1</option>
+					<option>2</option>
+					<option>3</option>
+					<option>4</option>
+					<option>5</option>
+				</select></label><br>
+			</span>
 			<span id=stackgraphsshow><label>
 				<input type="checkbox" onclick="updategraph();" id="stackgraphs" name="stackgraphs" value="yes"> Stack Graphs</label><br>
 			</span>
@@ -900,7 +910,12 @@ if(isset($_POST['csv_data'])){
 			</select>
 			</span>
 </table>
-<div id=sizediv><span id=pointsizename>Point Size:</span> <input id=size type="range" min=3 max=19 step=1 value=7	onchange="updategraph()"></div>
+<div id=sizediv>
+	<span id=pointsizename>Point Size:</span> <input id=size type="range" min=3 max=19 step=1 value=7	onchange="updategraph()">
+	<span id=soliddotsshow>
+		<label><input type="checkbox" onclick="updategraph();" id="soliddots" name="soliddots" value="yes" checked> Fill</label><br>
+	</span>
+</div>
 <div id=transdiv>Transparency: <input id=trans type="range" min=0 max=100 step=10 value=50 onchange="updategraph()"></div>
 <div id=updater>
 <?php

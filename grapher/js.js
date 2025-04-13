@@ -1923,6 +1923,8 @@ function graphchange(obj){
 	$('#dbmshow').hide();
 	$('#madshow').hide();
 	$('#newrunningproportionsuccessshow').hide();
+	$('#colourbydistanceshow').hide();
+	$('#soliddotsshow').hide();
 	updategraph();
 }
 
@@ -2755,12 +2757,16 @@ function makecolors(alpha,ctx){
 		while(colz<=1){
 			ctx.beginPath();
 			if($('#colourscale').val()=='Rainbow'){
-				ctx.strokeStyle = ColorHSLaToRGBa(colz*end,s,l,1);
+				ctx.strokeStyle = ColorHSLaToRGBa(colz*end,s,l,alpha);
 			} else {
 				var n = (colz*end*255).toFixed(0);
-				ctx.strokeStyle = viridis[n];
+				ctx.strokeStyle = viridis[n]+('0'+(1*(255*alpha).toFixed(0)).toString(16)).substr(-2);
 			}
 			ctx.arc(left,48*scalefactor-rad,rad,0,2*Math.PI);
+			if($('#soliddots').is(":checked") && $('#soliddots').is(':visible')){
+				ctx.fillStyle = ctx.strokeStyle;
+				ctx.fill();
+			}
 			ctx.stroke();
 			left = left + rad*2 + 2;
 			colz=colz+0.1;
@@ -2808,8 +2814,12 @@ function makecolors(alpha,ctx){
 		for (var index in colorindexs){
 			var name = colorindexs[index];
 			ctx.beginPath();
-			ctx.strokeStyle = thecolorsnoalpha[index];
+			ctx.strokeStyle = thecolors[index];
 			ctx.arc(left,48*scalefactor-rad,rad,0,2*Math.PI);
+			if($('#soliddots').is(":checked") && $('#soliddots').is(':visible')){
+				ctx.fillStyle = ctx.strokeStyle;
+				ctx.fill();
+			}
 			ctx.stroke();
 			ctx.fillText(name,left+rad+2*scalefactor,48*scalefactor);
 			left = left + ctx.measureText(name).width + 10*scalefactor + rad*2;
@@ -2983,6 +2993,7 @@ function newdotplot(){
 	$('#halfquartershow').show();
 	$('#dbmshow').show();
 	$('#madshow').show();
+	$('#soliddotsshow').show();
 	$('#var1label').html("Numerical 1:<br><small>required</small>");
 	$('#var2label').html("Category 1:<br><small>optional</small>");
 	$('#var3label').html("Category 2:<br><small>optional</small>");
@@ -3318,6 +3329,10 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 			}
 			ctx.strokeStyle = colors[key];
 			ctx.arc(rawxpixel,ypixel,rad,0,2*Math.PI);
+			if($('#soliddots').is(":checked") && $('#soliddots').is(':visible')){
+				ctx.fillStyle = colors[key];
+				ctx.fill();
+			}
 			ctx.stroke();
 			if(hovers==1 || hovers=='Difference'){
 				xaxislabel = $('#xaxis').val();
@@ -3833,6 +3848,7 @@ function bootstrap(mm){
 	$('#gridlinesshow').show();
 	$('#removedpointsshow').show();
 	$('#stripgraphshow').show();
+	$('#soliddotsshow').show();
 
 	if(mm=='mean'){
 		$('#boxplot').prop('checked', false);
@@ -5482,6 +5498,7 @@ function newscatter(){
 	$('#logshow').show();
 	$('#powshow').show();
 	$('#yxshow').show();
+	$('#colourbydistanceshow').show();
 	$('#meandotshow').show();
 	$('#quadrantshow').show();
 	$('#bootstraptrendlineshow').show();
@@ -5504,6 +5521,7 @@ function newscatter(){
 	$('#customequationshow2').show();
 	$('#customequationshow3').show();
 	$('#stackgraphsshow').show();
+	$('#soliddotsshow').show();
 	
 	if($('#customequationdots').is(":checked")){
 		$('.moveabledot1').show();
@@ -5715,6 +5733,11 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 	pointstofitadjusted = [];
 	xpointsforcalcs = [];
 	ypointsforcalcs = [];
+
+	if($('#colourbydistance').is(":checked") && $('#colourbydistance').is(':visible')){
+		colors = calculate_mahalanobis(indexes,xpoints,ypoints);
+	}
+
 	for (var index in indexes){
 		var index = indexes[index];
 		var xpoint = xpoints[index];
@@ -5734,6 +5757,10 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 		ctx.beginPath();
 		ctx.strokeStyle = colors[index];
 		ctx.arc(xpixel,ypixel,rad,0,2*Math.PI);
+		if($('#soliddots').is(":checked") && $('#soliddots').is(':visible')){
+			ctx.fillStyle = colors[index];
+			ctx.fill();
+		}
 		ctx.stroke();
 		$('#graphmap').append('<area shape="circle" coords="'+(xpixel/scalefactor)+','+(ypixel/scalefactor)+','+rad+'" alt="'+parseInt(add(index,1))+'" desc="Point ID: '+parseInt(add(index,1))+'<br>'+$('#xaxis').val()+': '+xpoint+'<br>'+$('#yaxis').val()+': '+ypoint+'">');
 		if(labels == "yes"){
@@ -8257,6 +8284,7 @@ function newresiduals(){
 	$('#residualsforcexshow').show();
 	$('#regtypeshow').show();
 	$('#weightedaverageshow').show();
+	$('#soliddotsshow').show();
 	//$('#color')[0].selectedIndex = 0;
 	
 	var canvas = document.getElementById('myCanvas');
@@ -8527,6 +8555,7 @@ function newrunningproportion(){
 	$('#pointsizename').html('Point Size:');
 	$('#transdiv').show();
 	$('#newrunningproportionsuccessshow').show();
+	$('#soliddotsshow').show();
 	
 	var canvas = document.getElementById('myCanvas');
 	var ctx = canvas.getContext('2d');
@@ -8939,6 +8968,7 @@ function rerand(mm){
 	$('#var1label').html("Numerical 1:<br><small>required</small>");
 	$('#var2label').html("Category 1:<br><small>required</small>");
 	$('#var3label').html("");
+	$('#soliddotsshow').show();
 
 	if(mm=='mean'){
 		$('#boxplot').prop('checked', false);
@@ -11137,6 +11167,7 @@ function newpairedexperiment(){
 	$('#var1label').html("Numerical 1:<br><small>required</small>");
 	$('#var2label').html("Numerical 2:<br><small>required</small>");
 	$('#var3label').html("");
+	$('#soliddotsshow').show();
 
 	var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
@@ -11283,9 +11314,15 @@ function newpairedexperiment(){
 			ctx.fillStyle = colors[index];
 			ctx.beginPath();
 			ctx.arc(topxpixel,topypix,rad,0,2*Math.PI);
+			if($('#soliddots').is(":checked") && $('#soliddots').is(':visible')){
+				ctx.fill();
+			}
 			ctx.stroke();
 			ctx.beginPath();
 			ctx.arc(bottomxpixel,bottomypix,rad,0,2*Math.PI);
+			if($('#soliddots').is(":checked") && $('#soliddots').is(':visible')){
+				ctx.fill();
+			}
 			ctx.stroke();
 			drawArrow(ctx,topxpixel,topypix+rad,bottomxpixel,bottomypix-rad,5*scalefactor)
 			if(labels == "yes"){
@@ -11486,6 +11523,7 @@ function newbootstrap(){
 	$('#violin').prop('checked', false);
 	$('#beeswarm').prop('checked', false);
 	$('#stripgraph').prop('checked', false);
+	$('#soliddotsshow').show();
 
 	var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
@@ -12989,4 +13027,194 @@ function wizardtimeseriesforecast(){
 	$('#title').val('Forecast for '+xvartitle);
 	$('#type').val('newtimeseriessforecasts');
 	return newtimeseriessforecasts();
+}
+
+// Matrix Functions
+
+function dot(a, b) {
+	if (a.length !== b.length) {
+		throw new TypeError("Vectors are of different sizes");
+	}
+	return calculatesum(a.map(function(x, i){
+		return x * b[i];
+	}));
+}
+
+function multiply(a, b) {
+	var aSize = a.every(isNumeric) ? 1 : a.length,
+		bSize = b.every(isNumeric) ? 1 : b.length;
+	if (aSize === 1) {
+		if (bSize === 1) {
+			return dot(a, b);
+		}
+		return b.map(function(row){
+			return dot(a, row);
+		});
+	}
+	if (bSize === 1) {
+		return a.map(function(row){
+			return dot(row, b);
+		});
+	}
+	return a.map(function(x){
+		return transpose(b).map(function(y){
+			return dot(x, y);
+		});
+	});
+}
+
+function transpose(matrix) {
+	return matrix[0].map(function(d, i){
+		return matrix.map(function(row){
+			return row[i];
+		});
+	});
+}
+
+function cov(columns, means) {
+	return columns.map(function(c1, i){
+		return columns.map(function(c2, j){
+			var terms = c1.map(function(x, k){
+				return (x - means[i]) * (c2[k] - means[j]);
+			});
+			return calculatesum(terms) / (c1.length - 1);
+		});
+	});
+}
+
+function invert(matrix) {
+	var size = matrix.length,
+		base,
+		swap,
+		augmented;
+ // Augment w/ identity matrix
+	augmented = matrix.map(function(row,i){
+		return row.slice(0).concat(row.slice(0).map(function(d,j){
+			return j === i ? 1 : 0;
+		}));
+	});
+// Process each row
+	for (var r = 0; r < size; r++) {
+		base = augmented[r][r];
+		// Zero on diagonal, swap with a lower row
+		if (!base) {
+			for (var rr = r + 1; rr < size; rr++) {
+				if (augmented[rr][r]) {
+					// swap
+					swap = augmented[rr];
+					augmented[rr] = augmented[r];
+					augmented[r] = swap;
+					base = augmented[r][r];
+					break;
+				}
+			}
+			if (!base) {
+				throw new RangeError("Matrix not invertable.");
+			}
+		}
+		// 1 on the diagonal
+		for (var c = 0; c < size * 2; c++) {
+			augmented[r][c] = augmented[r][c] / base;
+		}
+		// Zeroes elsewhere
+		for (var q = 0; q < size; q++) {
+			if (q !== r) {
+				base = augmented[q][r];
+				for (var p = 0; p < size * 2; p++) {
+					augmented[q][p] -= base * augmented[r][p];
+				}
+			}
+		}
+	}
+	return augmented.map(function(row){
+		return row.slice(size);
+	});
+}
+
+// Other functions needed for mahalanobis
+
+function calculatesum(arr) {
+	return arr.reduce(function(a, b){
+		return a + b;
+	});
+}
+
+function isNumeric(n) {
+	return typeof n === "number" && !isNaN(n);
+}
+
+function calculate_mahalanobis(indexes,xpoints,ypoints) {
+	arr = [];
+	for (var i in indexes){
+		index = indexes[i];
+		b = [];
+		b.push(xpoints[index]);
+		b.push(ypoints[index]);
+		arr.push(b);
+	}
+	var columns = transpose(arr),
+		means = columns.map(calculatemean),
+		invertedCovariance = invert(cov(columns, means));
+
+	var deltas = arr.map(function (row, i) {
+
+		return row.map(function (value, i) {
+			return value - means[i];
+		});
+
+	});
+	deltas.map(function (row, i) {
+		m = Math.sqrt(
+			multiply(multiply(row, invertedCovariance), row)
+		);
+		arr[i].push(m)
+	});
+	data = [];
+	toorder = [];
+	for (var i in indexes){
+		index = indexes[i];
+		data[index]=-arr[i][2];
+		toorder.push(-arr[i][2]);
+		i++;
+	}
+	var min = Math.min.apply(null, toorder);
+	var max = Math.max.apply(null, toorder);
+	var end=0.8;
+	var s=0.75;
+	var l=0.6;
+	colors=[];
+	var alpha = 1-$('#trans').val()/100;
+
+	var limit = 0;
+	if($('#colourbydistancelimit').is(":checked")){
+		toorder.sort(function(a, b){return a-b});
+		limit = $('#colourbydistancelimitlimit').val();
+		limit = toorder[limit];
+		for (var i in indexes){
+			index = indexes[i];
+			if(data[index]<limit){
+				colors[index]='rgba(255,0,0,'+alpha+')';
+			} else {
+				colors[index]='rgba(80,80,80,'+alpha+')';
+			}
+		}
+	} else {
+		for (var i in indexes){
+			index = indexes[i];
+			if($.isNumeric(data[index])){
+				if($('#colourscale').val()=='Rainbow'){
+					var n = (data[index]-min)/(max-min);
+					colors[index]=ColorHSLaToRGBa(n*end,s,l,alpha);
+				} else {
+					end = 0.9;
+					var n = ((data[index]-min)/(max-min)*end*255).toFixed(0);
+					colors[index]=viridis[n]+('0'+(1*(255*alpha).toFixed(0)).toString(16)).substr(-2);
+				}
+			} else {
+					colors[index]='rgba(80,80,80,'+alpha+')';
+			}
+		}
+	}
+	console.log(data);
+	return colors;
 }
