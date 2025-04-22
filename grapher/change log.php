@@ -13,7 +13,7 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
-	<b>NEXT</b><ul>
+	<b>2025-04-23</b><ul>
 		<li>By default the graph title is now blank.</li>
 		<li>Big upgrade to school custom folders adding a bunch of new features... <a href='https://youtu.be/WGCiEJrp1LY'>video showing how to use</a>.</li>
 	</ul>

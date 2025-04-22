@@ -31,6 +31,10 @@ if(isset($_POST['update'])){
 		echo 'NZGrapher successfully updated.<br><br>';
 		$randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
 		file_put_contents('./foldertemplate/password.php','<?php $correctpass="'.$randomString.'"; ?>');
+		if(file_exists('./version.php')){
+			include './version.php';
+			echo "Current Version: $v<br><br>";
+		}
 	} else {
 		echo 'Something went wrong updating NZGrapher... please try again later.<br><br>';
 	}
