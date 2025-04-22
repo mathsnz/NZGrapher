@@ -13,6 +13,10 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>NEXT</b><ul>
+		<li>By default the graph title is now blank.</li>
+		<li>Big upgrade to school custom folders adding a bunch of new features... <a href='https://youtu.be/WGCiEJrp1LY'>video showing how to use</a>.</li>
+	</ul>
 	<b>2025-04-14</b><ul>
 		<li>Made it so the default is the points are lightly filled, can be turned off with a checkbox next to point transparency.</li>
 		<li>Scatter Graphs: added the abiliy to colour by distance, as well as highlight the points furthest away from the centre (most impact on the trend) using the Mahalanobis distance. <a href='https://youtu.be/AYe81YiSNMo' target='_blank'>Video Explainer</a>.</li>

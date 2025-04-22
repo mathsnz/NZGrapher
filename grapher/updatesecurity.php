@@ -1,9 +1,5 @@
 <?php
 
-@unlink('updatesecuritynewindex.php');
-@unlink('updatesecuritynewdelete.php');
-@unlink('updatesecuritynewupload.php');
-
 $files = glob("./*/password.php");
 
 foreach ($files as $file){

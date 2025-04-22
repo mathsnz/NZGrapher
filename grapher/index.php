@@ -253,6 +253,18 @@ $( document ).ready(function() {
 	$files=glob($_GET['folder'].'/*.csv');
 	$files2=glob($_GET['folder'].'/*.CSV');
 	$files3=glob($_GET['folder'].'/*.nzgrapher');
+	$datasettingsfiles=glob($_GET['folder'].'/datasettings.php');
+	$datasettings = array('secure'=>array(),'hidden'=>array(),'disabled'=>array(),'expiry'=>array(),'expirytimeiso'=>array());
+	foreach($datasettingsfiles as $datasettingfile){
+		include($datasettingfile);
+		$datasettings = unserialize(base64_decode($data));
+	}
+	if(!array_key_exists('secure',$datasettings)){$datasettings['secure']=array();}
+	if(!array_key_exists('hidden',$datasettings)){$datasettings['hidden']=array();}
+	if(!array_key_exists('disabled',$datasettings)){$datasettings['disabled']=array();}
+	if(!array_key_exists('expiry',$datasettings)){$datasettings['expiry']=array();}
+	if(!array_key_exists('expirytimeiso',$datasettings)){$datasettings['expirytimeiso']=array();}
+
 	$files=array_merge($files,$files2,$files3);
 	foreach($files as $key => $file){
 		$files[$key] = substr($file, strlen($_GET['folder'])+1);
@@ -268,6 +280,14 @@ $( document ).ready(function() {
 	$dataset=basename($dataset);
 	foreach($files as $file){
 		if (strtolower(substr($file,-3))=='csv' || strtolower(substr($file,-10))=='.nzgrapher'){
+			if(in_array($file,$datasettings['hidden']) || in_array($file,$datasettings['disabled'])){
+				continue;
+			}
+			if(in_array($file,$datasettings['expiry'])){
+				if(strtotime($datasettings['expirytimeiso'][$file])<strtotime('now')){
+					continue;
+				}
+			}
 			echo "<option";
 			if($file==$dataset){echo " selected";}
 			echo">$file</option>";
@@ -342,7 +362,7 @@ $( document ).ready(function() {
 	<li id=eventrecorder>Event Recorder</li>
 	<li id=pastelinkclick>Open Link</li>
 <?php
-if(substr($dataset,0,6)!="SECURE"){
+if(substr($dataset,0,6)!="SECURE" && !in_array($dataset,$datasettings['secure'])){
 	echo "<li id=highlightdatatable>Select and Copy Data Table</li>";
 	echo "<li><a href='#' id=download style='text-decoration:none;color:#000;'>Download Data</a></li>";
 	echo "<li><a href='#' id=downloadnzgrapher style='text-decoration:none;color:#000;'>Save Session</a></li>";
@@ -580,10 +600,27 @@ if(isset($_POST['csv_data'])){
 		</script>";
 	} else {
 		$link = dirname((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[SCRIPT_NAME]");
-		$dataset = $link.'/'.$_GET['folder'].'/'.$dataset;
-		echo "<script>
-			loaddatafromurl(".json_encode($dataset).");
-		</script>";
+		$notavailable = false;
+		if(in_array($dataset,$datasettings['disabled'])){
+			$notavailable = true;
+		} 
+		if(in_array($dataset,$datasettings['expiry'])){
+			if(strtotime($datasettings['expirytimeiso'][$dataset])<strtotime('now')){
+				$notavailable = true;
+			}
+		}
+		if($notavailable){
+			echo "<script>
+				data = 'Not Avaiable\\r\\nThis Dataset is not currently available.';
+				csv_data = data;
+				loaddata();
+			</script>";
+		} else {
+			$dataset = $link.'/'.$_GET['folder'].'/'.$dataset;
+			echo "<script>
+				loaddatafromurl(".json_encode($dataset).");
+			</script>";
+		}
 	}
 }
 
@@ -896,7 +933,7 @@ if(isset($_POST['csv_data'])){
 			</span>
 		</div>
 		<td><span style='font-size:12px;line-height:27px;'>
-			<span style='display:inline-block;width:50px;'>Title: </span><input type="text" id="title" name="title" value="Graph Title"><br>
+			<span style='display:inline-block;width:50px;'>Title: </span><input type="text" id="title" name="title" value=""><br>
 			<span style='display:inline-block;width:50px;'>x-axis: </span><input type="text" id="xaxis" name="xaxis" value="X Axis Title"><br>
 			<span style='display:inline-block;width:50px;'>y-axis: </span><input type="text" id="yaxis" name="yaxis" value="Y Axis Title"><br>
 			<span id=colorname><span style='display:inline-block;width:50px;'>Colour: </span><input type="text" id="colorlabel" name="colorlabel" value="Color Label"><br></span>
