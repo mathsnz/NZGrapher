@@ -6947,7 +6947,11 @@ function newtimeseriesseasonaleffects(){
 		ctx.beginPath();
 		ctx.arc(seasonxpixel,seasonypixel,2,0,2*Math.PI);
 		ctx.stroke();
-		$('#graphmap').append('<area shape="circle" coords="'+(seasonxpixel/scalefactor)+','+(seasonypixel/scalefactor)+','+5+'" desc="Season: '+season+'<br>'+$("#yvar option:selected").text()+' Seasonal Value: '+s[index].toPrecision(5)+'">');
+		if(multiplicative=="yes"){
+			$('#graphmap').append('<area shape="circle" coords="'+(seasonxpixel/scalefactor)+','+(seasonypixel/scalefactor)+','+5+'" desc="Season: '+season+'<br>'+$("#yvar option:selected").text()+' Seasonal Value: '+smult[index].toPrecision(5)+'">');
+		} else {
+			$('#graphmap').append('<area shape="circle" coords="'+(seasonxpixel/scalefactor)+','+(seasonypixel/scalefactor)+','+5+'" desc="Season: '+season+'<br>'+$("#yvar option:selected").text()+' Seasonal Value: '+s[index].toPrecision(5)+'">');
+		}
 		lastseasonxpixel=seasonxpixel;
 		lastseasonypixel=seasonypixel;
 

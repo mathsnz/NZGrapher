@@ -270,10 +270,13 @@ $( document ).ready(function() {
 		$files[$key] = substr($file, strlen($_GET['folder'])+1);
 	}
 	sort($files);
+	$datasetisfirstvisible=false;
+	$show=0;
 	if(array_key_exists('dataset',$_GET)){
 		$dataset=$_GET['dataset'];
 	} else if (array_key_exists(0, $files)) {
 		$dataset=$files[0];
+		$datasetisfirstvisible=true;
 	} else {
 		echo '<option>ERROR</option>';
 	}
@@ -288,9 +291,13 @@ $( document ).ready(function() {
 					continue;
 				}
 			}
+			if($datasetisfirstvisible && $show==0){
+				$dataset = $file;
+			}
 			echo "<option";
 			if($file==$dataset){echo " selected";}
 			echo">$file</option>";
+			$show++;
 		}
 	}
 ?>

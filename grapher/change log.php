@@ -13,6 +13,10 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2025-05-01</b><ul>
+		<li>Fixed a bug that caused the wrong values to be shown on mupltiplicative models on time series seasonal effects.</li>
+		<li>Fixed a that caused the first dataset in a folder to show, even if it was hidden.</li>
+	</ul>
 	<b>2025-04-23</b><ul>
 		<li>By default the graph title is now blank.</li>
 		<li>Big upgrade to school custom folders adding a bunch of new features... <a href='https://youtu.be/WGCiEJrp1LY'>video showing how to use</a>.</li>
