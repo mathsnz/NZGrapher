@@ -3363,13 +3363,19 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		allpointscount = values.length;
 		x = minxtick;
 		range = maxxtick-minxtick;
-		shapestep = range/100;
+		shapestep = range/300;
+		/*
 		hiqr = (uq-lq)/2*$('#smoothingpower').val();
-		bandwith = 0.9*Math.min(sd,(uq-lq)/1.34)*Math.pow(num,-1/5)*$('#smoothingpower').val();
-		console.log(sd);
 		if(hiqr==0){
 			hiqr=1;
 		}
+		*/
+		/*
+		bandwith = 0.9*Math.min(sd,(uq-lq)/1.34)*Math.pow(num,-1/5)*$('#smoothingpower').val();
+		*/
+		range = maxval-minval;
+		smoothingpower = $('#smoothingpower').val();
+		bandwidth = 0.1*range*3/smoothingpower;
 		while(x<=maxxtick){
 			total = 0;
 			$.each(thisvalues, function( key, value ) {
@@ -3381,11 +3387,18 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 					total += Math.pow(thisweight,$('#smoothingpower').val());
 				}
 				*/
-				
+				/*
 				var difference = Math.abs(value - x);
 				if(difference<bandwith){
 					var thisweighta = difference/bandwith;
 					var thisweight = 3/4*(1-Math.pow(thisweighta,2));
+					total += thisweight;
+				}
+				*/
+				var difference = Math.abs(value - x);
+				if(difference<bandwidth){
+					var thisweighta = difference/bandwidth;
+					var thisweight = smoothingpower*Math.pow(1-thisweighta,2)*Math.pow(1+thisweighta,2);
 					total += thisweight;
 				}
 				
@@ -3405,13 +3418,15 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 	
 	if($('#shape').is(':checked') && $('#shape').is(':visible')){
 		i=0;
+		numgroups = allygroups.length;
+		if(numgroups==0){numgroups=1;}
 		bottom = oypixel-10*scalefactor;
 		ctx.beginPath();
 		$.each(weights, function( key, value ) {
 			x = value[0];
 			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
 			y = value[1];
-			ypixel = y*maxheight*8/$('#smoothingpower').val();
+			ypixel = y*maxheight*numgroups/$('#smoothingpower').val();
 			if(i==0){
 				ctx.moveTo(xpixel, bottom-ypixel);
 			} else {
@@ -3428,13 +3443,15 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 	
 	if($('#violin').is(':checked') && $('#violin').is(':visible')){
 		i=0;
+		numgroups = allygroups.length;
+		if(numgroups==0){numgroups=1;}
 		center = oypixel-maxheight/2+8*scalefactor;
 		ctx.beginPath();
 		$.each(weights, function( key, value ) {
 			x = value[0];
 			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
 			y = value[1];
-			ypixel = y*maxheight*4/$('#smoothingpower').val();
+			ypixel = y*maxheight*numgroups/$('#smoothingpower').val();
 			if(i==0){
 				ctx.moveTo(xpixel, center-ypixel);
 			} else {
@@ -3446,7 +3463,7 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 			x = value[0];
 			xpixel = convertvaltopixel(x,minxtick,maxxtick,left,right);
 			y = value[1];
-			ypixel = y*maxheight*4/$('#smoothingpower').val();
+			ypixel = y*maxheight*numgroups/$('#smoothingpower').val();
 			ctx.lineTo(xpixel, center+ypixel);
 		});
 		ctx.closePath();
@@ -3537,10 +3554,10 @@ function plotdotplot(ctx,indexes,values,minxtick,maxxtick,oypixel,left,right,max
 		ctx.textAlign="left";
 		var ypix=oypixel-maxheight/2;
 		ctx.fillText('min: '+minval,left-60*scalefactor,ypix-4*fontsize);
-		ctx.fillText('lq: '+lq,left-60*scalefactor,ypix-3*fontsize);
+		ctx.fillText('LQ: '+lq,left-60*scalefactor,ypix-3*fontsize);
 		ctx.fillText('med: '+med,left-60*scalefactor,ypix-2*fontsize);
 		ctx.fillText('mean: '+mean,left-60*scalefactor,ypix-1*fontsize);
-		ctx.fillText('uq: '+uq,left-60*scalefactor,ypix);
+		ctx.fillText('UQ: '+uq,left-60*scalefactor,ypix);
 		ctx.fillText('max: '+maxval,left-60*scalefactor,ypix+1*fontsize);
 		ctx.fillText('sd: '+sd,left-60*scalefactor,ypix+2*fontsize);
 		ctx.fillText('num: '+num,left-60*scalefactor,ypix+3*fontsize);
@@ -4021,15 +4038,15 @@ function bootstrap(mm){
 
 	if(mm=='median'){
 		if(reverse==1){
-			title="Difference Between Medians (" + cnames[0] + " - " + cnames[1] + ")";
+			title="Difference Between Medians (" + cnames[0] + " — " + cnames[1] + ")";
 		} else {
-			title="Difference Between Medians (" + cnames[1] + " - " + cnames[0] + ")";
+			title="Difference Between Medians (" + cnames[1] + " — " + cnames[0] + ")";
 		}
 	} else {
 		if(reverse==1){
-			title="Difference Between Means (" + cnames[0] + " - " + cnames[1] + ")";
+			title="Difference Between Means (" + cnames[0] + " — " + cnames[1] + ")";
 		} else {
-			title="Difference Between Means (" + cnames[1] + " - " + cnames[0] + ")";
+			title="Difference Between Means (" + cnames[1] + " — " + cnames[0] + ")";
 		}
 	}
 
@@ -4742,7 +4759,7 @@ function newtimeseries(){
 			m = m.toPrecision(5);
 			c = c.toPrecision(5);
 			if(parseFloat(c)<0){
-				c = " - " + -1*c;
+				c = " — " + -1*c;
 			} else {
 				c = " + " + c;
 			}
@@ -5898,7 +5915,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			x = add(x,step);
 		}
 		if(parseFloat(c)<0){
-			c = " - " + -1*c;
+			c = " — " + -1*c;
 		} else {
 			c = " + " + c;
 		}
@@ -5941,12 +5958,12 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			x = add(x,step);
 		}
 		if(parseFloat(b)<0){
-			b = " - " + -1*b;
+			b = " — " + -1*b;
 		} else {
 			b = " + " + b;
 		}
 		if(parseFloat(c)<0){
-			c = " - " + -1*c;
+			c = " — " + -1*c;
 		} else {
 			c = " + " + c;
 		}
@@ -5988,17 +6005,17 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			x = add(x,step);
 		}
 		if(parseFloat(b)<0){
-			b = " - " + -1*b;
+			b = " — " + -1*b;
 		} else {
 			b = " + " + b;
 		}
 		if(parseFloat(c)<0){
-			c = " - " + -1*c;
+			c = " — " + -1*c;
 		} else {
 			c = " + " + c;
 		}
 		if(parseFloat(d)<0){
-			d = " - " + -1*d;
+			d = " — " + -1*d;
 		} else {
 			d = " + " + d;
 		}
@@ -6071,7 +6088,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			x = add(x,step);
 		}
 		if(parseFloat(b)<0){
-			b = " - " + -1*b;
+			b = " — " + -1*b;
 		} else {
 			b = " + " + b;
 		}
@@ -6169,7 +6186,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			m = m.toPrecision(5);
 			c = c.toPrecision(5);
 			if(parseFloat(c)<0){
-				c = " - " + -1*c;
+				c = " — " + -1*c;
 			} else {
 				c = " + " + c;
 			}
@@ -6218,7 +6235,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			m = m.toPrecision(5);
 			c = c.toPrecision(5);
 			if(parseFloat(c)<0){
-				c = " - " + -1*c;
+				c = " — " + -1*c;
 			} else {
 				c = " + " + c;
 			}
@@ -6267,7 +6284,7 @@ function plotscatter(ctx,indexes,xpoints,ypoints,minxtick,maxxtick,xstep,minytic
 			m = m.toPrecision(5);
 			c = c.toPrecision(5);
 			if(parseFloat(c)<0){
-				c = " - " + -1*c;
+				c = " — " + -1*c;
 			} else {
 				c = " + " + c;
 			}
@@ -7350,6 +7367,10 @@ function newtimeseriessforecasts(){
 			point=parseFloat(forecasts[index][0]);
 			year = Math.floor(point);
 			month=Math.round((point-year)*seasons)+1;
+			if(month>seasons){
+				year++;
+				month=1;
+			}
 
 			if(seasons==1){
 				split=""
@@ -9161,15 +9182,15 @@ function rerand(mm){
 
 	if(mm=='median'){
 		if(reverse==1){
-			title="Difference Between Medians (" + cnames[0] + " - " + cnames[1] + ")";
+			title="Difference Between Medians (" + cnames[0] + " — " + cnames[1] + ")";
 		} else {
-			title="Difference Between Medians (" + cnames[1] + " - " + cnames[0] + ")";
+			title="Difference Between Medians (" + cnames[1] + " — " + cnames[0] + ")";
 		}
 	} else {
 		if(reverse==1){
-			title="Difference Between Means (" + cnames[0] + " - " + cnames[1] + ")";
+			title="Difference Between Means (" + cnames[0] + " — " + cnames[1] + ")";
 		} else {
-			title="Difference Between Means (" + cnames[1] + " - " + cnames[0] + ")";
+			title="Difference Between Means (" + cnames[1] + " — " + cnames[0] + ")";
 		}
 	}
 
@@ -9693,9 +9714,9 @@ function newrerandteachstep(){
 	}
 
 	if(reverse==1){
-		title="Difference Between Medians (" + cnames[0] + " - " + cnames[1] + ")";
+		title="Difference Between Medians (" + cnames[0] + " — " + cnames[1] + ")";
 	} else {
-		title="Difference Between Medians (" + cnames[1] + " - " + cnames[0] + ")";
+		title="Difference Between Medians (" + cnames[1] + " — " + cnames[0] + ")";
 	}
 
 	//rerandomisation x-axis title
@@ -10683,10 +10704,10 @@ function plothistogram(ctx,left,right,gtop,minytick,maxytick,ystep,maxheight,poi
 		ctx.textAlign="left";
 		var ypix=gtop+50;
 		ctx.fillText('min: '+minval,gleft,ypix-44*scalefactor);
-		ctx.fillText('lq: '+lq,gleft,ypix-33*scalefactor);
+		ctx.fillText('LQ: '+lq,gleft,ypix-33*scalefactor);
 		ctx.fillText('med: '+med,gleft,ypix-22*scalefactor);
 		ctx.fillText('mean: '+mean,gleft,ypix-11*scalefactor);
-		ctx.fillText('uq: '+uq,gleft,ypix);
+		ctx.fillText('UQ: '+uq,gleft,ypix);
 		ctx.fillText('max: '+maxval,gleft,ypix+11*scalefactor);
 		ctx.fillText('sd: '+sd,gleft,ypix+22*scalefactor);
 		ctx.fillText('num: '+num,gleft,ypix+33*scalefactor);
@@ -11369,10 +11390,10 @@ function newpairedexperiment(){
 			var num = thisvalues.length;
 			var ypix=oypixel-3*maxheight/4;
 			ctx.fillText('min: '+minval,left-60*scalefactor,ypix-44*scalefactor);
-			ctx.fillText('lq: '+lq,left-60*scalefactor,ypix-33*scalefactor);
+			ctx.fillText('LQ: '+lq,left-60*scalefactor,ypix-33*scalefactor);
 			ctx.fillText('med: '+med,left-60*scalefactor,ypix-22*scalefactor);
 			ctx.fillText('mean: '+mean,left-60*scalefactor,ypix-11*scalefactor);
-			ctx.fillText('uq: '+uq,left-60*scalefactor,ypix);
+			ctx.fillText('UQ: '+uq,left-60*scalefactor,ypix);
 			ctx.fillText('max: '+maxval,left-60*scalefactor,ypix+11*scalefactor);
 			ctx.fillText('sd: '+sd,left-60*scalefactor,ypix+22*scalefactor);
 			ctx.fillText('num: '+num,left-60*scalefactor,ypix+33*scalefactor);
@@ -11390,10 +11411,10 @@ function newpairedexperiment(){
 			var num = thisvalues.length;
 			var ypix=oypixel-maxheight/4;
 			ctx.fillText('min: '+minval,left-60*scalefactor,ypix-44*scalefactor);
-			ctx.fillText('lq: '+lq,left-60*scalefactor,ypix-33*scalefactor);
+			ctx.fillText('LQ: '+lq,left-60*scalefactor,ypix-33*scalefactor);
 			ctx.fillText('med: '+med,left-60*scalefactor,ypix-22*scalefactor);
 			ctx.fillText('mean: '+mean,left-60*scalefactor,ypix-11*scalefactor);
-			ctx.fillText('uq: '+uq,left-60*scalefactor,ypix);
+			ctx.fillText('UQ: '+uq,left-60*scalefactor,ypix);
 			ctx.fillText('max: '+maxval,left-60*scalefactor,ypix+11*scalefactor);
 			ctx.fillText('sd: '+sd,left-60*scalefactor,ypix+22*scalefactor);
 			ctx.fillText('num: '+num,left-60*scalefactor,ypix+33*scalefactor);
@@ -11445,7 +11466,7 @@ function newpairedexperiment(){
 		fontsize = 15*scalefactor;
 		ctx.font = "bold "+fontsize+"px Roboto";
 		ctx.textAlign="center";
-		ctx.fillText("Difference ("+$('#yaxis').val()+" - "+$('#xaxis').val()+")",width/2,height-10*scalefactor);
+		ctx.fillText("Difference ("+$('#yaxis').val()+" — "+$('#xaxis').val()+")",width/2,height-10*scalefactor);
 	
 	}
 	
@@ -12246,9 +12267,9 @@ function newbsteachstep(){
 	}
 
 	if(reverse==1){
-		title="Difference Between Medians (" + cnames[0] + " - " + cnames[1] + ")";
+		title="Difference Between Medians (" + cnames[0] + " — " + cnames[1] + ")";
 	} else {
-		title="Difference Between Medians (" + cnames[1] + " - " + cnames[0] + ")";
+		title="Difference Between Medians (" + cnames[1] + " — " + cnames[0] + ")";
 	}
 
 	//bs x-axis title
