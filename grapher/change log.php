@@ -14,9 +14,9 @@ Leave a trail of medians on dotplot when doing resampling
 
 ?>
 	<b>2025-08-07</b><ul>
-		<li>Increased the with of the — signs on the graphs to make them easier to see (in equations and bootstrap etc. axis titles)</li>
+		<li>Increased the width of the — signs on the graphs to make them easier to see (in equations and bootstrap etc. axis titles)</li>
 		<li>Changed LQ and UQ to uppercase to help prevent confusion for students with LQ and IQ</li>
-		<li>Fixed time series forcasts to correctly show the first season of the cycle on the graph when hovering</li>
+		<li>Fixed time series forecasts to correctly show the first season of the cycle on the graph when hovering</li>
 		<li>Improved algorithm used to create the shape outlines and violin graphs so they better match the shape of the data</li>
 	</ul>
 	<b>2025-05-01</b><ul>
