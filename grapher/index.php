@@ -962,6 +962,9 @@ if(isset($_POST['csv_data'])){
 </div>
 <div id=transdiv>Transparency: <input id=trans type="range" min=0 max=100 step=10 value=50 onchange="updategraph()"></div>
 <div id=updater>
+	<span onclick="downloadgraph()">Download Graph</span>
+	<span onclick="copygraph()">Copy Graph</span>
+	<br>
 <?php
 if(isset($_GET['dev'])){
 	?>

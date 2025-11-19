@@ -9,6 +9,7 @@ var animaterunning = false;
 var animatespeed = false;
 var finaldata;
 var r;
+var fragment;
 var scalefactor;
 var dataforselector;
 var highestkey;
@@ -56,6 +57,26 @@ $(document).on('paste', function(e) {
     }
     $('#textarea').val(text);
 });
+
+function copygraph(){
+	const selection = window.getSelection();
+    selection.removeAllRanges();
+    const range = document.createRange();
+    range.selectNode($('#jsgraph img')[0]);
+    selection.addRange(range);
+    document.execCommand("copy");
+    selection.removeAllRanges();
+}
+
+function downloadgraph(){
+	const link = document.createElement('a');
+	link.href = $('#jsgraph img').attr('src');
+	link.download = 'image.png';
+	link.style.display = 'none';
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+}
 	
 function addprobabilityeventrow(button){
 	button.closest('.probabilitysimulationevent').find('table').append('<tr><td><input class=outcome placeholder=Outcome><td><input class=probability placeholder=Probability>');
@@ -2251,7 +2272,7 @@ function updatebox(){
 	if(verticalerrorbarsselindex==-1){verticalerrorbarsselindex=0;}
 	if(horizontalerrorbarsselindex==-1){horizontalerrorbarsselindex=0;}
 	
-	optionsforboxes = options.join();
+	optionsforboxes = options.join('');
 	
 	$('#xvar').empty().append( optionsforboxes );
 	$('#yvar').empty().append( optionsforboxes );
@@ -11106,8 +11127,8 @@ function loaddata(){
 		setTimeout(function(){
 			console.timeEnd("Creating Array");
 			console.time("Creating Table");
+			fragment = new DocumentFragment();
 			var firstrow=0;
-			r = new Array();
 			var j = -1;
 			for (i = 0; i < finaldata.length; i++) {
 				var cells = finaldata[i];
@@ -11116,20 +11137,28 @@ function loaddata(){
 					continue;
 				}
 				if (cells.length >= firstrow){
+					const row = document.createElement('tr');
 					if(i==0){
-						r[++j] ='<tr class=tabletop><th>id';
+						row.classList.add('tabletop');
+						const cell = document.createElement('th');
+						cell.textContent = 'id';
+						row.appendChild(cell);
 					} else {
-						r[++j] ='<tr><th>';
-						r[++j] =i;
+						const cell = document.createElement('th');
+						cell.textContent = i;
+						row.appendChild(cell);
 					}
 					for (c = 0; c < cells.length; c++) {
-						r[++j] = '<td><div contenteditable="true">';
-						r[++j] = escapeHtml(cells[c].trim()).replace(',', '-');
-						r[++j] = '<br></div></td>';
+						const cell = document.createElement('td');
+						const div = document.createElement('div');
+						div.setAttribute('contenteditable', 'true');
+						div.textContent = escapeHtml(cells[c].trim()).replace(',', '-');
+						cell.appendChild(div);
+						row.appendChild(cell);
 					}
+					fragment.appendChild(row);
 				}
 			}
-			console.log(finaldata);
 			postcreatetable();
 		},30);
 	},30);
@@ -11140,7 +11169,8 @@ function postcreatetable(){
 	setTimeout(function(){
 		console.timeEnd("Creating Table");
 		console.time("Displaying Table");
-		$('#data')[0].innerHTML = r.join(''); 
+		document.getElementById('data').textContent = '';
+		document.getElementById('data').appendChild(fragment);
 		$('#progressdescription')[0].innerHTML = 'Resetting to "About" graph';
 		setTimeout(function(){
 			console.timeEnd("Displaying Table");

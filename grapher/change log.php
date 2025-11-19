@@ -13,6 +13,9 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>NEXT</b><ul>
+		<li>Few tweaks to make loading faster, and cope with slightly bigger datasets</li>
+	</ul>
 	<b>2025-08-07</b><ul>
 		<li>Increased the with of the — signs on the graphs to make them easier to see (in equations and bootstrap etc. axis titles)</li>
 		<li>Changed LQ and UQ to uppercase to help prevent confusion for students with LQ and IQ</li>

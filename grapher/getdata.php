@@ -33,6 +33,10 @@ if($code!="200"){
 	print_r($file_headers);
 } else {
 	header('Content-Type: charset=utf-8');
-	echo utf8_encode(file_get_contents($url));
+	$content = file_get_contents($url);
+	if (!mb_check_encoding($content, 'UTF-8')) {
+		$content = mb_convert_encoding($content, 'UTF-8', 'ISO-8859-1');
+	}
+	echo $content;
 }
 ?>

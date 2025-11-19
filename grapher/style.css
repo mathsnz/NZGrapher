@@ -282,12 +282,17 @@ input[type=checkbox]:checked::before {
 	border:none;
 }
 
+#updater span {
+	margin-top: 4px;
+}
+
 #updater {
 	position:absolute;
 	bottom:5px;
 	right:5px;
 	cursor:pointer;
 	border:none;
+	text-align:right;
 }
 
 #sum, #percent100show, #stackdotsshow, #donutshow, #reg, #for, #meandotshow, #startfinishshow, #gridlinesshow, #differentaxisshow, #for, #invertshow, #removedpointsshow, #relativewidthshow, #relativefrequencyshow, #thicklinesshow, #boxplotshow, #regshow, #intervalshow, #labelshow, #colorname, #arrowsshow , #quadraticshow, #cubicshow, #expshow, #logshow, #powshow,#regtypeshow, #jittershow, #yxshow, #highboxplotshow, #btypeshow, #addmultshow, #longtermtrendshow, #boxnowhiskershow, #boxnooutliershow, #seasonalshow, #weightedaverageshow, #residualsforcexshow, #colourbydistanceshow, #soliddotsshow{
