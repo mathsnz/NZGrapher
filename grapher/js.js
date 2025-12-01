@@ -4344,6 +4344,13 @@ function newtimeseries(){
 
 	xmin = Math.min.apply(null, tsxpoints);
 	xmax = Math.max.apply(null, tsxpoints);
+	
+	if($.isNumeric($('#timeseriesminx').val())){
+		xmin=$('#timeseriesminx').val();
+	}
+	if($.isNumeric($('#timeseriesmaxx').val())){
+		xmax=$('#timeseriesmaxx').val();
+	}
 
 	var minmaxstep = axisminmaxstep(xmin,xmax);
 	var minxtick=minmaxstep[0];
@@ -4896,6 +4903,13 @@ function newtimeseriesrecomp(){
 
 	xmin = Math.min.apply(null, tsxpoints);
 	xmax = Math.max.apply(null, tsxpoints);
+	
+	if($.isNumeric($('#timeseriesminx').val())){
+		xmin=$('#timeseriesminx').val();
+	}
+	if($.isNumeric($('#timeseriesmaxx').val())){
+		xmax=$('#timeseriesmaxx').val();
+	}
 
 	var minmaxstep = axisminmaxstep(xmin,xmax);
 	var minxtick=minmaxstep[0];
@@ -7218,6 +7232,14 @@ function newtimeseriessforecasts(){
 	
 	xmin = Math.min.apply(null, pointsforxminmax);
 	xmax = Math.max.apply(null, pointsforxminmax);
+	
+	if($.isNumeric($('#timeseriesminx').val())){
+		xmin=$('#timeseriesminx').val();
+	}
+	if($.isNumeric($('#timeseriesmaxx').val())){
+		xmax=$('#timeseriesmaxx').val();
+	}
+	
 	var minmaxstep = axisminmaxstep(xmin,xmax);
 	var minxtick=minmaxstep[0];
 	var maxxtick=minmaxstep[1];

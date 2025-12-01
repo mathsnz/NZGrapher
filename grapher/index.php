@@ -1227,6 +1227,8 @@ if(isset($_GET['dev'])){
 			<tr><td>&nbsp;
 			<tr><td colspan=2><b>Time Series Graphs:</b><br>
 			For creating axis limits it pretend the ____ value is ____
+			<tr><td>Min X:<td><input id=timeseriesminx value=auto>
+			<tr><td>Max X:<td><input id=timeseriesmaxx value=auto>
 			<tr><td>Min Y:<td><input id=timeseriesminy value=auto>
 			<tr><td>Max Y:<td><input id=timeseriesmaxy value=auto>
 		</table>
