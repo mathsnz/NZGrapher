@@ -19,6 +19,7 @@ var ovsmin;
 var ovsmax;
 var newrerandteachcount = 0;
 var newbsteachcount = 0;
+var newbsteachsvcount = 0;
 
 function analytics(c, a) {
 	const currentdate = new Date();
@@ -755,6 +756,7 @@ $(function () {
 		$("#samvardiv").show();
 		$("#rerandteachdiv").hide();
 		$("#bsteachdiv").hide();
+		$("#bssvteachdiv").hide();
 		var col = 2;
 		var options = [];
 		var totalcount = $('#data tr:not(:first)').length;
@@ -854,6 +856,7 @@ $(function () {
 		$("#samvardiv").hide();
 		$("#rerandteachdiv").show();
 		$("#bsteachdiv").hide();
+		$("#bssvteachdiv").hide();
 		$("#type").val("newrerandteach");
 		$('#left').scrollTop(0);
 		updatebox();
@@ -867,7 +870,22 @@ $(function () {
 		$("#samvardiv").hide();
 		$("#rerandteachdiv").hide();
 		$("#bsteachdiv").show();
+		$("#bssvteachdiv").hide();
 		$("#type").val("newbsteach");
+		$('#left').scrollTop(0);
+		updatebox();
+	});
+
+	$("#bssv").click(function () {
+		analytics('Function', 'Teaching Tools - bs');
+		$("#rowbox").hide();
+		$("#colbox").hide();
+		$("#sambox").hide();
+		$("#samvardiv").hide();
+		$("#rerandteachdiv").hide();
+		$("#bsteachdiv").hide();
+		$("#bssvteachdiv").show();
+		$("#type").val("newbssvteach");
 		$('#left').scrollTop(0);
 		updatebox();
 	});
@@ -1419,6 +1437,67 @@ $(function () {
 		lastypixel = 0;
 		lastkey = 0;
 		$('#bsteachremaining').html("1000");
+		updategraph();
+	});
+
+
+	$('#bssvteachoneslow').click(function () {
+		console.log('bssvteachoneslow');
+		animate = true;
+		currentbsspeed = 'oneslow';
+		updategraph();
+	});
+
+	$('#bssvteachonefast').click(function () {
+		console.log('bsteachonefast');
+		animate = true;
+		currentbsspeed = 'onefast';
+		updategraph();
+	});
+
+	$('#bssvteachrestslow').click(function () {
+		console.log('bsteachrestslow');
+		animate = true;
+		currentbsspeed = 'restslow';
+		updategraph();
+	});
+
+	$('#bssvteachrestmedium').click(function () {
+		console.log('bsteachrestmedium');
+		animate = true;
+		currentbsspeed = 'restmedium';
+		updategraph();
+	});
+
+	$('#bssvteachrestfast').click(function () {
+		console.log('bsteachrestfast');
+		animate = true;
+		currentbsspeed = 'restfast';
+		updategraph();
+	});
+
+	$('#bssvteachpause').click(function () {
+		console.log('bsteachpause');
+		animate = false;
+		currentbsspeed = 'stopped';
+		updategraph();
+	});
+
+	$('#bssvteachreset').click(function () {
+		console.log('bssvteachreset');
+		animate = false;
+		currentbsteachstep = 'presample';
+		currentbsteachypoints = [];
+		currentbsteachopoints = [];
+		currentbsteachygroups = [];
+		currentbsteachsample = {};
+		currentbsteachdiffs = [];
+		currentbsteachsamplepoints = [];
+		currentbsspeed = 'stopped';
+		lastxpixel = 0;
+		lastypixel = 0;
+		lastkey = 0;
+		$('#bssvteachremaining').html("1000");
 		updategraph();
 	});
 
@@ -2056,6 +2135,12 @@ function updategraphgo() {
 			analytics('Graph Draw', $('#type').val());
 		} else {
 			newbsteachcount++;
+		}
+	} else if ($('#type').val() == 'newbsteachsv') {
+		if (newbsteachsvcount == 0) {
+			analytics('Graph Draw', $('#type').val());
+		} else {
+			newbsteachsvcount++;
 		}
 	} else {
 		analytics('Graph Draw', $('#type').val());
@@ -4342,12 +4427,12 @@ function newtimeseries() {
 
 	xmin = Math.min.apply(null, tsxpoints);
 	xmax = Math.max.apply(null, tsxpoints);
-	
-	if($.isNumeric($('#timeseriesminx').val())){
-		xmin=$('#timeseriesminx').val();
+
+	if ($.isNumeric($('#timeseriesminx').val())) {
+		xmin = $('#timeseriesminx').val();
 	}
-	if($.isNumeric($('#timeseriesmaxx').val())){
-		xmax=$('#timeseriesmaxx').val();
+	if ($.isNumeric($('#timeseriesmaxx').val())) {
+		xmax = $('#timeseriesmaxx').val();
 	}
 
 	var minmaxstep = axisminmaxstep(xmin, xmax);
@@ -4901,12 +4986,12 @@ function newtimeseriesrecomp() {
 
 	xmin = Math.min.apply(null, tsxpoints);
 	xmax = Math.max.apply(null, tsxpoints);
-	
-	if($.isNumeric($('#timeseriesminx').val())){
-		xmin=$('#timeseriesminx').val();
+
+	if ($.isNumeric($('#timeseriesminx').val())) {
+		xmin = $('#timeseriesminx').val();
 	}
-	if($.isNumeric($('#timeseriesmaxx').val())){
-		xmax=$('#timeseriesmaxx').val();
+	if ($.isNumeric($('#timeseriesmaxx').val())) {
+		xmax = $('#timeseriesmaxx').val();
 	}
 
 	var minmaxstep = axisminmaxstep(xmin, xmax);
@@ -7230,14 +7315,14 @@ function newtimeseriessforecasts() {
 
 	xmin = Math.min.apply(null, pointsforxminmax);
 	xmax = Math.max.apply(null, pointsforxminmax);
-	
-	if($.isNumeric($('#timeseriesminx').val())){
-		xmin=$('#timeseriesminx').val();
+
+	if ($.isNumeric($('#timeseriesminx').val())) {
+		xmin = $('#timeseriesminx').val();
 	}
-	if($.isNumeric($('#timeseriesmaxx').val())){
-		xmax=$('#timeseriesmaxx').val();
+	if ($.isNumeric($('#timeseriesmaxx').val())) {
+		xmax = $('#timeseriesmaxx').val();
 	}
-	
+
 	var minmaxstep = axisminmaxstep(xmin, xmax);
 	var minxtick = minmaxstep[0];
 	var maxxtick = minmaxstep[1];
@@ -12478,6 +12563,320 @@ function newbsteachstep() {
 	return dataURL;
 }
 
+
+function newbssvteachstep() {
+
+	console.log(currentbsteachstep);
+
+	if (typeof timer !== "undefined") {
+		clearTimeout(timer);
+	}
+
+	var canvas = document.getElementById('myCanvas');
+	var ctx = canvas.getContext('2d');
+
+	if (currentbsspeed == 'stopped' && currentbsteachstep != 'presample') {
+		var dataURL = canvas.toDataURL();
+		return dataURL;
+	}
+
+	if (currentbsteachstep == 'finished') {
+		currentbsspeed = 'stopped';
+	}
+
+	//set size
+	var width = $('#width').val();
+	var height = $('#height').val();
+
+	ctx.canvas.width = width;
+	ctx.canvas.height = height;
+
+	ctx.fillStyle = "#ffffff";
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+	//get points
+	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
+
+	//check for numeric value
+	var points = [];
+	var allpoints = [];
+	var pointsremoved = [];
+	var pointsforminmax = [];
+	for (var index in xpoints) {
+		if ($.isNumeric(xpoints[index])) {
+			points.push(index);
+			allpoints.push(index);
+			pointsforminmax.push(xpoints[index]);
+		} else {
+			pointsremoved.push(add(index, 1));
+		}
+	}
+
+	if (points.length == 0) {
+		return 'Error: You must select a numeric variable for "Numerical 1"';
+	}
+
+	if (pointsremoved.length != 0 && $('#removedpoints').is(":checked")) {
+		ctx.fillStyle = 'rgb(0,0,0)';
+		fontsize = 13 * scalefactor;
+		ctx.font = fontsize + "px Roboto";
+		ctx.textAlign = "right";
+		ctx.fillText("ID(s) of Points Removed: " + pointsremoved.join(", "), width - 48 * scalefactor, 48 * scalefactor);
+	}
+
+	var oypixel = height * 0.3 - 60 * scalefactor;
+	var maxheight = height * 0.3 - 160 * scalefactor;
+	var left = 60 * scalefactor;
+	var right = width - 60 * scalefactor;
+
+	//Original Data Title
+	ctx.fillStyle = 'rgb(0,0,0)';
+	fontsize = 20 * scalefactor;
+	ctx.font = "bold " + fontsize + "px Roboto";
+	ctx.textAlign = "left";
+	ctx.fillText('Original Data', 30 * scalefactor, 30 * scalefactor);
+
+	//This Randomisation Title
+	ctx.fillStyle = 'rgb(0,0,0)';
+	fontsize = 20 * scalefactor;
+	ctx.font = "bold " + fontsize + "px Roboto";
+	ctx.textAlign = "left";
+	ctx.fillText('This Bootstrap Sample', 30 * scalefactor, height * 0.3 + 30 * scalefactor);
+
+	//Re-randomisation distribution
+	ctx.fillStyle = 'rgb(0,0,0)';
+	fontsize = 20 * scalefactor;
+	ctx.font = "bold " + fontsize + "px Roboto";
+	ctx.textAlign = "left";
+	ctx.fillText('Bootstrap Distribution', 30 * scalefactor, height * 0.6 + 30 * scalefactor);
+
+	xmin = Math.min.apply(null, pointsforminmax);
+	xmax = Math.max.apply(null, pointsforminmax);
+	if ($.isNumeric($('#boxplotmin').val())) {
+		xmin = $('#boxplotmin').val();
+	}
+	if ($.isNumeric($('#boxplotmax').val())) {
+		xmax = $('#boxplotmax').val();
+	}
+
+	//x-axis titles
+	ctx.fillStyle = 'rgb(0,0,0)';
+	fontsize = 15 * scalefactor;
+	ctx.font = "bold " + fontsize + "px Roboto";
+	ctx.textAlign = "center";
+	ctx.fillText($('#xaxis').val(), width / 2, height * 0.3 - 10 * scalefactor);
+	ctx.fillText($('#xaxis').val(), width / 2, height * 0.6 - 10 * scalefactor);
+
+	var minmaxstep = axisminmaxstep(xmin, xmax);
+	var minxtick = minmaxstep[0];
+	var maxxtick = minmaxstep[1];
+	var xstep = minmaxstep[2];
+
+	horaxis(ctx, left, right, add(oypixel, 10 * scalefactor), minxtick, maxxtick, xstep);
+	horaxis(ctx, left, right, add(oypixel + height * 0.3, 10 * scalefactor), minxtick, maxxtick, xstep);
+
+	var alpha = 1 - $('#trans').val() / 100;
+
+	colors = makecolors(alpha, ctx);
+
+	if ($('#bssvteachselect').val() == 'median') {
+		$('#boxplot').prop('checked', true);
+		$('#meandot').prop('checked', false);
+	} else if ($('#bssvteachselect').val() == 'mean') {
+		$('#boxplot').prop('checked', false);
+		$('#meandot').prop('checked', true);
+	}
+
+	plotdotplot(ctx, points, xpoints, minxtick, maxxtick, oypixel, left, right, maxheight, colors, 2, 1);
+
+	// Create this bootstrap
+	if (currentbsteachstep == 'presample') {
+		currentbsteachsamplepoints = [];
+		currentbsteachxpoints = [];
+		currentbsteachsample = [];
+		num = points.length;
+		for (index in points) {
+			sel = randint(0, num - 1);
+			point = points[sel];
+			xval = xpoints[point];
+			currentbsteachxpoints.push(xval);
+			currentbsteachsamplepoints.push(index);
+		}
+		if (currentbsspeed != 'stopped') {
+			currentbsteachstep = 'sample';
+		}
+		lastkey = -1;
+	}
+
+
+	if (currentbsteachstep == 'sample' && (currentbsspeed == 'restfast' || currentbsspeed == 'restmedium' || currentbsspeed == 'restslow')) {
+		currentbsteachstep = 'plotdifference';
+	}
+
+
+	if (currentbsteachstep == 'calcdifference' || currentbsteachstep == 'plotdifference') {
+		if ($('#bssvteachselect').val() == 'median') {
+			thisvalue = median(currentbsteachxpoints);
+		} else if ($('#bssvteachselect').val() == 'mean') {
+			thisvalue = calculatemean(currentbsteachxpoints);
+		}
+	}
+
+
+	if (currentbsteachstep == 'plotdifference') {
+		currentbsteachdiffs.push(thisvalue);
+		$('#bssvteachremaining').html($('#bssvteachremaining').html() - 1);
+	}
+
+	// Add point to this sample
+	if (currentbsteachstep == 'sample') {
+		$('#boxplot').prop('checked', false);
+		$('#meandot').prop('checked', false);
+		thispoint = currentbsteachsamplepoints.shift();
+		currentbsteachsample.push(thispoint);
+	} else if (currentbsspeed == 'restfast' || currentbsspeed == 'restmedium' || currentbsspeed == 'restslow') {
+		currentbsteachsample = currentbsteachsamplepoints;
+	}
+
+	// graph this randomisation
+	var oypixel = height * 0.6 - 60 * scalefactor;
+	plotdotplot(ctx, currentbsteachsample, currentbsteachxpoints, minxtick, maxxtick, oypixel, left, right, maxheight, colors, 2, 1);
+
+
+	// draw dropdown line
+	if (currentbsteachstep == 'sample') {
+		xpixel = convertvaltopixel(currentbsteachxpoints[thispoint], minxtick, maxxtick, left, right);
+		ctx.lineWidth = 2 * scalefactor;
+		ctx.strokeStyle = 'rgb(255,0,0)';
+		ytop = height * 0.3 - 150 * scalefactor - maxheight / 2 + maxheight;
+		ybottom = oypixel - 5 * scalefactor - 30 * scalefactor;
+		line(ctx, xpixel, ytop, xpixel, ybottom);
+		line(ctx, xpixel - 5 * scalefactor, ybottom - 5 * scalefactor, xpixel, ybottom);
+		line(ctx, xpixel + 5 * scalefactor, ybottom - 5 * scalefactor, xpixel, ybottom);
+		if (currentbsteachsamplepoints.length == 0) {
+			currentbsteachstep = 'calcdifference';
+		}
+	}
+
+
+
+	//bs x-axis title
+	ctx.fillStyle = 'rgb(0,0,0)';
+	fontsize = 15 * scalefactor;
+	ctx.font = "bold " + fontsize + "px Roboto";
+	ctx.textAlign = "center";
+	title = 'Bootstrap of the ' + $('#bssvteachselect').val() + ' of ' + $('#xaxis').val();
+	ctx.fillText(title, width / 2, height - 10 * scalefactor);
+
+	//axis for bootstrap
+	oypixel = height - 75 * scalefactor;
+	horaxis(ctx, left, right, add(oypixel, 15 * scalefactor), minxtick, maxxtick, xstep);
+
+	maxheight = height * 0.4 - 120 * scalefactor;
+
+	bspoints = [];
+	i = 0;
+	while (i < currentbsteachdiffs.length) {
+		bspoints.push(i);
+		i++;
+	}
+	if (currentbsteachstep == 'finished') {
+		colors = makebscolors(1000, alpha, currentbsteachdiffs);
+	} else {
+		colors = makeblankcolors(currentbsteachdiffs.length, alpha);
+	}
+
+	$('#boxplot').prop('checked', false);
+	$('#meandot').prop('checked', false);
+	plotdotplot(ctx, bspoints, currentbsteachdiffs, minxtick, maxxtick, oypixel - 20 * scalefactor, left, right, maxheight, colors, 1, 0);
+	ypixel = lastypixel;
+
+	if (currentbsteachstep == 'plotdifference') {
+		// plot arrow on bottom graph
+		ctx.lineWidth = 2 * scalefactor;
+		ctx.strokeStyle = 'rgb(255,0,0)';
+		xpixel = convertvaltopixel(thisvalue, minxtick, maxxtick, left, right);
+		ybottom = ypixel;
+		ytop = height * 0.6 - 60 * scalefactor;
+		line(ctx, xpixel, ytop, xpixel, ybottom);
+		line(ctx, xpixel - 5 * scalefactor, ybottom - 5 * scalefactor, xpixel, ybottom);
+		line(ctx, xpixel + 5 * scalefactor, ybottom - 5 * scalefactor, xpixel, ybottom);
+	}
+
+	if (currentbsteachstep == 'finished') {
+		currentbsteachdiffs.sort(function (a, b) { return a - b });
+		y = oypixel - 20 * scalefactor;
+		ctx.lineWidth = 2 * scalefactor;
+		ctx.strokeStyle = 'rgb(0,0,255)';
+		ctx.fillStyle = '#0000ff';
+		fontsize = 11 * scalefactor;
+		ctx.font = "bold " + fontsize + "px Roboto";
+		ctx.textAlign = "center";
+		intervalmin = currentbsteachdiffs[25];
+		intervalminpix = convertvaltopixel(intervalmin, minxtick, maxxtick, left, right);
+		intervalmax = currentbsteachdiffs[974];
+		intervalmaxpix = convertvaltopixel(intervalmax, minxtick, maxxtick, left, right);
+		ctx.textAlign = "right";
+		line(ctx, intervalminpix, add(y, 18 * scalefactor), intervalminpix, y - 20 * scalefactor);
+		ctx.fillText(intervalmin, intervalminpix, add(y, 28 * scalefactor));
+		ctx.textAlign = "left";
+		line(ctx, intervalmaxpix, add(y, 18 * scalefactor), intervalmaxpix, y - 20 * scalefactor);
+		ctx.fillText(intervalmax, intervalmaxpix, add(y, 28 * scalefactor));
+		y = y - 15 * scalefactor;
+		ctx.lineWidth = 10 * scalefactor;
+		line(ctx, intervalminpix, y, intervalmaxpix, y);
+		animate = false;
+	}
+
+	if ($('#bssvteachremaining').html() == 0) {
+		currentbsteachstep = 'finished';
+		currentbsteachsample = [];
+	}
+
+	if (currentbsteachstep == 'plotdifference') {
+		currentbsteachstep = 'presample';
+	}
+
+	if (currentbsteachstep == 'calcdifference') {
+		currentbsteachstep = 'plotdifference';
+	}
+
+	if (currentbsspeed == 'oneslow') {
+		if (currentbsteachstep == 'presample') {
+			animate = false;
+			currentbsspeed = 'stopped';
+		} else {
+			timer = setTimeout(updategraph, 1000);
+		}
+	}
+
+	if (currentbsspeed == 'onefast') {
+		if (currentbsteachstep == 'presample') {
+			animate = false;
+			currentbsspeed = 'stopped';
+		} else {
+			timer = setTimeout(updategraph, 100);
+		}
+	}
+
+	if (currentbsspeed == 'restslow') {
+		timer = setTimeout(updategraph, 200);
+	}
+
+	if (currentbsspeed == 'restmedium') {
+		timer = setTimeout(updategraph, 50);
+	}
+
+	if (currentbsspeed == 'restfast') {
+		timer = setTimeout(updategraph, 0);
+	}
+
+	labelgraph(ctx, width, height);
+
+	var dataURL = canvas.toDataURL();
+	return dataURL;
+}
+
 function newbsteach() {
 	$('#xvar').show();
 	$('#yvar').show();
@@ -12506,6 +12905,35 @@ function newbsteach() {
 	$('#var2label').html("Category 1:<br><small>required</small>");
 	document.getElementById("color").selectedIndex != document.getElementById("yvar").selectedIndex;
 	return newbsteachstep();
+}
+
+function newbssvteach() {
+	$('#xvar').show();
+	$('#yvar').show();
+	$('#thicklinesshow').show();
+	$('#transdiv').show();
+	$('#sizediv').show();
+	$('#greyscaleshow').show();
+	$('#stackdotsshow').show();
+	$('#pointsizename').html('Point Size:');
+	$('#boxplot').prop('checked', true);
+	$('#meandot').prop('checked', false);
+	$('#highboxplot').prop('checked', false);
+	$('#boxnowhisker').prop('checked', false);
+	$('#boxnooutlier').prop('checked', false);
+	$('#interval').prop('checked', false);
+	$('#intervallim').prop('checked', false);
+	$('#intervalhighlight').prop('checked', false);
+	$('#regression').prop('checked', false);
+	$('#shape').prop('checked', false);
+	$('#violin').prop('checked', false);
+	$('#beeswarm').prop('checked', false);
+	$('#stripgraph').prop('checked', false);
+	$('#gridlinesshow').show();
+	$('#removedpointsshow').show();
+	$('#var1label').html("Numerical:<br><small>required</small>");
+	document.getElementById("color").selectedIndex != document.getElementById("yvar").selectedIndex;
+	return newbssvteachstep();
 }
 
 // code for moving around the two points for the manual equation

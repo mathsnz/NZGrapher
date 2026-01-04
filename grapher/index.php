@@ -341,7 +341,8 @@ $( document ).ready(function() {
 
 <div class="callout popup" id=teachingtoolsbox>
 <ul>
-	<li id=bs>Bootstrapping</li>
+	<li id=bssv>Bootstrapping - Single Variable</li>
+	<li id=bs>Bootstrapping - Confidence Interval</li>
 	<li id=rerand>Re-Randomisation</li>
 	<li id=samvar>Sampling Variability</li>
 	<li onclick="window.open('https://info.grapher.nz/teaching-tools/','_blank');try{ga('send', 'event', 'Function', 'Teaching Tools - Video Tutorials', '');} catch(err) {console.log(err.message);}">Video Tutorials</li>
@@ -519,7 +520,7 @@ if(substr($dataset,0,6)!="SECURE" && !in_array($dataset,$datasettings['secure'])
 </div>
 
 <div id="bsteachdiv" class=absolute style="display:none;z-index:11;position:absolute;top:30px;left:30px;right:30px;bottom:30px;text-align:center;padding:10px;overflow-y: auto;">
-	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=rerandteachtitle>Bootstrapping Teaching Tool</div>
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=rerandteachtitle>Bootstrap Confidence Interval Teaching Tool</div>
 	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#bsteachdiv').hide();$('#type').val('newabout');">&times;</div><br>
 	<span id=rerandteachcontents style="font-size:14px">
 		This section lets you manually step through creating a bootstrap confidence interval.<br>
@@ -546,6 +547,44 @@ if(substr($dataset,0,6)!="SECURE" && !in_array($dataset,$datasettings['secure'])
 		<br>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=bsteachpause>Pause</a>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=bsteachreset>Reset</a>
+		<br><br>
+		
+	</span>
+</div>
+
+<div id="bssvteachdiv" class=absolute style="display:none;z-index:11;position:absolute;top:30px;left:30px;right:30px;bottom:30px;text-align:center;padding:10px;overflow-y: auto;">
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=rerandteachtitle>Bootstrapping Single Variable Teaching Tool</div>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#bsteachdiv').hide();$('#type').val('newabout');">&times;</div><br>
+	<span id=rerandteachcontents style="font-size:14px">
+		This section lets you manually step through creating a bootstrap of a single variable.<br>
+		This is really useful for teaching bootstrapping.<br>
+		You can see a <a href='https://info.grapher.nz/teaching-tools/' target='_blank'>video tutorial on how to use this here</a>.<br>
+		<br>
+		Bootstrapping works by taking the sample, and randomly choosing as many points as in the original sample from the original sample, using replacement. 
+		This means that each point can potentially be chosen multiple times, or not at all.
+		It then works out the median or mean for this new sample and plots it the graph below.
+		It does this 1000 times and shows the interval for the middle 95% (or 950 bootstrap samples).<br>
+		<br>
+		Find the bootstrap: <select id="bssvteachselect" onChange="updategraph();">
+			<option value="median">Median</option>
+			<option value="mean">Mean</option>
+		</select><br>
+		<br>
+		<b>Do ONE bootstrap sample and plot on graph:</b><br>
+		<br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=bssvteachoneslow>Slow</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=bssvteachonefast>Fast</a>
+		<br><br>
+		<b>Step through remaining <span id=bssvteachremaining>1000</span> bootstrap samples:</b><br>
+		<br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=bssvteachrestslow>Slow</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=bssvteachrestmedium>Medium</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=bssvteachrestfast>Fast</a>
+		<br><br>
+		<b>Other Controls:</b><br>
+		<br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=bssvteachpause>Pause</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=bssvteachreset>Reset</a>
 		<br><br>
 		
 	</span>
@@ -659,6 +698,7 @@ if(isset($_POST['csv_data'])){
 	<option value='newbootstrapcimedian'>Bootstrap Confidence Interval - Median</option>
 	<option value='newbootstrapcimean'>Bootstrap Confidence Interval - Mean</option>
 	<option style='display:none' value='newbsteach'>Boostrap - Teaching</option>
+	<option style='display:none' value='newbssvteach'>Bootstrap Single Variable- Teaching</option>
 	<option disabled></option>
 	<option value='newrerandmedian'>Re-Randomisation - Median</option>
 	<option value='newrerandmean'>Re-Randomisation - Mean</option>
