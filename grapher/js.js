@@ -13176,6 +13176,7 @@ function newcicoveragestep() {
 
 	maxheight = height * 0.4 - 120 * scalefactor;
 
+	oypixel = height - 62 * scalefactor;
 	ypixel = oypixel - maxheight;
 
 	i = currentcicoveragehistory.length;
@@ -13202,7 +13203,28 @@ function newcicoveragestep() {
 	ctx.lineWidth = 1 * scalefactor;
 	ctx.strokeStyle = 'rgb(0,0,0)';
 	popmedgraph = convertvaltopixel(popmed, minxtick, maxxtick, left, right);
-	line(ctx, popmedgraph, oypixel, popmedgraph, oypixel - maxheight);
+
+	// draw dropdown line
+	if (currentcicoveragestep == 'presample') {
+		xpixel = convertvaltopixel(popmed, minxtick, maxxtick, left, right);
+		ctx.lineWidth = 2 * scalefactor;
+		ctx.strokeStyle = 'rgb(255,0,0)';
+
+		// Arrow
+		ytop = height * 0.3 - 50 * scalefactor;
+		ybottom = height * 0.6 + 40 * scalefactor;
+		line(ctx, xpixel, ytop, xpixel, ybottom);
+		line(ctx, xpixel - 5 * scalefactor, ybottom - 5 * scalefactor, xpixel, ybottom);
+		line(ctx, xpixel + 5 * scalefactor, ybottom - 5 * scalefactor, xpixel, ybottom);
+
+		// Cover Median
+		ctx.lineWidth = 5 * scalefactor;
+		ytop = height * 0.3 - 60 * scalefactor - maxheight * 0.2;
+		ybottom = height * 0.3 - 60 * scalefactor;
+		line(ctx, xpixel, ytop, xpixel, ybottom);
+	}
+
+	line(ctx, popmedgraph, oypixel, popmedgraph, oypixel - maxheight - 5 * scalefactor);
 
 	if (currentcicoveragestep != 'presample') {
 		ctx.fillStyle = 'rgb(0,0,0)';
