@@ -20,6 +20,7 @@ var ovsmax;
 var newrerandteachcount = 0;
 var newbsteachcount = 0;
 var newbsteachsvcount = 0;
+var newcicoveragecount = 0;
 
 function analytics(c, a) {
 	const currentdate = new Date();
@@ -757,6 +758,7 @@ $(function () {
 		$("#rerandteachdiv").hide();
 		$("#bsteachdiv").hide();
 		$("#bssvteachdiv").hide();
+		$("#cicoveragediv").hide();
 		var col = 2;
 		var options = [];
 		var totalcount = $('#data tr:not(:first)').length;
@@ -857,6 +859,7 @@ $(function () {
 		$("#rerandteachdiv").show();
 		$("#bsteachdiv").hide();
 		$("#bssvteachdiv").hide();
+		$("#cicoveragediv").hide();
 		$("#type").val("newrerandteach");
 		$('#left').scrollTop(0);
 		updatebox();
@@ -871,6 +874,7 @@ $(function () {
 		$("#rerandteachdiv").hide();
 		$("#bsteachdiv").show();
 		$("#bssvteachdiv").hide();
+		$("#cicoveragediv").hide();
 		$("#type").val("newbsteach");
 		$('#left').scrollTop(0);
 		updatebox();
@@ -885,7 +889,23 @@ $(function () {
 		$("#rerandteachdiv").hide();
 		$("#bsteachdiv").hide();
 		$("#bssvteachdiv").show();
+		$("#cicoveragediv").hide();
 		$("#type").val("newbssvteach");
+		$('#left').scrollTop(0);
+		updatebox();
+	});
+
+	$("#cicoverage").click(function () {
+		analytics('Function', 'Teaching Tools - bs');
+		$("#rowbox").hide();
+		$("#colbox").hide();
+		$("#sambox").hide();
+		$("#samvardiv").hide();
+		$("#rerandteachdiv").hide();
+		$("#bsteachdiv").hide();
+		$("#bssvteachdiv").hide();
+		$("#cicoveragediv").show();
+		$("#type").val("newcicoverage");
 		$('#left').scrollTop(0);
 		updatebox();
 	});
@@ -1498,6 +1518,63 @@ $(function () {
 		lastypixel = 0;
 		lastkey = 0;
 		$('#bssvteachremaining').html("1000");
+		updategraph();
+	});
+
+
+	$('#cicoveragesampleone').click(function () {
+		console.log('cicoveragesampleone');
+		animate = true;
+		currentcicoveragespeed = 'one';
+		currentcicoveragestep = 'sample';
+		updategraph();
+	});
+
+	$('#cicoveragesampleslow').click(function () {
+		console.log('cicoveragesampleslow');
+		animate = true;
+		currentcicoveragespeed = 'slow';
+		currentcicoveragestep = 'sample';
+		updategraph();
+	});
+
+	$('#cicoveragesamplemedium').click(function () {
+		console.log('cicoveragesamplemedium');
+		animate = true;
+		currentcicoveragespeed = 'medium';
+		currentcicoveragestep = 'sample';
+		updategraph();
+	});
+
+	$('#cicoveragesamplefast').click(function () {
+		console.log('cicoveragesamplefast');
+		animate = true;
+		currentcicoveragespeed = 'fast';
+		currentcicoveragestep = 'sample';
+		updategraph();
+	});
+
+	$('#cicoveragesamplepause').click(function () {
+		console.log('cicoveragesamplepause');
+		animate = false;
+		currentcicoveragespeed = 'stopped';
+		currentcicoveragestep = 'stopped';
+		updategraph();
+	});
+
+	$('#cicoveragesamplereset').click(function () {
+		console.log('cicoveragesamplereset');
+		animate = false;
+		currentcicoveragestep = 'presample';
+		currentcicoveragesamplesize = 10;
+		currentcicoveragetype = 'informalci';
+		currentcicoveragesample = [];
+		currentcicoverageci = [];
+		currentcicoveragehistory = [];
+		currentcicoveragespeed = 'stopped';
+		lastxpixel = 0;
+		lastypixel = 0;
+		lastkey = 0;
 		updategraph();
 	});
 
@@ -2141,6 +2218,12 @@ function updategraphgo() {
 			analytics('Graph Draw', $('#type').val());
 		} else {
 			newbsteachsvcount++;
+		}
+	} else if ($('#type').val() == 'newcicoverage') {
+		if (newcicoveragecount == 0) {
+			analytics('Graph Draw', $('#type').val());
+		} else {
+			newcicoveragecount++;
 		}
 	} else {
 		analytics('Graph Draw', $('#type').val());
@@ -9477,6 +9560,14 @@ var currentbsteachdiffs = [];
 var currentbsteachsamplepoints = [];
 var currentbsspeed = 'stopped';
 
+var currentcicoveragestep = 'presample';
+var currentcicoveragesamplesize = 10;
+var currentcicoveragetype = 'informalci';
+var currentcicoveragesample = [];
+var currentcicoverageci = [];
+var currentcicoveragehistory = [];
+var currentcicoveragespeed = 'stopped';
+
 var lastxpixel = 0;
 var lastypixel = 0;
 var lastkey = 0;
@@ -12563,7 +12654,6 @@ function newbsteachstep() {
 	return dataURL;
 }
 
-
 function newbssvteachstep() {
 
 	console.log(currentbsteachstep);
@@ -12625,7 +12715,7 @@ function newbssvteachstep() {
 	}
 
 	var oypixel = height * 0.3 - 60 * scalefactor;
-	var maxheight = height * 0.3 - 160 * scalefactor;
+	var maxheight = height * 0.3 - 60 * scalefactor;
 	var left = 60 * scalefactor;
 	var right = width - 60 * scalefactor;
 
@@ -12877,6 +12967,278 @@ function newbssvteachstep() {
 	return dataURL;
 }
 
+function newcicoveragestep() {
+
+	console.log(currentcicoveragestep);
+
+	if (typeof timer !== "undefined") {
+		clearTimeout(timer);
+	}
+
+	var canvas = document.getElementById('myCanvas');
+	var ctx = canvas.getContext('2d');
+
+	if (currentcicoveragestep == 'stopped') {
+		var dataURL = canvas.toDataURL();
+		return dataURL;
+	}
+
+	if (currentcicoveragestep == 'finished') {
+		currentcicoveragespeed = 'stopped';
+	}
+
+	//set size
+	var width = $('#width').val();
+	var height = $('#height').val();
+
+	ctx.canvas.width = width;
+	ctx.canvas.height = height;
+
+	ctx.fillStyle = "#ffffff";
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+	//get points
+	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
+
+	//check for numeric value
+	var points = [];
+	var allpoints = [];
+	var pointsremoved = [];
+	var pointsforminmax = [];
+	for (var index in xpoints) {
+		if ($.isNumeric(xpoints[index])) {
+			points.push(index);
+			allpoints.push(index);
+			pointsforminmax.push(xpoints[index]);
+		} else {
+			pointsremoved.push(add(index, 1));
+		}
+	}
+
+	popmed = median(pointsforminmax);
+
+	if (points.length == 0) {
+		return 'Error: You must select a numeric variable for "Numerical 1"';
+	}
+
+	if (pointsremoved.length != 0 && $('#removedpoints').is(":checked")) {
+		ctx.fillStyle = 'rgb(0,0,0)';
+		fontsize = 13 * scalefactor;
+		ctx.font = fontsize + "px Roboto";
+		ctx.textAlign = "right";
+		ctx.fillText("ID(s) of Points Removed: " + pointsremoved.join(", "), width - 48 * scalefactor, 48 * scalefactor);
+	}
+
+	var oypixel = height * 0.3 - 60 * scalefactor;
+	var maxheight = height * 0.3 - 60 * scalefactor;
+	var left = 60 * scalefactor;
+	var right = width - 60 * scalefactor;
+
+	//Original Data Title
+	ctx.fillStyle = 'rgb(0,0,0)';
+	fontsize = 20 * scalefactor;
+	ctx.font = "bold " + fontsize + "px Roboto";
+	ctx.textAlign = "left";
+	ctx.fillText('Original Data', 30 * scalefactor, 30 * scalefactor);
+
+	//This Sample Title
+	ctx.fillStyle = 'rgb(0,0,0)';
+	fontsize = 20 * scalefactor;
+	ctx.font = "bold " + fontsize + "px Roboto";
+	ctx.textAlign = "left";
+	ctx.fillText('This Sample', 30 * scalefactor, height * 0.3 + 30 * scalefactor);
+
+	//CI History
+	ctx.fillStyle = 'rgb(0,0,0)';
+	fontsize = 20 * scalefactor;
+	ctx.font = "bold " + fontsize + "px Roboto";
+	ctx.textAlign = "left";
+	ctx.fillText('CI Coverage', 30 * scalefactor, height * 0.6 + 30 * scalefactor);
+
+	xmin = Math.min.apply(null, pointsforminmax);
+	xmax = Math.max.apply(null, pointsforminmax);
+	if ($.isNumeric($('#boxplotmin').val())) {
+		xmin = $('#boxplotmin').val();
+	}
+	if ($.isNumeric($('#boxplotmax').val())) {
+		xmax = $('#boxplotmax').val();
+	}
+
+	//x-axis titles
+	ctx.fillStyle = 'rgb(0,0,0)';
+	fontsize = 15 * scalefactor;
+	ctx.font = "bold " + fontsize + "px Roboto";
+	ctx.textAlign = "center";
+	ctx.fillText($('#xaxis').val(), width / 2, height * 0.3 - 10 * scalefactor);
+	ctx.fillText($('#xaxis').val(), width / 2, height * 0.6 - 10 * scalefactor);
+
+	var minmaxstep = axisminmaxstep(xmin, xmax);
+	var minxtick = minmaxstep[0];
+	var maxxtick = minmaxstep[1];
+	var xstep = minmaxstep[2];
+
+	horaxis(ctx, left, right, add(oypixel, 10 * scalefactor), minxtick, maxxtick, xstep);
+	horaxis(ctx, left, right, add(oypixel + height * 0.3, 10 * scalefactor), minxtick, maxxtick, xstep);
+
+	var alpha = 1 - $('#trans').val() / 100;
+
+	colors = makecolors(alpha, ctx);
+
+	$('#boxplot').prop('checked', true);
+	$('#meandot').prop('checked', false);
+
+	plotdotplot(ctx, points, xpoints, minxtick, maxxtick, oypixel, left, right, maxheight, colors, 2, 1);
+
+	currentcicoveragesamplesize = $('#cicoveragesamplesize').val();
+
+	// Create this sample
+	if (currentcicoveragestep == 'sample') {
+		shuffleArray(pointsforminmax);
+		currentcicoveragesample = pointsforminmax.slice(0, currentcicoveragesamplesize);
+		currentsampleindex = [];
+		i = 0;
+		while (i < currentcicoveragesamplesize) {
+			currentsampleindex.push(i);
+			i++;
+		}
+	} else {
+		currentsampleindex = [];
+	}
+
+	// graph this sample
+	var oypixel = height * 0.6 - 60 * scalefactor;
+	var currentcicoveragetype = $('#cicoveragetype').val();
+	if (currentcicoveragetype == 'informalci') {
+		$('#interval').prop('checked', true);
+	} else {
+		$('#interval').prop('checked', false);
+	}
+
+	plotdotplot(ctx, currentsampleindex, currentcicoveragesample, minxtick, maxxtick, oypixel, left, right, maxheight, colors, 2, 1);
+
+	if (currentcicoveragetype == 'informalci') {
+		lq = lowerquartile(currentcicoveragesample);
+		med = median(currentcicoveragesample);
+		uq = upperquartile(currentcicoveragesample);
+		intervalhalfwidth = 1.5 * (uq - lq) / Math.sqrt(currentcicoveragesamplesize);
+		intervalmin = parseFloat(add(med, -intervalhalfwidth).toPrecision(5));
+		intervalmax = parseFloat(add(med, intervalhalfwidth).toPrecision(5));
+		/*
+		intervalmingraph = convertvaltopixel(intervalmin, minxtick, maxxtick, left, right);
+		intervalmaxgraph = convertvaltopixel(intervalmax, minxtick, maxxtick, left, right);
+		if ($('#interval').is(":checked")) {
+			ctx.lineWidth = 10 * scalefactor;
+			ctx.strokeStyle = 'rgb(0,0,255)';
+			line(ctx, intervalmingraph, y, intervalmaxgraph, y);
+		}
+		*/
+	} else if (currentcicoveragetype == 'bootstrap') {
+		bsmedians = [];
+		bscount = 0;
+		while (bscount < 1000) {
+			currentbssample = [];
+			num = currentcicoveragesamplesize;
+			for (index in currentcicoveragesample) {
+				sel = randint(0, num - 1);
+				xval = currentcicoveragesample[sel];
+				currentbssample.push(xval);
+			}
+			bsmedians.push(median(currentbssample));
+			bscount++;
+		}
+		bsmedians.sort(function (a, b) { return a - b; });
+		intervalmin = bsmedians[25];
+		intervalmax = bsmedians[974];
+		// plot on graph
+		intervalmingraph = convertvaltopixel(intervalmin, minxtick, maxxtick, left, right);
+		intervalmaxgraph = convertvaltopixel(intervalmax, minxtick, maxxtick, left, right);
+		ctx.lineWidth = 10 * scalefactor;
+		ctx.strokeStyle = 'rgb(0,0,255)';
+		y = oypixel - maxheight * 0.1;
+		line(ctx, intervalmingraph, y, intervalmaxgraph, y);
+	}
+
+	if (currentcicoveragestep == 'sample') {
+		currentcicoveragehistory.push([intervalmin, intervalmax]);
+	}
+
+	//bs x-axis title
+	ctx.fillStyle = 'rgb(0,0,0)';
+	fontsize = 15 * scalefactor;
+	ctx.font = "bold " + fontsize + "px Roboto";
+	ctx.textAlign = "center";
+	title = $('#xaxis').val();
+	ctx.fillText(title, width / 2, height - 10 * scalefactor);
+
+	//axis for bootstrap
+	oypixel = height - 75 * scalefactor;
+	horaxis(ctx, left, right, add(oypixel, 15 * scalefactor), minxtick, maxxtick, xstep);
+
+	maxheight = height * 0.4 - 120 * scalefactor;
+
+	ypixel = oypixel - maxheight;
+
+	i = currentcicoveragehistory.length;
+	countinside = 0;
+	counttotal = currentcicoveragehistory.length;
+	while (i > 0) {
+		i--;
+		intervalmin = currentcicoveragehistory[i][0];
+		intervalmax = currentcicoveragehistory[i][1];
+		if (popmed >= intervalmin && popmed <= intervalmax) {
+			countinside++;
+			ctx.strokeStyle = 'rgb(0,0,255)';
+		} else {
+			ctx.strokeStyle = 'rgb(255,0,0)';
+		}
+		if (ypixel < oypixel) {
+			intervalmingraph = convertvaltopixel(intervalmin, minxtick, maxxtick, left, right);
+			intervalmaxgraph = convertvaltopixel(intervalmax, minxtick, maxxtick, left, right);
+			ctx.lineWidth = 5 * scalefactor;
+			line(ctx, intervalmingraph, ypixel, intervalmaxgraph, ypixel);
+			ypixel = ypixel + 6 * scalefactor;
+		}
+	}
+	ctx.lineWidth = 1 * scalefactor;
+	ctx.strokeStyle = 'rgb(0,0,0)';
+	popmedgraph = convertvaltopixel(popmed, minxtick, maxxtick, left, right);
+	line(ctx, popmedgraph, oypixel, popmedgraph, oypixel - maxheight);
+
+	if (currentcicoveragestep != 'presample') {
+		ctx.fillStyle = 'rgb(0,0,0)';
+		fontsize = 15 * scalefactor;
+		ctx.font = fontsize + "px Roboto";
+		ctx.textAlign = "left";
+		text = 'Coverage:'
+		ctx.fillText(text, 30 * scalefactor, oypixel - maxheight + 10 * scalefactor);
+		text = countinside + '/' + counttotal;
+		ctx.fillText(text, 30 * scalefactor, oypixel - maxheight + 32 * scalefactor);
+		text = (100 * countinside / counttotal).toFixed(0) + '%';
+		ctx.fillText(text, 30 * scalefactor, oypixel - maxheight + 54 * scalefactor);
+	}
+
+	if (currentcicoveragespeed == 'one') {
+		currentcicoveragespeed = 'stopped';
+	}
+
+	if (currentcicoveragespeed == 'slow') {
+		timer = setTimeout(updategraph, 200);
+	}
+
+	if (currentcicoveragespeed == 'medium') {
+		timer = setTimeout(updategraph, 50);
+	}
+
+	if (currentcicoveragespeed == 'fast') {
+		timer = setTimeout(updategraph, 0);
+	}
+
+	labelgraph(ctx, width, height);
+
+	var dataURL = canvas.toDataURL();
+	return dataURL;
+}
+
 function newbsteach() {
 	$('#xvar').show();
 	$('#yvar').show();
@@ -12909,7 +13271,7 @@ function newbsteach() {
 
 function newbssvteach() {
 	$('#xvar').show();
-	$('#yvar').show();
+	$('#yvar').hide();
 	$('#thicklinesshow').show();
 	$('#transdiv').show();
 	$('#sizediv').show();
@@ -12934,6 +13296,35 @@ function newbssvteach() {
 	$('#var1label').html("Numerical:<br><small>required</small>");
 	document.getElementById("color").selectedIndex != document.getElementById("yvar").selectedIndex;
 	return newbssvteachstep();
+}
+
+function newcicoverage() {
+	$('#xvar').show();
+	$('#yvar').hide();
+	$('#thicklinesshow').show();
+	$('#transdiv').show();
+	$('#sizediv').show();
+	$('#greyscaleshow').show();
+	$('#stackdotsshow').show();
+	$('#pointsizename').html('Point Size:');
+	$('#boxplot').prop('checked', true);
+	$('#meandot').prop('checked', false);
+	$('#highboxplot').prop('checked', false);
+	$('#boxnowhisker').prop('checked', false);
+	$('#boxnooutlier').prop('checked', false);
+	$('#interval').prop('checked', false);
+	$('#intervallim').prop('checked', false);
+	$('#intervalhighlight').prop('checked', false);
+	$('#regression').prop('checked', false);
+	$('#shape').prop('checked', false);
+	$('#violin').prop('checked', false);
+	$('#beeswarm').prop('checked', false);
+	$('#stripgraph').prop('checked', false);
+	$('#gridlinesshow').show();
+	$('#removedpointsshow').show();
+	$('#var1label').html("Numerical 1:<br><small>required</small>");
+	document.getElementById("color").selectedIndex != document.getElementById("yvar").selectedIndex;
+	return newcicoveragestep();
 }
 
 // code for moving around the two points for the manual equation
@@ -13734,4 +14125,22 @@ function calculate_mahalanobis(indexes, xpoints, ypoints) {
 	}
 	console.log(data);
 	return colors;
+}
+
+function shuffleArray(array) {
+	let currentIndex = array.length, randomIndex;
+
+	// While there remain elements to shuffle.
+	while (currentIndex !== 0) {
+
+		// Pick a remaining element.
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex--;
+
+		// And swap it with the current element using array destructuring.
+		[array[currentIndex], array[randomIndex]] = [
+			array[randomIndex], array[currentIndex]];
+	}
+
+	return array;
 }

@@ -345,6 +345,7 @@ $( document ).ready(function() {
 	<li id=bs>Bootstrapping - Confidence Interval</li>
 	<li id=rerand>Re-Randomisation</li>
 	<li id=samvar>Sampling Variability</li>
+	<li id=cicoverage>CI Coverage</li>
 	<li onclick="window.open('https://info.grapher.nz/teaching-tools/','_blank');try{ga('send', 'event', 'Function', 'Teaching Tools - Video Tutorials', '');} catch(err) {console.log(err.message);}">Video Tutorials</li>
 </ul>
 </div>
@@ -554,7 +555,7 @@ if(substr($dataset,0,6)!="SECURE" && !in_array($dataset,$datasettings['secure'])
 
 <div id="bssvteachdiv" class=absolute style="display:none;z-index:11;position:absolute;top:30px;left:30px;right:30px;bottom:30px;text-align:center;padding:10px;overflow-y: auto;">
 	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=rerandteachtitle>Bootstrapping Single Variable Teaching Tool</div>
-	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#bsteachdiv').hide();$('#type').val('newabout');">&times;</div><br>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#bssvteachdiv').hide();$('#type').val('newabout');">&times;</div><br>
 	<span id=rerandteachcontents style="font-size:14px">
 		This section lets you manually step through creating a bootstrap of a single variable.<br>
 		This is really useful for teaching bootstrapping.<br>
@@ -585,6 +586,37 @@ if(substr($dataset,0,6)!="SECURE" && !in_array($dataset,$datasettings['secure'])
 		<br>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=bssvteachpause>Pause</a>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=bssvteachreset>Reset</a>
+		<br><br>
+		
+	</span>
+</div>
+
+<div id="cicoveragediv" class=absolute style="display:none;z-index:11;position:absolute;top:30px;left:30px;right:30px;bottom:30px;text-align:center;padding:10px;overflow-y: auto;">
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=rerandteachtitle>CI Coverage Teaching Tool</div>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#cicoveragediv').hide();$('#type').val('newabout');">&times;</div><br>
+	<span id=rerandteachcontents style="font-size:14px">
+		This section lets you view confidence interval coverage for a fixed sample size from a population.<br>
+		This is really useful for teaching confidence intervals.<br>
+		You can see a <a href='https://info.grapher.nz/teaching-tools/' target='_blank'>video tutorial on how to use this here</a>.<br>
+		<br>
+		You can set the sample size and the type of confidence interval you want to view. You can then do as many samples as you would like, seeing how many of them create a confidence interval that includes the population value.<br>
+		You can adjust the sample size to see how it affects the coverage of the confidence interval.<br>
+		<br>
+		Sample size: <input value='10' id="cicoveragesamplesize" onChange="updategraph();"><br>
+		CI Type: <select id="cicoveragetype" onChange="updategraph();">
+			<option value="informalci">Informal CI</option>
+			<option value="bootstrap">Bootstrap CI - Median</option>
+		</select><br>
+		<br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=cicoveragesampleone>One</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=cicoveragesampleslow>Slow</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=cicoveragesamplemedium>Medium</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=cicoveragesamplefast>Fast</a><br>
+		<br><br>
+		<b>Other Controls:</b><br>
+		<br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=cicoveragesamplepause>Pause</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=cicoveragesamplereset>Reset</a>
 		<br><br>
 		
 	</span>
@@ -699,6 +731,7 @@ if(isset($_POST['csv_data'])){
 	<option value='newbootstrapcimean'>Bootstrap Confidence Interval - Mean</option>
 	<option style='display:none' value='newbsteach'>Boostrap - Teaching</option>
 	<option style='display:none' value='newbssvteach'>Bootstrap Single Variable- Teaching</option>
+	<option style='display:none' value='newcicoverage'>CI Coverage - Teaching</option>
 	<option disabled></option>
 	<option value='newrerandmedian'>Re-Randomisation - Median</option>
 	<option value='newrerandmean'>Re-Randomisation - Mean</option>
