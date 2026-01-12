@@ -21,6 +21,7 @@ var newrerandteachcount = 0;
 var newbsteachcount = 0;
 var newbsteachsvcount = 0;
 var newcicoveragecount = 0;
+var newsimmodcount = 0;
 
 function analytics(c, a) {
 	const currentdate = new Date();
@@ -108,6 +109,11 @@ $(function () {
 
 	$('#xaxis').change(function () {
 		$('#scatplotnamex').val($('#xaxis').val());
+		if ($('#type').val() == 'newsimmod') {
+			setTimeout(function () {
+				$('#simmodsamplereset').click();
+			}, 100);
+		}
 	});
 
 	$('#yaxis').change(function () {
@@ -759,6 +765,7 @@ $(function () {
 		$("#bsteachdiv").hide();
 		$("#bssvteachdiv").hide();
 		$("#cicoveragediv").hide();
+		$("#simmoddiv").hide();
 		var col = 2;
 		var options = [];
 		var totalcount = $('#data tr:not(:first)').length;
@@ -860,6 +867,7 @@ $(function () {
 		$("#bsteachdiv").hide();
 		$("#bssvteachdiv").hide();
 		$("#cicoveragediv").hide();
+		$("#simmoddiv").hide();
 		$("#type").val("newrerandteach");
 		$('#left').scrollTop(0);
 		updatebox();
@@ -875,13 +883,14 @@ $(function () {
 		$("#bsteachdiv").show();
 		$("#bssvteachdiv").hide();
 		$("#cicoveragediv").hide();
+		$("#simmoddiv").hide();
 		$("#type").val("newbsteach");
 		$('#left').scrollTop(0);
 		updatebox();
 	});
 
 	$("#bssv").click(function () {
-		analytics('Function', 'Teaching Tools - bs');
+		analytics('Function', 'Teaching Tools - BS Single Variable');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -890,13 +899,14 @@ $(function () {
 		$("#bsteachdiv").hide();
 		$("#bssvteachdiv").show();
 		$("#cicoveragediv").hide();
+		$("#simmoddiv").hide();
 		$("#type").val("newbssvteach");
 		$('#left').scrollTop(0);
 		updatebox();
 	});
 
 	$("#cicoverage").click(function () {
-		analytics('Function', 'Teaching Tools - bs');
+		analytics('Function', 'Teaching Tools - CI Coverage');
 		$("#rowbox").hide();
 		$("#colbox").hide();
 		$("#sambox").hide();
@@ -905,8 +915,26 @@ $(function () {
 		$("#bsteachdiv").hide();
 		$("#bssvteachdiv").hide();
 		$("#cicoveragediv").show();
+		$("#simmoddiv").hide();
 		$("#type").val("newcicoverage");
 		$('#left').scrollTop(0);
+		updatebox();
+	});
+
+	$("#simmod").click(function () {
+		analytics('Function', 'Teaching Tools - Simulation Model');
+		$("#rowbox").hide();
+		$("#colbox").hide();
+		$("#sambox").hide();
+		$("#samvardiv").hide();
+		$("#rerandteachdiv").hide();
+		$("#bsteachdiv").hide();
+		$("#bssvteachdiv").hide();
+		$("#cicoveragediv").hide();
+		$("#simmoddiv").show();
+		$("#type").val("newsimmod");
+		$('#left').scrollTop(0);
+		$('#trans').val(100);
 		updatebox();
 	});
 
@@ -1578,6 +1606,104 @@ $(function () {
 		updategraph();
 	});
 
+
+	$('#simmodsampleone').click(function () {
+		console.log('simmodsampleone');
+		animate = true;
+		currentsimmodspeed = 'one';
+		currentsimmodstep = 'sim';
+		updategraph();
+	});
+
+	$('#simmodsampleslow').click(function () {
+		console.log('simmodsampleslow');
+		animate = true;
+		currentsimmodspeed = 'slow';
+		currentsimmodstep = 'sim';
+		updategraph();
+	});
+
+	$('#simmodsamplemedium').click(function () {
+		console.log('simmodsamplemedium');
+		animate = true;
+		currentsimmodspeed = 'medium';
+		currentsimmodstep = 'sim';
+		updategraph();
+	});
+
+	$('#simmodsamplefast').click(function () {
+		console.log('simmodsamplefast');
+		animate = true;
+		currentsimmodspeed = 'fast';
+		currentsimmodstep = 'sim';
+		updategraph();
+	});
+
+	$('#simmodsamplepause').click(function () {
+		console.log('simmodsamplepause');
+		animate = false;
+		currentsimmodspeed = 'stopped';
+		currentsimmodstep = 'stopped';
+		updategraph();
+	});
+
+	$('#simmodsamplereset').click(function () {
+		console.log('simmodsamplereset');
+		animate = false;
+		currentsimmodstep = 'presim';
+		currentsimmodsamplesize = 0;
+		currentsimmodtype = '';
+		currentsimmodhistory = [];
+		currentsimmodspeed = 'presim';
+
+		//get points
+		var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
+
+		var pointsforminmax = [];
+		if ($('#simmoddatatype').val() == 'numericcontinuous') {
+			//check for numeric value
+			for (var index in xpoints) {
+				if ($.isNumeric(xpoints[index])) {
+					pointsforminmax.push(xpoints[index]);
+				}
+			}
+		} else if ($('#simmoddatatype').val() == 'numericdiscrete') {
+			//check for numeric value
+			for (var index in xpoints) {
+				if ($.isNumeric(xpoints[index]) && xpoints[index] == Math.round(xpoints[index])) {
+					pointsforminmax.push(xpoints[index]);
+				}
+			}
+		}
+
+		var simmodtype = $('#simmodtype').val();
+		var smin = parseFloat(Math.min.apply(null, pointsforminmax).toPrecision(10));
+		var smax = parseFloat(Math.max.apply(null, pointsforminmax).toPrecision(10));
+		var mean = calculatemean(pointsforminmax);
+		var sd = standarddeviation(pointsforminmax);
+		var mode = 3 * mean - smin - smax;
+		if (mode < smin) { mode = smin; }
+		if (mode > smax) { mode = smax; }
+		var n = smax;
+		var p = (mean / smax).toFixed(4);
+
+		if (simmodtype == 'equallylikely') {
+			$('#simmoddistribution').text('each outcome being equally likely');
+		} else if (simmodtype == 'uniform') {
+			$('#simmoddistribution').html('a uniform distribution (min = <input id="simmodmin" style="width:50px" type="number" value="' + smin + '">, max = <input id="simmodmax" style="width:50px" type="number" value="' + smax + '">)');
+		} else if (simmodtype == 'triangular') {
+			$('#simmoddistribution').html('a triangular distribution (min = <input id="simmodmin" style="width:50px" type="number" value="' + smin + '">, max = <input id="simmodmax" style="width:50px" type="number" value="' + smax + '">, mode = <input id="simmodmode" style="width:50px" type="number" value="' + mode + '">)');
+		} else if (simmodtype == 'normal') {
+			$('#simmoddistribution').html('a normal distribution (μ = <input id="simmodmean" style="width:50px" type="number" value="' + mean + '">, σ = <input id="simmodsd" style="width:50px" type="number" value="' + sd + '">)');
+		} else if (simmodtype == 'poisson') {
+			$('#simmoddistribution').html('a poisson distribution (λ = <input id="simmodmean" style="width:50px" type="number" value="' + mean + '">)');
+		} else if (simmodtype == 'binomial') {
+			$('#simmoddistribution').html('a binomial distribution (n = <input id="simmodn" style="width:50px" type="number" value="' + n + '">, p = <input id="simmodp" style="width:50px" type="number" value="' + p + '">)');
+		}
+
+		updategraph();
+	});
+
 	$("#filtergo").click(function () {
 		analytics('Function', 'Sample and More - filtergo');
 		var filtermin = parseFloat($('#filtermin').val());
@@ -2224,6 +2350,12 @@ function updategraphgo() {
 			analytics('Graph Draw', $('#type').val());
 		} else {
 			newcicoveragecount++;
+		}
+	} else if ($('#type').val() == 'newsimmod') {
+		if (newsimmodcount == 0) {
+			analytics('Graph Draw', $('#type').val());
+		} else {
+			newsimmodcount++;
 		}
 	} else {
 		analytics('Graph Draw', $('#type').val());
@@ -9568,6 +9700,12 @@ var currentcicoverageci = [];
 var currentcicoveragehistory = [];
 var currentcicoveragespeed = 'stopped';
 
+var currentsimmodstep = 'presim';
+var currentsimmodsamplesize = 0;
+var currentsimmodtype = '';
+var currentsimmodhistory = [];
+var currentsimmodspeed = 'presim';
+
 var lastxpixel = 0;
 var lastypixel = 0;
 var lastkey = 0;
@@ -13261,6 +13399,506 @@ function newcicoveragestep() {
 	return dataURL;
 }
 
+function newsimmodstep() {
+
+	console.log(currentsimmodstep);
+
+	if (typeof timer !== "undefined") {
+		clearTimeout(timer);
+	}
+
+	var canvas = document.getElementById('myCanvas');
+	var ctx = canvas.getContext('2d');
+
+	if (currentsimmodspeed == 'stopped') {
+		var dataURL = canvas.toDataURL();
+		return dataURL;
+	}
+
+	if (currentsimmodstep == 'finished') {
+		currentsimmodspeed = 'stopped';
+	}
+
+	//set size
+	var width = $('#width').val();
+	var height = $('#height').val();
+
+	ctx.canvas.width = width;
+	ctx.canvas.height = height;
+
+	ctx.fillStyle = "#ffffff";
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+	//get points
+	var xpoints = (dataforselector[$('#xvar option:selected').text()]).slice();
+	var frequencys = [];
+
+	if ($('#simmoddatatype').val() == 'numericcontinuous') {
+		//check for numeric value
+		var points = [];
+		var allpoints = [];
+		var pointsremoved = [];
+		var pointsforminmax = [];
+		for (var index in xpoints) {
+			if ($.isNumeric(xpoints[index])) {
+				points.push(index);
+				allpoints.push(index);
+				pointsforminmax.push(xpoints[index]);
+			} else {
+				pointsremoved.push(add(index, 1));
+			}
+			frequencys.push(1);
+		}
+
+		if (points.length == 0) {
+			return 'Error: You must select a numeric variable for "Data", or change the data type in the Simulation Model Teaching Tool';
+		}
+	} else if ($('#simmoddatatype').val() == 'numericdiscrete') {
+		//check for numeric value
+		var points = [];
+		var allpoints = [];
+		var pointsremoved = [];
+		var pointsforminmax = [];
+		for (var index in xpoints) {
+			if ($.isNumeric(xpoints[index]) && xpoints[index] == Math.round(xpoints[index])) {
+				points.push(index);
+				allpoints.push(index);
+				pointsforminmax.push(xpoints[index]);
+			} else {
+				pointsremoved.push(add(index, 1));
+			}
+			frequencys.push(1);
+		}
+
+		if (points.length == 0) {
+			return 'Error: You must select a numeric variable for "Data", or change the data type in the Simulation Model Teaching Tool';
+		}
+	} else {
+		var points = [];
+		var allpoints = [];
+		var pointsremoved = [];
+		var pointsforminmax = [];
+		for (var index in xpoints) {
+			points.push(index);
+			allpoints.push(index);
+			pointsforminmax.push(xpoints[index]);
+			frequencys.push(1);
+		}
+		if (points.length == 0) {
+			return 'Error: You must select a variable for "Data", or change the data type in the Simulation Model Teaching Tool';
+		}
+	}
+
+	if (pointsremoved.length != 0 && $('#removedpoints').is(":checked")) {
+		ctx.fillStyle = 'rgb(0,0,0)';
+		fontsize = 13 * scalefactor;
+		ctx.font = fontsize + "px Roboto";
+		ctx.textAlign = "right";
+		ctx.fillText("ID(s) of Points Removed: " + pointsremoved.join(", "), width - 48 * scalefactor, 48 * scalefactor);
+	}
+
+	if ($('#simmoddatatype').val() == 'categorical') {
+		maxcategories = 99;
+		xdifferentgroups = split(points, xpoints, maxcategories, '"Category"');
+		if (typeof xdifferentgroups !== 'object') {
+			return xdifferentgroups;
+		}
+		xgroups = Object.keys(xdifferentgroups).sort(sortorder);
+	} else if ($('#simmoddatatype').val() == 'numericdiscrete') {
+		xmin = Math.min.apply(null, pointsforminmax);
+		xmax = Math.max.apply(null, pointsforminmax);
+		i = xmin;
+		xgroups = [];
+		while (i <= xmax) {
+			xgroups.push(i);
+			i++;
+		}
+	} else {
+		xmin = Math.min.apply(null, pointsforminmax);
+		xmax = Math.max.apply(null, pointsforminmax);
+		intervals = $('#size').val();
+		step = Number.parseFloat(((xmax - xmin) / intervals).toPrecision(8));
+		stepfirstsf = Number.parseFloat(step.toPrecision(1)).toExponential().substr(0, 1);
+		stepfirsttwosf = Number.parseFloat(step.toPrecision(2)).toExponential().substr(0, 3);
+		if (stepfirsttwosf.includes("e")) {
+			stepfirsttwosf = stepfirstsf;
+		}
+		if (stepfirsttwosf >= 1 && stepfirsttwosf < 2.3) { step = Number.parseFloat(step.toPrecision(1)) }
+		else if (stepfirsttwosf >= 2.3 && stepfirsttwosf < 3.5) { step = (step / stepfirsttwosf).toPrecision(1) * 2.5 }
+		else if (stepfirsttwosf >= 3.5 && stepfirsttwosf < 7.5) { step = (step / stepfirsttwosf).toPrecision(1) * 5 }
+		else { step = (step / stepfirsttwosf).toPrecision(1) * 10 }
+
+		min = Math.min.apply(null, pointsforminmax);
+		max = Math.max.apply(null, pointsforminmax);
+
+		xstep = step;
+		min = (min / xstep).toFixed(0) * xstep;
+		if (min > xmin) { min -= xstep; }
+		max = (max / xstep).toFixed(0) * xstep;
+		if (max <= xmax) { max += xstep; }
+
+		xstep = Number.parseFloat(step.toPrecision(8));
+		xsteps = ((max - min) / xstep).toFixed(0);
+		xgroups = [];
+		for (var i = 0; i < xsteps; i++) {
+			xgroups.push(min + i * xstep);
+		}
+	}
+
+	var oypixel = 60 * scalefactor;
+	var maxheight = height - 60 * scalefactor;
+	var left = 20 * scalefactor;
+	var right = width - 40 * scalefactor;
+
+	currentsimmodsamplesize = points.length;
+	$('#simmodsamplesize').text(currentsimmodsamplesize);
+	$('#simmodsamplesize2').text(currentsimmodsamplesize);
+
+	var simmodtype = $('#simmodtype').val();
+
+	if (currentsimmodstep == 'sim') {
+		if (simmodtype == 'equallylikely') { // only for bar graphs
+			numgroups = xgroups.length;
+			thissim = {};
+			for (var i = 0; i < xgroups.length; i++) {
+				thissim[xgroups[i]] = 0;
+			}
+			for (var i = 0; i < currentsimmodsamplesize; i++) {
+				var group = Math.floor(Math.random() * numgroups);
+				thispoint = xgroups[group];
+				thissim[thispoint]++;
+			}
+			currentsimmodhistory.push(thissim);
+		} else if (simmodtype == 'uniform') { // only for histograms
+			thissim = {};
+			dmin = Number.parseFloat(Number.parseFloat($('#simmodmin').val()).toPrecision(8));
+			dmax = Number.parseFloat(Number.parseFloat($('#simmodmax').val()).toPrecision(8));
+			for (var i = 0; i < xgroups.length; i++) {
+				thissim[xgroups[i]] = 0;
+			}
+			for (var i = 0; i < currentsimmodsamplesize; i++) {
+				var thispoint = Math.random() * (dmax - dmin) + dmin;
+				thispoint = Number.parseFloat((Math.floor(thispoint / xstep) * xstep).toPrecision(8));
+				thissim[thispoint]++;
+			}
+			currentsimmodhistory.push(thissim);
+		} else if (simmodtype == 'triangular') { // only for histograms
+			thissim = {};
+			dmin = Number.parseFloat(Number.parseFloat($('#simmodmin').val()).toPrecision(8));
+			dmax = Number.parseFloat(Number.parseFloat($('#simmodmax').val()).toPrecision(8));
+			dmode = Number.parseFloat(Number.parseFloat($('#simmodmode').val()).toPrecision(8));
+			for (var i = 0; i < xgroups.length; i++) {
+				thissim[xgroups[i]] = 0;
+			}
+			for (var i = 0; i < currentsimmodsamplesize; i++) {
+				var thispoint = triangularrandom(dmin, dmax, dmode);
+				thispoint = Number.parseFloat((Math.floor(thispoint / xstep) * xstep).toPrecision(8));
+				thissim[thispoint]++;
+			}
+			currentsimmodhistory.push(thissim);
+
+		} else if (simmodtype == 'normal') { // only for histograms
+			thissim = {};
+			dmean = Number.parseFloat(Number.parseFloat($('#simmodmean').val()).toPrecision(8));
+			dsd = Number.parseFloat(Number.parseFloat($('#simmodsd').val()).toPrecision(8));
+			for (var i = 0; i < xgroups.length; i++) {
+				thissim[xgroups[i]] = 0;
+			}
+			for (var i = 0; i < currentsimmodsamplesize; i++) {
+				var thispoint = normalrandom(dmean, dsd);
+				thispoint = Number.parseFloat((Math.floor(thispoint / xstep) * xstep).toPrecision(8));
+				thissim[thispoint]++;
+			}
+			currentsimmodhistory.push(thissim);
+		} else if (simmodtype == 'poisson') { // only for bar graphs
+			thissim = {};
+			dmean = Number.parseFloat(Number.parseFloat($('#simmodmean').val()).toPrecision(8));
+			for (var i = 0; i < xgroups.length; i++) {
+				thissim[xgroups[i]] = 0;
+			}
+			for (var i = 0; i < currentsimmodsamplesize; i++) {
+				var thispoint = poissonrandom(dmean);
+				thispoint = Number.parseFloat((Math.floor(thispoint / xstep) * xstep).toPrecision(8));
+				thissim[thispoint]++;
+			}
+			currentsimmodhistory.push(thissim);
+		} else if (simmodtype == 'binomial') { // only for bar graphs
+			thissim = {};
+			dn = Number.parseFloat(Number.parseFloat($('#simmodn').val()).toPrecision(8));
+			dp = Number.parseFloat(Number.parseFloat($('#simmodp').val()).toPrecision(8));
+			for (var i = 0; i < xgroups.length; i++) {
+				thissim[xgroups[i]] = 0;
+			}
+			for (var i = 0; i < currentsimmodsamplesize; i++) {
+				var thispoint = binomialrandom(dn, dp);
+				thispoint = Number.parseFloat((Math.floor(thispoint / xstep) * xstep).toPrecision(8));
+				thissim[thispoint]++;
+			}
+			currentsimmodhistory.push(thissim);
+		}
+	}
+
+	if ($('#simmodgraphtype').text() == 'bar graph') {
+		// Draw a bar graph
+		sumpoints = {};
+		xdifferentgroups = {};
+		ymin = 0;
+		ymax = 0;
+		for (var i = 0; i < xgroups.length; i++) {
+			sumpoints[xgroups[i]] = 0;
+			xdifferentgroups[xgroups[i]] = [];
+		}
+		for (var i = 0; i < points.length; i++) {
+			sumpoints[xpoints[points[i]]]++;
+			xdifferentgroups[xpoints[points[i]]].push(points[i]);
+		}
+		ymax = Math.max.apply(null, Object.values(sumpoints));
+
+		relativefrequency = false;
+		if ($('#relativefrequency').is(":checked")) {
+			relativefrequency = true;
+		}
+		if (relativefrequency) {
+			ymax = ymax / points.length;
+		}
+
+		//y-axis title
+		var x, y;
+		x = 20 * scalefactor;
+		y = height / 2;
+		ctx.save();
+		ctx.fillStyle = 'rgb(0,0,0)';
+		fontsize = 15 * scalefactor;
+		ctx.font = "bold " + fontsize + "px Roboto";
+		ctx.translate(x, y);
+		ctx.rotate(-Math.PI / 2);
+		ctx.textAlign = "center";
+		yaxistitle = "Frequency";
+		if (relativefrequency) {
+			yaxistitle = "Relative Frequency";
+		}
+		ctx.fillText(yaxistitle, 0, 0);
+		ctx.restore();
+
+		ymax = ymax * 1.2
+		var minmaxstep = axisminmaxstep(ymin, ymax);
+		var minytick = minmaxstep[0];
+		var maxytick = minmaxstep[1];
+		var ystep = minmaxstep[2];
+		var alpha = 1 - $('#trans').val() / 100;
+		var colorpoints = dataforselector[$('#color option:selected').text()].slice();
+		var colors = makecolors(alpha, ctx);
+		var error = plotbargraph(ctx, left, right, oypixel, minytick, maxytick, ystep, maxheight, points, xdifferentgroups, frequencys, colors, xgroups, colorpoints, relativefrequency, points.length, false, sumpoints, '~nogroup~', false);
+		if (error != 'good') { return error; }
+
+		var stepsize = (right - add(left, 50 * scalefactor)) / xgroups.length;
+		trans = 0.5 / Math.log(currentsimmodhistory.length + 1);
+
+		gtop = oypixel;
+		gbottom = add(gtop, maxheight);
+		gbottom = gbottom - 60 * scalefactor;
+
+		for (var i = 0; i < currentsimmodhistory.length; i++) {
+			thisleft = add(left, 50 * scalefactor) + stepsize / 2;
+			ctx.strokeStyle = 'rgba(150,150,150,' + trans + ')';
+			ctx.lineWidth = 5 * scalefactor;
+			if (i == currentsimmodhistory.length - 1 && i != 999) {
+				ctx.strokeStyle = 'rgba(255,0,0,0.5)';
+			}
+			ctx.beginPath();
+			for (var j = 0; j < Object.keys(currentsimmodhistory[i]).length; j++) {
+				var yval = currentsimmodhistory[i][Object.keys(currentsimmodhistory[i])[j]];
+				if (relativefrequency) {
+					yval = yval / points.length;
+				}
+				yvalgraph = convertvaltopixel(yval, minytick, maxytick, gbottom, gtop);
+				if (j == 0) {
+					ctx.moveTo(thisleft, yvalgraph);
+				} else {
+					ctx.lineTo(add(thisleft, stepsize * j), yvalgraph);
+				}
+			}
+			ctx.stroke();
+		}
+
+	}
+
+	if ($('#simmodgraphtype').text() == 'histogram') {
+		// Draw a histogram
+
+		if (min == max) {
+			min = add(xmin, 1);
+			max = add(xmax, 1);
+		}
+
+		xmin = min;
+		xmax = max;
+
+		xdifferentgroups = {};
+		for (var index in points) {
+			index = points[index];
+			value = xpoints[index];
+			leftofvalue = Number.parseFloat((Math.floor(value / xstep) * xstep).toPrecision(8));
+			if (xdifferentgroups[leftofvalue] === undefined) {
+				xdifferentgroups[leftofvalue] = [];
+			}
+			xdifferentgroups[leftofvalue].push(index)
+		}
+		xgroups = Object.keys(xdifferentgroups).sort(sortorder);
+		sumpoints = {};
+		for (var i = 0; i < xgroups.length; i++) {
+			sumpoints[xgroups[i]] = xdifferentgroups[xgroups[i]].length;
+		}
+
+		ymax = Math.max.apply(null, Object.values(sumpoints));
+		relativefrequency = false;
+		if ($('#relativefrequency').is(":checked")) {
+			relativefrequency = true;
+		}
+		if (relativefrequency) {
+			ymax = ymax / points.length;
+		}
+
+		ymax = ymax * 1.2
+		ymin = 0;
+		var minmaxstep = axisminmaxstep(ymin, ymax);
+		var minytick = minmaxstep[0];
+		var maxytick = minmaxstep[1];
+		var ystep = minmaxstep[2];
+		var alpha = 1 - $('#trans').val() / 100;
+		var colors = makecolors(alpha, ctx);
+
+		var error = plothistogram(ctx, left, right, oypixel, minytick, maxytick, ystep, maxheight, points, xdifferentgroups, frequencys, colors, xgroups, relativefrequency, points.length, sumpoints, '~nogroup~', xmin, xmax, xstep, xsteps, xpoints);
+		if (error != 'good') { return error; }
+
+		var stepsize = (right - add(left, 50 * scalefactor)) / xsteps;
+		trans = 0.5 / Math.log(currentsimmodhistory.length + 1);
+
+		gtop = oypixel;
+		gbottom = add(gtop, maxheight);
+		gbottom = gbottom - 60 * scalefactor;
+
+		for (var i = 0; i < currentsimmodhistory.length; i++) {
+			thisleft = add(left, 50 * scalefactor) + stepsize / 2;
+			ctx.strokeStyle = 'rgba(150,150,150,' + trans + ')';
+			ctx.lineWidth = 5 * scalefactor;
+			if (i == currentsimmodhistory.length - 1 && i != 999) {
+				ctx.strokeStyle = 'rgba(255,0,0,0.5)';
+			}
+			ctx.beginPath();
+			for (var j = 0; j < xsteps; j++) {
+				var yval = currentsimmodhistory[i][Object.keys(currentsimmodhistory[i])[j]];
+				if (relativefrequency) {
+					yval = yval / points.length;
+				}
+				yvalgraph = convertvaltopixel(yval, minytick, maxytick, gbottom, gtop);
+				if (j == 0) {
+					ctx.moveTo(thisleft, yvalgraph);
+				} else {
+					ctx.lineTo(add(thisleft, stepsize * j), yvalgraph);
+				}
+			}
+			ctx.stroke();
+		}
+	}
+
+	//graph title
+	ctx.fillStyle = 'rgb(0,0,0)';
+	fontsize = 20 * scalefactor;
+	ctx.font = "bold " + fontsize + "px Roboto";
+	ctx.textAlign = "center";
+	ctx.fillText($('#title').val(), width / 2, 30 * scalefactor);
+
+	//x-axis title
+	ctx.fillStyle = 'rgb(0,0,0)';
+	fontsize = 15 * scalefactor;
+	ctx.font = "bold " + fontsize + "px Roboto";
+	ctx.textAlign = "center";
+	ctx.fillText($('#xaxis').val(), width / 2, height - 10 * scalefactor);
+
+	$('#simmodremaining').text(1000 - currentsimmodhistory.length);
+
+	if (currentsimmodhistory.length == 1000) {
+		currentsimmodspeed = 'stopped';
+		currentsimmodstep = 'finished';
+	}
+
+	if (currentsimmodspeed == 'one') {
+		currentsimmodspeed = 'stopped';
+	}
+
+	if (currentsimmodspeed == 'slow') {
+		timer = setTimeout(updategraph, 200);
+	}
+
+	if (currentsimmodspeed == 'medium') {
+		timer = setTimeout(updategraph, 50);
+	}
+
+	if (currentsimmodspeed == 'fast') {
+		timer = setTimeout(updategraph, 0);
+	}
+
+	labelgraph(ctx, width, height);
+
+	var dataURL = canvas.toDataURL();
+	return dataURL;
+}
+
+function triangularrandom(min, max, mode) {
+	var u = Math.random();
+	var l = (mode - min) / (max - min);
+	if (u <= l) {
+		return min + Math.sqrt(u * (max - min) * (mode - min));
+	} else {
+		return max - Math.sqrt((1 - u) * (max - min) * (max - mode));
+	}
+}
+
+function normalrandom(mean, sd) {
+	var u = Math.random();
+	var v = Math.random();
+	var z = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+	return z * sd + mean;
+}
+
+function poissonrandom(mean) {
+	// For large lambda, use Normal Approximation
+	if (mean > 500) {
+		return Math.round(normalrandom(mean, Math.sqrt(mean)));
+	}
+
+	// Use Knuth's algorithm for smaller lambda
+	const limit = Math.exp(-mean);
+	let k = 0;
+	let p = 1;
+
+	do {
+		k++;
+		p *= Math.random();
+	} while (p > limit);
+
+	return k - 1;
+}
+
+function binomialrandom(n, p) {
+	// Threshold checks for Normal Approximation
+	if (n * p > 10 && n * (1 - p) > 10) {
+		const mean = n * p;
+		const sd = Math.sqrt(n * p * (1 - p));
+		return Math.round(normalrandom(mean, sd));
+	}
+
+	// Fallback to direct simulation for small n or extreme p
+	let successes = 0;
+	for (let i = 0; i < n; i++) {
+		if (Math.random() < p) {
+			successes++;
+		}
+	}
+	return successes;
+}
+
 function newbsteach() {
 	$('#xvar').show();
 	$('#yvar').show();
@@ -13347,6 +13985,50 @@ function newcicoverage() {
 	$('#var1label').html("Numerical 1:<br><small>required</small>");
 	document.getElementById("color").selectedIndex != document.getElementById("yvar").selectedIndex;
 	return newcicoveragestep();
+}
+
+function newsimmod() {
+	$('#xvar').show();
+	$('#yvar').hide();
+	$('#thicklinesshow').show();
+	$('#transdiv').show();
+	$('#greyscaleshow').show();
+	$('#stackdotsshow').hide();
+	$('#gridlinesshow').show();
+	$('#removedpointsshow').show();
+	$('#relativefrequencyshow').show();
+	$('#var1label').html("Data:<br><small>required</small>");
+	$('#sizediv').show();
+	$('#pointsizename').html('Intervals:');
+	document.getElementById("color").selectedIndex != document.getElementById("yvar").selectedIndex;
+	if ($('#simmoddatatype').val() == 'numericcontinuous') {
+		$('#simmodgraphtype').text('histogram');
+		if ($('#simmodtype').val() == 'equallylikely') {
+			return 'Error: Equally Likely only works with numeric whole number or categorical data';
+		} else if ($('#simmodtype').val() == 'poisson') {
+			return 'Error: Poisson distribution only works with numeric whole number data';
+		} else if ($('#simmodtype').val() == 'binomial') {
+			return 'Error: Binomial distribution only works with numeric whole number data';
+		}
+	} else if ($('#simmoddatatype').val() == 'numericdiscrete') {
+		$('#simmodgraphtype').text('bar graph');
+		if ($('#simmodtype').val() == 'uniform') {
+			return 'Error: Uniform distribution only works with continuous numeric data';
+		} else if ($('#simmodtype').val() == 'triangular') {
+			return 'Error: Triangular distribution only works with continuous numeric data';
+		} else if ($('#simmodtype').val() == 'normal') {
+			return 'Error: Normal distribution only works with continuous numeric data';
+		}
+	} else if ($('#simmoddatatype').val() == 'categorical') {
+		$('#simmodgraphtype').text('bar graph');
+		$('#simmodtype').val('equallylikely');
+		if ($('#simmodtype').val() != 'equallylikely') {
+			return 'Error: Categorical data only works with the equally likely distribution option';
+		}
+	} else {
+		return 'Error: Something went wrong!';
+	}
+	return newsimmodstep();
 }
 
 // code for moving around the two points for the manual equation

@@ -19,6 +19,7 @@ Leave a trail of medians on dotplot when doing resampling
 		<li>Added option to manually set the min and max on the x-axis for time series graphs (under more options) to allow adding of extra space to the end of the graph, which is useful for when making predictions infomally like required at Level 1</li>
 		<li>Added new teaching tool - Bootstrapping Single Variable, which is great for introducing students to bootstrapping</li>
 		<li>Added new teaching tool - CI Coverage, which is great for introducing students to confidence intervals</li>
+		<li>Added new teaching tool - Simulation Model, which is great for helping students learn about randomness and how well models fit the data</li>
 	</ul>
 	<b>2025-08-07</b><ul>
 		<li>Increased the width of the — signs on the graphs to make them easier to see (in equations and bootstrap etc. axis titles)</li>

@@ -346,6 +346,7 @@ $( document ).ready(function() {
 	<li id=rerand>Re-Randomisation</li>
 	<li id=samvar>Sampling Variability</li>
 	<li id=cicoverage>CI Coverage</li>
+	<li id=simmod>Simulation Model</li>
 	<li onclick="window.open('https://info.grapher.nz/teaching-tools/','_blank');try{ga('send', 'event', 'Function', 'Teaching Tools - Video Tutorials', '');} catch(err) {console.log(err.message);}">Video Tutorials</li>
 </ul>
 </div>
@@ -622,6 +623,57 @@ if(substr($dataset,0,6)!="SECURE" && !in_array($dataset,$datasettings['secure'])
 	</span>
 </div>
 
+<div id="simmoddiv" class=absolute style="display:none;z-index:11;position:absolute;top:30px;left:30px;right:30px;bottom:30px;text-align:left;padding:10px;overflow-y: auto;">
+	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=simmodtitle>Simulation Model Teaching Tool</div>
+	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#simmoddiv').hide();$('#type').val('newabout');">&times;</div><br>
+	<span id=simmodcontents style="font-size:14px;">
+		This section lets you view a simulation model and compare it to your data.<br>
+		This is really useful for teaching random variation and looking at chance experiments.<br>
+		You can see a <a href='https://info.grapher.nz/teaching-tools/' target='_blank'>video tutorial on how to use this here</a>.<br>
+		<br>
+		<b>Data Type</b><br>
+		<select id="simmoddatatype" onChange="$('#simmodsamplereset').click();">
+			<option value="numericcontinuous">Numeric - Continuous</option>
+			<option value="numericdiscrete">Numeric - Whole Number</option>
+			<option value="categorical">Categorical</option>
+		</select><br>
+		This allows you to adjust the graph between a bar chart or a histogram, and alters the types of distributions available.<br>
+		<br>
+		<b>Simulated Distribution</b><br>
+		<select id="simmodtype" onChange="$('#simmodsamplereset').click();">
+			<option value="uniform">Uniform</option>
+			<option value="triangular">Triangular</option>
+			<option value="normal">Normal</option>
+			<option value="poisson">Poisson</option>
+			<option value="binomial">Binomial</option>
+			<option value="equallylikely">Equally Likely</option>
+		</select><br>
+		This alters the distrubtion used to perform the simulation.<br>
+		<br>
+		<b>Description</b><br>
+		Based on your selections above we will draw a <span id=simmodgraphtype></span> of the original data.<br>
+		This data has <span id=simmodsamplesize></span> data points.<br>
+		We will simulate <span id=simmoddistribution></span> with <span id=simmodsamplesize2></span> data points and show this in light grey.<br>
+		We will do up to 1000 simulations and show the results in the graph.<br>
+		<br>
+		<center>
+		<b>Step through remaining <span id=simmodremaining>1000</span> simulations:</b><br>
+		<br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=simmodsampleone>One</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=simmodsampleslow>Slow</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=simmodsamplemedium>Medium</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=simmodsamplefast>Fast</a><br>
+		<br><br>
+		<b>Other Controls</b><br>
+		<br>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=simmodsamplepause>Pause</a>
+		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=simmodsamplereset>Reset</a>
+		<br><br>
+		</center>
+		
+	</span>
+</div>
+
 <div id="eventrecorderdiv" class=absolute style="display:none;z-index:11;position:absolute;top:30px;left:30px;right:30px;bottom:30px;text-align:center;padding:10px;overflow-y: auto;">
 	<div style='position:absolute;padding-top:2px;padding-bottom:2px;left:0px;top:0px;width:100%; text-align:center;font-weight:bold;border:none;background-color:rgba(0,100,200,0.85);color:#fff;' id=eventrecordertitle>Event Recorder</div>
 	<div style='position:absolute;right:7px;top:1px;background:none;border:none;cursor:pointer;color:#fff;' onclick="$('#eventrecorderdiv').hide();$('#data td div').attr('contenteditable','true');updatebox();">&times;</div><br>
@@ -730,8 +782,9 @@ if(isset($_POST['csv_data'])){
 	<option value='newbootstrapcimedian'>Bootstrap Confidence Interval - Median</option>
 	<option value='newbootstrapcimean'>Bootstrap Confidence Interval - Mean</option>
 	<option style='display:none' value='newbsteach'>Boostrap - Teaching</option>
-	<option style='display:none' value='newbssvteach'>Bootstrap Single Variable- Teaching</option>
+	<option style='display:none' value='newbssvteach'>Bootstrap Single Variable - Teaching</option>
 	<option style='display:none' value='newcicoverage'>CI Coverage - Teaching</option>
+	<option style='display:none' value='newsimmod'>Simulation Model - Teaching</option>
 	<option disabled></option>
 	<option value='newrerandmedian'>Re-Randomisation - Median</option>
 	<option value='newrerandmean'>Re-Randomisation - Mean</option>
