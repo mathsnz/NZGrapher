@@ -13,7 +13,7 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
-	<b>NEXT</b><ul>
+	<b>2026-01-13</b><ul>
 		<li>Few tweaks to make loading faster, and cope with slightly bigger datasets</li>
 		<li>Added Download Graph and Copy Graph buttons</li>
 		<li>Added option to manually set the min and max on the x-axis for time series graphs (under more options) to allow adding of extra space to the end of the graph, which is useful for when making predictions infomally like required at Level 1</li>
