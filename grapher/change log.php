@@ -13,6 +13,9 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2026-02-03</b><ul>
+		<li>Made the boxes in the simulation modeling easier to see</li>
+	</ul>
 	<b>2026-01-13</b><ul>
 		<li>Few tweaks to make loading faster, and cope with slightly bigger datasets</li>
 		<li>Added Download Graph and Copy Graph buttons</li>

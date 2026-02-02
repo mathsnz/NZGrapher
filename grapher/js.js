@@ -2858,6 +2858,7 @@ function line(ctx, x1, y1, x2, y2) {
 	ctx.moveTo(x1, y1);
 	ctx.lineTo(x2, y2);
 	ctx.stroke();
+	ctx.beginPath();
 }
 
 function horaxis(ctx, x1, x2, y, min, max, step, gridlinetop) {
@@ -10571,6 +10572,7 @@ function plotbargraph(ctx, left, right, gtop, minytick, maxytick, ystep, maxheig
 			rectanglesize = 1;
 		}
 		thisright = add(thisleft, stepsize);
+		ctx.lineWidth = 1 * scalefactor;
 		line(ctx, thisright, gbottom, thisright, add(gbottom, 10));
 		thiscenter = add(thisleft, thisright) / 2;
 		ctx.fillStyle = 'rgb(0,0,0)';
@@ -10614,9 +10616,13 @@ function plotbargraph(ctx, left, right, gtop, minytick, maxytick, ystep, maxheig
 				ctx.fillStyle = color;
 				ctx.fillRect(boxleft, boxbottom, stepsize * rectanglesize, boxtop - boxbottom);
 				ctx.lineWidth = 1 * scalefactor;
+				if ($('#thicklines').is(":checked") && $('#thicklines').is(':visible')) {
+					ctx.lineWidth = 3 * scalefactor;
+				}
 				ctx.strokeStyle = 'rgb(0,0,0,1)';
 				ctx.rect(boxleft, boxbottom, stepsize * rectanglesize, boxtop - boxbottom);
 				ctx.stroke();
+				ctx.lineWidth = 1 * scalefactor;
 				ctx.fillStyle = 'rgb(0,0,0)';
 				if (relativefrequency) {
 					displaytotal = Number.parseFloat(displaytotal.toPrecision(5));
@@ -10639,10 +10645,6 @@ function plotbargraph(ctx, left, right, gtop, minytick, maxytick, ystep, maxheig
 		thisleft = thisright;
 	}
 
-	ctx.lineWidth = 2 * scalefactor;
-	if ($('#thicklines').is(":checked")) {
-		ctx.lineWidth = 5 * scalefactor;
-	}
 	return 'good';
 }
 
@@ -11016,6 +11018,9 @@ function plothistogram(ctx, left, right, gtop, minytick, maxytick, ystep, maxhei
 		ctx.fillStyle = color;
 		ctx.fillRect(boxleft, boxbottom, stepsize, boxtop - boxbottom);
 		ctx.lineWidth = 1 * scalefactor;
+		if ($('#thicklines').is(":checked") && $('#thicklines').is(':visible')) {
+			ctx.lineWidth = 3 * scalefactor;
+		}
 		ctx.strokeStyle = 'rgb(0,0,0,1)';
 		ctx.rect(boxleft, boxbottom, stepsize, boxtop - boxbottom); ctx.stroke();
 		ctx.fillStyle = 'rgb(0,0,0)';
@@ -13688,8 +13693,6 @@ function newsimmodstep() {
 		var alpha = 1 - $('#trans').val() / 100;
 		var colorpoints = dataforselector[$('#color option:selected').text()].slice();
 		var colors = makecolors(alpha, ctx);
-		var error = plotbargraph(ctx, left, right, oypixel, minytick, maxytick, ystep, maxheight, points, xdifferentgroups, frequencys, colors, xgroups, colorpoints, relativefrequency, points.length, false, sumpoints, '~nogroup~', false);
-		if (error != 'good') { return error; }
 
 		var stepsize = (right - add(left, 50 * scalefactor)) / xgroups.length;
 		trans = 0.5 / Math.log(currentsimmodhistory.length + 1);
@@ -13720,7 +13723,8 @@ function newsimmodstep() {
 			}
 			ctx.stroke();
 		}
-
+		var error = plotbargraph(ctx, left, right, oypixel, minytick, maxytick, ystep, maxheight, points, xdifferentgroups, frequencys, colors, xgroups, colorpoints, relativefrequency, points.length, false, sumpoints, '~nogroup~', false);
+		if (error != 'good') { return error; }
 	}
 
 	if ($('#simmodgraphtype').text() == 'histogram') {
@@ -13768,9 +13772,6 @@ function newsimmodstep() {
 		var alpha = 1 - $('#trans').val() / 100;
 		var colors = makecolors(alpha, ctx);
 
-		var error = plothistogram(ctx, left, right, oypixel, minytick, maxytick, ystep, maxheight, points, xdifferentgroups, frequencys, colors, xgroups, relativefrequency, points.length, sumpoints, '~nogroup~', xmin, xmax, xstep, xsteps, xpoints);
-		if (error != 'good') { return error; }
-
 		var stepsize = (right - add(left, 50 * scalefactor)) / xsteps;
 		trans = 0.5 / Math.log(currentsimmodhistory.length + 1);
 
@@ -13800,6 +13801,9 @@ function newsimmodstep() {
 			}
 			ctx.stroke();
 		}
+
+		var error = plothistogram(ctx, left, right, oypixel, minytick, maxytick, ystep, maxheight, points, xdifferentgroups, frequencys, colors, xgroups, relativefrequency, points.length, sumpoints, '~nogroup~', xmin, xmax, xstep, xsteps, xpoints);
+		if (error != 'good') { return error; }
 	}
 
 	//graph title
