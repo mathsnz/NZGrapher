@@ -13,7 +13,24 @@ if(substr_count($url,":")>1){
 	die("You cannot use a port number in the url or recursive queries. If this is a valid link download the csv and then upload to NZGrapher. ".substr_count($url,":"));
 }
 $url = str_replace(" ","%20",$url);
-$file_headers = get_headers($url);
+$file_headers = get_headers($url, 1);
+
+if ($file_headers === false) {
+	die("Error: Unable to access URL: " . $url);
+}
+
+// get the type of file recieved
+$content_type = '';
+if (isset($file_headers['Content-Type'])) {
+    $content_type = strtolower($file_headers['Content-Type']);
+}
+
+// check if the recieved content is the right type (not a website or unwanted filetype)
+if (strpos($content_type, 'text/csv') === false && 
+    strpos($content_type, 'text/plain') === false &&
+    strpos($content_type, 'application/csv') === false) {
+    die("Error: File is not a CSV. Content-Type: " . $content_type);
+}
 
 // we want the the last errorcode, reverse array so we start at the end:
 $file_headers = array_reverse($file_headers);
