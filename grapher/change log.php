@@ -13,6 +13,9 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2026-02-11</b><ul>
+		<li>Updated cars.csv to correct drive train, and add extra columns</li>
+	</ul>
 	<b>2026-02-03</b><ul>
 		<li>Made the boxes in the simulation modeling easier to see</li>
 	</ul>
