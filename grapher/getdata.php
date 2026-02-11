@@ -28,7 +28,8 @@ if (isset($file_headers['Content-Type'])) {
 // check if the recieved content is the right type (not a website or unwanted filetype)
 if (strpos($content_type, 'text/csv') === false && 
     strpos($content_type, 'text/plain') === false &&
-    strpos($content_type, 'application/csv') === false) {
+    strpos($content_type, 'application/csv') === false &&
+    strpos($content_type, 'application/octet-stream') === false) {
     die("Error: File is not a CSV. Content-Type: " . $content_type);
 }
 
@@ -36,6 +37,7 @@ if (strpos($content_type, 'text/csv') === false &&
 $file_headers = array_reverse($file_headers);
 $code = "";
 foreach($file_headers as $hline){
+	if(!is_string($hline)){continue;}
 	// search for things like "HTTP/1.1 200 OK" , "HTTP/1.0 200 OK" , "HTTP/1.1 301 PERMANENTLY MOVED" , "HTTP/1.1 400 Not Found" , etc.
 	// note that the exact syntax/version/output differs, so there is some string magic involved here
 	if(preg_match('/^HTTP\/\S+\s+([1-9][0-9][0-9])\s+.*/', $hline, $matches) ){// "HTTP/*** ### ***"
