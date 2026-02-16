@@ -11466,7 +11466,7 @@ function loaddata() {
 			console.time("Creating Table");
 
 			// Clear existing data
-			document.getElementById('data').textContent = '';
+			document.getElementById('data').innerHTML = '<tbody id="data-body"></tbody>';
 
 			var firstrow = 0;
 			var i = 0;
@@ -11499,7 +11499,7 @@ function loaddata() {
 					}
 				}
 
-				document.getElementById('data').insertAdjacentHTML('beforeend', chunkHTML);
+				document.getElementById('data-body').insertAdjacentHTML('beforeend', chunkHTML);
 
 				if (i < finaldata.length) {
 					// Update progress

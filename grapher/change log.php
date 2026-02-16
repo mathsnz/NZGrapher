@@ -15,6 +15,7 @@ Leave a trail of medians on dotplot when doing resampling
 ?>
 	<b>NEXT</b><ul>
 		<li>Update to improve error handling when loading data from remote websites.</li>
+		<li>Update to fix sorting when loading datasets with over 200 rows.</li>
 	</ul>
 	<b>2026-02-11</b><ul>
 		<li>Updated cars.csv to correct drive train, and add extra columns</li>
