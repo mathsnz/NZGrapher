@@ -11272,7 +11272,9 @@ $(document).ready(function () {
 		$('#progressdescription')[0].innerHTML = 'Starting';
 		console.time("Starting");
 		$('#progressbarholder').show();
-		var allowedmimes = ['', 'application/vnd.ms-excel', 'application/ms-excel', 'application/csv', 'text/plain', 'text/csv', 'text/tsv', 'text/comma-separated-values', 'application/excel', 'application/vnd.msexcel', 'text/anytext', 'application/octet-stream', 'application/txt', 'application/x-csv'];
+		// Note: The following mime types were removed due to data corrupted on import, this is from files exported by libreoffice and excel
+		// 'application/vnd.ms-excel', 'application/ms-excel', 'application/excel', 'application/vnd.msexcel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+		var allowedmimes = ['', 'application/csv', 'text/plain', 'text/csv', 'text/tsv', 'text/comma-separated-values', 'text/tab-separated-values', 'text/anytext', 'application/octet-stream', 'application/txt', 'application/x-csv'];
 		var files = evt.target.files; // FileList object
 
 		console.timeEnd("Starting");
