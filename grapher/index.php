@@ -363,7 +363,7 @@ $( document ).ready(function() {
 <div class="callout popup" id=filepop>
 <ul>
 	<li id=uploadfileclicknew>
-	<input type="file" name="filenew" id="filenew" style='width:80px;height:17px;position:absolute;top:4px;left:6px;z-index:2;opacity:0;cursor:pointer;' accept='.csv,.tsv,.txt,.bin'/>
+	<input type="file" name="filenew" id="filenew" style='width:80px;height:17px;position:absolute;top:4px;left:6px;z-index:2;opacity:0;cursor:pointer;' accept='.csv,.tsv,.txt,.bin,.nzgrapher'/>
 	<div style='color:#000;border:0px solid #ccc;width:80px;height:17px;border-radius:0px;padding:5px;font-size:14px;text-align:left;position:relative;top:0px;left:0px;padding:0px;background:none;'>Open File</div>
 	</li>
 	<li id=directimport>Import from Clipboard</li>
