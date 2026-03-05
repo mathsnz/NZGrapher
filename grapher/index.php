@@ -15,6 +15,8 @@
 	<script src="./jquery.min.js"></script> 
 	<script src="./jquery.csv.min.js"></script>
 	<script src="./regression.min.js"></script>
+	<!-- IMPORT FOR XLSX -->
+	<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 	<title>NZGrapher</title>
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,700|Roboto+Condensed|Material+Icons+Outlined' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="style.css?v=<?php
@@ -109,6 +111,7 @@ if (screen.availWidth < 1024)
 
 		?>
 		<br>
+		NZGrapher uses third party libraries, <a href="./licence.html" target="_blank">click here</a> to see the licences.
 		</div>
 		<script>
 		$.get('./change log.php').done(function(data){
@@ -363,7 +366,7 @@ $( document ).ready(function() {
 <div class="callout popup" id=filepop>
 <ul>
 	<li id=uploadfileclicknew>
-	<input type="file" name="filenew" id="filenew" style='width:80px;height:17px;position:absolute;top:4px;left:6px;z-index:2;opacity:0;cursor:pointer;' accept='.csv,.tsv,.txt,.bin,.nzgrapher'/>
+	<input type="file" name="filenew" id="filenew" style='width:80px;height:17px;position:absolute;top:4px;left:6px;z-index:2;opacity:0;cursor:pointer;' accept='.csv,.tsv,.txt,.bin,.nzgrapher, .xls, .xlsx, .ods'/>
 	<div style='color:#000;border:0px solid #ccc;width:80px;height:17px;border-radius:0px;padding:5px;font-size:14px;text-align:left;position:relative;top:0px;left:0px;padding:0px;background:none;'>Open File</div>
 	</li>
 	<li id=directimport>Import from Clipboard</li>
