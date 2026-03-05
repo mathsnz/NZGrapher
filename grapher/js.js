@@ -24,8 +24,6 @@ var newcicoveragecount = 0;
 var newsimmodcount = 0;
 
 // NPM package import
-// var XLSX = require("xlsx");
-{/* <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.min.js"></script> */}
 var XLSX = window.XLSX;
 
 function analytics(c, a) {
