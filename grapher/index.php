@@ -850,8 +850,10 @@ if(isset($_POST['csv_data'])){
 				<input type="checkbox" onclick="updategraph();" id="regression" name="regression" value="yes">
 					<span id=sum>Summaries</span>
 					<span id=reg>Regression Line</span>
-					<span id=for>Forecast output</span>
-				</label><br>
+					<span id=for>Forecast output</span><br>
+				</label>
+				<label id="correlationcoefficientshow"><input type="checkbox" onclick="updategraph();" id="correlationcoefficient" name="correlationcoefficient" value="yes">Correlation coefficient</label>
+				</label>
 			</span>
 			<span id=boxplotshow><label>
 				<input type="checkbox" onclick="updategraph();" id="boxplot" name="boxplot" value="yes"> Box Plots</label><br>
