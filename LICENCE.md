@@ -1,46 +1,32 @@
-# New Zealand Grapher
+# NZGrapher Source-Available License
+**Version 1.0**
 
-NZGrapher is currently not under a licence. It is source available, not open-source. See https://github.com/mathsnz/NZGrapher/issues/13 for details
+### 1. Purpose
+This license allows for the transparency and educational review of the **NZGrapher** source code while protecting the commercial interests and intellectual property of the Author.
 
-## JQuery (https://jquery.com/license/)
+### 2. Grant of Rights
+Subject to the terms of this license, the Author grants you a non-exclusive, worldwide, non-sublicensable, and non-transferable license to:
+* **Read and View:** Access and read the source code for educational, curiosity-driven, or review purposes.
+* **Local Testing:** Download and run a local copy of the software strictly for personal, non-commercial learning, debugging, or classroom demonstration.
 
-Copyright OpenJS Foundation and other contributors, https://openjsf.org/
+### 3. Restrictions
+You **may not** without prior permission from the author:
+* **Commercial Use:** Use the source code, or any portion of it, for any commercial purpose, including but not limited to selling the software, using it as a service (SaaS), or using it within a commercial entity.
+* **Redistribution:** Copy, modify, or distribute the source code (or compiled binaries) to any third party or host it on any public website or server.
+* **Sublicensing:** Attempt to grant others any rights to this software.
+* **Forking for Competition:** Create a derivative work that competes with the official NZGrapher product.
 
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
+### 4. Educational Exception
+Students and teachers in New Zealand schools may use the source code for classroom demonstrations or individual student projects (e.g., NCEA Computer Science internals), provided that school is currently licenced, no fee is charged for the resulting work, and clear credit is given to **NZGrapher**.
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+### 5. Ownership
+The Author retains all intellectual property rights, including copyright and trademarks, in and to the Software. No ownership is transferred to you via this license.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+### 6. Termination
+This license and your right to use the Software terminate automatically if you violate any part of this Agreement.
 
-## XLSX (https://git.sheetjs.com/sheetjs/sheetjs)
+### 7. Warranty & Liability
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE.
 
-                  Apache License
-            Version 2.0, January 2004
-         http://www.apache.org/licenses/
-
-Copyright (C) 2012-present   SheetJS LLC
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-      http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+---
+*For inquiries regarding commercial licensing or permissions beyond the scope of this license, please contact the Author via [info.grapher.nz](https://info.grapher.nz).*
