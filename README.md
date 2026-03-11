@@ -20,7 +20,7 @@ NZGrapher is a commercial product, but I believe in the power of curiosity. This
 Because NZGrapher is a commercial business that sustains its own development, this repository is **Source-Available**, not "Open Source" (like MIT or GPL).
 
 ### 1. The License
-This software is governed by the [NZGrapher Source-Available License](./LICENSE.md). 
+This software is governed by the [NZGrapher Source-Available License](./LICENCE.md). 
 * **Allowed:** Personal study, educational review, and local non-commercial testing.
 * **Prohibited:** Using this code for any commercial purpose, hosting your own public version of the site, or redistributing the code as your own product.
 

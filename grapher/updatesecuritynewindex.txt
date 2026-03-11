@@ -177,7 +177,7 @@ foreach($files as $filename){
 <h3>Add New Files</h3>
 <form id=uploadform action="upload.php" method="post" enctype="multipart/form-data" style='width:200px;'>
 	<label for="file" id="droparea">
-		<input type="file" name="file" id="file" accept="" hidden>
+		<input type="file" name="file" id="file" accept=".csv,.tsv,.txt,.bin,.nzgrapher,.xls,.xlsx,.ods" hidden>
 		<div id="uploadbox">
 		<span class="material-symbols-outlined" style='font-size:80px;'>upload</span><br>
 		Drag or drop, or click here to upload a file.

@@ -56,7 +56,7 @@ $extension = end($temp);
 if(strtolower($extension)!="csv" && strtolower($extension)!="nzgrapher"){
 	echo ('Invalid Extension');
 } else {
-	$mimes = array('application/octet-stream','application/vnd.ms-excel','application/csv','text/plain','text/csv','text/tsv','text/comma-separated-values');
+	$mimes = array('', 'application/csv', 'text/plain', 'text/csv', 'text/tsv', 'text/comma-separated-values', 'text/tab-separated-values', 'text/anytext', 'application/octet-stream', 'application/txt', 'application/x-csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'application/vnd.oasis.opendocument.spreadsheet');
 	if (isset($_FILES['file'])){
 		if ($_FILES["file"]["error"] > 0) {
 			echo "Error: " . $_FILES["file"]["error"] . "<br>";

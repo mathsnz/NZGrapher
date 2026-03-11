@@ -5844,6 +5844,7 @@ function drawSpline(ctx, pts, t) {
 
 function newscatter() {
 	$('#reg').show();
+	$('#rvalueshow').show();
 	$('#correlationcoefficient').show();
 	$('#correlationcoefficientshow').show();
 	$('#regshow').show();
@@ -9037,6 +9038,28 @@ function newchangelog() {
 	$('#var2label').html("");
 	$('#var3label').html("");
 	$.get('./change log.php').done(function (data) {
+		var width = $('#width').val() - 22;
+		var height = $('#height').val() - 22;
+		$('#jsgraph').html("<div style='width:" + width + "px;height:" + height + "px;overflow-y:scroll;padding:10px;text-align:left;'>" + data + "</div>");
+	});
+	return "DISPLLoading...";
+}
+function newlicence() {
+	$('#var1label').html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+	$('#var2label').html("");
+	$('#var3label').html("");
+	$.get('./licence.html').done(function (data) {
+		var width = $('#width').val() - 22;
+		var height = $('#height').val() - 22;
+		$('#jsgraph').html("<div style='width:" + width + "px;height:" + height + "px;overflow-y:scroll;padding:10px;text-align:left;'>" + data + "</div>");
+	});
+	return "DISPLLoading...";
+}
+function newcontributors() {
+	$('#var1label').html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+	$('#var2label').html("");
+	$('#var3label').html("");
+	$.get('./contributors.html').done(function (data) {
 		var width = $('#width').val() - 22;
 		var height = $('#height').val() - 22;
 		$('#jsgraph').html("<div style='width:" + width + "px;height:" + height + "px;overflow-y:scroll;padding:10px;text-align:left;'>" + data + "</div>");

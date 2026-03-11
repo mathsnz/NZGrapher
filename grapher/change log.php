@@ -13,7 +13,9 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
-	<b>NEXT</b><ul>
+	<b>2026-03-12</b><ul>
+		<li>NZGrapher now supports Excel files (as well as open office spreadsheets) - thanks to Ethan Hayward</li>
+		<li>R-Value doesn't show by default anymore, but can still be shown when needed with a new checkbox - thanks to Ethan Hayward</li>
 		<li>Update to improve error handling when loading data from remote websites.</li>
 		<li>Update to fix sorting when loading datasets with over 200 rows.</li>
 	</ul>
