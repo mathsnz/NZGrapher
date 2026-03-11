@@ -23,6 +23,9 @@ var newbsteachsvcount = 0;
 var newcicoveragecount = 0;
 var newsimmodcount = 0;
 
+// NPM package import
+var XLSX = window.XLSX;
+
 function analytics(c, a) {
 	const currentdate = new Date();
 	let ms = currentdate.valueOf();
@@ -11272,7 +11275,8 @@ $(document).ready(function () {
 		$('#progressdescription')[0].innerHTML = 'Starting';
 		console.time("Starting");
 		$('#progressbarholder').show();
-		var allowedmimes = ['', 'application/vnd.ms-excel', 'application/ms-excel', 'application/csv', 'text/plain', 'text/csv', 'text/tsv', 'text/comma-separated-values', 'application/excel', 'application/vnd.msexcel', 'text/anytext', 'application/octet-stream', 'application/txt', 'application/x-csv'];
+		// The following file types are supported: csv, tsv, txt, xlsx, ods, nzgrapher, bin
+		var allowedmimes = ['', 'application/csv', 'text/plain', 'text/csv', 'text/tsv', 'text/comma-separated-values', 'text/tab-separated-values', 'text/anytext', 'application/octet-stream', 'application/txt', 'application/x-csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'application/vnd.oasis.opendocument.spreadsheet'];
 		var files = evt.target.files; // FileList object
 
 		console.timeEnd("Starting");
@@ -11311,6 +11315,23 @@ $(document).ready(function () {
 						loadnzgrapherfile();
 					};
 				})(f);
+				reader.readAsText(f, 'ISO-8859-1');
+			} else if (f.name.substr(-5) == ".xlsx" || f.name.substr(-4) == ".ods" || f.name.substr(-4) == ".xls") {
+				//TODO support excel docs
+				reader.onload = (function (theFile) {
+					return function (e) {
+						console.timeEnd("Loading from File");
+						const workbook = XLSX.read(e.target.result, { type: 'array' });
+						if (workbook.SheetNames.length > 1) {
+							alert("This file has multiple sheets, only the first sheet will be imported");
+						}
+						const firstSheetName = workbook.SheetNames[0];
+						const worksheet = workbook.Sheets[firstSheetName];
+						csv_data = XLSX.utils.sheet_to_csv(worksheet);
+						loaddata();
+					};
+				})(f);
+				reader.readAsArrayBuffer(f);
 			} else {
 				reader.onload = (function (theFile) {
 					return function (e) {
@@ -11319,11 +11340,8 @@ $(document).ready(function () {
 						loaddata();
 					};
 				})(f);
+				reader.readAsText(f, 'ISO-8859-1');
 			}
-
-
-			// Read in the image file as a data URL.
-			reader.readAsText(f, 'ISO-8859-1');
 		}
 	}
 
