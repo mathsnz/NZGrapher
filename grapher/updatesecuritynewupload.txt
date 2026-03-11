@@ -53,7 +53,7 @@ function getCurrentDirectory() {
 $_FILES["file"]["name"] = preg_replace('/\s+/', ' ', basename($_FILES["file"]["name"]));
 $temp = explode(".", $_FILES["file"]["name"]);
 $extension = end($temp);
-if(strtolower($extension)!="csv" && strtolower($extension)!="nzgrapher"){
+if(strtolower($extension)!="csv" && strtolower($extension)!="nzgrapher" && strtolower($extension)!="xls" && strtolower($extension)!="xlsx" && strtolower($extension)!="ods"){
 	echo ('Invalid Extension');
 } else {
 	$mimes = array('', 'application/csv', 'text/plain', 'text/csv', 'text/tsv', 'text/comma-separated-values', 'text/tab-separated-values', 'text/anytext', 'application/octet-stream', 'application/txt', 'application/x-csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'application/vnd.oasis.opendocument.spreadsheet');
