@@ -17,5 +17,8 @@ Except for the representations herein, your Contributions are provided on an "AS
 ### 5. Acceptance
 By submitting a Pull Request to this repository, you signify your agreement to the terms and conditions of this Agreement.
 
+### 6. Recognition
+If you would like regocnition for your contribution to NZGrapher, your name is able to be listed the contributor page, please just make this clear to the author. 
+
 ---
 *Questions regarding this agreement should be directed to the Author at [info.grapher.nz](https://info.grapher.nz).*
