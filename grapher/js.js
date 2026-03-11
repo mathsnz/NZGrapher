@@ -2160,6 +2160,8 @@ function graphchange(obj) {
 	document.getElementById('sum').style.display = 'none';
 	document.getElementById('reg').style.display = 'none';
 	document.getElementById('for').style.display = 'none';
+	document.getElementById('correlationcoefficient').style.display = 'none';
+	document.getElementById('correlationcoefficientshow').style.display = 'none';
 	document.getElementById('regshow').style.display = 'none';
 	document.getElementById('boxplotshow').style.display = 'none';
 	document.getElementById('intervalshow').style.display = 'none';
@@ -5842,6 +5844,8 @@ function drawSpline(ctx, pts, t) {
 
 function newscatter() {
 	$('#reg').show();
+	$('#correlationcoefficient').show();
+	$('#correlationcoefficientshow').show();
 	$('#regshow').show();
 	$('#gridlinesshow').show();
 	$('#labelshow').show();
@@ -6258,8 +6262,10 @@ function plotscatter(ctx, indexes, xpoints, ypoints, minxtick, maxxtick, xstep, 
 		}
 		ctx.fillText($('#scatplotnamey').val() + " = " + m + " * " + $('#scatplotnamex').val() + c, left, equationtop);
 		equationtop = add(equationtop, 15 * scalefactor);
-		ctx.fillText("r = " + r, left, equationtop);
-		equationtop = add(equationtop, 15 * scalefactor);
+		if ($("#correlationcoefficient").is(":checked") && $("#correlationcoefficient").is(':visible')) {
+			ctx.fillText("r = " + r, left, equationtop);
+			equationtop = add(equationtop, 15 * scalefactor);
+		}
 	}
 
 	if ($('#quadratic').is(":checked") && $('#quadraticshow').is(':visible')) {
@@ -14122,6 +14128,7 @@ $(document).ready(function () {
 function resetsettings() {
 	$('#arrows').prop('checked', false);
 	$('#regression').prop('checked', false);
+	$('correlationcoefficient').prop('checked', false);
 	$('#boxplot').prop('checked', false);
 	$('#hidepoints').prop('checked', false);
 	$('#shape').prop('checked', false);
