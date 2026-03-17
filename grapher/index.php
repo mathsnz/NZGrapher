@@ -453,7 +453,7 @@ if(substr($dataset,0,6)!="SECURE" && !in_array($dataset,$datasettings['secure'])
 				<br>
 		Sample With: <select style='width:120px' onChange="" id=samvaron></select><br><br>
 		<center>
-		<table id=samvartable style='text-size:14px;'>
+		<table id=samvartable style='font-size:14px;'>
 			<tr><td> <td><input id="samvar-">
 		</table><br>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=fillnumberssamvar>Fill Numbers</a> 
@@ -478,7 +478,7 @@ if(substr($dataset,0,6)!="SECURE" && !in_array($dataset,$datasettings['secure'])
 		<br>
 		Category to Fiter On: <select style='width:120px' onChange="" id=viewsinglegroupcategory></select><br><br>
 		<center>
-		<table id=viewgrouptable style='text-size:14px;'>
+		<table id=viewgrouptable style='font-size:14px;'>
 		</table><br>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;line-height:60px;' id=viewgroupselectall>Select All</a>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;;' id=viewgroupselectnone>Select None</a>
@@ -1125,7 +1125,7 @@ if(isset($_GET['dev'])){
 	<span id=samplecontents style="font-size:14px">
 		Re-group With: <select style='width:120px' onChange="" id=regroupwith></select><br><br>
 		<center>
-		<table id=regrouptable style='text-size:14px;'>
+		<table id=regrouptable style='font-size:14px;'>
 			<tr><td> <td><input id="regroup-">
 		</table><br>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=regroupgo>Re-Group</a><br><br>
@@ -1138,7 +1138,7 @@ if(isset($_GET['dev'])){
 	<span id=samplecontents style="font-size:14px">
 		Sample With: <select style='width:120px' onChange="" id=sampleon></select><br><br>
 		<center>
-		<table id=samplingtable style='text-size:14px;'>
+		<table id=samplingtable style='font-size:14px;'>
 			<tr><td> <td><input id="sample-">
 		</table><br>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=fillnumbers>Fill Numbers</a> 
@@ -1172,7 +1172,7 @@ if(isset($_GET['dev'])){
 	<span id=samplecontents style="font-size:14px">
 		Reorder: <select style='width:120px' onChange="" id=orderby></select><br><br>
 		<center>
-		<table id=orderingtable style='text-size:14px;'>
+		<table id=orderingtable style='font-size:14px;'>
 		</table><br>
 		<a href='#' style='width:100%;text-decoration:none;color:#fff;background-color:rgba(0,100,200,0.85);padding:10px;font-size:12px;' id=ordergo>Reorder</a><br><br>
 		</center>
