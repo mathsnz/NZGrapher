@@ -856,7 +856,7 @@ if(isset($_POST['csv_data'])){
 				</label>
 			</span>
 			<span id=rvalueshow><label>
-				<label id="correlationcoefficientshow"><input type="checkbox" onclick="updategraph();" id="correlationcoefficient" name="correlationcoefficient" value="yes"> r-value</label>
+				<label id="correlationcoefficientshow" style="padding-left:20px;"><input type="checkbox" onclick="updategraph();" id="correlationcoefficient" name="correlationcoefficient" value="yes"> r-value</label>
 			</span>
 			<span id=boxplotshow><label>
 				<input type="checkbox" onclick="updategraph();" id="boxplot" name="boxplot" value="yes"> Box Plots</label><br>

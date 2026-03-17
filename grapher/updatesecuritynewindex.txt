@@ -184,9 +184,13 @@ foreach($files as $filename){
 		</div>
 	</label>
 </form>
+<br>
+<a style="color:#fff;margin-top: 10px;padding: 20px;border-radius: 15px;font-size: 18px;font-weight: bold;background-color:#C86400;vertical-align:text-top;" href="https://docs.google.com/document/d/1jRN4BM2QyerlzAzdM60fxhS8QTN2a0l_zMBDoKMXAMg/edit?tab=t.0" target="_blank">Best Practice Guide</a>
+<br>
+<br>
 <h3>Notes</h3>
 <ul>
-	<li>Your file must be a .CSV or .NZGrapher file</li>
+	<li>Your file must be a .csv, .xlsx, .ods or .nzgrapher file</li>
 	<li><b>Secure</b> files can be loaded inside NZGrapher, and can be seen in the dropdown for the custom folder, but the "Download Data", "Save Session", and "Select and Copy Data Table" options are not available.</li>
 	<li>If a file starts with SECURE then it will be classed as "secure" by default, and this can't be turned off unless you call the file something different.</li>
 	<li><b>Hidden</b> files can be loaded inside NZGrapher, but can't be seen in the dropdown for the custom folder.</li>
