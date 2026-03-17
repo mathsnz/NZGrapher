@@ -13,6 +13,11 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2026-03-18</b><ul>
+		<li>Fixed hover dropdowns in navbar when viewport is narrower than 820px</li>
+		<li>Added best practice guide for school folders</li>
+		<li>Fixed indent on the show r-value checkbox</li>
+	</ul>
 	<b>2026-03-12</b><ul>
 		<li>NZGrapher now supports Excel files (as well as open office spreadsheets) - thanks to Ethan Hayward</li>
 		<li>R-Value doesn't show by default anymore, but can still be shown when needed with a new checkbox - thanks to Ethan Hayward</li>
