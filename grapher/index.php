@@ -1,4 +1,5 @@
 <?php include './version.php'; ?>
+<!DOCTYPE html>
 <html v=<?php echo $v; ?>>
 <head>
 	<!-- Google Analytics -->
@@ -319,7 +320,7 @@ $( document ).ready(function() {
 <div id=showhideleft onclick="showhideleft();" style='display:none;'>&#9664;</div>
 <div id=showhidebottom onclick="showhidebottom();" style='display:none;'>&#9660;</div>
 
-<div id=buttons><tr>
+<div id=buttons><div class="button-scroll-container">
 <div class=abutton id=fileshowhide>Data</div> <div class=spacer></div>
 <div class=abutton id=rowshowhide>Row</div> <div class=spacer></div>
 <div class=abutton id=colshowhide>Column</div> <div class=spacer></div>
@@ -327,7 +328,7 @@ $( document ).ready(function() {
 <div class=abutton id=teachingtoolsshowhide>Teaching Tools</div> <div class=spacer></div>
 <div class=abutton id=update>Save Changes</div> <div class=spacer></div>
 <div class=abutton id=wizardmenu>Display Explorer <span class="material-icons-outlined" style='font-size: inherit'>insights</span></div> <div class=spacer></div>
-<div class=abutton id=helper>Help</div>
+<div class=abutton id=helper>Help</div></div>
 </div>
 
 <div id=helppopup class="callout popup">
