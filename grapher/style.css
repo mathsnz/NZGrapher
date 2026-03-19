@@ -106,12 +106,22 @@ table {
 #buttons {
 	position:absolute;
 	top:33px;
-	left:25px;
 	border: none;
 	height:25px;
 	background:none;
 	z-index:2;
 }
+
+.button-scroll-container {
+	position: static;
+	height:120%;
+	width: 98vw;
+	overflow-x:auto;
+	overflow-y: hidden;
+	white-space: nowrap;
+	scrollbar-width: thin;
+}
+
 .abutton {
     display: inline;
     position: relative;
