@@ -13,6 +13,9 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2026-03-31</b><ul>
+		<li>Fixed issue where hover tooltips were not working reliably</li>
+	</ul>
 	<b>2026-03-30</b><ul>
 		<li>Nav buttons now scroll horiztonatally when the screen is narrow - thanks to Ethan Hayward</li>
 	</ul>
