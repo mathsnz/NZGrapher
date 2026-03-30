@@ -1,5 +1,4 @@
 <?php include './version.php'; ?>
-<!DOCTYPE html>
 <html v=<?php echo $v; ?>>
 <head>
 	<!-- Google Analytics -->
