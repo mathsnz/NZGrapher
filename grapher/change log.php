@@ -13,8 +13,11 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+	<b>2026-03-30</b><ul>
+		<li>Nav buttons now scroll horiztonatally when the screen is narrow - thanks to Ethan Hayward</li>
+	</ul>
 	<b>2026-03-18</b><ul>
-		<li>Fixed hover dropdowns in navbar when viewport is narrower than 820px</li>
+		<li>Fixed hover dropdowns in navbar when viewport is narrower than 820px - thanks to Ethan Hayward</li>
 		<li>Added best practice guide for school folders</li>
 		<li>Fixed indent on the show r-value checkbox</li>
 	</ul>
