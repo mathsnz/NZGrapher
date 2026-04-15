@@ -13648,7 +13648,6 @@ function newsimmodstep() {
 				thissim[thispoint]++;
 			}
 			currentsimmodhistory.push(thissim);
-
 		} else if (simmodtype == 'normal') { // only for histograms
 			thissim = {};
 			dmean = Number.parseFloat(Number.parseFloat($('#simmodmean').val()).toPrecision(8));
@@ -13658,6 +13657,7 @@ function newsimmodstep() {
 			}
 			for (var i = 0; i < currentsimmodsamplesize; i++) {
 				var thispoint = normalrandom(dmean, dsd);
+				console.log(xstep);
 				thispoint = Number.parseFloat((Math.floor(thispoint / xstep) * xstep).toPrecision(8));
 				thissim[thispoint]++;
 			}
@@ -13670,7 +13670,7 @@ function newsimmodstep() {
 			}
 			for (var i = 0; i < currentsimmodsamplesize; i++) {
 				var thispoint = poissonrandom(dmean);
-				thispoint = Number.parseFloat((Math.floor(thispoint / xstep) * xstep).toPrecision(8));
+				thispoint = Number.parseFloat(thispoint.toPrecision(8));
 				thissim[thispoint]++;
 			}
 			currentsimmodhistory.push(thissim);
@@ -13683,7 +13683,7 @@ function newsimmodstep() {
 			}
 			for (var i = 0; i < currentsimmodsamplesize; i++) {
 				var thispoint = binomialrandom(dn, dp);
-				thispoint = Number.parseFloat((Math.floor(thispoint / xstep) * xstep).toPrecision(8));
+				thispoint = Number.parseFloat(thispoint.toPrecision(8));
 				thissim[thispoint]++;
 			}
 			currentsimmodhistory.push(thissim);
@@ -13834,8 +13834,11 @@ function newsimmodstep() {
 				ctx.strokeStyle = 'rgba(255,0,0,0.5)';
 			}
 			ctx.beginPath();
+			keys = Object.keys(currentsimmodhistory[i]).sort();
+			console.log(keys);
 			for (var j = 0; j < xsteps; j++) {
-				var yval = currentsimmodhistory[i][Object.keys(currentsimmodhistory[i])[j]];
+				console.log(keys[j]);
+				var yval = currentsimmodhistory[i][keys[j]];
 				if (relativefrequency) {
 					yval = yval / points.length;
 				}
