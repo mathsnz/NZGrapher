@@ -13834,8 +13834,7 @@ function newsimmodstep() {
 				ctx.strokeStyle = 'rgba(255,0,0,0.5)';
 			}
 			ctx.beginPath();
-			keys = Object.keys(currentsimmodhistory[i]).sort();
-			console.log(keys);
+			keys = Object.keys(currentsimmodhistory[i]).sort((a, b) => a - b);
 			for (var j = 0; j < xsteps; j++) {
 				console.log(keys[j]);
 				var yval = currentsimmodhistory[i][keys[j]];
