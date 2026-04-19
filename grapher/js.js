@@ -13462,11 +13462,6 @@ function newsimmodstep() {
 	var canvas = document.getElementById('myCanvas');
 	var ctx = canvas.getContext('2d');
 
-	if (currentsimmodspeed == 'stopped') {
-		var dataURL = canvas.toDataURL();
-		return dataURL;
-	}
-
 	if (currentsimmodstep == 'finished') {
 		currentsimmodspeed = 'stopped';
 	}
@@ -13559,6 +13554,12 @@ function newsimmodstep() {
 	} else if ($('#simmoddatatype').val() == 'numericdiscrete') {
 		xmin = Math.min.apply(null, pointsforminmax);
 		xmax = Math.max.apply(null, pointsforminmax);
+		if ($.isNumeric($('#boxplotmin').val())) {
+			xmin = $('#boxplotmin').val();
+		}
+		if ($.isNumeric($('#boxplotmax').val())) {
+			xmax = $('#boxplotmax').val();
+		}
 		i = xmin;
 		xgroups = [];
 		while (i <= xmax) {
@@ -13568,6 +13569,12 @@ function newsimmodstep() {
 	} else {
 		xmin = Math.min.apply(null, pointsforminmax);
 		xmax = Math.max.apply(null, pointsforminmax);
+		if ($.isNumeric($('#boxplotmin').val())) {
+			xmin = $('#boxplotmin').val();
+		}
+		if ($.isNumeric($('#boxplotmax').val())) {
+			xmax = $('#boxplotmax').val();
+		}
 		intervals = $('#size').val();
 		step = Number.parseFloat(((xmax - xmin) / intervals).toPrecision(8));
 		stepfirstsf = Number.parseFloat(step.toPrecision(1)).toExponential().substr(0, 1);
@@ -13582,6 +13589,13 @@ function newsimmodstep() {
 
 		min = Math.min.apply(null, pointsforminmax);
 		max = Math.max.apply(null, pointsforminmax);
+
+		if ($.isNumeric($('#boxplotmin').val())) {
+			min = 0 + Number.parseFloat($('#boxplotmin').val());
+		}
+		if ($.isNumeric($('#boxplotmax').val())) {
+			max = 0 + Number.parseFloat($('#boxplotmax').val());
+		}
 
 		xstep = step;
 		min = (min / xstep).toFixed(0) * xstep;
@@ -13706,6 +13720,9 @@ function newsimmodstep() {
 		}
 		ymax = Math.max.apply(null, Object.values(sumpoints));
 
+		simmax = Math.max.apply(null, currentsimmodhistory.reduce((a, b) => a.concat(Object.values(b)), []).filter(n => !Number.isNaN(n)));
+		if (simmax > ymax) { ymax = simmax; }
+
 		relativefrequency = false;
 		if ($('#relativefrequency').is(":checked")) {
 			relativefrequency = true;
@@ -13732,7 +13749,6 @@ function newsimmodstep() {
 		ctx.fillText(yaxistitle, 0, 0);
 		ctx.restore();
 
-		ymax = ymax * 1.2
 		var minmaxstep = axisminmaxstep(ymin, ymax);
 		var minytick = minmaxstep[0];
 		var maxytick = minmaxstep[1];
@@ -13758,6 +13774,7 @@ function newsimmodstep() {
 			ctx.beginPath();
 			for (var j = 0; j < Object.keys(currentsimmodhistory[i]).length; j++) {
 				var yval = currentsimmodhistory[i][Object.keys(currentsimmodhistory[i])[j]];
+				if (Number.isNaN(yval)) { yval = 0; }
 				if (relativefrequency) {
 					yval = yval / points.length;
 				}
@@ -13810,7 +13827,9 @@ function newsimmodstep() {
 			ymax = ymax / points.length;
 		}
 
-		ymax = ymax * 1.2
+		simmax = Math.max.apply(null, currentsimmodhistory.reduce((a, b) => a.concat(Object.values(b)), []));
+		if (simmax > ymax) { ymax = simmax; }
+
 		ymin = 0;
 		var minmaxstep = axisminmaxstep(ymin, ymax);
 		var minytick = minmaxstep[0];
@@ -13836,8 +13855,8 @@ function newsimmodstep() {
 			ctx.beginPath();
 			keys = Object.keys(currentsimmodhistory[i]).sort((a, b) => a - b);
 			for (var j = 0; j < xsteps; j++) {
-				console.log(keys[j]);
 				var yval = currentsimmodhistory[i][keys[j]];
+				if (Number.isNaN(yval)) { yval = 0; }
 				if (relativefrequency) {
 					yval = yval / points.length;
 				}
