@@ -2374,19 +2374,29 @@ function updategraphgo() {
 	if (document.getElementById('standardsize').value == 'Standard') {
 		document.getElementById('width').value = 800;
 		document.getElementById('height').value = 600;
+		$('#myCanvas').css('width', '800px');
+		$('#myCanvas').css('height', '600px');
 	} else if (document.getElementById('standardsize').value == 'Short') {
 		document.getElementById('width').value = 800;
 		document.getElementById('height').value = 300;
+		$('#myCanvas').css('width', '800px');
+		$('#myCanvas').css('height', '300px');
 	} else if (document.getElementById('standardsize').value == 'Small') {
 		document.getElementById('width').value = 500;
 		document.getElementById('height').value = 400;
+		$('#myCanvas').css('width', '500px');
+		$('#myCanvas').css('height', '400px');
 	} else if (document.getElementById('standardsize').value == 'Auto - High Res') {
 		document.getElementById('width').value = document.getElementById('graphdiv').offsetWidth * 5;
 		document.getElementById('height').value = document.getElementById('graphdiv').offsetHeight * 5;
 		scalefactor = 5;
+		$('#myCanvas').css('width', '100%');
+		$('#myCanvas').css('height', '100%');
 	} else {
 		document.getElementById('width').value = document.getElementById('graphdiv').offsetWidth;
 		document.getElementById('height').value = document.getElementById('graphdiv').offsetHeight;
+		$('#myCanvas').css('width', '100%');
+		$('#myCanvas').css('height', '100%');
 	}
 	$('#scalefactor').val(scalefactor);
 	w = $('#type').val();
@@ -10605,10 +10615,10 @@ function plotbargraph(ctx, left, right, gtop, minytick, maxytick, ystep, maxheig
 		}
 		thisright = add(thisleft, stepsize);
 		ctx.lineWidth = 1 * scalefactor;
-		line(ctx, thisright, gbottom, thisright, add(gbottom, 10));
+		line(ctx, thisright, gbottom, thisright, add(gbottom, 10 * scalefactor));
 		thiscenter = add(thisleft, thisright) / 2;
 		ctx.fillStyle = 'rgb(0,0,0)';
-		ctx.fillText(group, thiscenter, add(gbottom, 15));
+		ctx.fillText(group, thiscenter, add(gbottom, 15 * scalefactor));
 		gtotal = 0;
 		boxbottom = gbottom;
 		boxtop = boxbottom;

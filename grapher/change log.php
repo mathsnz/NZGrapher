@@ -13,6 +13,10 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+<b>2026-04-20</b>
+<ul>
+	<li>Fixed some bugs and display issues in the simulation modelling teaching tool.</li>
+</ul>
 <b>2026-04-15</b>
 <ul>
 	<li>Fixed issue where the simulation model wasn't displaying properly for poisson or binomial distributions</li>
