@@ -15,7 +15,7 @@ if($loggedin==0){
 }
 
 if(isset($_POST["savesettings"])){
-	file_put_contents('datasettings.php','<?php $data="'.base64_encode(serialize($_POST['data'])).'"; ?>');
+	file_put_contents('datasettings.php','<?php $data="'.base64_encode(json_encode($_POST['data'])).'"; ?>');
 		echo "Good";
 		die();
 }

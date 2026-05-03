@@ -129,10 +129,12 @@ function getCurrentDirectory() {
 $folder = getCurrentDirectory();
 
 $datasettingsfiles=glob('./datasettings.php');
-$data = array('secure'=>array(),'hidden'=>array(),'disabled'=>array(),'expiry'=>array(),'expirytime'=>array());
 foreach($datasettingsfiles as $datasettingfile){
 	include($datasettingfile);
-	$data = unserialize(base64_decode($data));
+	$data = json_decode(base64_decode($data),true);
+}
+if(!is_array($data)){
+	$data = array('secure'=>array(),'hidden'=>array(),'disabled'=>array(),'expiry'=>array(),'expirytime'=>array());
 }
 if(!array_key_exists('secure',$data)){$data['secure']=array();}
 if(!array_key_exists('hidden',$data)){$data['hidden']=array();}

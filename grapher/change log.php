@@ -13,6 +13,11 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+<b>2026-05-03</b>
+<ul>
+	<li>Migration to new server after downtime for grapher.nz.</li>
+	<li>Fixed a couple of bugs in the simulation modelling teaching tool.</li>
+</ul>
 <b>2026-04-20</b>
 <ul>
 	<li>Fixed some bugs and display issues in the simulation modelling teaching tool.</li>
