@@ -11,7 +11,6 @@ foreach ($files as $file){
 	if(substr($password,0,1)!="<"){
 		file_put_contents($file,"<?php \$correctpass='$password'; ?>");
 	}
-	echo $file."\r\n";
 }
 
 $files = glob("./*/datasettings.php");
@@ -21,7 +20,6 @@ foreach ($files as $file){
 	if(is_array($data)){
 		file_put_contents($file,'<?php $data="'.base64_encode(json_encode($data)).'"; ?>');
 	}
-	echo $file."\r\n";
 }
 
 echo "Done";
