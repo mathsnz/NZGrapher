@@ -256,11 +256,13 @@ $( document ).ready(function() {
 	$files=glob($_GET['folder'].'/*.csv');
 	$files2=glob($_GET['folder'].'/*.CSV');
 	$files3=glob($_GET['folder'].'/*.nzgrapher');
-	$datasettingsfiles=glob($_GET['folder'].'/datasettings.php');
-	$datasettings = array('secure'=>array(),'hidden'=>array(),'disabled'=>array(),'expiry'=>array(),'expirytimeiso'=>array());
+	$datasettingsfiles=glob('./datasettings.php');
 	foreach($datasettingsfiles as $datasettingfile){
 		include($datasettingfile);
-		$datasettings = unserialize(base64_decode($data));
+		$datasettings = json_decode(base64_decode($data),true);
+	}
+	if(!is_array($datasettings)){
+		$datasettings = array('secure'=>array(),'hidden'=>array(),'disabled'=>array(),'expiry'=>array(),'expirytime'=>array());
 	}
 	if(!array_key_exists('secure',$datasettings)){$datasettings['secure']=array();}
 	if(!array_key_exists('hidden',$datasettings)){$datasettings['hidden']=array();}

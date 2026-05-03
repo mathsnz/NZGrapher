@@ -15,7 +15,7 @@ if($loggedin==0){
 }
 
 if(isset($_POST["savesettings"])){
-	file_put_contents('datasettings.php','<?php $data="'.base64_encode(serialize($_POST['data'])).'"; ?>');
+	file_put_contents('datasettings.php','<?php $data="'.base64_encode(json_encode($_POST['data'])).'"; ?>');
 		echo "Good";
 		die();
 }
@@ -53,10 +53,10 @@ function getCurrentDirectory() {
 $_FILES["file"]["name"] = preg_replace('/\s+/', ' ', basename($_FILES["file"]["name"]));
 $temp = explode(".", $_FILES["file"]["name"]);
 $extension = end($temp);
-if(strtolower($extension)!="csv" && strtolower($extension)!="nzgrapher"){
+if(strtolower($extension)!="csv" && strtolower($extension)!="nzgrapher" && strtolower($extension)!="xls" && strtolower($extension)!="xlsx" && strtolower($extension)!="ods"){
 	echo ('Invalid Extension');
 } else {
-	$mimes = array('application/octet-stream','application/vnd.ms-excel','application/csv','text/plain','text/csv','text/tsv','text/comma-separated-values');
+	$mimes = array('', 'application/csv', 'text/plain', 'text/csv', 'text/tsv', 'text/comma-separated-values', 'text/tab-separated-values', 'text/anytext', 'application/octet-stream', 'application/txt', 'application/x-csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'application/vnd.oasis.opendocument.spreadsheet');
 	if (isset($_FILES['file'])){
 		if ($_FILES["file"]["error"] > 0) {
 			echo "Error: " . $_FILES["file"]["error"] . "<br>";

@@ -129,10 +129,12 @@ function getCurrentDirectory() {
 $folder = getCurrentDirectory();
 
 $datasettingsfiles=glob('./datasettings.php');
-$data = array('secure'=>array(),'hidden'=>array(),'disabled'=>array(),'expiry'=>array(),'expirytime'=>array());
 foreach($datasettingsfiles as $datasettingfile){
 	include($datasettingfile);
-	$data = unserialize(base64_decode($data));
+	$data = json_decode(base64_decode($data),true);
+}
+if(!is_array($data)){
+	$data = array('secure'=>array(),'hidden'=>array(),'disabled'=>array(),'expiry'=>array(),'expirytime'=>array());
 }
 if(!array_key_exists('secure',$data)){$data['secure']=array();}
 if(!array_key_exists('hidden',$data)){$data['hidden']=array();}
@@ -177,16 +179,20 @@ foreach($files as $filename){
 <h3>Add New Files</h3>
 <form id=uploadform action="upload.php" method="post" enctype="multipart/form-data" style='width:200px;'>
 	<label for="file" id="droparea">
-		<input type="file" name="file" id="file" accept="" hidden>
+		<input type="file" name="file" id="file" accept=".csv,.tsv,.txt,.bin,.nzgrapher,.xls,.xlsx,.ods" hidden>
 		<div id="uploadbox">
 		<span class="material-symbols-outlined" style='font-size:80px;'>upload</span><br>
 		Drag or drop, or click here to upload a file.
 		</div>
 	</label>
 </form>
+<br>
+<a style="color:#fff;margin-top: 10px;padding: 20px;border-radius: 15px;font-size: 18px;font-weight: bold;background-color:#C86400;vertical-align:text-top;" href="https://docs.google.com/document/d/1jRN4BM2QyerlzAzdM60fxhS8QTN2a0l_zMBDoKMXAMg/edit?tab=t.0" target="_blank">Best Practice Guide</a>
+<br>
+<br>
 <h3>Notes</h3>
 <ul>
-	<li>Your file must be a .CSV or .NZGrapher file</li>
+	<li>Your file must be a .csv, .xlsx, .ods or .nzgrapher file</li>
 	<li><b>Secure</b> files can be loaded inside NZGrapher, and can be seen in the dropdown for the custom folder, but the "Download Data", "Save Session", and "Select and Copy Data Table" options are not available.</li>
 	<li>If a file starts with SECURE then it will be classed as "secure" by default, and this can't be turned off unless you call the file something different.</li>
 	<li><b>Hidden</b> files can be loaded inside NZGrapher, but can't be seen in the dropdown for the custom folder.</li>
