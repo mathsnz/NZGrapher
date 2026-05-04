@@ -256,7 +256,7 @@ $( document ).ready(function() {
 	$files=glob($_GET['folder'].'/*.csv');
 	$files2=glob($_GET['folder'].'/*.CSV');
 	$files3=glob($_GET['folder'].'/*.nzgrapher');
-	$datasettingsfiles=glob('./datasettings.php');
+	$datasettingsfiles=glob($_GET['folder'].'/datasettings.php');
 	foreach($datasettingsfiles as $datasettingfile){
 		include($datasettingfile);
 		$datasettings = json_decode(base64_decode($data),true);
