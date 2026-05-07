@@ -13,6 +13,12 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+<b>2026-05-09</b>
+<ul>
+	<li>Integration with exam.net for those schools using that service. See
+		<a href='https://info.grapher.nz/examnet/'>more information here</a>
+	</li>
+</ul>
 <b>2026-05-05</b>
 <ul>
 	<li>Migration to new server after downtime for grapher.nz.</li>
