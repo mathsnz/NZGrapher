@@ -82,6 +82,17 @@ function downloadgraph() {
 	document.body.appendChild(link);
 	link.click();
 	document.body.removeChild(link);
+	savetoexamnet();
+}
+
+function savetoexamnet() {
+	const isIframe = window.parent !== window
+	const target = isIframe ? window.parent : window.opener
+	if (!target) {
+		return;
+	}
+	const IMAGE_DATA = $('#jsgraph img').attr('src');
+	target.postMessage({ type: 'image', source: 'nzgrapher', data: IMAGE_DATA }, '*');
 }
 
 function addprobabilityeventrow(button) {
