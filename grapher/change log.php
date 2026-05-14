@@ -13,6 +13,11 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+<b>NEXT</b>
+<ul>
+	<li>Changed the "p" on rerandomisation graphs to "proportion" to avoid confusion for students with p-values.</li>
+	<li>Fix to ensure .nzgrapher files load correctly.</li>
+</ul>
 <b>2026-05-09</b>
 <ul>
 	<li>Integration with exam.net for those schools using that service. See

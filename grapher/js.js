@@ -9688,10 +9688,10 @@ function rerand(mm) {
 
 	line(ctx, diffpix, y + 5 * scalefactor, diffpix, y - maxheight);
 	ctx.textAlign = "left";
-	ctx.fillText("p", diffpix + 5 * scalefactor, y - maxheight + 10 * scalefactor);
-	ctx.fillText("= " + p + "/1000", diffpix + 15 * scalefactor, y - maxheight + 10 * scalefactor);
-	ctx.fillText("= " + (p / 1000), diffpix + 15 * scalefactor, y - maxheight + 20 * scalefactor);
-	ctx.fillText("= " + (p / 10) + "%", diffpix + 15 * scalefactor, y - maxheight + 30 * scalefactor);
+	ctx.fillText("proportion", diffpix + 5 * scalefactor, y - maxheight + 10 * scalefactor);
+	ctx.fillText("= " + p + "/1000", diffpix + 60 * scalefactor, y - maxheight + 10 * scalefactor);
+	ctx.fillText("= " + (p / 1000), diffpix + 60 * scalefactor, y - maxheight + 20 * scalefactor);
+	ctx.fillText("= " + (p / 10) + "%", diffpix + 60 * scalefactor, y - maxheight + 30 * scalefactor);
 
 	labelgraph(ctx, width, height);
 
