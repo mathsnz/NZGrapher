@@ -1,7 +1,7 @@
 <?php
 
 date_default_timezone_set("Pacific/Auckland");
-$date = date('Ymd', strtotime("+1 day"));
+$date = date('Ymd');
 file_put_contents('./grapher/version.php', "<?php \$v=" . $date . "; ?>");
 file_put_contents('./grapherversion.php', $date);
 file_put_contents('./grapher/sw.js', str_replace("VERSION", $date, file_get_contents('sw.js')));
