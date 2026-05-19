@@ -13,7 +13,11 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
-<b>NEXT</b>
+<b>2026-05-19</b>
+<ul>
+	<li>Fix for exam.net download graph button not working in high security mode.</li>
+</ul>
+<b>2026-05-16</b>
 <ul>
 	<li>Changed the "p" on rerandomisation graphs to "proportion" to avoid confusion for students with p-values.</li>
 	<li>Fix to ensure .nzgrapher files load correctly.</li>

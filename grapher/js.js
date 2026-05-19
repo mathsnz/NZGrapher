@@ -75,6 +75,9 @@ function copygraph() {
 }
 
 function downloadgraph() {
+	if (savetoexamnet()) {
+		return;
+	}
 	const link = document.createElement('a');
 	link.href = $('#jsgraph img').attr('src');
 	link.download = 'image.png';
@@ -82,17 +85,17 @@ function downloadgraph() {
 	document.body.appendChild(link);
 	link.click();
 	document.body.removeChild(link);
-	savetoexamnet();
 }
 
 function savetoexamnet() {
 	const isIframe = window.parent !== window
 	const target = isIframe ? window.parent : window.opener
 	if (!target) {
-		return;
+		return false;
 	}
 	const IMAGE_DATA = $('#jsgraph img').attr('src');
 	target.postMessage({ type: 'image', source: 'nzgrapher', data: IMAGE_DATA }, '*');
+	return true;
 }
 
 function addprobabilityeventrow(button) {
