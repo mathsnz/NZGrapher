@@ -98,6 +98,29 @@ function savetoexamnet() {
 	return true;
 }
 
+function saveforecasttabletoexamnet() {
+	const isIframe = window.parent !== window
+	const target = isIframe ? window.parent : window.opener
+	if (!target) {
+		return false;
+	}
+	const tableElement = $('#forecastoutput table')[0];
+
+	// Call html2canvas on our table element
+	html2canvas(tableElement, {
+		scale: 2,               // Doubles the resolution so text looks crisp on retina/high-DPI screens
+		backgroundColor: '#ffffff' // Forces a solid white background (otherwise it defaults to transparent)
+	}).then(function (canvas) {
+		// Convert the canvas contents directly to a Base64 encoded PNG string
+		const IMAGE_DATA = canvas.toDataURL('image/png');
+		target.postMessage({ type: 'image', source: 'nzgrapher', data: IMAGE_DATA }, '*');
+		return true;
+	}).catch(function (error) {
+		console.error("Something went wrong during the conversion:", error);
+	});
+
+}
+
 function addprobabilityeventrow(button) {
 	button.closest('.probabilitysimulationevent').find('table').append('<tr><td><input class=outcome placeholder=Outcome><td><input class=probability placeholder=Probability>');
 }
@@ -7682,7 +7705,17 @@ function newtimeseriessforecasts() {
 			c++;
 		}
 
-		toreturn += "</table><br><button class=button onclick=\"selectText($('#forecastoutput table')[0]);document.execCommand('copy');\" style='float:left'>Select and Copy Forecast Table</button></div>";
+		toreturn += "</table><br>"
+		toreturn += "<span style=\"float:left;\">";
+		toreturn += "<button class=button onclick=\"selectText($('#forecastoutput table')[0]);document.execCommand('copy');\">Select and Copy Forecast Table</button> ";
+
+		const isIframe = window.parent !== window
+		const target = isIframe ? window.parent : window.opener
+		if (target) {
+			toreturn += "<button class=button onclick=\"saveforecasttabletoexamnet()\">Save Table to Exam.Net</button>"
+		}
+		toreturn += "</span>";
+		toreturn += "</div>";
 		return toreturn;
 	} else {
 
