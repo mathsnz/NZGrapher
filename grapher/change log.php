@@ -13,6 +13,10 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+<b>2026-05-21</b>
+<ul>
+	<li>Enable saving of forecast tables into exam.net as an image (extra button shows when NZGrapher is embedded into exam.net).</li>
+</ul>
 <b>2026-05-19</b>
 <ul>
 	<li>Fix for exam.net download graph button not working in high security mode.</li>

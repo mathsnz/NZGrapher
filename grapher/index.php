@@ -17,6 +17,7 @@
 	<!-- End Google Analytics -->
 	<script src="./jquery.min.js"></script>
 	<script src="./jquery.csv.min.js"></script>
+	<script src="./html2canvas.min.js"></script>
 	<script src="./regression.min.js"></script>
 	<!-- IMPORT FOR XLSX -->
 	<script src="./xlsx.full.min.js"></script>
