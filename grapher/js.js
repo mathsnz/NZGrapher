@@ -143,10 +143,6 @@ $(function () {
 		$('#loading').hide();
 	});
 
-	$("#left").scroll(function () {
-		$(".tabletop td, .tabletop th").css("top", $("#left").scrollTop() - 2 + "px");
-	});
-
 	$('#xaxis').change(function () {
 		$('#scatplotnamex').val($('#xaxis').val());
 		if ($('#type').val() == 'newsimmod') {
