@@ -14820,55 +14820,6 @@ function cov(columns, means) {
 	});
 }
 
-function invert(matrix) {
-	var size = matrix.length,
-		base,
-		swap,
-		augmented;
-	// Augment w/ identity matrix
-	augmented = matrix.map(function (row, i) {
-		return row.slice(0).concat(row.slice(0).map(function (d, j) {
-			return j === i ? 1 : 0;
-		}));
-	});
-	// Process each row
-	for (var r = 0; r < size; r++) {
-		base = augmented[r][r];
-		// Zero on diagonal, swap with a lower row
-		if (!base) {
-			for (var rr = r + 1; rr < size; rr++) {
-				if (augmented[rr][r]) {
-					// swap
-					swap = augmented[rr];
-					augmented[rr] = augmented[r];
-					augmented[r] = swap;
-					base = augmented[r][r];
-					break;
-				}
-			}
-			if (!base) {
-				throw new RangeError("Matrix not invertable.");
-			}
-		}
-		// 1 on the diagonal
-		for (var c = 0; c < size * 2; c++) {
-			augmented[r][c] = augmented[r][c] / base;
-		}
-		// Zeroes elsewhere
-		for (var q = 0; q < size; q++) {
-			if (q !== r) {
-				base = augmented[q][r];
-				for (var p = 0; p < size * 2; p++) {
-					augmented[q][p] -= base * augmented[r][p];
-				}
-			}
-		}
-	}
-	return augmented.map(function (row) {
-		return row.slice(size);
-	});
-}
-
 // Other functions needed for mahalanobis
 
 function calculatesum(arr) {
