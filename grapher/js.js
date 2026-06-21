@@ -14820,7 +14820,7 @@ function cov(columns, means) {
 	});
 }
 
-function invert(matrix) {
+function invertmatrix(matrix) {
 	var size = matrix.length,
 		base,
 		swap,
@@ -14892,7 +14892,7 @@ function calculate_mahalanobis(indexes, xpoints, ypoints) {
 	}
 	var columns = transpose(arr),
 		means = columns.map(calculatemean),
-		invertedCovariance = invert(cov(columns, means));
+		invertedCovariance = invertmatrix(cov(columns, means));
 
 	var deltas = arr.map(function (row, i) {
 
