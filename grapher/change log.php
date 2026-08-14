@@ -13,7 +13,7 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
-<b>NEXT</b>
+<b>2026-08-14</b>
 <ul>
 	<li>Added Reverse option to the Viridis and Rainbow colourscales</li>
 	<li>Fixed a bug where gridlines weren't displaying properly on scatter graphs depending on the size of the graph</li>
