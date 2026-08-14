@@ -1113,7 +1113,9 @@ $( document ).ready(function() {
 				<td>Colour Scale:
 				<td><select style="width: 120px;" onChange="updategraph();" id=colourscale>
 						<option>Rainbow</option>
+						<option>Rainbow - Reverse</option>
 						<option>Viridis</option>
+						<option>Viridis - Reverse</option>
 					</select></td>
 		</table>
 		<input type="hidden" id=width name=width value=500>

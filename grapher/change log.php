@@ -13,7 +13,17 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
-<b>2026-05-21</b>
+<b>NEXT</b>
+<ul>
+	<li>Added Reverse option to the Viridis and Rainbow colourscales</li>
+	<li>Fixed a bug where gridlines weren't displaying properly on scatter graphs depending on the size of the graph</li>
+	<li>Shape outlines now stop where they reach zero, rather than extending for the entire width of the axis.</li>
+	<li>Power Graphs now have a darker colour for the line and the equation.</li>
+	<li>When simulating from a Binomial distribution and Poisson distributions using the simulation modelling tool, the min will always be zero</li>
+	<li>When doing a triangular or uniform distribution using the simulation modelling tool, the min and max of the distribution will now always be visible.</li>
+	<li>Thanks to Liz Sneddon, we have some experiments datasets you can use in your class <a href='https://info.grapher.nz/dataset-info/experiments-datasets' target='_blank'>see info here</a></li>
+</ul>
+<b>2026-05-22</b>
 <ul>
 	<li>Enable saving of forecast tables into exam.net as an image (extra button shows when NZGrapher is embedded into exam.net).</li>
 </ul>

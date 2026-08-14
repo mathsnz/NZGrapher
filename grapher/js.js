@@ -3106,12 +3106,31 @@ function makecolors(alpha, ctx) {
 					colors[index] = 'rgba(80,80,80,' + alpha + ')';
 				}
 			}
-		} else {
+		} else if ($('#colourscale').val() == 'Rainbow - Reverse') {
+			for (var index in colorpoints) {
+				if ($.isNumeric(colorpoints[index])) {
+					var n = (max - colorpoints[index]) / (max - min);
+					colors[index] = ColorHSLaToRGBa(n * end, s, l, alpha);
+				} else {
+					colors[index] = 'rgba(80,80,80,' + alpha + ')';
+				}
+			}
+		} else if ($('#colourscale').val() == 'Viridis') {
 			for (var index in colorpoints) {
 				if ($.isNumeric(colorpoints[index])) {
 					end = 0.9;
 					var n = ((colorpoints[index] - min) / (max - min) * end * 255).toFixed(0);
-					colors[index] = viridis[n] + ('0' + (1 * (255 * alpha).toFixed(0)).toString(16)).substr(-2);
+					colors[index] = viridis[n] + ('0' + (1 * (255 * alpha).toFixed(0)).toString(16)).slice(-2);
+				} else {
+					colors[index] = 'rgba(80,80,80,' + alpha + ')';
+				}
+			}
+		} else if ($('#colourscale').val() == 'Viridis - Reverse') {
+			for (var index in colorpoints) {
+				if ($.isNumeric(colorpoints[index])) {
+					end = 0.9;
+					var n = ((max - colorpoints[index]) / (max - min) * end * 255).toFixed(0);
+					colors[index] = viridis[n] + ('0' + (1 * (255 * alpha).toFixed(0)).toString(16)).slice(-2);
 				} else {
 					colors[index] = 'rgba(80,80,80,' + alpha + ')';
 				}
@@ -3131,9 +3150,14 @@ function makecolors(alpha, ctx) {
 			ctx.beginPath();
 			if ($('#colourscale').val() == 'Rainbow') {
 				ctx.strokeStyle = ColorHSLaToRGBa(colz * end, s, l, alpha);
-			} else {
+			} else if ($('#colourscale').val() == 'Rainbow - Reverse') {
+				ctx.strokeStyle = ColorHSLaToRGBa((1 - colz) * end, s, l, alpha);
+			} else if ($('#colourscale').val() == 'Viridis') {
 				var n = (colz * end * 255).toFixed(0);
-				ctx.strokeStyle = viridis[n] + ('0' + (1 * (255 * alpha).toFixed(0)).toString(16)).substr(-2);
+				ctx.strokeStyle = viridis[n] + ('0' + (1 * (255 * alpha).toFixed(0)).toString(16)).slice(-2);
+			} else if ($('#colourscale').val() == 'Viridis - Reverse') {
+				var n = ((1 - colz) * end * 255).toFixed(0);
+				ctx.strokeStyle = viridis[n] + ('0' + (1 * (255 * alpha).toFixed(0)).toString(16)).slice(-2);
 			}
 			ctx.arc(left, 48 * scalefactor - rad, rad, 0, 2 * Math.PI);
 			if ($('#soliddots').is(":checked") && $('#soliddots').is(':visible')) {
@@ -3164,11 +3188,24 @@ function makecolors(alpha, ctx) {
 				thecolors[index] = ColorHSLaToRGBa(n * end, s, l, alpha);
 				thecolorsnoalpha[index] = ColorHSLaToRGBa(n * end, s, l, 1);
 			}
+		} else if ($('#colourscale').val() == 'Rainbow - Reverse') {
+			for (var index in colorindexs) {
+				var n = (colorcount - index) / (colorcount - 1);
+				thecolors[index] = ColorHSLaToRGBa(n * end, s, l, alpha);
+				thecolorsnoalpha[index] = ColorHSLaToRGBa(n * end, s, l, 1);
+			}
+		} else if ($('#colourscale').val() == 'Viridis - Reverse') {
+			for (var index in colorindexs) {
+				end = 0.9
+				var n = ((colorcount - index - 1) / (colorcount - 1) * 255 * end).toFixed(0);
+				thecolors[index] = viridis[n] + ('0' + (1 * (255 * alpha).toFixed(0)).toString(16)).slice(-2);
+				thecolorsnoalpha[index] = viridis[n];
+			}
 		} else {
 			for (var index in colorindexs) {
 				end = 0.9
 				var n = (index / (colorcount - 1) * 255 * end).toFixed(0);
-				thecolors[index] = viridis[n] + ('0' + (1 * (255 * alpha).toFixed(0)).toString(16)).substr(-2);
+				thecolors[index] = viridis[n] + ('0' + (1 * (255 * alpha).toFixed(0)).toString(16)).slice(-2);
 				thecolorsnoalpha[index] = viridis[n];
 			}
 		}
@@ -3733,41 +3770,18 @@ function plotdotplot(ctx, indexes, values, minxtick, maxxtick, oypixel, left, ri
 
 	if (($('#shape').is(':checked') && $('#shape').is(':visible')) || ($('#violin').is(':checked') && $('#violin').is(':visible'))) {
 		weights = [];
+		firstwithweight = "notset";
+		lastwithweight = "notset";;
 		allpointscount = values.length;
 		x = minxtick;
 		range = maxxtick - minxtick;
 		shapestep = range / 300;
-		/*
-		hiqr = (uq-lq)/2*$('#smoothingpower').val();
-		if(hiqr==0){
-			hiqr=1;
-		}
-		*/
-		/*
-		bandwith = 0.9*Math.min(sd,(uq-lq)/1.34)*Math.pow(num,-1/5)*$('#smoothingpower').val();
-		*/
 		range = maxval - minval;
 		smoothingpower = $('#smoothingpower').val();
 		bandwidth = 0.1 * range * 3 / smoothingpower;
 		while (x <= maxxtick) {
 			total = 0;
 			$.each(thisvalues, function (key, value) {
-				//total += Math.pow((1-Math.abs(value-x)/range),$('#smoothingpower').val());
-
-				/*
-				var thisweight = 1-Math.abs(value-x)/hiqr;
-				if(thisweight>0){
-					total += Math.pow(thisweight,$('#smoothingpower').val());
-				}
-				*/
-				/*
-				var difference = Math.abs(value - x);
-				if(difference<bandwith){
-					var thisweighta = difference/bandwith;
-					var thisweight = 3/4*(1-Math.pow(thisweighta,2));
-					total += thisweight;
-				}
-				*/
 				var difference = Math.abs(value - x);
 				if (difference < bandwidth) {
 					var thisweighta = difference / bandwidth;
@@ -3776,6 +3790,12 @@ function plotdotplot(ctx, indexes, values, minxtick, maxxtick, oypixel, left, ri
 				}
 
 			});
+			if (total > 0) {
+				if (firstwithweight == "notset") {
+					firstwithweight = x;
+				}
+				lastwithweight = x;
+			}
 			weights.push([x, total / allpointscount]);
 			x += shapestep;
 		}
@@ -3800,12 +3820,14 @@ function plotdotplot(ctx, indexes, values, minxtick, maxxtick, oypixel, left, ri
 			xpixel = convertvaltopixel(x, minxtick, maxxtick, left, right);
 			y = value[1];
 			ypixel = y * maxheight * numgroups / $('#smoothingpower').val();
-			if (i == 0) {
-				ctx.moveTo(xpixel, bottom - ypixel);
-			} else {
-				ctx.lineTo(xpixel, bottom - ypixel);
+			if (x >= firstwithweight && x <= lastwithweight) {
+				if (i == 0) {
+					ctx.moveTo(xpixel, bottom - ypixel);
+				} else {
+					ctx.lineTo(xpixel, bottom - ypixel);
+				}
+				i++;
 			}
-			i++;
 		});
 		ctx.stroke();
 		ctx.lineTo(right, bottom);
@@ -3825,19 +3847,23 @@ function plotdotplot(ctx, indexes, values, minxtick, maxxtick, oypixel, left, ri
 			xpixel = convertvaltopixel(x, minxtick, maxxtick, left, right);
 			y = value[1];
 			ypixel = y * maxheight * numgroups / $('#smoothingpower').val();
-			if (i == 0) {
-				ctx.moveTo(xpixel, center - ypixel);
-			} else {
-				ctx.lineTo(xpixel, center - ypixel);
+			if (x >= firstwithweight && x <= lastwithweight) {
+				if (i == 0) {
+					ctx.moveTo(xpixel, center - ypixel);
+				} else {
+					ctx.lineTo(xpixel, center - ypixel);
+				}
+				i++;
 			}
-			i++;
 		});
 		$.each(weights.reverse(), function (key, value) {
 			x = value[0];
 			xpixel = convertvaltopixel(x, minxtick, maxxtick, left, right);
 			y = value[1];
 			ypixel = y * maxheight * numgroups / $('#smoothingpower').val();
-			ctx.lineTo(xpixel, center + ypixel);
+			if (x >= firstwithweight && x <= lastwithweight) {
+				ctx.lineTo(xpixel, center + ypixel);
+			}
 		});
 		ctx.closePath();
 		ctx.stroke();
@@ -6125,8 +6151,8 @@ function newscatter() {
 
 function plotscatter(ctx, indexes, xpoints, ypoints, minxtick, maxxtick, xstep, minytick, maxytick, ystep, gtop, bottom, left, right, colors, verticalerrorbars, horizontalerrorbars, stacknumber = 0, joinpoints = false) {
 	if (stacknumber < 2) {
-		horaxis(ctx, left, right, add(bottom, 10 * scalefactor), minxtick, maxxtick, xstep);
-		vertaxis(ctx, gtop, bottom, left - 10 * scalefactor, minytick, maxytick, ystep);
+		horaxis(ctx, left, right, add(bottom, 10 * scalefactor), minxtick, maxxtick, xstep, gtop);
+		vertaxis(ctx, gtop, bottom, left - 10 * scalefactor, minytick, maxytick, ystep, right);
 	}
 	ctx.lineWidth = 2 * scalefactor;
 	if ($('#thicklines').is(":checked")) {
@@ -6488,8 +6514,8 @@ function plotscatter(ctx, indexes, xpoints, ypoints, minxtick, maxxtick, xstep, 
 	}
 
 	if ($('#pow').is(":checked") && $('#powshow').is(':visible')) {
-		ctx.fillStyle = '#3ED2D2';
-		ctx.strokeStyle = '#3ED2D2';
+		ctx.fillStyle = '#0b8d8d';
+		ctx.strokeStyle = '#0b8d8d';
 
 		res = regression.power(pointstofitadjusted, {
 			precision: 15,
@@ -13601,6 +13627,8 @@ function newsimmodstep() {
 		ctx.fillText("ID(s) of Points Removed: " + pointsremoved.join(", "), width - 48 * scalefactor, 48 * scalefactor);
 	}
 
+	var simmodtype = $('#simmodtype').val();
+
 	if ($('#simmoddatatype').val() == 'categorical') {
 		maxcategories = 99;
 		xdifferentgroups = split(points, xpoints, maxcategories, '"Category"');
@@ -13618,6 +13646,9 @@ function newsimmodstep() {
 			xmax = $('#boxplotmax').val();
 		}
 		i = xmin;
+		if (simmodtype == 'binomial' || simmodtype == 'poisson') {
+			i = 0;
+		}
 		xgroups = [];
 		while (i <= xmax) {
 			xgroups.push(i);
@@ -13676,8 +13707,6 @@ function newsimmodstep() {
 	currentsimmodsamplesize = points.length;
 	$('#simmodsamplesize').text(currentsimmodsamplesize);
 	$('#simmodsamplesize2').text(currentsimmodsamplesize);
-
-	var simmodtype = $('#simmodtype').val();
 
 	if (currentsimmodstep == 'sim') {
 		if (simmodtype == 'equallylikely') { // only for bar graphs
@@ -13844,6 +13873,7 @@ function newsimmodstep() {
 			}
 			ctx.stroke();
 		}
+		console.log(xgroups);
 		var error = plotbargraph(ctx, left, right, oypixel, minytick, maxytick, ystep, maxheight, points, xdifferentgroups, frequencys, colors, xgroups, colorpoints, relativefrequency, points.length, false, sumpoints, '~nogroup~', false);
 		if (error != 'good') { return error; }
 	}
@@ -13858,6 +13888,11 @@ function newsimmodstep() {
 
 		xmin = min;
 		xmax = max;
+
+		if (simmodtype == 'uniform' || simmodtype == 'triangular') {
+			if (xmin > $('#simmodmin').val()) { xmin = Number.parseFloat($('#simmodmin').val()) + 0; }
+			if (xmax < $('#simmodmax').val()) { xmax = Number.parseFloat($('#simmodmax').val()) + 0; }
+		}
 
 		xdifferentgroups = {};
 		for (var index in points) {
@@ -14950,7 +14985,7 @@ function calculate_mahalanobis(indexes, xpoints, ypoints) {
 				} else {
 					end = 0.9;
 					var n = ((data[index] - min) / (max - min) * end * 255).toFixed(0);
-					colors[index] = viridis[n] + ('0' + (1 * (255 * alpha).toFixed(0)).toString(16)).substr(-2);
+					colors[index] = viridis[n] + ('0' + (1 * (255 * alpha).toFixed(0)).toString(16)).slice(-2);
 				}
 			} else {
 				colors[index] = 'rgba(80,80,80,' + alpha + ')';
