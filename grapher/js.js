@@ -143,10 +143,6 @@ $(function () {
 		$('#loading').hide();
 	});
 
-	$("#left").scroll(function () {
-		$(".tabletop td, .tabletop th").css("top", $("#left").scrollTop() - 2 + "px");
-	});
-
 	$('#xaxis').change(function () {
 		$('#scatplotnamex').val($('#xaxis').val());
 		if ($('#type').val() == 'newsimmod') {
@@ -9751,9 +9747,9 @@ function rerand(mm) {
 	line(ctx, diffpix, y + 5 * scalefactor, diffpix, y - maxheight);
 	ctx.textAlign = "left";
 	ctx.fillText("proportion", diffpix + 5 * scalefactor, y - maxheight + 10 * scalefactor);
-	ctx.fillText("= " + p + "/1000", diffpix + 60 * scalefactor, y - maxheight + 10 * scalefactor);
-	ctx.fillText("= " + (p / 1000), diffpix + 60 * scalefactor, y - maxheight + 20 * scalefactor);
-	ctx.fillText("= " + (p / 10) + "%", diffpix + 60 * scalefactor, y - maxheight + 30 * scalefactor);
+	ctx.fillText("= " + p + "/1000", diffpix + 5 * scalefactor, y - maxheight + 20 * scalefactor);
+	ctx.fillText("= " + (p / 1000), diffpix + 5 * scalefactor, y - maxheight + 30 * scalefactor);
+	ctx.fillText("= " + (p / 10) + "%", diffpix + 5 * scalefactor, y - maxheight + 40 * scalefactor);
 
 	labelgraph(ctx, width, height);
 
@@ -14859,7 +14855,7 @@ function cov(columns, means) {
 	});
 }
 
-function invert(matrix) {
+function invertmatrix(matrix) {
 	var size = matrix.length,
 		base,
 		swap,
@@ -14931,7 +14927,7 @@ function calculate_mahalanobis(indexes, xpoints, ypoints) {
 	}
 	var columns = transpose(arr),
 		means = columns.map(calculatemean),
-		invertedCovariance = invert(cov(columns, means));
+		invertedCovariance = invertmatrix(cov(columns, means));
 
 	var deltas = arr.map(function (row, i) {
 

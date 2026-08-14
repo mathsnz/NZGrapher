@@ -23,6 +23,11 @@ Leave a trail of medians on dotplot when doing resampling
 	<li>When doing a triangular or uniform distribution using the simulation modelling tool, the min and max of the distribution will now always be visible.</li>
 	<li>Thanks to Liz Sneddon, we have some experiments datasets you can use in your class <a href='https://info.grapher.nz/dataset-info/experiments-datasets' target='_blank'>see info here</a></li>
 </ul>
+<b>2026-06-17/b>
+	<ul>
+		<li>Improvement to the sticky header on the data tables - thanks to HenryP-406</li>
+		<li>Change location of re-randomisation proportion numbers so display better when there are extreme values.</li>
+	</ul>
 <b>2026-05-22</b>
 <ul>
 	<li>Enable saving of forecast tables into exam.net as an image (extra button shows when NZGrapher is embedded into exam.net).</li>

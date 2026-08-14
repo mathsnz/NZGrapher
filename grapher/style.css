@@ -507,19 +507,14 @@ input[type=text]{
 	padding-left:10px;padding-right:10px;
 }
 
-.tabletop td, .tabletop th {
-	position:relative;
-	background-color:#fff;
-	z-index:2;
-	top:-2px;
-	background-color:#fff !important;
-	padding:0px;
-}
 #jsgraph, #jsgraph div{
 	border:none;
 }
-.tabletop, .tabletop td, .tabletop th{
-	background-color: #ddd !important;
+.tabletop {
+	background-color: #ddd;
+	top: -2px;
+	position: sticky;
+	z-index: 1;
 }
 kbd {
     display: inline-block;
