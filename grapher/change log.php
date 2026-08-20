@@ -13,6 +13,11 @@ Leave a trail of medians on dotplot when doing resampling
 */
 
 ?>
+<b>2026-08-21</b>
+<ul>
+	<li>Changed the wording on rerandomisation to "proportion (p)" to reduce confusion with norm based p-values, but still allow the intriduction on p-values when teaching.</li>
+	<li>Made the median line thicker on box plots so when it overlaps with the lower or upper quartile it is easier to visually see what is happening - thanks 9WM for the idea!</li>
+</ul>
 <b>2026-08-14</b>
 <ul>
 	<li>Added Reverse option to the Viridis and Rainbow colourscales</li>
@@ -23,7 +28,7 @@ Leave a trail of medians on dotplot when doing resampling
 	<li>When doing a triangular or uniform distribution using the simulation modelling tool, the min and max of the distribution will now always be visible.</li>
 	<li>Thanks to Liz Sneddon, we have some experiments datasets you can use in your class <a href='https://info.grapher.nz/dataset-info/experiments-datasets' target='_blank'>see info here</a></li>
 </ul>
-<b>2026-06-17/b>
+<b>2026-06-17</b>
 	<ul>
 		<li>Improvement to the sticky header on the data tables - thanks to HenryP-406</li>
 		<li>Change location of re-randomisation proportion numbers so display better when there are extreme values.</li>
@@ -38,7 +43,7 @@ Leave a trail of medians on dotplot when doing resampling
 </ul>
 <b>2026-05-16</b>
 <ul>
-	<li>Changed the "p" on rerandomisation graphs to "proportion" to avoid confusion for students with p-values.</li>
+	<li>Changed the "p" on rerandomisation graphs to "proportion" to avoid confusion for students with norm based p-values.</li>
 	<li>Fix to ensure .nzgrapher files load correctly.</li>
 </ul>
 <b>2026-05-09</b>

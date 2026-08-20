@@ -3892,7 +3892,9 @@ function plotdotplot(ctx, indexes, values, minxtick, maxxtick, oypixel, left, ri
 		ctx.lineWidth = 1 * scalefactor;
 		line(ctx, mingraph, add(y, -5 * scalefactor), mingraph, add(y, 5 * scalefactor));
 		line(ctx, lqgraph, add(y, -h), lqgraph, add(y, h));
+		ctx.lineWidth = 4 * scalefactor;
 		line(ctx, medgraph, add(y, -h), medgraph, add(y, h));
+		ctx.lineWidth = 1 * scalefactor;
 		line(ctx, uqgraph, add(y, -h), uqgraph, add(y, h));
 		line(ctx, maxgraph, add(y, -5 * scalefactor), maxgraph, add(y, 5 * scalefactor));
 		line(ctx, mingraph, y, lqgraph, y);
@@ -3907,7 +3909,9 @@ function plotdotplot(ctx, indexes, values, minxtick, maxxtick, oypixel, left, ri
 		ctx.lineWidth = 1 * scalefactor;
 		line(ctx, mingraph, add(y, -5 * scalefactor), mingraph, add(y, 5 * scalefactor));
 		line(ctx, lqgraph, add(y, -h), lqgraph, add(y, h));
+		ctx.lineWidth = 4 * scalefactor;
 		line(ctx, medgraph, add(y, -h), medgraph, add(y, h));
+		ctx.lineWidth = 1 * scalefactor;
 		line(ctx, uqgraph, add(y, -h), uqgraph, add(y, h));
 		line(ctx, maxgraph, add(y, -5 * scalefactor), maxgraph, add(y, 5 * scalefactor));
 		line(ctx, mingraph, y, lqgraph, y);
@@ -3921,7 +3925,9 @@ function plotdotplot(ctx, indexes, values, minxtick, maxxtick, oypixel, left, ri
 		ctx.strokeStyle = 'rgb(0,0,0)';
 		ctx.lineWidth = 1 * scalefactor;
 		line(ctx, lqgraph, add(y, -h), lqgraph, add(y, h));
+		ctx.lineWidth = 4 * scalefactor;
 		line(ctx, medgraph, add(y, -h), medgraph, add(y, h));
+		ctx.lineWidth = 1 * scalefactor;
 		line(ctx, uqgraph, add(y, -h), uqgraph, add(y, h));
 		line(ctx, lqgraph, add(y, h), uqgraph, add(y, h));
 		line(ctx, lqgraph, add(y, -h), uqgraph, add(y, -h));
@@ -3933,7 +3939,9 @@ function plotdotplot(ctx, indexes, values, minxtick, maxxtick, oypixel, left, ri
 		ctx.lineWidth = 1 * scalefactor;
 		line(ctx, minnooutliersgraph, add(y, -5 * scalefactor), minnooutliersgraph, add(y, 5 * scalefactor));
 		line(ctx, lqgraph, add(y, -h), lqgraph, add(y, h));
+		ctx.lineWidth = 4 * scalefactor;
 		line(ctx, medgraph, add(y, -h), medgraph, add(y, h));
+		ctx.lineWidth = 1 * scalefactor;
 		line(ctx, uqgraph, add(y, -h), uqgraph, add(y, h));
 		line(ctx, maxnooutliersgraph, add(y, -5 * scalefactor), maxnooutliersgraph, add(y, 5 * scalefactor));
 		line(ctx, minnooutliersgraph, y, lqgraph, y);
@@ -9746,7 +9754,7 @@ function rerand(mm) {
 
 	line(ctx, diffpix, y + 5 * scalefactor, diffpix, y - maxheight);
 	ctx.textAlign = "left";
-	ctx.fillText("proportion", diffpix + 5 * scalefactor, y - maxheight + 10 * scalefactor);
+	ctx.fillText("proportion (p)", diffpix + 5 * scalefactor, y - maxheight + 10 * scalefactor);
 	ctx.fillText("= " + p + "/1000", diffpix + 5 * scalefactor, y - maxheight + 20 * scalefactor);
 	ctx.fillText("= " + (p / 1000), diffpix + 5 * scalefactor, y - maxheight + 30 * scalefactor);
 	ctx.fillText("= " + (p / 10) + "%", diffpix + 5 * scalefactor, y - maxheight + 40 * scalefactor);
